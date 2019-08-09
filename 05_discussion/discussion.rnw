@@ -1,0 +1,25 @@
+\begin{multicols}{2}
+=== notes ===
+\citep{hatger2005}
+The idea now is to use this information in a more sensitive
+segmentation, trying to extract the true road extents.
+Of course, when there is no C0 (height) or C1 (inclination)
+discontinuity at the road boundaries, there is no way de-
+tecting it using laser scan data, and other data sources such
+as aerial images have to be used. However, the question
+is how reliable even small discontinuities can be detected.
+For example, a road may be bounded by an embankment,
+which usually is a relatively large structure. It may on the
+other hand be separated from the pavement or a traffic is-
+land by a kerb of only 15 cm in height. This seems to
+be hopeless, since it is close to the expected noise of the
+laser measurement. However, if one considers profiles per-
+pendicular to the road, the point is that a 10 m wide road,
+scanned with 1 m density, will yield 10 measurements to
+estimate the road surface (assumed to be planar), leading
+to a standard deviation of about 15 cm /
+10  5 cm.
+
+
+// Mention logistic regression, considered but not used as results not better and requries a payoff.
+\end{multicols}

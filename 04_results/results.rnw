@@ -1,0 +1,249 @@
+\begin{multicols}{2}
+<<knitr-options, fig.show = 'hide'>>=
+# functions
+source("/home/cjber/drive/uni/envs492/main/scripts/functions.r")
+@
+\section{Overview of LiDAR Data}
+
+Table \ref{tab:lidar} indicates that there are likely some points with noise, particularly reflected by the highest intensity value (\Sexpr{max(lidar_tab$Intensity)}) relative to the mean value (\Sexpr{round(mean(lidar_tab$Intensity),0)}). Noise exclusion techniques are described in \cite{fang2004}, this paper takes a simplistic noise filtering technique that aims to solely remove extreme outliers from the observed intensity values in the chosen data.
+
+\section{Overview of Roads}
+
+Class differences, all singlecarriageway roads, therefore likely 60mph. Removed private roads. A roads + B roads + unclassified. Many unnamed roads, only identification possible through \texttt{identifier}, which splits roads by junctions.
+
+Histograms?
+
+\section{Data Preperation}
+
+Covers script 00.
+
+
+
+<<fig_lp_prep>>=
+source("./fig_lp.r")
+bg <- data.frame(
+  xmin = min(chm$x) - 1,
+  xmax = max(chm$x) + 1,
+  ymin = min(chm$y) - 1,
+  ymax = max(chm$y) + 1
+)
+
+chm_gg <- ggplot() +
+  geom_rect(data = bg, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = "grey50", colour = "black", size = 2) +
+  geom_raster(data = chm, aes(x = x, y = y, fill = value), alpha = 1) +
+  scale_fill_viridis() +
+  coord_fixed() +
+  theme_map() +
+  theme(legend.position = "none")
+
+chm_lp_gg <- ggplot() +
+  geom_rect(data = bg, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = "grey50", colour = "black", size = 2) +
+  geom_raster(data = chm_lp, aes(x = x, y = y, fill = value), alpha = 1) +
+  scale_fill_viridis() +
+  coord_fixed() +
+  theme_map() +
+  theme(legend.position = "none")
+
+dsm_lp_gg <- ggplot() +
+  geom_rect(data = bg, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = "grey50", colour = "black", size = 2) +
+  geom_raster(data = dsm_lp, aes(x = x, y = y, fill = value), alpha = 1) +
+  scale_fill_viridis() +
+  coord_fixed() +
+  theme_map() +
+  theme(legend.position = "none")
+@
+
+<<>>=
+las_lp_gg <- ggplot() +
+  geom_rect(data = bg, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = "grey50", colour = "black", size = 2) +
+  geom_raster(data = metrics, aes(x = x, y = y, fill = zmean), alpha = 1) +
+  scale_fill_viridis() +
+  coord_fixed() +
+  theme_map() +
+  theme(legend.position = "none")
+
+las_i_gg <- ggplot() +
+  geom_rect(data = bg, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = "grey50", colour = "black", size = 2) +
+  geom_raster(data = metrics, aes(x = x, y = y, fill = imean), alpha = 1) +
+  scale_fill_viridis() +
+  coord_fixed() +
+  theme_map() +
+  theme(legend.position = "none")
+
+aerial_gg <- ggplot() +
+  geom_rect(data = bg, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = "grey50", colour = "black", size = 2) +
+  geom_raster(data = aerial, aes(x = x, y = y, fill = value), alpha = 1) +
+  scale_fill_viridis() +
+  coord_fixed() +
+  theme_map() +
+  theme(legend.position = "none")
+@
+
+
+
+from \ref{fig:fig_buff} \textbf{(b)} intensities values for ground points below the tree are much lower than those that are not below trees, essentially if including returns with higher than 1 return the intensity values are more unreliable.
+
+Average intensity values for first and last returns, i.e. show the shadow below trees
+
+
+<<fig_lp, fig.cap = "LiDAR point clouds for one selected road section aggregated into 1m$^2$ grids", fig.subcap = c("Base point cloud $Z$ values", "Normalised Point cloud $Z$ values for only last returns ($lpz$)", "Aerial Data combined to 1 band"), fig.height = 4.5>>=
+chm_gg
+dsm_lp_gg
+las_i_gg
+aerial_gg
+@
+
+\section{Perpendicular Sampling}
+
+Covers 01
+
+Show figure of sample lines. Show the reduction in number of points (memory saving)
+
+\section{Linear Probability Model}
+
+Covers 02
+
+\section{Widths and Road Quality}
+
+\section{Road Assessment}
+<<>>=
+final_data <- fread("../data/final_data/final.csv") %>%
+  select(-c(V1, id, roadFunction, mean_angle, mean_Z, mean_int)) %>%
+  column_to_rownames(var = "road_id")
+cor_tab <- rcorr(as.matrix(final_data), type = "pearson")
+
+p_val <- function(x) {
+  symnum(x, corr = FALSE, na = FALSE, cutpoints = c(
+    0, 0.001, 0.01, 0.05, 1
+  ), symbols = c("***", "**", "*", " "))
+}
+
+# keep all zeros for 3 sig figs
+cor_tab$r <- as.character(sprintf("%.2f", cor_tab$r))
+cor_tab$P <- p_val(cor_tab$P) %>% na.omit()
+cor_tab$r[cor_tab$r == 1] <- "" # change diags to blank
+
+# paste p asterisks to values
+cor_tab <- paste(cor_tab$r, cor_tab$P)
+
+cor_tab <- cor_tab %>%
+  matrix(ncol = 4) %>%
+  as.data.frame()
+
+colnames(cor_tab) <- c("width", "max_angle", "max_z", "int_range")
+Variable <- colnames(cor_tab)
+cor_tab <- cbind(Variable, cor_tab)
+@
+
+<<cor_table, results = 'asis'>>=
+# function to convert significance figures into p asterisks
+make_table(cor_tab, dig = 2, cap = "Correlation Matrix") %>%
+  kable_styling(latex_options = "HOLD_position") %>%
+  # footnote for significance
+  footnote(
+    general_title = " ",
+    general = c("*** Significant at the 0.001 level",
+                "** Significant at the 0.005 level",
+                "* Significant as the 0.01 level"),
+)
+@
+<<>>=
+PerformanceAnalytics::chart.Correlation(final_data, method = "pearson")
+@
+
+\section(Linear Probability Model)
+
+<<>>=
+source("./fig_lm.r")
+# from logistic regression essential in R (pocket)
+mean((filter_las$lm1_pred == 1) == (filter_las$road == 1))
+mean((filter_las$lm2_pred == 1) == (filter_las$road == 1))
+mean((filter_las$lm3_pred == 1) == (filter_las$road == 1))
+mean((filter_las$lm3_pred == 1) == (filter_las$road == 1))
+# filter out  > 0.05 p values for each point
+mean((filter_las$pred_lm_individual == 1) == (filter_las$road == 1))
+names(filter_las)
+
+
+@
+
+
+First model (maximal):
+
+//NOTES//
+1. Unfiltered vs filtered global maximal model. Unfiltered doesn't work. Filters include no samples with multiple returns (partial canopy obstruction).
+
+2. Compare global models 1/2/3, and generalised linear model using f1.
+
+3. Compare global model 1 (best fit), to individual model using f1.
+
+<<lm_figs>>=
+# example road section
+rd_f <- "road_5"
+
+road_lm_filter <- road_lm_filter[road_lm_filter$road_id == rd_f, ]
+road_lm_nofilter <- road_lm_nofilter[road_lm_nofilter$road_id == rd_f, ]
+
+jpgs <- Sys.glob("../data/aerial/*.jpg")
+jpgs <- lapply(jpgs, brick)
+aerial <- lapply(jpgs, function(x){
+return(tryCatch(crop(x, road_lm_filter), error=function(e) NULL))
+})
+aerial <- compact(aerial)
+aerial <- do.call(merge, aerial)
+## filtered vs no filtered
+# filtered
+ggRGB(aerial) +
+    geom_sf(data = road_lm_filter, colour = "black", alpha = 0.5) +
+    geom_sf(
+        data = road_lm_filter[road_lm_filter$lm1_dum == 1, ],
+        alpha = 1, colour = "green"
+    ) +
+    geom_sf(
+        data = road_lm_filter[road_lm_filter$road == 1, ],
+        alpha = 1, colour = "orange"
+    ) +
+           theme_map()
+
+# unfiltered
+ggRGB(aerial) +
+    geom_sf(data = road_lm_nofilter, colour = "black", alpha = 0.5) +
+    geom_sf(
+        data = road_lm_nofilter[road_lm_nofilter$lm1_dum == 1, ],
+        alpha = 0.5, colour = "green"
+    ) +
+    geom_sf(
+        data = road_lm_nofilter[road_lm_nofilter$road == 1, ],
+        alpha = 1, colour = "orange"
+    ) +
+
+    theme_map()
+
+@
+
+
+\begin{equation}
+\begin{aligned}
+\mathrm{Road}_{t} = \alpha 
+    &+ \beta_{1}  \mathrm{Intensity}_{t} \\
+    &+ \beta_{2}  \mathrm{Luminescence}_{t}    \\
+    &+ \beta_{3}  \mathrm{Z}_{t} \\
+    &+ \beta_{4}  \mathrm{Dist}_{t} + \epsilon
+\end{aligned}
+\end{equation}
+
+//for this section see 450 assess2, details on validation etc.
+
+\section{Noise Filtering}
+
+
+<<>>=
+source("./fig_noise.r")
+
+ggRGB(aerial) +
+    geom_sf(data = rd, colour = "red") +
+    geom_sf(data = rd_fil, colour = "green") +
+    geom_sf(data = sample_lines, fill = NA, colour = "black")
+
+@
+\end{multicols}

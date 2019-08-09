@@ -1,0 +1,122 @@
+\begin{multicols}{2}
+\section{Literature Review}
+\label{sec:literature}
+
+\subsection{Road Extraction Techniques}
+
+\lettrine{T}{ypical} road extraction techniques have focused purely on rural road networks, where techniques involving LiDAR often rely on the kerb and change in height to determine road edges.
+
+See \citep{kumar2013}:
+
+vosselman2009: segmenting lidar data identifivation of planar or smooth surfaces and classification of point cloud data based on attributes.
+clode2004: segmentation of airborne lidar to road and non-road objects using hierarchical classification techniiques based on elevation and intensity information, accuracy impaired due to car parks and private roads.
+goulette2006: methodd for segmenting road, trees, and facades from terrestrial mobile lidar data. road sgemented as horizontal plane high density of points in the histogram + usedt o compute road width and curvature. Trees and facades identified as vertical planes and disconnected elements in the histogram.
+yuan2008: algoritm using fuzzy clusting method to cluster LiDAR points, straight lines then fitted to the linearly clustered data using slope information for extracting the road.
+elberink2009: automated method for 3d modelling highway infrastructure using airborne LiDAR + 2d topographic. Road polygons were extracted from the topographic map data using a map based seed-growing algorithm combined with a Hough transformation. points added to the correspondng road polygons using a LiDAR based seed-growing algorithm then mapped polygons
+
+Most of the proposed methods (Ferchichi and Wang, 2005; Wan et al., 2007; Mokhtarzade and Valadan Zoej, 2007; Mena and Malpica, 2005; Mohammadzadeh et al., 2006; Wang et al., 2005) using satellite images and aerial photographs only provide road pixels and its two- dimensional (2D) location information.
+
+- Extraction includes detection of planar or smooth surfaces, and the classification of points or point clusters based on local point patterns, echo intensity and echo count information \citep{vosselman2004;darmawati2008}
+
+2. Lidar points distirbute irregularly with non uniformity density. the point density in the overlapping area between fight strips is greater than non-overlapping regions. There is no point in areas occulded by tall objects. can be soled interpolating into intensity image (e.g. Zhao,2012, zhu 2009) binary image, Clode 2007. others see Samadzadegan 2009, Jiangui 2011.
+
+\citep{yadav2018}: Major limitation of existing methods to extract rural road surface as mostly without curb. Methologies such as Yang et al., 2013 which deals with curbs and boundaries characterized as ashpalt/soil and ashpalt vegetation and ashpalt/grassy bank. Exact edge location difficult if point density less and sufficiant elevatio jump not present at boundary of carriageway (Mc Elhinney et al., 2010). Wu et al., 2013 dependent on road range which cannot be calculated correctly if height diffrernce between road surface and shoulder not obvious.
+
+
+
+- from \citep{vosselman2009a}: clode 2004a, pulse reflectance strength + dtm to detect roads . Later improved including buildings and vegetation.
+
+- Akel et al. 2005, road areas classifying smooth segments based on size and shape characteristics
+- Rieger 1999 used surface slope in a 20cm eleveation grid to detect roads in mountainous areas
+- Hatger and Brenner 2003,2005, laser scanning data at 0.5m to extract properties of roads for which centrelines arer known from a road database. Including height longitudinal and transversal slope, curvature, and width. Height profiles across road split into straight sgements. A RANSAC procedure on the end points of the sements with low slope values is used to fit straight lines to the road sides. \citep{hatger2003;hatger2005}
+
+Look at \citep{taylor2002} for a full assessment of rural roads. Includes bends, hills etc etc.
+
+Clode 2004:
+
+Note that as they use point density of 1/2m, and intensity has a footprint of 20 - 30cm the intensity if not typically used. (Rottensteiner, 2003). **with my method we use a resolution of 25cm, much higher point density**
+
+
+// list varying resolution increases per papers?
+
+From: \citep{hatger2005}
+- Segmentation through discontinuity, prominent oints or edges, or areas fulfilling certain criteria in continuity.
+- Point operators which try to find isolated points, corners, or points being part of a one dimensional curve (Haralick and Shapira, 1992, Canny, 1986 (old))
+- Second step building contour chains from individaul points.
+- alternatively, discontinuity perpendicular to a linear structure can be defined in terms of the continuous arass to the left and right of the structure (brugelmann,2000, wild and krzystek 1996. + region growing)
+
+- inclusion of as much information e.g. minimum width requirements etc (actually not defined in the UK however)
+- Continuous surfaces approximated by planes, usually horizontal
+
+Techniques from Hatger 2005:o
+General Planar Regin growsing Segmentation
+Iterating following:
+1. Find the best seed regin which fulfils the desired predicate,
+2. Add elements to the seed region (i.e. grow it) as long as they are connected to it, and they too fulfil the predicate
+3. If the region cannot be grown anymore, accept it and go to 1. using the remaining elements.
+They use estimation of local planes, and look for the smallest residuals. The predicate is a certain maximum distance $e$ of the points to the plane given by its Hesse normal form
+
+The scan line grouping approach
+Less computationally expensive than region growing.
+- Presented by \citep{jiang1992}.
+- Raster data: plane $z = ax + by + d$ all points along the line $y = y0$ fulful the equatin $z = as + by0 + d$ the line equation. add entire scan lines
+Steps:
+1. Partitioning of each scan line y = y0 into linear segments fulfilling corresponding line equaitons
+2. Search for a seed region by investigating overlapping linear seegments of three successive lines
+3. Growing the best seed region by adding neighbouring line segments, as long as they still are part of the same plane
+4. Postprocessing: 
+
+(RANSAC), intoduced by (Fischler and Bolles, 1981). fixes errors
+
+from Clode 2004:
+
+Road pixel must lie on or near DTM, and have a certain intensity and normalised local point density. **My paper will extend this, inclusion of road shapefiles to remove known non roads, noted as a limitation in clode therefore, less focus on automated extraction, (as it isn't needed generally), more focus on automated identification of road features, i.e. width etc.**
+
+Intensity identifies the type of road material (bitumen in their paper)
+
+Create DTM from last pulse DSM **may not be need for my work if I am already filtering onto known approximate locations of roads**
+
+Intensity identifies the type of road material (bitumen in their paper)
+
+Charainya gives information which is utilised in this paper for the modelling. i.e. Lum and Intensity are most useful for road detection
+
+\section{Rural Roads and Speed}
+
+112. Rural roads account for 66\% of all road deaths, and 82\% of car
+occupant deaths in particular, but only around 42\% of the distance
+travelled. Of all road deaths in Britain in 2011, 51\% occurred on National
+Speed Limit rural single carriageway roads (DfT, 2011). The reduction in
+road casualties and especially deaths on rural roads is one of the key road
+safety challenges. Research has assessed the risk of death in collisions at
+various impact speeds for typical collision types on rural roads. This
+research suggests that the risk of a driver dying in a head on collision
+involving two cars travelling at 60 mph is around 90\%, but that this dropsrapidly with speed, so that it is around 50\% at 48 mph (Richards and Cuerden, 2009).
+
+113. Inappropriate speed, at levels below the legal limit but above those
+appropriate for the road at the time (for example, because of the weather
+conditions or because vulnerable road users are present), is a particular
+problem for rural roads. Exceeding the speed limit or travelling too fast for
+the conditions are reported as contributory factors in 16\% of collisions on
+rural roads. Specifically, inappropriate speed is recorded as a contributory
+factor in 20\% of crashes on minor rural roads with a 60 mph limit.
+114. Speed limit changes are therefore unlikely to fully address this problem
+
+
+34. On rural roads there is often a difference of opinion as to what constitutes
+a reasonable balance between the risk of a collision, journey efficiency
+and environmental impact. Higher speed is often perceived to bring
+benefits in terms of shorter travel times for people and goods. However,
+evidence suggests that when traffic is travelling at constant speeds, even
+at a lower level, it may result in shorter and more reliable overall journey
+times, and that journey time savings from higher speed are often
+overestimated (Stradling et al., 2008). The objective should be to seek an
+acceptable balance between costs and benefits, so that speed-
+management policies take account of environmental, economic and social
+effects as well as the reduction in casualties they are aiming to achieve.
+
+\citep{departmentfortransport2013a} Straightforward method for determining appropriate speed limits.Forcasting speed reduction and therefore accident reduction with revised speed limits. Does not take into account road geometry etc.
+
+Traffic Advisory Leaflet
+
+VERALL PATTERNS OF SPEED ON DIFFERENT ROADSSpeeds on single carriageway rural roads are generally wellwithin the national 60mph speed limit. Observations from270 sites around England show a wide distribution of meanspeeds on roads with speed limits of 60mph. They alsoshow that, for the majority of roads, mean speeds arealready below the posted limit or would typically only needto be reduced by a few miles per hour, where lower limitsmight be required.
+\end{multicols}
