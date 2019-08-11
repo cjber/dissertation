@@ -6,6 +6,28 @@
 
 \lettrine{T}{ypical} road extraction techniques have focused purely on rural road networks, where techniques involving LiDAR often rely on the kerb and change in height to determine road edges.
 
+\subsection{National Speed Limits}
+
+Accidents on rural roads often occur within the 60 mph speed limit meaning a distinction between what is an appropriate speed should be made that does not relate to a given speed limit. \cite{baruya1998} suggest a distinction between both \textit{excess} and \textit{inappropriate} speed. \textit{Excess} speed being driving above the speed limit, and therefore directly breaking the law, \textit{inappropriate} speed; driving too fast for the conditions of the road, not necessarily above the speed limit.
+
+Lowering the speed limit on roads has been shown to result in an overall reduction in the average speed of vehicles \citep{finch1994}, and subsequently the number of road traffic accidents \citep{taylor2002}. Additionally, \cite{taylor2000} found that accident frequency is linked with traffic and pedestrian flow, vehicle speed, and particular features of the road geometry.
+
+As noted with the MASTER European speed study, access to quality sources of data which includes the road geometry for use in individual road assessments has been limited. \cite{yadev2018} note that the periodic assessment of roads is greatly important due to the increasing traffic load, and new automated techniques will enable this in areas where in the past it had not been feasible.
+
+\subsection{Accessibility}
+
+Transport accessibility for rural communities is far more limited than for urban communities, where often rural areas have limited or no public transport, meaning there is a heavy reliance on personal transport \citep{gray2001}. Accessibility in this context can be defined as the transport facility or opportunities with which basic services can be reached from a given location by using a certain transport system \citep{gutierrez2009}.
+
+There has been little focus on the improvement of transport technologies in rural areas, with the potential for new technologies implemented into urban areas improving rural accessiblity \citep{velaga2012}. A key area to address is the level of accessibility to hospital services for rural communities, where recent centralisation of these services has negatively impacted the level of access for rural communities \citep{mungall2005}. This also impacts the level of access for hospital services to reach rural areas, where distance and time taken to a hospital directly correlates with a patients mortality \citep{nicholl2007}. Emergency vehicles are often larger than personal vehicles and as such it can be assumed that accessibility for these types of services is often more limited depending on the quality of rural roads.
+
+\section{Feasibility for Road Extraction in the UK}
+
+Traditional road extraction techniques from aerial imagery relied on human extraction that is both time consuming and prone to inaccuracy \citep{wang2015}. However, recent improvements in remote sensing technology now mean that automated extraction techniques have been explored which rely on the much higher resolution imagery available \citep{xu2018}. This paper will use Light Detection and Ranging (LiDAR) data, made available by the UK government for much of England. LiDAR is collected by measuring the distance from an aircraft to the ground, emitting laser pulses at regular intervals \citep{environmentagency2019}, allowing for very high resolution terrain models to be produced, with a resolution up to 25cm. Additionally the 'point clouds' produced by the laser pulses contain information that may be utilised to determine the qualities that are indicative of road locations \citep[e.g.][]{clode2004}.
+
+Additionally, luminescence information extracted from 25cm resolution aerial true colour imagery is available for research purposes for the entirety of the UK.
+
+// timeline of aerial image quality /lidar
+
 See \citep{kumar2013}:
 
 vosselman2009: segmenting lidar data identifivation of planar or smooth surfaces and classification of point cloud data based on attributes.
@@ -119,4 +141,18 @@ effects as well as the reduction in casualties they are aiming to achieve.
 Traffic Advisory Leaflet
 
 VERALL PATTERNS OF SPEED ON DIFFERENT ROADSSpeeds on single carriageway rural roads are generally wellwithin the national 60mph speed limit. Observations from270 sites around England show a wide distribution of meanspeeds on roads with speed limits of 60mph. They alsoshow that, for the majority of roads, mean speeds arealready below the posted limit or would typically only needto be reduced by a few miles per hour, where lower limitsmight be required.
+
+    The Transport Researech Laboratory (TRL) have produced extensive evidence that confirms the correlation between speed and the likelihood of road accidents, demonstrating that faster speeds do directly increase the chance that a driver is involved in an accident \citep{taylor2002}. Additional assessments roads within the EU have confirmed this relationship particularly focusing on rural roads with the production of the EURO model \citep{baruya1998}, however \cite{taylor2002} note that the data used in this study was very limited for the United Kingdom due to the time consuming extraction of road features, overall the study found that 20\% of fatal accidents occured on rural roads.
+
+Key factors in determining poor road quality:
+
+\begin{itemize}
+    \item Width \citep{taylor2002} \citep{aarts2006}
+    \item Surface quality
+    \item Blind corners/winding roads \citep{aarts2006}
+    \item Junction Sharpness \citep{aarts2006}
+
+\end{itemize}
+
+// read these papers and identify why these should be considered when assessing road quality
 \end{multicols}

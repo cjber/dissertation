@@ -1,7 +1,8 @@
 \begin{multicols}{2}
-<<knitr-options, fig.show = 'hide'>>=
+<<>>=
 # functions
 source("/home/cjber/drive/uni/envs492/main/scripts/functions.r")
+lidar_tab <- fread("../data/derived/model_data/lm_f.csv")
 @
 \section{Overview of LiDAR Data}
 
@@ -17,9 +18,7 @@ Histograms?
 
 Covers script 00.
 
-
-
-<<fig_lp_prep>>=
+<<fig.show = 'hide'>>=
 source("./fig_lp.r")
 bg <- data.frame(
   xmin = min(chm$x) - 1,
@@ -36,27 +35,9 @@ chm_gg <- ggplot() +
   theme_map() +
   theme(legend.position = "none")
 
-chm_lp_gg <- ggplot() +
-  geom_rect(data = bg, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = "grey50", colour = "black", size = 2) +
-  geom_raster(data = chm_lp, aes(x = x, y = y, fill = value), alpha = 1) +
-  scale_fill_viridis() +
-  coord_fixed() +
-  theme_map() +
-  theme(legend.position = "none")
-
 dsm_lp_gg <- ggplot() +
   geom_rect(data = bg, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = "grey50", colour = "black", size = 2) +
   geom_raster(data = dsm_lp, aes(x = x, y = y, fill = value), alpha = 1) +
-  scale_fill_viridis() +
-  coord_fixed() +
-  theme_map() +
-  theme(legend.position = "none")
-@
-
-<<>>=
-las_lp_gg <- ggplot() +
-  geom_rect(data = bg, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = "grey50", colour = "black", size = 2) +
-  geom_raster(data = metrics, aes(x = x, y = y, fill = zmean), alpha = 1) +
   scale_fill_viridis() +
   coord_fixed() +
   theme_map() +
@@ -79,11 +60,9 @@ aerial_gg <- ggplot() +
   theme(legend.position = "none")
 @
 
-
-
 from \ref{fig:fig_buff} \textbf{(b)} intensities values for ground points below the tree are much lower than those that are not below trees, essentially if including returns with higher than 1 return the intensity values are more unreliable.
 
-Average intensity values for first and last returns, i.e. show the shadow below trees
+// find Average intensity values for first and last returns, i.e. show the shadow below trees
 
 
 <<fig_lp, fig.cap = "LiDAR point clouds for one selected road section aggregated into 1m$^2$ grids", fig.subcap = c("Base point cloud $Z$ values", "Normalised Point cloud $Z$ values for only last returns ($lpz$)", "Aerial Data combined to 1 band"), fig.height = 4.5>>=
@@ -107,8 +86,8 @@ Covers 02
 
 \section{Road Assessment}
 <<>>=
-final_data <- fread("../data/final_data/final.csv") %>%
-  select(-c(V1, id, roadFunction, mean_angle, mean_Z, mean_int)) %>%
+final_data <- fread("/home/cjber/drive/uni/envs492/main/data/final_data/final.csv") %>%
+  select(-c(V1, roadFunction, meanAngle, meanZ, meanInt)) %>%
   column_to_rownames(var = "road_id")
 cor_tab <- rcorr(as.matrix(final_data), type = "pearson")
 
@@ -119,9 +98,9 @@ p_val <- function(x) {
 }
 
 # keep all zeros for 3 sig figs
-cor_tab$r <- as.character(sprintf("%.2f", cor_tab$r))
+cor_tab$r <- as.character(sprintf("%.2f", cor_tab[[1]]))
 cor_tab$P <- p_val(cor_tab$P) %>% na.omit()
-cor_tab$r[cor_tab$r == 1] <- "" # change diags to blank
+cor_tab$r[cor_tab$r == "1.00"] <- "" # change diags to blank
 
 # paste p asterisks to values
 cor_tab <- paste(cor_tab$r, cor_tab$P)
@@ -130,7 +109,7 @@ cor_tab <- cor_tab %>%
   matrix(ncol = 4) %>%
   as.data.frame()
 
-colnames(cor_tab) <- c("width", "max_angle", "max_z", "int_range")
+colnames(cor_tab) <- c("Width", "Max Angle", "Max Z", "Int Range")
 Variable <- colnames(cor_tab)
 cor_tab <- cbind(Variable, cor_tab)
 @
@@ -147,6 +126,7 @@ make_table(cor_tab, dig = 2, cap = "Correlation Matrix") %>%
                 "* Significant as the 0.01 level"),
 )
 @
+
 <<>>=
 PerformanceAnalytics::chart.Correlation(final_data, method = "pearson")
 @
@@ -156,45 +136,28 @@ PerformanceAnalytics::chart.Correlation(final_data, method = "pearson")
 <<>>=
 source("./fig_lm.r")
 # from logistic regression essential in R (pocket)
-mean((filter_las$lm1_pred == 1) == (filter_las$road == 1))
-mean((filter_las$lm2_pred == 1) == (filter_las$road == 1))
-mean((filter_las$lm3_pred == 1) == (filter_las$road == 1))
-mean((filter_las$lm3_pred == 1) == (filter_las$road == 1))
+mean((filter_las$lm1_dum == 1) == (filter_las$road == 1))
+mean((filter_las$lm2_dum == 1) == (filter_las$road == 1))
+mean((filter_las$lm3_dum == 1) == (filter_las$road == 1))
+mean((filter_las$glm1_dum == 1) == (filter_las$road == 1))
+
 # filter out  > 0.05 p values for each point
 mean((filter_las$pred_lm_individual == 1) == (filter_las$road == 1))
-names(filter_las)
-
-
 @
 
 
 First model (maximal):
 
 //NOTES//
-1. Unfiltered vs filtered global maximal model. Unfiltered doesn't work. Filters include no samples with multiple returns (partial canopy obstruction).
+1. Unfiltered vs filtered global maximal model.. Filters include no samples with multiple returns (partial canopy obstruction). excludes far toomany points
 
 2. Compare global models 1/2/3, and generalised linear model using f1.
 
 3. Compare global model 1 (best fit), to individual model using f1.
 
 <<lm_figs>>=
-# example road section
-rd_f <- "road_5"
-
-road_lm_filter <- road_lm_filter[road_lm_filter$road_id == rd_f, ]
-road_lm_nofilter <- road_lm_nofilter[road_lm_nofilter$road_id == rd_f, ]
-
-jpgs <- Sys.glob("../data/aerial/*.jpg")
-jpgs <- lapply(jpgs, brick)
-aerial <- lapply(jpgs, function(x){
-return(tryCatch(crop(x, road_lm_filter), error=function(e) NULL))
-})
-aerial <- compact(aerial)
-aerial <- do.call(merge, aerial)
-## filtered vs no filtered
-# filtered
 ggRGB(aerial) +
-    geom_sf(data = road_lm_filter, colour = "black", alpha = 0.5) +
+    geom_sf(data = road_lm_filter, colour = "black", alpha = 0.1) +
     geom_sf(
         data = road_lm_filter[road_lm_filter$lm1_dum == 1, ],
         alpha = 1, colour = "green"
@@ -216,9 +179,7 @@ ggRGB(aerial) +
         data = road_lm_nofilter[road_lm_nofilter$road == 1, ],
         alpha = 1, colour = "orange"
     ) +
-
     theme_map()
-
 @
 
 
@@ -242,8 +203,17 @@ source("./fig_noise.r")
 
 ggRGB(aerial) +
     geom_sf(data = rd, colour = "red") +
-    geom_sf(data = rd_fil, colour = "green") +
-    geom_sf(data = sample_lines, fill = NA, colour = "black")
-
+    geom_sf(data = rd_fil, colour = "green")+
+    theme_map()
 @
+
+// Manually measure a road width for a reference, i.e. how close to accurate different models are. GLM LM and individual filtered and unfiltered. Find max and min widths and mean, describe what likely causes the differences.
+
+\section{Further Analysis}
+
+// if there is time:
+
+Use width and max bend sharpness to estimate required speed for required stopping distance. Some maths could be involved. Use to produce speed limit assessment, include steepness somehow (speed limits due to stwwpwnss etc)
+
+
 \end{multicols}

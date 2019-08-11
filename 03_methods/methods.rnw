@@ -30,9 +30,7 @@ Road centreline geometries were accessed through the \href{https://www.ordnances
 
 \section{LiDAR Preprocessing}
 
-The total number of LiDAR points used in this study is \Sexpr{number_points}.
-
-An overview of the LiDAR data selected for this study is given on Table \ref{tab:lidar}. The variables of primary interest are:
+The total number of LiDAR points used in this study is \Sexpr{number_points}. All LIDAR data has a vertical accuracy of +/-15cm Root mean square error (RMSE). An overview of the LiDAR data selected for this study is given on Table \ref{tab:lidar}. The variables of primary interest are:
 
 \begin{itemize}
     \item \textbf{Z:} The distance a laser pulse is reflected back to to scanner, calculated by the time taken for a return pulse to be detected.
@@ -44,7 +42,7 @@ An overview of the LiDAR data selected for this study is given on Table \ref{tab
 
 <<>>=
 model <- fread("/home/cjber/drive/uni/envs492/main/data/point/points.csv")
-lidar_tab <- model %>% dplyr::select(Z, Intensity, ReturnNumber, NumberOfReturns, ScanDirectionFlag, EdgeOfFlightline, Classification, Synthetic_flag, Keypoint_flag, Withheld_flag, ScanAngleRank)
+lidar_tab <- model %>% dplyr::select(Z, Intensity, ReturnNumber, NumberOfReturns, ScanDirectionFlag, EdgeOfFlightline, Classification, ScanAngleRank)
 tmp <- do.call(
   data.frame,
   list(
@@ -111,7 +109,7 @@ This section combines data extracted through the OS road shapefiles preprocessed
 
 <<>>=
 roads_info <- fread("/home/cjber/drive/uni/envs492/main/data/osroads/roads_info.csv") %>% 
-select(-geometry)
+select(-c(geometry, length_uom, name1_lang, name2_lang))
 
 tmp <- do.call(
   data.frame,
@@ -123,7 +121,8 @@ roads_info <- t(roads_info[1, ])
 @
 
 <<roadstab, results='asis'>>=
-make_table(roads_info, cap = "OS Roads Data Summary") %>%
+make_table(roads_info, cap = "OS Roads Data Summary",
+           col.names = c("Variable", "Example")) %>%
   column_spec(2, width = "15em") %>%
   kable_styling(latex_options = "HOLD_position")
 @

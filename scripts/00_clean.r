@@ -13,24 +13,31 @@ lidR:::catalog_laxindex(ctg)
 # run once
 las <- catalog_apply(ctg, ctg_to_df)
 las <- do.call(rbind, las)
+las <- las %>% 
+    select(-c(Synthetic_flag,
+    Keypoint_flag,
+    Withheld_flag))
 
 fwrite(las, "../data/point/points.csv")
 
 # filter using sql expressions why not
-roads <- st_read("../data/osroads/oproad_gpkg_gb/data/oproad_gb.gpkg",
-    layer = "RoadLink", query =
-        "SELECT * FROM RoadLink WHERE
-         formOfWay = \"Single Carriageway\" AND
-         roadFunction <> \"Restricted Local Access Road\" "
-) %>%
-    select(c(roadFunction, geom)) %>%
-    st_zm() # remove z axis
+# very very slow to read in full gpkg, don't run unless new data added
+#roads <- st_read("../data/osroads/oproad_gpkg_gb/data/oproad_gb.gpkg",
+#    layer = "RoadLink", query =
+#        "SELECT * FROM RoadLink WHERE
+#         formOfWay = \"Single Carriageway\" AND
+#         roadFunction <> \"Restricted Local Access Road\" "
+#) %>%
+#    select(c(roadFunction, geom)) %>%
+#    st_zm() # remove z axis
 
-roads <- as_Spatial(roads)
-roads <- raster::crop(roads, as.matrix(extent(ctg))) %>%
-    st_as_sf() %>%
-    mutate(road_id = paste0("road_", row_number()))
+#roads <- as_Spatial(roads)
+#roads <- raster::crop(roads, as.matrix(extent(ctg))) %>%
+#    st_as_sf() %>%
+#    mutate(road_id = paste0("road_", row_number()))
 
+#st_write(roads, "../data/osroads/oproad_crop.gpkg")
+roads <- st_read("../data/osroads/oproad_crop.gpkg")
 
 # keep line polys
 roads_line <- roads
@@ -38,6 +45,7 @@ roads_line <- roads
 # one buffer to include non road points, 1m buffer to show only road points
 roads_buff <- st_buffer(roads, 30)
 roads <- st_buffer(roads, 1)
+roads_buff_union <- st_union(roads_buff)
 
 # write all outputs to files
 st_write(roads, "../data/derived/roads/roads.gpkg",
@@ -47,6 +55,10 @@ st_write(roads_line, "../data/derived/roads/roads_line.gpkg",
     delete_layer = TRUE
 )
 st_write(roads_buff, "../data/derived/roads/roads_buff.gpkg",
+    delete_layer = TRUE
+)
+
+st_write(roads_buff_union, "../data/derived/roads/roads_buff_diss.gpkg",
     delete_layer = TRUE
 )
 

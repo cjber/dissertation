@@ -1,11 +1,10 @@
 source("/home/cjber/drive/uni/envs492/main/scripts/functions.r")
 las <- catalog("/home/cjber/drive/uni/envs492/main/data/point")
-roads <- read_sf("/home/cjber/drive/uni/envs492/main/data/derived/roads/roads_buff.gpkg")
+roads <- read_sf("/home/cjber/drive/uni/envs492/main/data/derived/roads/roads_buff.gpkg", quiet = TRUE)
 aerial <- raster("/home/cjber/drive/uni/envs492/main/data/derived/aerial/aerial_crop.tif")
 
-
-las <- lasclip(las, extent(roads[4, ]))
-aerial <- raster::crop(aerial, extent(roads[4, ]))
+las <- lasclip(las, extent(roads[6, ]))
+aerial <- raster::crop(aerial, extent(roads[6, ]))
 aerial <- aggregate(aerial, fact=8)
 
 aerial <- as(aerial, "SpatialPixelsDataFrame")

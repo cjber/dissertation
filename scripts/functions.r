@@ -33,7 +33,7 @@ cowplot)
 dir <- "/home/cjber/drive/uni/envs492/main/"
 
 ## ---- make_table
-make_table <- function(df, cap, dig = 2) {
+make_table <- function(df, cap, dig = 2, ...) {
     require(kableExtra)
     require(tidyverse)
 

@@ -7,20 +7,20 @@ samples <- split(sampled_las, f = sampled_las$sample_id)
 # i.e. ignore samples with partial canopy obstruction
 
 filter_las <- lapply(samples, function(x) {
-    road <- x[x$road == 1, ]
-    if (max(road$NumberOfReturns) == 1) {
-        return(x)
-    }
+  road <- x[x$road == 1, ]
+  if (max(road$NumberOfReturns) == 1) {
+    return(x)
+  }
 })
 
 filter_las <- filter_las %>%
-    compact()
+  compact()
 
 filter_las <- do.call(rbind, filter_las)
 
 # remove any NA values in chosen pred + outcomes
 filter_las <- filter_las[!is.na(filter_las$Intensity) &
-    !is.na(filter_las$lum) & !is.na(filter_las$road) & !is.na(filter_las$Z), ]
+  !is.na(filter_las$lum) & !is.na(filter_las$road) & !is.na(filter_las$Z), ]
 
 filter_las <- split(filter_las, f = filter_las$sample_id)
 
@@ -50,19 +50,19 @@ glm1_pred <- predict(glm1, filter_las, type = "response")
 
 filter_las$lm1_pred <- lm1_pred
 filter_las$lm1_dum <- ifelse(filter_las$lm1_pred >
-    quantile(filter_las$lm1_pred, .95), 1, 0)
+  quantile(filter_las$lm1_pred, .95), 1, 0)
 
 filter_las$lm2_pred <- lm2_pred
 filter_las$lm2_dum <- ifelse(filter_las$lm2_pred >
-    quantile(filter_las$lm2_pred, .95), 1, 0)
+  quantile(filter_las$lm2_pred, .95), 1, 0)
 
 filter_las$lm3_pred <- lm3_pred
 filter_las$lm3_dum <- ifelse(filter_las$lm3_pred >
-    quantile(filter_las$lm3_pred, .95), 1, 0)
+  quantile(filter_las$lm3_pred, .95), 1, 0)
 
 filter_las$glm1_pred <- glm1_pred
 filter_las$glm1_dum <- ifelse(filter_las$glm1_pred >
-    quantile(filter_las$glm1_pred, .95), 1, 0)
+  quantile(filter_las$glm1_pred, .95), 1, 0)
 
 # global linear model: unfiltered
 f1 <- as.formula("road ~ Intensity + lum + dists + Z")
@@ -71,11 +71,11 @@ lm1_sum <- summary(lm1)
 lm1_pred <- predict(lm1, sampled_las, type = "response")
 sampled_las$lm1_pred <- lm1_pred
 sampled_las$lm1_dum <- ifelse(sampled_las$lm1_pred >
-    quantile(filter_las$lm1_pred, .95), 1, 0)
+  quantile(filter_las$lm1_pred, .95), 1, 0)
 
 # individual linear probability model
 filter_las <- split(filter_las, filter_las$sample_id)
-f1 <- as.formula("road ~ Intensity + lum + Z")
+f1 <- as.formula("road ~ Intensity + lum + dists + Z")
 filter_las <- lapply(filter_las, lm_compute, f = f1)
 filter_las <- do.call(rbind, filter_las)
 
