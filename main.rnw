@@ -87,6 +87,8 @@ knitr::read_chunk('./scripts/02_lm.r')
 
 \tableofcontents
 
+\thispagestyle{ack}
+
 \listoffigures
 
 \listoftables

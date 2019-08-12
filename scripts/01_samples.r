@@ -38,9 +38,10 @@ joined_output <- merge(comb, roads_df, by = "road_id")
 int <- st_contains(roads, joined_output, sparse = FALSE) %>%
     colSums()
 
+
 joined_output$road <- int
-joined_output <- joined_output[joined_output$road < 2, ]
-# turn to binary (might not be needed)
+
+# turn to binary, some road buffers overlap
 joined_output$road <- as.numeric(joined_output$road > 0)
 
 # aerial data

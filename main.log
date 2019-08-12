@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Arch Linux) (preloaded format=pdflatex 2019.8.9)  11 AUG 2019 19:04
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Arch Linux) (preloaded format=pdflatex 2019.8.9)  11 AUG 2019 22:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1239,69 +1239,69 @@ LaTeX Font Info:    Font shape `MDB/mdbch/m/n' will be
 ]
 Chapter 1.
 LaTeX Font Info:    Font shape `T1/mdbch/m/fsc' will be
-(Font)              scaled to size 9.60007pt on input line 134.
+(Font)              scaled to size 9.60007pt on input line 136.
 LaTeX Font Info:    Font shape `T1/mdbch/m/n' will be
-(Font)              scaled to size 19.5012pt on input line 134.
+(Font)              scaled to size 19.5012pt on input line 136.
 LaTeX Font Info:    Font shape `T1/mdbch/m/n' will be
-(Font)              scaled to size 29.78535pt on input line 134.
+(Font)              scaled to size 29.78535pt on input line 136.
 Package lettrine.sty Info: Targeted height = 20.31363pt
 (lettrine.sty)             (no accent, loversize=0),
 (lettrine.sty)             Lettrine height = 20.31361pt (R);
-(lettrine.sty)             reported on input line 134.
+(lettrine.sty)             reported on input line 136.
 
 Package natbib Warning: Citation `ukgovernment2019a' on page 1 undefined on inp
-ut line 134.
+ut line 136.
 
 LaTeX Font Info:    Try loading font information for TS1+mdbch on input line 14
-4.
+6.
 (/usr/share/texmf-dist/tex/latex/mathdesign/mdbch/ts1mdbch.fd
 File: ts1mdbch.fd 2013/08/29 Fontinst v1.933 font definitions for TS1/mdbch.
 )
 LaTeX Font Info:    Font shape `TS1/mdbch/m/n' will be
-(Font)              scaled to size 9.60007pt on input line 144.
+(Font)              scaled to size 9.60007pt on input line 146.
 
 Package natbib Warning: Citation `ukgovernment2019a' on page 1 undefined on inp
-ut line 151.
+ut line 153.
 
 LaTeX Font Info:    Font shape `T1/mdbch/m/it' will be
-(Font)              scaled to size 9.60007pt on input line 154.
+(Font)              scaled to size 9.60007pt on input line 156.
 [1
 
 
 ]
 LaTeX Font Info:    Font shape `T1/mdbch/b/n' will be
-(Font)              scaled to size 11.52008pt on input line 175.
+(Font)              scaled to size 11.52008pt on input line 177.
 LaTeX Font Info:    Font shape `T1/mdbch/b/it' will be
-(Font)              scaled to size 9.60007pt on input line 178.
+(Font)              scaled to size 9.60007pt on input line 180.
 
 Package natbib Warning: Citation `hatger2005' on page 2 undefined on input line
- 180.
+ 182.
 
 [2]
-
-Package natbib Warning: Citation `shan2008' on page 3 undefined on input line 1
-94.
-
 
 Package natbib Warning: Citation `shan2008' on page 3 undefined on input line 1
 96.
 
 
+Package natbib Warning: Citation `shan2008' on page 3 undefined on input line 1
+98.
+
+
 Package natbib Warning: Citation `hu2004;zhu2004' on page 3 undefined on input 
-line 200.
+line 202.
 
 
 Package natbib Warning: Citation `kumar2013;vosselman2009a' on page 3 undefined
- on input line 202.
+ on input line 204.
 
 LaTeX Font Info:    Font shape `T1/cmtt/m/n' will be
-(Font)              scaled to size 8.57605pt on input line 210.
+(Font)              scaled to size 8.57605pt on input line 212.
 LaTeX Font Info:    Font shape `T1/cmtt/b/n' in size <8> not available
-(Font)              Font shape `T1/cmtt/bx/n' tried instead on input line 210.
+(Font)              Font shape `T1/cmtt/bx/n' tried instead on input line 212.
 LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <8> not available
-(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 210.
+(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 212.
 LaTeX Font Info:    Font shape `T1/cmtt/m/n' will be
-(Font)              scaled to size 8.57605pt on input line 210.
+(Font)              scaled to size 8.57605pt on input line 212.
 [3]
 Chapter 2.
 (./02_literature/literature.tex
@@ -1348,148 +1348,148 @@ Package natbib Warning: Citation `jiang1992' on page 6 undefined on input line
 [6]) [7]
 Chapter 3.
 LaTeX Font Info:    Font shape `T1/cmtt/m/n' will be
-(Font)              scaled to size 10.72006pt on input line 244.
+(Font)              scaled to size 10.72006pt on input line 246.
 LaTeX Font Info:    Font shape `OT1/mdbch/m/n' will be
-(Font)              scaled to size 7.68005pt on input line 244.
+(Font)              scaled to size 7.68005pt on input line 246.
 LaTeX Font Info:    Font shape `OML/mdbch/m/it' will be
-(Font)              scaled to size 7.68005pt on input line 244.
+(Font)              scaled to size 7.68005pt on input line 246.
 LaTeX Font Info:    Font shape `OMS/mdbch/m/n' will be
-(Font)              scaled to size 7.68005pt on input line 244.
+(Font)              scaled to size 7.68005pt on input line 246.
 LaTeX Font Info:    Font shape `OMX/mdbch/m/n' will be
-(Font)              scaled to size 7.68005pt on input line 244.
+(Font)              scaled to size 7.68005pt on input line 246.
 LaTeX Font Info:    Font shape `OML/mdbch/m/n' will be
-(Font)              scaled to size 7.68005pt on input line 244.
+(Font)              scaled to size 7.68005pt on input line 246.
 LaTeX Font Info:    Font shape `MDA/mdbch/m/n' will be
-(Font)              scaled to size 7.68005pt on input line 244.
+(Font)              scaled to size 7.68005pt on input line 246.
 LaTeX Font Info:    Font shape `MDB/mdbch/m/n' will be
-(Font)              scaled to size 7.68005pt on input line 244.
+(Font)              scaled to size 7.68005pt on input line 246.
 LaTeX Font Info:    Font shape `T1/mdbch/m/n' will be
-(Font)              scaled to size 5.76004pt on input line 244.
+(Font)              scaled to size 5.76004pt on input line 246.
 LaTeX Font Info:    Font shape `TS1/mdbch/m/n' will be
-(Font)              scaled to size 6.72005pt on input line 265.
+(Font)              scaled to size 6.72005pt on input line 267.
 
-Underfull \hbox (badness 10000) in paragraph at lines 264--266
+Underfull \hbox (badness 10000) in paragraph at lines 266--268
 []\T1/mdbch/m/n/10 Aerial im-agery was down-loaded through
  []
 
 
-LaTeX Warning: Reference `tab:lidar' on page 8 undefined on input line 271.
+LaTeX Warning: Reference `tab:lidar' on page 8 undefined on input line 273.
 
 
 Package multicol Warning: I moved some lines to the next page.
-(multicol)                Footnotes on page 8 might be wrong on input line 275.
+(multicol)                Footnotes on page 8 might be wrong on input line 277.
 
 
 [8
 
 ]
 LaTeX Font Info:    Font shape `T1/mdbch/m/it' will be
-(Font)              scaled to size 7.68005pt on input line 285.
+(Font)              scaled to size 7.68005pt on input line 287.
 LaTeX Font Info:    Font shape `OT1/mdbch/b/n' will be
-(Font)              scaled to size 9.60007pt on input line 313.
+(Font)              scaled to size 9.60007pt on input line 315.
 LaTeX Font Info:    Font shape `OT1/mdbch/b/n' will be
-(Font)              scaled to size 6.72005pt on input line 313.
+(Font)              scaled to size 6.72005pt on input line 315.
 LaTeX Font Info:    Font shape `OT1/mdbch/b/n' will be
-(Font)              scaled to size 4.80003pt on input line 313.
+(Font)              scaled to size 4.80003pt on input line 315.
 [9]
 LaTeX Font Info:    Font shape `OT1/mdbch/b/n' will be
-(Font)              scaled to size 7.68005pt on input line 361.
+(Font)              scaled to size 7.68005pt on input line 363.
 LaTeX Font Info:    Font shape `OT1/mdbch/b/n' will be
-(Font)              scaled to size 5.76004pt on input line 361.
+(Font)              scaled to size 5.76004pt on input line 363.
 
-Overfull \hbox (3.20192pt too wide) in paragraph at lines 361--382
+Overfull \hbox (3.20192pt too wide) in paragraph at lines 363--384
  [][] 
  []
 
 [10]
 
 LaTeX Warning: Reference `fig:sample_points' on page 11 undefined on input line
- 456.
+ 458.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 487.
+(caption)                particular \caption on input line 489.
 See the caption package documentation for explanation.
 
 
 LaTeX Warning: Reference `fig:sample_points' on page 11 undefined on input line
- 491.
+ 493.
 
 [11]
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 517.
+(caption)                particular \caption on input line 519.
 See the caption package documentation for explanation.
 
 LaTeX Font Info:    Font shape `OT1/mdbch/m/it' will be
-(Font)              scaled to size 9.60007pt on input line 531.
+(Font)              scaled to size 9.60007pt on input line 533.
 LaTeX Font Info:    Font shape `OT1/mdbch/m/it' will be
-(Font)              scaled to size 6.72005pt on input line 531.
+(Font)              scaled to size 6.72005pt on input line 533.
 LaTeX Font Info:    Font shape `OT1/mdbch/m/it' will be
-(Font)              scaled to size 4.80003pt on input line 531.
+(Font)              scaled to size 4.80003pt on input line 533.
 
-LaTeX Warning: Reference `code:angles' on page 12 undefined on input line 547.
+LaTeX Warning: Reference `code:angles' on page 12 undefined on input line 549.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 575.
+(caption)                particular \caption on input line 577.
 See the caption package documentation for explanation.
 
 [12]
 Chapter 4.
 
-LaTeX Warning: Reference `tab:lidar' on page 13 undefined on input line 596.
+LaTeX Warning: Reference `tab:lidar' on page 13 undefined on input line 598.
 
 
-LaTeX Warning: Reference `fig:fig_buff' on page 13 undefined on input line 610.
+LaTeX Warning: Reference `fig:fig_buff' on page 13 undefined on input line 612.
 
 
-<figure/fig_lp-1.pdf, id=597, 505.89pt x 325.215pt>
+<figure/fig_lp-1.pdf, id=596, 505.89pt x 325.215pt>
 File: figure/fig_lp-1.pdf Graphic file (type pdf)
 <use figure/fig_lp-1.pdf>
-Package pdftex.def Info: figure/fig_lp-1.pdf  used on input line 618.
+Package pdftex.def Info: figure/fig_lp-1.pdf  used on input line 620.
 (pdftex.def)             Requested size: 222.62206pt x 143.11488pt.
 LaTeX Font Info:    Font shape `T1/mdbch/m/it' will be
-(Font)              scaled to size 6.72005pt on input line 618.
-<figure/fig_lp-2.pdf, id=598, 505.89pt x 325.215pt>
+(Font)              scaled to size 6.72005pt on input line 620.
+<figure/fig_lp-2.pdf, id=597, 505.89pt x 325.215pt>
 File: figure/fig_lp-2.pdf Graphic file (type pdf)
 <use figure/fig_lp-2.pdf>
-Package pdftex.def Info: figure/fig_lp-2.pdf  used on input line 619.
+Package pdftex.def Info: figure/fig_lp-2.pdf  used on input line 621.
 (pdftex.def)             Requested size: 222.62206pt x 143.11488pt.
-<figure/fig_lp-3.pdf, id=599, 505.89pt x 325.215pt>
+<figure/fig_lp-3.pdf, id=598, 505.89pt x 325.215pt>
 File: figure/fig_lp-3.pdf Graphic file (type pdf)
 <use figure/fig_lp-3.pdf>
-Package pdftex.def Info: figure/fig_lp-3.pdf  used on input line 620.
+Package pdftex.def Info: figure/fig_lp-3.pdf  used on input line 622.
 (pdftex.def)             Requested size: 222.62206pt x 143.11488pt.
-<figure/fig_lp-4.pdf, id=600, 505.89pt x 325.215pt>
+<figure/fig_lp-4.pdf, id=599, 505.89pt x 325.215pt>
 File: figure/fig_lp-4.pdf Graphic file (type pdf)
 <use figure/fig_lp-4.pdf>
-Package pdftex.def Info: figure/fig_lp-4.pdf  used on input line 621.
+Package pdftex.def Info: figure/fig_lp-4.pdf  used on input line 623.
 (pdftex.def)             Requested size: 222.62206pt x 143.11488pt.
 
-Overfull \hbox (2.67842pt too wide) in paragraph at lines 618--622
+Overfull \hbox (2.67842pt too wide) in paragraph at lines 620--624
  [][] 
  []
 
 
-Overfull \hbox (2.67842pt too wide) in paragraph at lines 618--622
+Overfull \hbox (2.67842pt too wide) in paragraph at lines 620--624
  [] 
  []
 
 
-Overfull \hbox (2.67842pt too wide) in paragraph at lines 618--622
+Overfull \hbox (2.67842pt too wide) in paragraph at lines 620--624
  [] 
  []
 
 
-Overfull \hbox (2.67842pt too wide) in paragraph at lines 618--622
+Overfull \hbox (2.67842pt too wide) in paragraph at lines 620--624
  [] 
  []
 
 LaTeX Font Info:    Font shape `OT1/mdbch/m/it' will be
-(Font)              scaled to size 7.68005pt on input line 625.
+(Font)              scaled to size 7.68005pt on input line 627.
 LaTeX Font Info:    Font shape `OT1/mdbch/m/it' will be
-(Font)              scaled to size 5.76004pt on input line 625.
+(Font)              scaled to size 5.76004pt on input line 627.
 
 Overfull \vbox (97.17644pt too high) has occurred while \output is active []
 
@@ -1500,39 +1500,22 @@ Overfull \vbox (97.17644pt too high) has occurred while \output is active []
 
  <./figure/fig_lp-1.pdf> <./figure/fig_lp-2.pdf> <./figure/fig_lp-3.pdf> <./fig
 ure/fig_lp-4.pdf>]
-<figure/unnamed-chunk-9-1.pdf, id=631, 505.89pt x 505.89pt>
+<figure/unnamed-chunk-9-1.pdf, id=630, 505.89pt x 505.89pt>
 File: figure/unnamed-chunk-9-1.pdf Graphic file (type pdf)
 <use figure/unnamed-chunk-9-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-9-1.pdf  used on input line 672.
+Package pdftex.def Info: figure/unnamed-chunk-9-1.pdf  used on input line 674.
 (pdftex.def)             Requested size: 222.62206pt x 222.62315pt.
-<figure/lm_figs-1.pdf, id=632, 505.89pt x 505.89pt>
-File: figure/lm_figs-1.pdf Graphic file (type pdf)
-<use figure/lm_figs-1.pdf>
-Package pdftex.def Info: figure/lm_figs-1.pdf  used on input line 707.
-(pdftex.def)             Requested size: 222.62206pt x 222.62315pt.
-<figure/lm_figs-2.pdf, id=633, 505.89pt x 505.89pt>
-File: figure/lm_figs-2.pdf Graphic file (type pdf)
-<use figure/lm_figs-2.pdf>
-Package pdftex.def Info: figure/lm_figs-2.pdf  used on input line 714.
-(pdftex.def)             Requested size: 222.62206pt x 222.62315pt.
-<figure/lm_figs-3.pdf, id=634, 505.89pt x 505.89pt>
-File: figure/lm_figs-3.pdf Graphic file (type pdf)
-<use figure/lm_figs-3.pdf>
-Package pdftex.def Info: figure/lm_figs-3.pdf  used on input line 721.
-(pdftex.def)             Requested size: 222.62206pt x 222.62315pt.
-[14 <./figure/unnamed-chunk-9-1.pdf> <./figure/lm_figs-1.pdf> <./figure/lm_figs
--2.pdf>]
-<figure/unnamed-chunk-11-1.pdf, id=664, 505.89pt x 505.89pt>
+<figure/unnamed-chunk-11-1.pdf, id=631, 505.89pt x 505.89pt>
 File: figure/unnamed-chunk-11-1.pdf Graphic file (type pdf)
 <use figure/unnamed-chunk-11-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-11-1.pdf  used on input line 748.
+Package pdftex.def Info: figure/unnamed-chunk-11-1.pdf  used on input line 734.
 
 (pdftex.def)             Requested size: 222.62206pt x 222.62315pt.
-[15 <./figure/lm_figs-3.pdf> <./figure/unnamed-chunk-11-1.pdf>]
+[14 <./figure/unnamed-chunk-9-1.pdf> <./figure/unnamed-chunk-11-1.pdf>] [15]
 Chapter 5.
 
 Package natbib Warning: Citation `hatger2005' on page 16 undefined on input lin
-e 772.
+e 758.
 
 (./main.bbl [16
 
@@ -1590,7 +1573,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 183--185
 ]) [18]
 Appendix A.
 
-Overfull \vbox (0.46881pt too high) detected at line 900
+Overfull \vbox (0.46881pt too high) detected at line 886
  []
 
 [19
@@ -1598,7 +1581,7 @@ Overfull \vbox (0.46881pt too high) detected at line 900
 
 ] [20]
 LaTeX Font Info:    Font shape `T1/cmtt/m/it' will be
-(Font)              scaled to size 8.57605pt on input line 954.
+(Font)              scaled to size 8.57605pt on input line 940.
 [21] [22] [23]
 
 Package natbib Warning: There were undefined citations.
@@ -1606,27 +1589,27 @@ Package natbib Warning: There were undefined citations.
 
 AED: lastpage setting LastPage
 [24]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1163.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1163.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1149.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1149.
 (./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1163.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1163.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1149.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1149.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 62087326549715B4DFEACEF098724E7F;3506.
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1163.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1149.
  ) 
 Here is how much of TeX's memory you used:
- 22816 strings out of 492623
- 406434 string characters out of 6135670
+ 22801 strings out of 492623
+ 406026 string characters out of 6135670
  488039 words of memory out of 5000000
- 26029 multiletter control sequences out of 15000+600000
+ 26017 multiletter control sequences out of 15000+600000
  115876 words of font info for 161 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 64i,16n,84p,1415b,847s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 64i,15n,84p,1415b,847s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/share/t
 exmf-dist/fonts/enc/dvips/ly1/texnansi.enc}{/usr/share/texmf-dist/fonts/enc/dvi
 ps/droid/droid-01.enc}</usr/share/texmf-dist/fonts/type1/public/droid/DroidSans
@@ -1641,10 +1624,10 @@ v.pfb></usr/share/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr7y.pfb><
 are/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chri7m.pfb></usr/share/te
 xmf-dist/fonts/type1/public/cm-super/sftt0800.pfb></usr/share/texmf-dist/fonts/
 type1/public/cm-super/sftt1000.pfb>
-Output written on main.pdf (30 pages, 9362663 bytes).
+Output written on main.pdf (30 pages, 846119 bytes).
 PDF statistics:
- 808 PDF objects out of 1000 (max. 8388607)
- 708 compressed objects within 8 object streams
+ 776 PDF objects out of 1000 (max. 8388607)
+ 686 compressed objects within 7 object streams
  135 named destinations out of 1000 (max. 500000)
- 591 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 576 words of extra memory for PDF output out of 10000 (max. 10000000)
 

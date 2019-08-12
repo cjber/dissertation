@@ -1,6 +1,6 @@
 source("./functions.r")
 ## ---- widths
-road_lm <- fread("../data/derived/model_data/lm_f.csv") %>%
+road_lm <- fread("../data/derived/model_data/lm_u.csv") %>%
   as.data.frame() %>%
   st_as_sf(coords = c("X", "Y"), crs = 27700)
 
