@@ -1,6 +1,8 @@
 Sensitivity analysis, canopy/no canopy.
 Limitations, no true zeros, slight limitation, false positives.
+
 Prob threshold, link to Sensitivity analysis. 
+
 Qualitative analysis of accuracy, no true data (limitation of masters)
 Determine how error i.e. +.5m already, so not too bad if close to that with the model.
 

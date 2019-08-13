@@ -322,10 +322,14 @@ For each road the maximum bearing angle between two nodes was selected, as well 
 
 \subsection{Road Node Elevation Change}
 
-The elevation change between two road node points was calculated by first selecting non-normalised LiDAR points at a node points within a 1m$^2$ area. Points were then filtered by those only classified as ground, and with only a single return, to reduce the chance of inaccurate $z$ values. With several filtered points for each node, the mean $z$ value was found for each node, and elevation change between each node was calculated. For each road the maximum elevation change was calculated, alongside the mean elevation change.
+The elevation change between two road node points was calculated by first selecting non-normalised LiDAR points at a geometric node within a 1m$^2$ area. Nodes were obtained from the OS road data, as point coordinates obtained when the linestrings were split into points. LiDAR points were then filtered by those only classified as ground, and with only a single return, to reduce the likelihood of inaccurate $z$ values from canopy or other vegetation and vehicles. The mean $z$ value of points were found for each node, and elevation change between each node was calculated. For each road the maximum elevation change was calculated, alongside the mean elevation change.
 
 \subsection{Surface Quality}
 
-Surface quality was assessed roughly through the range in intensity values found in each known road point, and the average number of returns for a road.
+Surface quality was assessed roughly through the range in intensity values found in each known road point, and the average number of returns for a road for sample lines not obtructed by canopy, indicated by single returns.
+
+\subsection{Estimate of True Widths}
+
+QGIS used to measure roughly the width at various points along each road using 25cm resolution aerial imagery.
 
 \end{multicols}

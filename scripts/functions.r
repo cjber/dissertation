@@ -9,6 +9,7 @@ ggthemes,
 RStoolbox,
 broom,
 viridis,
+cowplot,
 viridisLite,
 cowplot,
 ggpubr,
@@ -235,8 +236,8 @@ lm_compute <- function(x, f) tryCatch({
             x$lm <- NA
         }
 
-        x$lm_individual <- ifelse(x$lm > quantile(x$lm, .95), 1, 0)
-        x$pred_lm_individual <- ifelse(x$lm > quantile(x$lm, .95), 1, 0)
+        x$lmI_dum <- ifelse(x$lm > quantile(x$lm, .95), 1, 0)
+        x$lmI_dum <- ifelse(x$lm > quantile(x$lm, .95), 1, 0)
         x$p_val <- sum(p)
 
         return(x)

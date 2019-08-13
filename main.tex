@@ -132,16 +132,15 @@
 \chapter{Introduction}
 \label{ch:introduction}
 
-   \begin{multicols}{2}
+\begin{multicols}{2}
        \lettrine{R}{oad} usage within the United Kingdom has been steadily increasing by year with the highest ever billion vehicle miles travelled in 2018 (255 million) \citep{departmentfortransport2019}. Characterised by tall hedgerows and winding turns, rural roads in the UK are often unsuited higher traffic flow, due to the obstruction of view due to the protected hedgerows, narrow lanes and often poor condition. The abundance of these roads, with "Unclassified" local network roads making up 60\% of all roads in the UK \citep{departmentfortransport2012}, and their varying nature, the national assessment of these roads into appropriate speed limits on an individual basis has been considered impractical. Due to this, there have been no individual assessments for the majority of rural roads, and given their nature are classified as unlit, single carriageway roads and thus assigned a default speed of 60mph \citep{ukgovernment2019a}. Highways England manages the motorways and trunk roads within the UK, but local road networks are maintained by Local Authorities, and as such have no comprehensive information regarding these smaller road networks \citep{highwaysengland2019}. Rural roads in the UK are often cited as by far the most dangerous road type with studies suggesting that up to two thirds of vehicle accidents occur on rural roads \citep{corben2005}.
 
-The Rural Urban Classification defines a rural area as one outside a settlements with more than 10,000 resident population \citep{ukgovernment2011}, therefore a road could be considered rural, if either connecting or present within small settlements in the UK. this study will focus particualrly on rural connecting roads.
+The Rural Urban Classification defines a rural area as one outside a settlements with more than 10,000 resident population \citep{ukgovernment2011}, therefore a road could be considered rural, if either connecting or present within small settlements in the UK. This study will focus particualrly on rural connecting roads, outside of rural towns.
 
-       A Governmental review of speed policy considered the need for the role of speed and accidents on rural roads to be further considered \citep{departmentoftheenvironmenttransportandthe2000}, suggesting a framework for individaul classification of roads, taking into account local considerations of the road to implement more suitable speed limits. In 2012, draft guidance for rural roads was presented by the Department for Transport suggesting a blanket reduction in rural single carriageway road speed limits from 60mph to 40mph including a reduction to 50mph for lower quality A and B roads \citep{bbc2012}. However, this draft guidance has yet to be implemented, and the report archived. 
-
-       // likely due to costs involved, blanket implementation likely doesn't justify the cost. Need to rely on more quantiative analysis of individaul roads, cost estimated as \$... or cost of changing all speed cameras to metric estimated as \$80/400m. Resulting in the current state of a zombified combination of metric and british imperial meassruements.
+A Governmental review of speed policy considered the need for the role of speed and accidents on rural roads to be further considered \citep{departmentoftheenvironmenttransportandthe2000}, suggesting a framework for individaul classification of roads, taking into account local considerations of the road to implement more suitable speed limits. In 2012, draft guidance for rural roads was presented by the Department for Transport suggested a blanket reduction in rural single carriageway road speed limits from 60mph to 40mph including a reduction to 50mph for lower quality A and B roads \citep{bbc2012}. However, this draft guidance has yet to be implemented, likely due to the costs involved in a blanket change in speed limits. For example, the estimated cost for a complete change in national speed limits from imperial to metric in Ireland cost an estimated €30 million in speed limit signs alone \citep{noctor2004}. These costs suggest that an alternative to blanket implementation is required.
 
 National speed limits have seen little variation for a number of years, with the majority of roads following the broad criteria for the three main roads types. The three national speed limits are:
+
 \begin{itemize}
 \item the 30 mph speed limit on roads with street lighting (sometimes referred to as Restricted Roads)
 
@@ -153,7 +152,7 @@ National speed limits have seen little variation for a number of years, with the
     \footnotesize{\citep{ukgovernment2019a}}
 \end{flushright}
 
-These limits are set by the UK government, however local speed limits are determined by local councils. \cite{departmentfortransport2013b} outline in Setting Local Speed Limits, that national speed limits are not appropriate for all roads, where local road conditions present the requirement for alternative speed limits. The majority of the rural road network in the UK follows the national speed limit of 60mph for single carriagway roads, and 70mpg for dual carriageway roads, despite driver speed often being far below the speed limit. Noted as especially common on C and Unclassified roads due to the narrow roads, bend, junctions and access. In 2011, an estimated 66\% of total road deaths in Britain occured on rural roads, with 51\% on single carriageway rural roads with the national speed limit of 60mph.
+These limits are set by the UK government, however local speed limits are determined by local councils. \cite{departmentfortransport2013b} outline in \textit{Setting Local Speed Limits}, that national speed limits are not appropriate for all roads, where local road conditions present the requirement for alternative speed limits. The majority of the rural road network in the UK follows the national speed limit of 60mph for single carriagway roads, and 70mpg for dual carriageway roads, despite driver speed often being far below the speed limit. Noted as especially common on C and Unclassified roads due to the narrow roads, bend, junctions and access. In 2011, an estimated 66\% of total road deaths in Britain occured on rural roads, with 51\% on single carriageway rural roads with the national speed limit of 60mph.
 
 \cite{departmentfortransport2013b} suggest that selecting alternative speed limits for single carriageway rural roads should consider:
 
@@ -166,13 +165,9 @@ These limits are set by the UK government, however local speed limits are determ
     \item The road environment, including road-side development
 \end{itemize}
 
-This paper will particualrly focus on the requirement of road geometry //
+The Road Safety Management Capacity Review \citep{departmentfortransport2018} outlines the current limitations with road safety management, with the lack of defined and measureable safety performance framework, noting that such a framework should set out the long term goal of total prevention of road deaths and injuries, achieving this through a reduction in average speeds on different road types, and an improvement in emergency response times. This review states that at present there is a distinct lack of both urban and rural road hiararchies, which could be used to better match appropriate speed limits, with function, layout and design. Again, this review notes that posted speed limits often allow for speed far in excess of the design limits of single carriageway rural roads, with inappropriate but alloable speed often a contributing factor in rural accidents. Finally the report calls for a review on national speed limits as soon as possible.
 
-The Road Safety Management Capacity Review \citep{departmentfortransport2018} outlines the current limitations with road safety management, with the lack of defined and measureable safety performance framework, noting that such a framework should set out the long term goal of total prevention of road deaths and injuries, achevign this through a reducting in average speeds on different road types, and an improvement in emergency response times. This review states that at present there is a distinct lack of both urban and rural road hiararchies, which could be used to better match appropriate speed limits, with function, layout and design. Again, this review notes that posted speed limits often allow for speed far in excess of the design limits of single carriageway rural roads, with inappropriate but alloable speed often a contributing factor in rural accidents. Finally the report calls for a reviw on national speed limits as soon as possible.
-
-// limitations of the newly introduced spped limit apprasial tool?
-
-This paper will present a method for rural road extraction for a region in the North West of England. The methodology is produced in order to ensure scalability and automation, allowing for replication for any area where data is available. Data used will include road centreline geometries, LiDAR point cloud, and aerial imagery to extract road widths through linear likelihood models. Additionally, this paper aims to extract other features of roads such as elevation changes, surface quality, and the sharpness of bends. These key features aim to provide information that may inform the selection of appropriate speed limits on rural roads, where the 60mph national speed limit is inappropriate.
+A recent development for guidance in setting local speed limits is the prduction of the \textit{Speed Limit Apprasial Tool} \citep{departmentfortransport2013a}. This tool provides an automated method for the introduction of new speed limits for local councils. This tool takes observed traffic flow, accidents, speeds, descriptive information regarding the network and current costs, outputting prediced changed in these data for various speed limit changes. While this tool introduces some quantiative method for individual road speed limit assessments, it misses some key features outlined in past government framework proposals \citep[][e.g.]{departmentfortransport2018}, particularly in relation to road geometry.
 
 \section{Introduction to LiDAR}
 \label{sec:overviewlidar}
@@ -206,32 +201,39 @@ Often studies use LiDAR height data to identify kerbs to separate streets from p
 LiDAR data often requires a large amount of processing due to the irregular distribution of points, presence of noise and the number of variables that have to be considered, \cite{yadav2018} note that often papers do not include the computational time for processing this data, which can be time consuming.
 
 \begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[H]
+
+{\centering \includegraphics[width=\linewidth]{figure/area_map-1} 
+
+}
+
+\caption[Study are highlighting road locations]{Study are highlighting road locations}\label{fig:area_map}
+\end{figure}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{Error in .local(x, ...): invalid layer names}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{Error in fortify(data): object 'bg' not found}}\end{kframe}
 \end{knitrout}
-
 
 \section{Objective of this paper}
 
-\begin{itemize}
-    \item Produce an automated method using LiDAR and aerial imagery to determine the true width of roads within the chosen study area.
+This paper will present a method for rural road extraction for a region in the North West of England. The methodology is produced in order to ensure scalability and automation, allowing for replication for any area where data is available. Data used will include road centreline geometries, LiDAR point cloud, and aerial imagery to extract road widths through linear probability models. Additionally, this paper aims to extract other features of roads such as elevation changes, surface quality, and the sharpness of bends. These key features aim to provide information that may inform the selection of appropriate speed limits on rural roads, where the 60mph national speed limit is inappropriate.
 
-    \item Using OS Road and LiDAR Data produce an automated method for determining the characteristic of roads that relate to overall road quality outline above.
+Key Aims:
+
+\begin{itemize}
+    \item Produce and assess an automated method using LiDAR, aerial imagery and OS road geometry to determine the true width of roads within the chosen study area.
+
+    \item Using OS Road and LiDAR Data produce an automated method for determining the characteristic of roads that relate to overall road quality.
 
     \item Assess the potential for speed reduction on rural roads, with the assumption that at present the roads chosen are 60mph.
 \end{itemize}
 
-\subsection{Site Selection}
-
 The site selected in this study was chosen to include a selection of A, B, and Unclassified local roads within a rural setting. Particularly the roads chosen are often partially obscured by tree canopies and do not have visible kerbs, both key features in rural British roads.
 
-\textbf{figure 1a}. Additionally the area selection was limited by the availability of LiDAR point cloud data, which is shown on \textbf{figure1b}.
+This paper is organised into chapters, first a literature review, outlining the broad implications of speed limits, rural road networks, and object extraction particuarly in relation to LiDAR aerial point clouds. Second, a detailed description of the methodology involved in this paper will outline the techniques used to classify road widths, in addition to the other road geometric information. A results section will primarily assess the method for road extraction, through sensitivity analysis and some qualitative observations, a short section will then explore the findings. Finally a discussion will detail the implications for the findings, and suggest areas for improvement.
 
-\section{sign posting}
+// improve this, why am i doing this, e.g. production of method will aid speed limits, emergency response etc.
+
+// Include more infrastructure to support the over-arching narrative argument. E.g. The intro. should include a brief overview of the argument (sections) to come [signposting], and there should be more linking sentences between sections to help the reader understand both that the focus is being changed and why.
 
 \end{multicols}
 
@@ -580,11 +582,15 @@ For each road the maximum bearing angle between two nodes was selected, as well 
 
 \subsection{Road Node Elevation Change}
 
-The elevation change between two road node points was calculated by first selecting non-normalised LiDAR points at a node points within a 1m$^2$ area. Points were then filtered by those only classified as ground, and with only a single return, to reduce the chance of inaccurate $z$ values. With several filtered points for each node, the mean $z$ value was found for each node, and elevation change between each node was calculated. For each road the maximum elevation change was calculated, alongside the mean elevation change.
+The elevation change between two road node points was calculated by first selecting non-normalised LiDAR points at a geometric node within a 1m$^2$ area. Nodes were obtained from the OS road data, as point coordinates obtained when the linestrings were split into points. LiDAR points were then filtered by those only classified as ground, and with only a single return, to reduce the likelihood of inaccurate $z$ values from canopy or other vegetation and vehicles. The mean $z$ value of points were found for each node, and elevation change between each node was calculated. For each road the maximum elevation change was calculated, alongside the mean elevation change.
 
 \subsection{Surface Quality}
 
-Surface quality was assessed roughly through the range in intensity values found in each known road point, and the average number of returns for a road.
+Surface quality was assessed roughly through the range in intensity values found in each known road point, and the average number of returns for a road for sample lines not obtructed by canopy, indicated by single returns.
+
+\subsection{Estimate of True Widths}
+
+QGIS used to measure roughly the width at various points along each road using 25cm resolution aerial imagery.
 
 \end{multicols}
 
@@ -617,14 +623,11 @@ from \ref{fig:fig_buff} \textbf{(b)} intensities values for ground points below 
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[H]
 
-{\centering \subfloat[Base point cloud $Z$ values\label{fig:fig_lp1}]{\includegraphics[width=\linewidth]{figure/fig_lp-1} }
-\subfloat[Normalised Point cloud $Z$ values for only last returns ($lpz$)\label{fig:fig_lp2}]{\includegraphics[width=\linewidth]{figure/fig_lp-2} }
-\subfloat[Aerial Data combined to 1 band\label{fig:fig_lp3}]{\includegraphics[width=\linewidth]{figure/fig_lp-3} }
-\subfloat[Base point cloud $Z$ values\label{fig:fig_lp4}]{\includegraphics[width=\linewidth]{figure/fig_lp-4} }
+{\centering \includegraphics[width=\linewidth]{figure/fig_lp-1} 
 
 }
 
-\caption[LiDAR point clouds for one selected road section aggregated into 1m$^2$ grids]{LiDAR point clouds for one selected road section aggregated into 1m$^2$ grids}\label{fig:fig_lp}
+\caption[LiDAR point clouds for one selected road section aggregated into 1m$^2$ grids, \textbf{(A)} Base point cloud $Z$ values, \textbf{(B)} Normalised Point cloud $Z$ values for only last returns ($lpz$) \textbf{(C)} Normalised Point cloud $Intensity$ values for last return, \textbf{(D)} Aerial Data combined to 1 band]{LiDAR point clouds for one selected road section aggregated into 1m$^2$ grids, \textbf{(A)} Base point cloud $Z$ values, \textbf{(B)} Normalised Point cloud $Z$ values for only last returns ($lpz$) \textbf{(C)} Normalised Point cloud $Intensity$ values for last return, \textbf{(D)} Aerial Data combined to 1 band}\label{fig:fig_lp}
 \end{figure}
 
 
@@ -642,53 +645,17 @@ Covers 02
 
 \section{Widths and Road Quality}
 
-\section{Road Assessment}
-
-
-\begin{table}[H]
-
-\caption{\label{tab:cor_table}Correlation Matrix}
-\centering
-\fontsize{8}{10}\selectfont
-\begin{tabular}{lllll}
-\toprule
-Variable & Width & Max Angle & Max Z & Int Range\\
-\midrule
-Width &  & -0.03 & 0.14 & -0.08\\
-Max Angle & -0.03 &  & 0.60 ** & 0.36\\
-Max Z & 0.14 & 0.60 ** &  & 0.57 *\\
-Int Range & -0.08 & 0.36 & 0.57 * & \\
-\bottomrule
-\multicolumn{5}{l}{\textit{ }}\\
-\multicolumn{5}{l}{*** Significant at the 0.001 level}\\
-\multicolumn{5}{l}{** Significant at the 0.005 level}\\
-\multicolumn{5}{l}{* Significant as the 0.01 level}\\
-\end{tabular}
-\end{table}
-
-
-
-\begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-
-{\centering \includegraphics[width=\linewidth]{figure/unnamed-chunk-9-1} 
-
-}
-
-
-
-\end{knitrout}
 
 \section(Linear Probability Model)
 
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{verbatim}
-[1] 0.9469083
-[1] 0.9464282
-[1] 0.957181
-[1] 0.9579088
-[1] 0.9583517
+[1] 0.9529064
+[1] 0.9514512
+[1] 0.9589439
+[1] 0.9591193
+[1] 0.9580487
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -704,12 +671,21 @@ First model (maximal):
 3. Compare global model 1 (best fit), to individual model using f1.
 
 \begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\linewidth]{figure/lm_figs-1} 
+
+}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{Error in .local(x, ...): not a valid subset}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{Error in .local(x, ...): not a valid subset}}\end{kframe}
+
+{\centering \includegraphics[width=\linewidth]{figure/lm_figs-2} 
+
+}
+
+
+
 \end{knitrout}
 
 
@@ -727,11 +703,95 @@ First model (maximal):
 
 \section{Noise Filtering}
 
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{Error in (function (x, recursive = TRUE, use.names = TRUE) : argument "{}x"{} is missing, with no default}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{Error in img[[rgb]]: no such index at level 1}}\end{kframe}
+\end{knitrout}
+
+// Manually measure a road width for a reference, i.e. how close to accurate different models are. GLM LM and individual filtered and unfiltered. Find max and min widths and mean, describe what likely causes the differences.
+
+\section{Final Model Analysis}
+
+Very rough estimate of widths
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+Reading layer `roads_estwidth' from data source `/home/cjber/drive/uni/envs492/main/data/osroads/roads_estwidth.gpkg' using driver `GPKG'
+Simple feature collection with 41 features and 3 fields
+geometry type:  POLYGON
+dimension:      XY
+bbox:           xmin: 379999 ymin: 367999 xmax: 382001 ymax: 370001
+epsg (SRID):    27700
+proj4string:    +proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +units=m +no_defs
+\end{verbatim}
+\end{kframe}\begin{table}[t]
+
+\caption{\label{tab:unnamed-chunk-10}testing}
+\centering
+\fontsize{8}{10}\selectfont
+\begin{tabular}{lr}
+\toprule
+Model & Accuracy\\
+\midrule
+lm 1 & 76.01\\
+lm 2 & 77.60\\
+lm 3 & 71.91\\
+glm & 70.70\\
+lm $i$ & 83.26\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\end{knitrout}
+
+\section{Road Assessment}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+Reading layer `roads_estwidth' from data source `/home/cjber/drive/uni/envs492/main/data/osroads/roads_estwidth.gpkg' using driver `GPKG'
+Simple feature collection with 41 features and 3 fields
+geometry type:  POLYGON
+dimension:      XY
+bbox:           xmin: 379999 ymin: 367999 xmax: 382001 ymax: 370001
+epsg (SRID):    27700
+proj4string:    +proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +units=m +no_defs
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\begin{table}[H]
+
+\caption{\label{tab:cor_table}Correlation Matrix}
+\centering
+\fontsize{8}{10}\selectfont
+\begin{tabular}{lllll}
+\toprule
+Variable & Width & Max Angle & Max Z & Int Range\\
+\midrule
+Width &  & 0.22 & 0.44 & 0.32\\
+Max Angle & 0.22 &  & 0.43 & 0.34\\
+Max Z & 0.44 & 0.43 &  & 0.43\\
+Int Range & 0.32 & 0.34 & 0.43 & \\
+\bottomrule
+\multicolumn{5}{l}{\textit{ }}\\
+\multicolumn{5}{l}{*** Significant at the 0.001 level}\\
+\multicolumn{5}{l}{** Significant at the 0.005 level}\\
+\multicolumn{5}{l}{* Significant as the 0.01 level}\\
+\end{tabular}
+\end{table}
+
+
 
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
 
-{\centering \includegraphics[width=\linewidth]{figure/unnamed-chunk-11-1} 
+{\centering \includegraphics[width=\linewidth]{figure/unnamed-chunk-12-1} 
 
 }
 
@@ -739,14 +799,12 @@ First model (maximal):
 
 \end{knitrout}
 
-// Manually measure a road width for a reference, i.e. how close to accurate different models are. GLM LM and individual filtered and unfiltered. Find max and min widths and mean, describe what likely causes the differences.
 
-\section{Further Analysis}
+\section{Road Analysis}
 
 // if there is time:
 
 Use width and max bend sharpness to estimate required speed for required stopping distance. Some maths could be involved. Use to produce speed limit assessment, include steepness somehow (speed limits due to stwwpwnss etc)
-
 
 \end{multicols}
 
@@ -790,7 +848,7 @@ to a standard deviation of about 15 cm /
 
 \begin{center}
 % remember to compile twice for current word count
-Word Count: 3431
+Word Count: 3596
 
 \end{center}
 
@@ -1136,8 +1194,8 @@ loaded via a namespace (and not attached):
             \hlstd{x}\hlopt{$}\hlstd{lm} \hlkwb{<-} \hlnum{NA}
         \hlstd{\}}
 
-        \hlstd{x}\hlopt{$}\hlstd{lm_individual} \hlkwb{<-} \hlkwd{ifelse}\hlstd{(x}\hlopt{$}\hlstd{lm} \hlopt{>} \hlkwd{quantile}\hlstd{(x}\hlopt{$}\hlstd{lm,} \hlnum{.95}\hlstd{),} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{)}
-        \hlstd{x}\hlopt{$}\hlstd{pred_lm_individual} \hlkwb{<-} \hlkwd{ifelse}\hlstd{(x}\hlopt{$}\hlstd{lm} \hlopt{>} \hlkwd{quantile}\hlstd{(x}\hlopt{$}\hlstd{lm,} \hlnum{.95}\hlstd{),} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{)}
+        \hlstd{x}\hlopt{$}\hlstd{lmI_dum} \hlkwb{<-} \hlkwd{ifelse}\hlstd{(x}\hlopt{$}\hlstd{lm} \hlopt{>} \hlkwd{quantile}\hlstd{(x}\hlopt{$}\hlstd{lm,} \hlnum{.95}\hlstd{),} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{)}
+        \hlstd{x}\hlopt{$}\hlstd{lmI_dum} \hlkwb{<-} \hlkwd{ifelse}\hlstd{(x}\hlopt{$}\hlstd{lm} \hlopt{>} \hlkwd{quantile}\hlstd{(x}\hlopt{$}\hlstd{lm,} \hlnum{.95}\hlstd{),} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{)}
         \hlstd{x}\hlopt{$}\hlstd{p_val} \hlkwb{<-} \hlkwd{sum}\hlstd{(p)}
 
         \hlkwd{return}\hlstd{(x)}

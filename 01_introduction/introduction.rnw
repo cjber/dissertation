@@ -1,13 +1,12 @@
-   \begin{multicols}{2}
+\begin{multicols}{2}
        \lettrine{R}{oad} usage within the United Kingdom has been steadily increasing by year with the highest ever billion vehicle miles travelled in 2018 (255 million) \citep{departmentfortransport2019}. Characterised by tall hedgerows and winding turns, rural roads in the UK are often unsuited higher traffic flow, due to the obstruction of view due to the protected hedgerows, narrow lanes and often poor condition. The abundance of these roads, with "Unclassified" local network roads making up 60\% of all roads in the UK \citep{departmentfortransport2012}, and their varying nature, the national assessment of these roads into appropriate speed limits on an individual basis has been considered impractical. Due to this, there have been no individual assessments for the majority of rural roads, and given their nature are classified as unlit, single carriageway roads and thus assigned a default speed of 60mph \citep{ukgovernment2019a}. Highways England manages the motorways and trunk roads within the UK, but local road networks are maintained by Local Authorities, and as such have no comprehensive information regarding these smaller road networks \citep{highwaysengland2019}. Rural roads in the UK are often cited as by far the most dangerous road type with studies suggesting that up to two thirds of vehicle accidents occur on rural roads \citep{corben2005}.
 
-The Rural Urban Classification defines a rural area as one outside a settlements with more than 10,000 resident population \citep{ukgovernment2011}, therefore a road could be considered rural, if either connecting or present within small settlements in the UK. this study will focus particualrly on rural connecting roads.
+The Rural Urban Classification defines a rural area as one outside a settlements with more than 10,000 resident population \citep{ukgovernment2011}, therefore a road could be considered rural, if either connecting or present within small settlements in the UK. This study will focus particualrly on rural connecting roads, outside of rural towns.
 
-       A Governmental review of speed policy considered the need for the role of speed and accidents on rural roads to be further considered \citep{departmentoftheenvironmenttransportandthe2000}, suggesting a framework for individaul classification of roads, taking into account local considerations of the road to implement more suitable speed limits. In 2012, draft guidance for rural roads was presented by the Department for Transport suggesting a blanket reduction in rural single carriageway road speed limits from 60mph to 40mph including a reduction to 50mph for lower quality A and B roads \citep{bbc2012}. However, this draft guidance has yet to be implemented, and the report archived. 
-
-       // likely due to costs involved, blanket implementation likely doesn't justify the cost. Need to rely on more quantiative analysis of individaul roads, cost estimated as \$... or cost of changing all speed cameras to metric estimated as \$80/400m. Resulting in the current state of a zombified combination of metric and british imperial meassruements.
+A Governmental review of speed policy considered the need for the role of speed and accidents on rural roads to be further considered \citep{departmentoftheenvironmenttransportandthe2000}, suggesting a framework for individaul classification of roads, taking into account local considerations of the road to implement more suitable speed limits. In 2012, draft guidance for rural roads was presented by the Department for Transport suggested a blanket reduction in rural single carriageway road speed limits from 60mph to 40mph including a reduction to 50mph for lower quality A and B roads \citep{bbc2012}. However, this draft guidance has yet to be implemented, likely due to the costs involved in a blanket change in speed limits. For example, the estimated cost for a complete change in national speed limits from imperial to metric in Ireland cost an estimated €30 million in speed limit signs alone \citep{noctor2004}. These costs suggest that an alternative to blanket implementation is required.
 
 National speed limits have seen little variation for a number of years, with the majority of roads following the broad criteria for the three main roads types. The three national speed limits are:
+
 \begin{itemize}
 \item the 30 mph speed limit on roads with street lighting (sometimes referred to as Restricted Roads)
 
@@ -19,7 +18,7 @@ National speed limits have seen little variation for a number of years, with the
     \footnotesize{\citep{ukgovernment2019a}}
 \end{flushright}
 
-These limits are set by the UK government, however local speed limits are determined by local councils. \cite{departmentfortransport2013b} outline in Setting Local Speed Limits, that national speed limits are not appropriate for all roads, where local road conditions present the requirement for alternative speed limits. The majority of the rural road network in the UK follows the national speed limit of 60mph for single carriagway roads, and 70mpg for dual carriageway roads, despite driver speed often being far below the speed limit. Noted as especially common on C and Unclassified roads due to the narrow roads, bend, junctions and access. In 2011, an estimated 66\% of total road deaths in Britain occured on rural roads, with 51\% on single carriageway rural roads with the national speed limit of 60mph.
+These limits are set by the UK government, however local speed limits are determined by local councils. \cite{departmentfortransport2013b} outline in \textit{Setting Local Speed Limits}, that national speed limits are not appropriate for all roads, where local road conditions present the requirement for alternative speed limits. The majority of the rural road network in the UK follows the national speed limit of 60mph for single carriagway roads, and 70mpg for dual carriageway roads, despite driver speed often being far below the speed limit. Noted as especially common on C and Unclassified roads due to the narrow roads, bend, junctions and access. In 2011, an estimated 66\% of total road deaths in Britain occured on rural roads, with 51\% on single carriageway rural roads with the national speed limit of 60mph.
 
 \cite{departmentfortransport2013b} suggest that selecting alternative speed limits for single carriageway rural roads should consider:
 
@@ -32,13 +31,9 @@ These limits are set by the UK government, however local speed limits are determ
     \item The road environment, including road-side development
 \end{itemize}
 
-This paper will particualrly focus on the requirement of road geometry //
+The Road Safety Management Capacity Review \citep{departmentfortransport2018} outlines the current limitations with road safety management, with the lack of defined and measureable safety performance framework, noting that such a framework should set out the long term goal of total prevention of road deaths and injuries, achieving this through a reduction in average speeds on different road types, and an improvement in emergency response times. This review states that at present there is a distinct lack of both urban and rural road hiararchies, which could be used to better match appropriate speed limits, with function, layout and design. Again, this review notes that posted speed limits often allow for speed far in excess of the design limits of single carriageway rural roads, with inappropriate but alloable speed often a contributing factor in rural accidents. Finally the report calls for a review on national speed limits as soon as possible.
 
-The Road Safety Management Capacity Review \citep{departmentfortransport2018} outlines the current limitations with road safety management, with the lack of defined and measureable safety performance framework, noting that such a framework should set out the long term goal of total prevention of road deaths and injuries, achevign this through a reducting in average speeds on different road types, and an improvement in emergency response times. This review states that at present there is a distinct lack of both urban and rural road hiararchies, which could be used to better match appropriate speed limits, with function, layout and design. Again, this review notes that posted speed limits often allow for speed far in excess of the design limits of single carriageway rural roads, with inappropriate but alloable speed often a contributing factor in rural accidents. Finally the report calls for a reviw on national speed limits as soon as possible.
-
-// limitations of the newly introduced spped limit apprasial tool?
-
-This paper will present a method for rural road extraction for a region in the North West of England. The methodology is produced in order to ensure scalability and automation, allowing for replication for any area where data is available. Data used will include road centreline geometries, LiDAR point cloud, and aerial imagery to extract road widths through linear likelihood models. Additionally, this paper aims to extract other features of roads such as elevation changes, surface quality, and the sharpness of bends. These key features aim to provide information that may inform the selection of appropriate speed limits on rural roads, where the 60mph national speed limit is inappropriate.
+A recent development for guidance in setting local speed limits is the prduction of the \textit{Speed Limit Apprasial Tool} \citep{departmentfortransport2013a}. This tool provides an automated method for the introduction of new speed limits for local councils. This tool takes observed traffic flow, accidents, speeds, descriptive information regarding the network and current costs, outputting prediced changed in these data for various speed limit changes. While this tool introduces some quantiative method for individual road speed limit assessments, it misses some key features outlined in past government framework proposals \citep[][e.g.]{departmentfortransport2018}, particularly in relation to road geometry.
 
 \section{Introduction to LiDAR}
 \label{sec:overviewlidar}
@@ -82,37 +77,42 @@ jpgs <- lapply(jpgs, aggregate, fact = 8)
 jpgs <- do.call(merge, jpgs)
 aerial <- crop(jpgs, rd)
 
+aerial_bbox <- bbox(aerial)
+
 bg <- data.frame(
-  xmin = min(aerial$x) - 1,
-  xmax = max(aerial$x) + 1,
-  ymin = min(aerial$y) - 1,
-  ymax = max(aerial$y) + 1
+  xmin = aerial_bbox[1] - 1,
+  xmax = aerial_bbox[3] + 1,
+  ymin = aerial_bbox[2] - 1,
+  ymax = aerial_bbox[4]
 )
 
 ggRGB(aerial) +
-  geom_rect(data = bg, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = "grey50", colour = "black", size = 2) +
+  geom_rect(data = bg, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = NA, colour = "black", size = 2) +
   geom_sf(data = rd, fill = "white", colour = NA, alpha = 0.2) +
   theme_map() +
   theme(legend.position = "none")
 @
 
-
 \section{Objective of this paper}
 
-\begin{itemize}
-    \item Produce an automated method using LiDAR and aerial imagery to determine the true width of roads within the chosen study area.
+This paper will present a method for rural road extraction for a region in the North West of England. The methodology is produced in order to ensure scalability and automation, allowing for replication for any area where data is available. Data used will include road centreline geometries, LiDAR point cloud, and aerial imagery to extract road widths through linear probability models. Additionally, this paper aims to extract other features of roads such as elevation changes, surface quality, and the sharpness of bends. These key features aim to provide information that may inform the selection of appropriate speed limits on rural roads, where the 60mph national speed limit is inappropriate.
 
-    \item Using OS Road and LiDAR Data produce an automated method for determining the characteristic of roads that relate to overall road quality outline above.
+Key Aims:
+
+\begin{itemize}
+    \item Produce and assess an automated method using LiDAR, aerial imagery and OS road geometry to determine the true width of roads within the chosen study area.
+
+    \item Using OS Road and LiDAR Data produce an automated method for determining the characteristic of roads that relate to overall road quality.
 
     \item Assess the potential for speed reduction on rural roads, with the assumption that at present the roads chosen are 60mph.
 \end{itemize}
 
-\subsection{Site Selection}
-
 The site selected in this study was chosen to include a selection of A, B, and Unclassified local roads within a rural setting. Particularly the roads chosen are often partially obscured by tree canopies and do not have visible kerbs, both key features in rural British roads.
 
-\textbf{figure 1a}. Additionally the area selection was limited by the availability of LiDAR point cloud data, which is shown on \textbf{figure1b}.
+This paper is organised into chapters, first a literature review, outlining the broad implications of speed limits, rural road networks, and object extraction particuarly in relation to LiDAR aerial point clouds. Second, a detailed description of the methodology involved in this paper will outline the techniques used to classify road widths, in addition to the other road geometric information. A results section will primarily assess the method for road extraction, through sensitivity analysis and some qualitative observations, a short section will then explore the findings. Finally a discussion will detail the implications for the findings, and suggest areas for improvement.
 
-\section{sign posting}
+// improve this, why am i doing this, e.g. production of method will aid speed limits, emergency response etc.
+
+// Include more infrastructure to support the over-arching narrative argument. E.g. The intro. should include a brief overview of the argument (sections) to come [signposting], and there should be more linking sentences between sections to help the reader understand both that the focus is being changed and why.
 
 \end{multicols}

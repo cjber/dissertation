@@ -4,11 +4,13 @@
 source("/home/cjber/drive/uni/envs492/main/scripts/functions.r")
 lidar_tab <- fread("../data/derived/model_data/lm_f.csv")
 @
-\section{Overview of LiDAR Data}
+\section{Overview of Data}
+
+\subsection{LiDAR Point Cloud}
 
 Table \ref{tab:lidar} indicates that there are likely some points with noise, particularly reflected by the highest intensity value (\Sexpr{max(lidar_tab$Intensity)}) relative to the mean value (\Sexpr{round(mean(lidar_tab$Intensity),0)}). Noise exclusion techniques are described in \cite{fang2004}, this paper takes a simplistic noise filtering technique that aims to solely remove extreme outliers from the observed intensity values in the chosen data.
 
-\section{Overview of Roads}
+\subsection{OS Road Geometry}
 
 Class differences, all singlecarriageway roads, therefore likely 60mph. Removed private roads. A roads + B roads + unclassified. Many unnamed roads, only identification possible through \texttt{identifier}, which splits roads by junctions.
 
@@ -27,11 +29,15 @@ bg <- data.frame(
   ymax = max(chm$y) + 1
 )
 
+
+roads <- roads[6, ]
+
 chm_gg <- ggplot() +
   geom_rect(data = bg, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = "grey50", colour = "black", size = 2) +
   geom_raster(data = chm, aes(x = x, y = y, fill = value), alpha = 1) +
+  geom_sf(data = roads, colour = alpha("red",.3), fill = "black", alpha = 0.1) +
   scale_fill_viridis() +
-  coord_fixed() +
+  coord_sf() +
   theme_map() +
   theme(legend.position = "none")
 
@@ -65,11 +71,13 @@ from \ref{fig:fig_buff} \textbf{(b)} intensities values for ground points below 
 // find Average intensity values for first and last returns, i.e. show the shadow below trees
 
 
-<<fig_lp, fig.cap = "LiDAR point clouds for one selected road section aggregated into 1m$^2$ grids", fig.subcap = c("Base point cloud $Z$ values", "Normalised Point cloud $Z$ values for only last returns ($lpz$)", "Aerial Data combined to 1 band"), fig.height = 4.5>>=
-chm_gg
-dsm_lp_gg
-las_i_gg
-aerial_gg
+<<fig_lp, fig.cap = "LiDAR point clouds for one selected road section aggregated into 1m$^2$ grids, \\textbf{(A)} Base point cloud $Z$ values, \\textbf{(B)} Normalised Point cloud $Z$ values for only last returns ($lpz$) \\textbf{(C)} Normalised Point cloud $Intensity$ values for last return, \\textbf{(D)} Aerial Data combined to 1 band", fig.height = 15>>=
+
+plot_grid(
+chm_gg,
+dsm_lp_gg,
+las_i_gg,
+aerial_gg, labels = "AUTO")
 @
 
 \section{Perpendicular Sampling}
@@ -84,11 +92,124 @@ Covers 02
 
 \section{Widths and Road Quality}
 
+test.
+
+
+\section{Linear Probability Model}
+
+<<>>=
+source("./fig_lm.r")
+# from logistic regression essential in R (pocket)
+mean((sampled_las$lm1_dum == 1) == (sampled_las$road == 1))
+mean((sampled_las$lm2_dum == 1) == (sampled_las$road == 1))
+mean((sampled_las$lm3_dum == 1) == (sampled_las$road == 1))
+mean((sampled_las$glm1_dum == 1) == (sampled_las$road == 1))
+
+# filter out  > 0.05 p values for each point
+mean((filter$lmI_dum == 1) == (filter_las$road == 1))
+@
+
+
+First model (maximal):
+
+//NOTES//
+1. Unfiltered vs filtered global maximal model.. Filters include no samples with multiple returns (partial canopy obstruction). excludes far toomany points
+
+2. Compare global models 1/2/3, and generalised linear model using f1.
+
+3. Compare global model 1 (best fit), to individual model using f1.
+
+<<lm_figs>>=
+aerial_bbox <- bbox(aerial)
+
+bg <- data.frame(
+  xmin = aerial_bbox[1] - 1,
+  xmax = aerial_bbox[3] + 1,
+  ymin = aerial_bbox[2] - 1,
+  ymax = aerial_bbox[4]
+)
+
+ggRGB(aerial) +
+  geom_rect(data = bg, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = NA, colour = "black", size = 2) +
+    geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
+    geom_sf(
+        data = road_lm_filter[road_lm_filter$lmI_dum == 1, ],
+        alpha = .5, colour = "green"
+    ) +
+    geom_sf(
+        data = road_lm_filter[road_lm_filter$road == 1, ],
+        alpha = .5, colour = "orange"
+    ) +
+           theme_map()
+
+# unfiltered
+ggRGB(aerial) +
+  geom_rect(data = bg, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = NA, colour = "black", size = 2) +
+    geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
+    geom_sf(
+        data = road_lm_nofilter[road_lm_nofilter$lm1_dum == 1, ],
+        alpha = 0.5, colour = "green"
+    ) +
+    geom_sf(
+        data = road_lm_nofilter[road_lm_nofilter$road == 1, ],
+        alpha = .5, colour = "orange"
+    ) +
+    theme_map()
+@
+
+
+\begin{equation}
+\begin{aligned}
+\mathrm{Road}_{t} = \alpha 
+    &+ \beta_{1}  \mathrm{Intensity}_{t} \\
+    &+ \beta_{2}  \mathrm{Luminescence}_{t}    \\
+    &+ \beta_{3}  \mathrm{Z}_{t} \\
+    &+ \beta_{4}  \mathrm{Dist}_{t} + \epsilon
+\end{aligned}
+\end{equation}
+
+//for this section see 450 assess2, details on validation etc.
+
+\section{Noise Filtering}
+
+<<>>=
+source("./fig_noise.r")
+
+ggRGB(aerial) +
+    geom_sf(data = rd, colour = "red") +
+    geom_sf(data = rd_fil, colour = "green")+
+    theme_map()
+@
+
+// Manually measure a road width for a reference, i.e. how close to accurate different models are. GLM LM and individual filtered and unfiltered. Find max and min widths and mean, describe what likely causes the differences.
+
+\section{Final Model Analysis}
+
+Very rough estimate of widths
+
+<<>>=
+source("../scripts/04_analysis.r")
+
+norm_widths <- norm_widths %>% 
+    as.data.frame() %>% 
+    slice(2:n() -1)
+
+norm_widths$model <- c("lm 1", "lm 2", "lm 3", "glm", "lm $i$")
+norm_widths <- norm_widths %>% 
+    select(model, everything())
+
+names(norm_widths)  <- c("Model", "Accuracy")
+make_table(norm_widths, 2, cap = "testing")
+@
+
 \section{Road Assessment}
 <<>>=
-final_data <- fread("/home/cjber/drive/uni/envs492/main/data/final_data/final.csv") %>%
-  select(-c(V1, roadFunction, meanAngle, meanZ, meanInt)) %>%
-  column_to_rownames(var = "road_id")
+source("../scripts/04_analysis.r")
+
+final_data <- final_data %>% 
+    na.omit()  %>% 
+    select(c(lmi_mean, meanAngle, meanZ, rangeInt))
+
 cor_tab <- rcorr(as.matrix(final_data), type = "pearson")
 
 p_val <- function(x) {
@@ -131,89 +252,11 @@ make_table(cor_tab, dig = 2, cap = "Correlation Matrix") %>%
 PerformanceAnalytics::chart.Correlation(final_data, method = "pearson")
 @
 
-\section(Linear Probability Model)
 
-<<>>=
-source("./fig_lm.r")
-# from logistic regression essential in R (pocket)
-mean((filter_las$lm1_dum == 1) == (filter_las$road == 1))
-mean((filter_las$lm2_dum == 1) == (filter_las$road == 1))
-mean((filter_las$lm3_dum == 1) == (filter_las$road == 1))
-mean((filter_las$glm1_dum == 1) == (filter_las$road == 1))
-
-# filter out  > 0.05 p values for each point
-mean((filter_las$pred_lm_individual == 1) == (filter_las$road == 1))
-@
-
-
-First model (maximal):
-
-//NOTES//
-1. Unfiltered vs filtered global maximal model.. Filters include no samples with multiple returns (partial canopy obstruction). excludes far toomany points
-
-2. Compare global models 1/2/3, and generalised linear model using f1.
-
-3. Compare global model 1 (best fit), to individual model using f1.
-
-<<lm_figs>>=
-ggRGB(aerial) +
-    geom_sf(data = road_lm_filter, colour = "black", alpha = 0.1) +
-    geom_sf(
-        data = road_lm_filter[road_lm_filter$lm1_dum == 1, ],
-        alpha = 1, colour = "green"
-    ) +
-    geom_sf(
-        data = road_lm_filter[road_lm_filter$road == 1, ],
-        alpha = 1, colour = "orange"
-    ) +
-           theme_map()
-
-# unfiltered
-ggRGB(aerial) +
-    geom_sf(data = road_lm_nofilter, colour = "black", alpha = 0.5) +
-    geom_sf(
-        data = road_lm_nofilter[road_lm_nofilter$lm1_dum == 1, ],
-        alpha = 0.5, colour = "green"
-    ) +
-    geom_sf(
-        data = road_lm_nofilter[road_lm_nofilter$road == 1, ],
-        alpha = 1, colour = "orange"
-    ) +
-    theme_map()
-@
-
-
-\begin{equation}
-\begin{aligned}
-\mathrm{Road}_{t} = \alpha 
-    &+ \beta_{1}  \mathrm{Intensity}_{t} \\
-    &+ \beta_{2}  \mathrm{Luminescence}_{t}    \\
-    &+ \beta_{3}  \mathrm{Z}_{t} \\
-    &+ \beta_{4}  \mathrm{Dist}_{t} + \epsilon
-\end{aligned}
-\end{equation}
-
-//for this section see 450 assess2, details on validation etc.
-
-\section{Noise Filtering}
-
-
-<<>>=
-source("./fig_noise.r")
-
-ggRGB(aerial) +
-    geom_sf(data = rd, colour = "red") +
-    geom_sf(data = rd_fil, colour = "green")+
-    theme_map()
-@
-
-// Manually measure a road width for a reference, i.e. how close to accurate different models are. GLM LM and individual filtered and unfiltered. Find max and min widths and mean, describe what likely causes the differences.
-
-\section{Further Analysis}
+\section{Road Analysis}
 
 // if there is time:
 
 Use width and max bend sharpness to estimate required speed for required stopping distance. Some maths could be involved. Use to produce speed limit assessment, include steepness somehow (speed limits due to stwwpwnss etc)
-
 
 \end{multicols}
