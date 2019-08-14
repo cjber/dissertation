@@ -33,7 +33,7 @@ sampled_las$lm1_dum <- ifelse(sampled_las$lm1_pred >
 
 sampled_las$lm1_pred <- lm1_pred
 sampled_las$lm1_dum5 <- ifelse(sampled_las$lm1_pred >
-  quantile(sampled_las$lm1_pred, .5), 1, 0)
+  quantile(sampled_las$lm1_pred, .90), 1, 0)
 
 sampled_las$lm2_pred <- lm2_pred
 sampled_las$lm2_dum <- ifelse(sampled_las$lm2_pred >

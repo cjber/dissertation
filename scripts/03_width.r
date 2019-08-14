@@ -20,6 +20,9 @@ road_lm3 <- road_lm[road_lm$lm3_dum == 1, ]
 road_glm <- road_lm[road_lm$glm1_dum == 1, ]
 road_lmi <- road_fil[road_fil$lmI_dum == 1, ]
 
+test <- road_lm15[road_lm15$road_id == "road_6", ]
+plot(test)
+
 linear_models <- list(road_lm1, road_lm15, road_lm2, road_lm3, road_glm, road_lmi)
 # includes all filtering, max dist points
 linear_models <- lapply(linear_models, max_lines)
