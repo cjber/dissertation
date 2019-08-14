@@ -21,99 +21,21 @@ road_lmi <- road_fil[road_fil$lmI_dum == 1, ]
 
 linear_models <- list(road_lm1, road_lm2, road_lm3, road_glm, road_lmi)
 
-linear_models <- lapply(linear_models, function(x) {
-    road_lm <- split(x, f = x$sample_id)
+linear_models <- lapply(linear_models, max_lines)
 
-    road_lm <- lapply(road_lm, function(s) {
-        # assume 2m 4 pts per m
-        if (nrow(s) > 8) {
-            # remove outlier points
-            distances <- s %>%
-                st_distance() %>%
-                apply(1, FUN = function(y) {
-                    min(y[y > 0])
-                }) %>%
-                as.data.frame() %>%
-                mutate(rowid = row_number()) %>%
-                select(min_dist = ".", rowid)
-
-            # above 1m from any other point
-            distances <- distances[distances$min_dist < 1, ]
-
-            s <- s %>% mutate(rowid = row_number())
-
-            s <- s[s$rowid %in% distances$rowid, ]
-            return(s)
-        }
-    })
-    road_lm <- road_lm %>% compact()
-
-    # find two farthest points
-    road_lm <- lapply(road_lm, max_dist)
-    road_lm <- do.call(rbind, road_lm)
-    # find intersecting buffers
-    road_lm <- st_join(road_lm, road_buff)
-
-    return(road_lm)
-})
-
-road_polys <- lapply(linear_models, function(x) {
-    # road polygons
-    road_pts <- x %>% st_cast("POINT")
-    road_pts <- split(road_pts, road_pts$road_id)
-    road_poly <- lapply(road_pts, function(x) {
-        x <- x %>%
-            st_union() %>%
-            st_convex_hull()
-        if (class(x)[1] == "sfc_POLYGON") {
-            return(x)
-        }
-    })
-
-    # remove na
-    road_poly <- road_poly %>% compact()
-    # do.call doesn't work not sure why
-    road_poly <- purrr::reduce(road_poly, c)
-
-    return(road_poly)
-})
+road_polys <- lapply(linear_models, road_polys)
 
 # save polygons
 for (i in 1:length(road_polys)) {
-    st_write(linear_models[[i]], paste0("../data/final_data/road_polys_", i, ".gpkg"), layer_options = "OVERWRITE=YES")
+    st_write(linear_models[[i]], 
+             paste0("../data/final_data/road_polys_", i, ".gpkg"),
+             layer_options = "OVERWRITE=YES")
 }
 
 centrelines <- st_read("../data/derived/roads/roads.gpkg") %>%
     st_set_crs(27700)
 ####
-linear_widths <- lapply(linear_models, function(model) {
-    road_lm <- model[!is.na(model$roadFunction), ]
-    rds <- unique(model$road_id)
-    road_lm <- split(road_lm, f = road_lm$road_id)
-
-    samp <- Filter(function(x) dim(x)[1] > 0, road_lm)
-    cent <- centrelines[centrelines$road_id %in% rds, ]
-    cent <- split(cent, f = cent$road_id)
-    cent <- Filter(function(x) dim(x)[1] > 0, cent)
-
-    ## ---- find true widths
-    widths <- mapply(opposite_length, samp, cent)
-    widths <- do.call(rbind, widths)
-    widths <- as.data.frame(widths)
-
-    widths$opposite <- as.numeric(unfactor(widths$opposite))
-
-    widths <- widths[widths$opposite > 2 & widths$opposite < 8, ]
-
-    widths <- widths %>%
-        group_by(V2) %>%
-        select(road_id = V2, opposite) %>%
-        summarise(
-            mean_width = mean(opposite)
-        )
-
-    return(widths)
-})
+linear_widths <- lapply(linear_models, model_comparison)
 
 linear_widths <- linear_widths %>%
     reduce(left_join, by = "road_id")
@@ -193,34 +115,16 @@ las_rds <- las_rds[las_rds$road == 1, ]
 
 las_rds <- split(las_rds, las_rds$sample_id)
 
-las_rds <- lapply(las_rds, function(x) {
-    if (max(x$NumberOfReturns) == 1) {
-        return(x)
-    }
-})
+las_rds <- lapply(las_rds, filter_returns)
+
 las_rds <- las_rds %>%
     compact()
+
 las_rds <- do.call(rbind, las_rds)
 
 las_height <- split(las_rds, las_rds$road_id)
 
-las_height <- lapply(las_height, function(x) {
-    elev <- c()
-    samples <- split(x, x$sample_id)
-    if (length(samples) > 2) {
-        for (s in 2:length(samples) - 1) {
-            pair <- samples[c(s, s + 1)]
-            n1 <- mean(pair[[1]]$Z)
-            n2 <- mean(pair[[2]]$Z)
-            e <- abs(n1 - n2)
-            e <- cbind(
-                as.character(unique(samples[[s]]$road_id)), e
-            )
-            elev <- rbind(elev, e)
-        }
-    }
-    return(elev)
-})
+las_height <- lapply(las_height, height_change)
 
 las_height <- do.call(rbind, las_height)
 las_height <- as.data.frame(las_height)

@@ -44,12 +44,7 @@ sampled_las$glm1_dum <- ifelse(sampled_las$glm1_pred >
   quantile(sampled_las$glm1_pred, .95), 1, 0)
 
 # global linear model: filtered test
-filter_las <- lapply(samples, function(x) {
-  road <- x[x$road == 1, ]
-  if (max(road$NumberOfReturns) == 1) {
-    return(x)
-  }
-})
+filter_las <- lapply(samples, filter_returns)
 
 filter_las <- filter_las %>%
   compact()

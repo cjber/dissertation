@@ -1,4 +1,5 @@
 source("./functions.r")
+
 centrelines <- read_sf("../data/derived/roads/roads_line.gpkg") %>%
     st_set_crs(27700)
 
@@ -60,12 +61,8 @@ writeRaster(aerial, "../data/derived/aerial/aerial_crop.tif",
 lum <- raster::extract(aerial, joined_output)
 joined_output$lum <- as.numeric(lum)
 
-# find nearest distance from centreline
-find_dists <- function(x, y) {
-    d <- st_distance(x, y)
-    return(d)
-}
 
+# find dists from centrelines
 joined_output <- split(joined_output, f = joined_output$road_id)
 centrelines <- split(centrelines, centrelines$road_id)
 

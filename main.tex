@@ -133,7 +133,7 @@
 \label{ch:introduction}
 
 \begin{multicols}{2}
-       \lettrine{R}{oad} usage within the United Kingdom has been steadily increasing by year with the highest ever billion vehicle miles travelled in 2018 (255 million) \citep{departmentfortransport2019}. Characterised by tall hedgerows and winding turns, rural roads in the UK are often unsuited higher traffic flow, due to the obstruction of view due to the protected hedgerows, narrow lanes and often poor condition. The abundance of these roads, with "Unclassified" local network roads making up 60\% of all roads in the UK \citep{departmentfortransport2012}, and their varying nature, the national assessment of these roads into appropriate speed limits on an individual basis has been considered impractical. Due to this, there have been no individual assessments for the majority of rural roads, and given their nature are classified as unlit, single carriageway roads and thus assigned a default speed of 60mph \citep{ukgovernment2019a}. Highways England manages the motorways and trunk roads within the UK, but local road networks are maintained by Local Authorities, and as such have no comprehensive information regarding these smaller road networks \citep{highwaysengland2019}. Rural roads in the UK are often cited as by far the most dangerous road type with studies suggesting that up to two thirds of vehicle accidents occur on rural roads \citep{corben2005}.
+       \lettrine{R}{oad} usage within the United Kingdom has been steadily increasing by year with the highest ever billion vehicle miles (bvm) travelled in 2018  \citep[255 million;][]{departmentfortransport2019}. Characterised by tall hedgerows and winding turns, rural roads in the UK are often unsuitable for higher traffic flow due to the obstruction of view due to the protected hedgerows, narrow lanes and often poor condition. Due to the abundance of these roads, with "Unclassified" local network roads making up 60\% of all roads in the UK \citep{departmentfortransport2012}, and their varying nature, the national assessment of these roads into appropriate speed limits on an individual basis has been considered impractical. Due to this, there have been no individual assessments for the majority of rural roads, and given their nature are classified as unlit, single carriageway roads and thus assigned a default speed of 60mph \citep{ukgovernment2019a}. Highways England manages the motorways and trunk roads within the UK, but local road networks are maintained by Local Authorities, and as such have no comprehensive information regarding these smaller road networks \citep{highwaysengland2019}. Rural roads in the UK are often cited as by far the most dangerous road type with studies suggesting that up to two thirds of vehicle accidents occur on rural roads \citep{corben2005}.
 
 The Rural Urban Classification defines a rural area as one outside a settlements with more than 10,000 resident population \citep{ukgovernment2011}, therefore a road could be considered rural, if either connecting or present within small settlements in the UK. This study will focus particualrly on rural connecting roads, outside of rural towns.
 
@@ -239,9 +239,310 @@ This paper is organised into chapters, first a literature review, outlining the 
 
 \chapter{Literature}
 \label{ch:literature}
-\input{02_literature/literature.tex}
 
-\chapter{Methods}
+\begin{multicols}{2}
+
+    \lettrine{T}{ypical} road extraction techniques have focused purely on urban road networks and involved methods which can be both computationally intensive and time consuming. Given the pressure for full quantitative assessments of the current speed limits in the rural network in the United Kingdom, there is a demand to produce comprehensive methods for rural road feature extraction. This paper primarily focuses on techniques for assessing the road geometry for roads considered to be rural connecting roads in the United Kingdom. This literature review will first outline the current understanding of the rural road network, considering the role of speed and speed limits in accident likelihood, rural accessibility, and a detailed look at current road extraction techniques involving aerial imagery and LiDAR, presenting the key differences and limitations of these studies when considering the rural road network in the UK.
+
+
+Road Geometry, from \cite{jaakola2008}documentation of both road geometry and road environment.
+Road geometry means the parameters used for the geometric design of roads, such as design speed,
+stopping sight distance, passing sight distance, line of sight, number of lanes, lane width, side foot path
+for pedestrians, longitudinal and transverse slope, road pavement materials, etc. Recently built roads
+follow modern geometric design parameters, and most of this information is already available, but for
+the oldest roads these data, which are required mostly for upgrading or assessing the quality of the
+roads, are unavailable or unusable. By road environment we refer to the vicinity of the road on both
+sides of the road, including buildings, trees, vegetation, electricity, traffic signs, traffic light poles and
+other objects [1]. We expect that the geometry of this kind of road environment can best be obtained
+either using airborne or vehicle-based laser scanning or using an integrated approach combining both
+systems. Supported with imaging sensors, the documentation can be completed with texture
+information, traffic sign semantics, etc.
+
+
+
+\section{British Rural Road Network}
+
+- How many roads are "rural", how much traffic
+Describe for the UK.
+
+\cite{taylor2002} conducted a comprehensive study outlining the key features of British rural roads, in an effort to improve the characterstics associated with accident rates, above that which was explored by the MASTER study which primarily consisted of European road data, with limited data for England \citep{baruya1998}. \cite{taylor2002} identify key features of 174 selected rural british roads across England which they use to classify roads into certain categories, this data was obtained through drive through video recordings. The following data was obtained and used to categorise the quality of the road;
+
+\textit{Discrete data}
+
+\begin{itemize}
+    \item Type of junction (if present);
+    \item Number and type of minor junctions;
+    \item Number and type of accesses within the section;
+    \item Number of bends, classified into:
+        \subitem Sharp (bends with a warning sign);
+        \subitem medium;
+        \subitem slight
+\end{itemize}
+
+\textit{Semi-continuous data}
+
+\begin{itemize}
+    \item Lighting;
+    \item Reflecting road studs;
+    \item Kerbs;
+    \item Number of lanes;
+    \item Road markings;
+    \item Land use.
+\end{itemize}
+
+\textit{Continuous data}
+\begin{itemize}
+    \item Visibility;
+    \item Verge width and type;
+    \item Roadside type;
+\end{itemize}
+
+Notably, the features unique to rural roads were observed to be the land use either side of a road, consisting mainly of residential, farming, wooded, open or industrial. Verges consisting of grass verges, pavement, low banks, ditches or none. Roadside type included the most dominant vertical feature closest to the road, including trees which may overhang the road, hedges, banks, fences and so on. This study also manually measured the road width for each site, and to determine the "hilliness" of roads, the number of 10m contour lines crossed were counted to give the total change in height.
+
+\cite{taylor2002} found that the average width of British rural roads varied from 2m to 10.2m with a mean width or 6.5m. Most were two lane roads, however a small number were single track. The mean length of roads was 3km, around half the sites had more than 3 bends per km with 1 third showing 1 severe bend per km. Most roads were flat, showing less than a 10m rise per km.
+
+Road quality in this assessment was determined through categorising roads into four key groups:
+
+\begin{itemize}
+    \item Group 1: Roads which are very hilly, with a high bend density and low traffic speed. \textit{These are low quality roads.}
+
+    \item Group 2: Roads with a high access density, above average bend density and below average traffic speed. \textit{These are lower than average quality roads.}
+
+    \item Group 3: Roads with a high junction density, but below average bend density and hilliness, and above average traffic speed. \textit{These are higher than average quality roads.}
+
+    \item Group 4: Roads with a low density of bends, junctions and accesses and a high traffic speed. \textit{These are high quality roads.}
+\end{itemize}
+
+This study therefore attempted to outline a rural road hierarchy in relation to road function, and certain road geometries, which addresses issues outlined in the Government's review of speed policy \citep{departmentoftheenvironmenttransportandthe2000}. However, due to the nature of the data collection for this study, time constraints mean that producing a full road hierarchy for all rural roads within England is impractical and requires a review of the methodology. Additionally the speed policy review notes that road hierarchies should inform appropriate speeds for each road.
+
+
+See \citep{taylor2000}
+
+\subsection{Rural Speed Limits}
+
+Accidents on rural roads often occur within the 60 mph speed limit meaning a distinction between what is an appropriate speed should be made that does not relate to a given speed limit. \cite{baruya1998} suggest a distinction between both \textit{excess} and \textit{inappropriate} speed. \textit{Excess} when driving above the speed limit, and therefore directly breaking the law, \textit{inappropriate} speed; driving too fast for the conditions of the road, not necessarily above the speed limit, often considered dangerous driving. A study by the \cite{departmentfortransport2013b} assessed the impact of inappropriate speed on rural roads, which contributed to 20\% of all crashes on minor rural roads with a 60mph limit, whereas excess speed only accounted for around 16\% of collisions. An observation of 270 single carriageway rural roads in England found that the mean distribution of speeds had a wide distribution, often significantly below the 60mph limit \citep{departmentfortransport2006}.
+
+The Department for Transport found that rural roads account for around 66\% of all road deaths, despite accounting for around 42\% of the total distance travelled by all vehicles. Notably 51\% of all deaths in Britain in 2011 occurred on rural single carriageway roads, with the national speed limit of 60mph \citep{departmentfortransport2011}. 
+
+\subsection{Speed, Road Geometry and Accidents}
+
+Lowering the speed limit on roads has been shown to result in an overall reduction in the average speed of vehicles.\cite{finch1994} found that a reduction in the speed limit of a road resulted in a mean speed reduction of around one quarter of the difference, noting that drivers will often obey speed limits that they determine to be reasonable. A reduction in average speed subsequently leads to a reduction in road traffic accidents\citep{finch1994;taylor2002},\cite{taylor2000} produced the EURO model to predict accident frequencies given the proportion of drivers exceeding the speed limit and the average speed, finding that excess speed and a higher speed limit were both associated with a higher accident frequency.  Particularly, the risk of death at various speeds has been assessed in various studies,\cite{richards2009} found that at 60mph the risk of a driver dying in a head on collision between two cars is around 90\%, but with a reduction in speed, this drops to around 50\% at 48mph.
+
+\cite{taylor2000}  demonstrated that traffic flow, link length, and the number of minor junctions all directly increased the number of accidents, while wider roads were associated with a reduction in the number of accidents. The \textit{MASTER: Speed-accident relationship on European roads} \citep{baruya1998}, assessed road geometry and other features of roads, however road data for the United Kingdom was limited to a small area in the South East, suggesting that a comprehensive methodology for the extraction of UK rural road geometry is required for a more comprehensive study.
+
+Developed speed tool:
+\citep{departmentfortransport2013a} Straightforward method for determining appropriate speed limits.Forcasting speed reduction and therefore accident reduction with revised speed limits. Does not take into account road geometry etc.
+
+\subsection{Accessibility}
+
+Rural accessibility can be defined in terms of economic and social opportunity as the proximity or ability for spatial interaction \citep{gutierrez2009}. In relation to transport specifically, accessibility may be defined as the ability or opportunities by which basic services can be reached by either public or private transportation \citep{gutierrez2009}.
+
+Journey time on rural roads is often a primary concern when considering a reduction in speed limits, often higher speed is perceived to bring with it shorter travel times, and greater accessibility for people and goods \citep{departmentfortransport2013b}. Despite this, there is evidence to support that traffic travelling at constant, and lower speeds may result in overall more reliable journey times, and the time saved by travelling at faster speed is often overestimated \citep{stradling2008}.
+
+Despite this, transport accessibility for rural communities is far more limited than for urban communities, where often rural areas have limited or no public transport, meaning there is a heavy reliance on personal transport \citep{gray2001}. Accessibility in this context can be defined as the transport facility or opportunities with which basic services can be reached from a given location by using a certain transport system \citep{gutierrez2009}.
+
+There has been little focus on the improvement of transport technologies in rural areas, with the potential for new technologies implemented into urban areas improving rural accessibility \citep{velaga2012}. A key area to address is the level of accessibility to hospital services for rural communities, where recent centralisation of these services has negatively impacted the level of access for rural communities \citep{mungall2005}. This also impacts the level of access for hospital services to reach rural areas, where distance and time taken to a hospital directly correlates with a patients mortality \citep{nicholl2007}. Emergency vehicles are often larger than personal vehicles and as such it can be assumed that accessibility for these types of services is often more limited depending on the quality of rural roads.
+
+\cite{velaga2012} conducted a study outlining the key transport and technological challenges that limit accessibility within rural areas, demonstrating that the quality of rural infrastructure, and access to services are key factors driving social exclusion and limited access to goods and services. \cite{velaga2012} suggest that technological innovations targeting rural areas may alleviate this problem through the production of user generated data, they note that certain challenges will come with this technology, notably their first point;
+
+\begin{quote}
+Understanding basic technological infrastructure requirements in rural areas.
+\end{quote}
+
+Suggesting a greater understanding of the existing rural road infrastructure is required before the introduction of existing rural technologies may improve access to rural areas.
+
+More on emergency response.
+
+// expand all, summarise the mentioned papers.
+
+\subsection{Road Maintenance}
+
+\citep{yadav2018}: road surface three dimensional information important for pavement condition asessment, road maintenance citep Mcelhinney2010; yang2013
+
+\citep{jaakola2008}
+information can be obtained with airborne laser scanning at low altitudes.
+When the road has been constructed, documentation of road information is needed for an increasing
+number of other applications, such as noise modelling, road safety, road maintenance, location-based
+services, and car and pedestrian navigation. Documentation of the road environment includes
+documentation of both road geometry and road environment.
+Road geometry means the parameters used for the geometric design of roads, such as design speed,
+
+\section{LiDAR Data Classification}
+
+Aerial LiDAR classification typically follows two objectives, the classification of ground and non-ground points, and the classification of surface objects, including buildings, trees or roads \citep{charaniya2004}. Classification takes two forms, \textit{supervised} and \textit{unsupervised}, supervised classification taking a \textit{training} dataset and using it to estimate the paramaters associated with the outcome hoping to be classified. These parameters are then used on unknown data, with a similar distribution to the training set, and used to classify features \citep{charaniya2004}.
+
+Most past work on the classification of LiDAR data has been produced through unsupervised classification, where no training dataset is provided, often producing a coarse classification than could be obtained through supervised classification.
+
+from \citep{charainya2004}:
+
+\subsection{Digital Terrain Models}
+\label{subs:dtm}
+
+Early LiDAR classification primarily focused on the production of digital terrain models (DTM), \cite{kraus1998} used an iterative linear prediction algorithm which used residuals to compute weights for each point. Ground points produced residuals with negative weigthing, and vegetation was more likely to produce residuals with higher weighting. From this 47.8\% of points were classified as vegetation, from this they note that advances in the technology, such as the inclusion of multiple laser pulses enable for a higher quality DTM.
+
+\cite{vosselman2000}, proposed a laser pulse filtering technique for distinguising laser points that were reflected from buildings and vegetation, than those from ground, weights were assigned to points, determined by an assigned acceptible height difference between two neighrbouring points. Limitations at the time of this study meant that processing requires points to be aggregated into a grid for processing, resulting in significant information loss. Results were generally good for the simplicity of the method, giving a RMS error of 20-30cm, however \cite{vosselman2000} note that this error likely does not reflect the true precision of the DEM, which may be slightly worse.
+
+The observation of height textures are another method for DEM extraction enabled through the use of LiDAR data. \cite{maas1999} used height variation between neighbouring LiDAR points to classify buildings, trees, and flat terrain, with enough detail to detemrine whether a building had a flat or sloped roof. Similarly\cite{elberink2000} noted that man made structures often have smooth, regular height textures, with small variations in height, while trees and other vegetation give an irregular height pattern. Empirical assessment of the accuracy of their technique resulted in a 98% accuracy for buildings, and 97% for trees, however ground based objects could only be detected with an accuracy of below 70% and\cite{elberink2000} suggest that multi-spectral data should be included to achieve better results.
+
+\cite{zhang2003} used morphological filtering of points assigned into a regular grid by inputting a minimum elevation for each cell in the grid, and interpolating the elevation of cells not containing any points. Accuracy of the results were assessed both quantitatively and qualitatively, giving 3\% error from misclassified points, however observation of the DEM showed artefacts primarily from larger buildings.
+
+This paper will utilise a recent method for DEM production in order to classify ground and non ground points for subsequent road classification. The method chosen was proposed by \cite{zhang2016} uses \textit{cloth simulation} to generate a DTM from LiDAR data. This algorithm, unlike other filtering algorithms, allows for a simplistic input, without the need for numerous parameters to ensure an accurate DTM. This method consists of four main steps:
+
+\begin{itemize}
+    \item \textit{Initial State} A cloth is placed above the inverted LiDAR measurements.
+    \item The displacement of each LiDAR point is calculated under the influence of gravity, meaning some points appear below ground measurements.
+    \item \textit{Intersection check.} For any points detected as being under the ground, they are moved to ground level and set to be unmovable.
+    \item \textit{Considering internal forces.} Movable points are moved according to neighbouring points.
+\end{itemize}
+
+Quantitative accuracy of this methodology gave results similar to top existing DTM production algorithms, but with a far more simplistic implementation.
+
+\subsection{Feature Classification}
+
+Developments in LiDAR enabled the possibility of classification by using laser intensity information and multiple returns, features of more advanced LiDAR systems. The TopEye system used by \cite{axelsson1998} allowed for  classification of buildings and electrical power-lines using reflectance ($1/intensity$) to obtain radiometric information about the area and note that this can be used to separate paved area from grassland. Power lines in particular benefited from the multiple returns produced by the LiDAR system used as they often gave one return from the power line, and one from ground.
+
+// if i want more,...
+ Maas [12] height texture for segmentation of lidar. Filin [5] surface clustering technique for identifying regions in lidar exhibiting homogeneity in certain feature space consisting of postion, tangent plane, and relative height difference attribures for every point. the surface are categorised as hiehg vegetation, (height jumps), low vegetation, smooth surfaces and planar surfaces // note that smooth surfaces often man made (find ref). song [17] separation of materials, trees grass ashphalt, roads, and roofs on intensity data, interpolated using three trechnqies, idw, median filtering and kriging. Hebert [7] presented outling or some classification.
+Approaches using mixture models [14,10,4,3] for paramatric classification. Maceda [9] ground based laster discriminting grass and rocks. 
+Inclusion of aerial imagery, improvement of classification [2], or others [13,15].
+
+
+Ground based lidar: \citep{yadav2018}
+
+
+\section{Road Classification}
+
+// small history of road extraction here
+// list varying resolution increases per papers?
+// timeline of aerial image quality/lidar
+
+short intro:
+
+Much tougher than object extraction from surface, height differences less prominent, less relevant for road mapping. vosselman2009a
+
+Many proposed road classification methods have used purely unsupervised...
+
+Road classification is essentially a data clustering method to categorise data into road and non-road points, enabled through discovering patterns and relationship between variables and validation of findings \citep{saeedi2009} Clustering may be achieved through various algorithms, categorised generally into partitioning methods, hierarchical methods, density-based methods, grid-based methods, and model-based methods \citep{saeedi2009}.\cite{yadav2018} note that the periodic assessment of roads is greatly important due to the increasing traffic load, and new automated techniques will enable this in areas where in the past it had not been feasible. Due to the heterogeneous nature of certain roads types, the road environment is often complex, meaning collection and accurate processing of road features is challenging\citep{yadav2018}.
+
+Road classification methodologies have historically used purely aerial imagery, providing only road pixels and 2D location information \citep{yadav2018}. \cite{ferchichi2005} used high resolution satellite imagery for road centreline extraction from a suburban area based on cluster coverage. They used image segmentation through maximum likelihood to assign pixels to road and non-road classes, making the assumption that both classes gave a Gaussian distribution. Features for classification include the angular second-movement, contrast, and entropy of the image, based off image texture analysis by \cite{dubes1992}. Results of the classification gave significant noise, noted as a possibility due to non conformance with a Gaussian distribution, however, centreline extraction from the resultant classification removed any pixels with low density and ran a $K$-means clustering algorithm iteratively to determine road clusters. \cite{wan2007} produced an automated method for mapping urban and suburban roads using high resolution satellite imagery, using spectral, context, shape and the structural features or roads. Using fuzzy segmentation, classification of buildings, parking areas, and road clusters were obtain, but with large levels of noise. Angular texture analysis was able to reduce this noise, however large areas of incorrectly classified roads appear present results. Additionally, while not mentioned in this study, the method proposed fails to address the differentiation between road and pavement, a key issue with the use of 2D imagery.
+
+\subsection{LiDAR Road Classification}
+
+Several methods for road classification from LiDAR follow similar patterns, first identification of ground points through height data, and DTM extraction through interpolation, and subsequent classification based on the attributes of the point cloud \cite{vosselman2009}. Due to the 3D information provided by LiDAR data, kerbs can be segmented from roads, achieving a more accurate road edge location when kerbs are present. However, due to the often small jump between kerb and road, this methodology is limited to new terrestrial mobile LiDAR data collection.\cite{jaakola2008} produced a methodology using mobile LiDAR data to classify road edges by segmenting kerbstones based on the height gradient along the scanned profile, with a final completeness of 73.9\%, and correctness of 85.6\%. Additionally, road markings were segmented from the road surface using intensity information. The mobile data collection for this study obtained a point resolution of between 10cm$^2$ and 100cm$^2$, with driving speeds of 20km/h to 50km/h. \cite{jaakkola2008} note that due to the size of the data produced through this method, computation times are lengthy and algorithms have to ensure efficiency. \cite{yoon2009} similarly developed an approach for urban drivable terrain detection for automated vehicles through mobile LiDAR data, road edges were obtained through the slope and standard deviation of the height of points, finding the standard deviation to be far more efficient for edge detection. They note that while results were promising, it would take a very long time to collect data for a large number of roads, and at higher vehicle speeds, LiDAR points density is reduced below a usable threshold. 
+
+\cite{vosselman2009a} used low flying airborne LiDAR point cloud data with a very high density of 10-20m$^2$
+
+Road Edge Detection:
+
+Vosselman2009, developed a method for detecting kerbstones from airborne LiDAR data, based on the detection of small height jumps caused byt he kerbstones in the LiDAR point cloud data. Cars parked occluded kerbstones.
+Smadja2010 \citep{smadja2010}, algorithm for extracting roads fom Lidar data based on the daetection of slope break points coupled with ransac algorithm, road boundaries further processed to compute road curvature and road width information.
+zhang2010 detecting road edges in urban environment using terrestial lidar data, edge points identified based on elevation information. identified 3d road edges points projected on a ground plain to estimate road kerbs.
+McElhinney2010, extracting road edges from terresrial model lidar data, first set of lines fitted to the road cross sections based on the navigation data and then lidar points within the vicinity of the liens were determined. second stage, the points were analysed based on information such as slope, intensity, pulse widht and proximity to vehicle information in order to extract the road edges.
+Ibrahim2012, street kerb and surface from terrestrial mobile lidar point cloud data, segmented to ground and non ground based on point density, further refined analysing the morphological characteristic of the neighbourhood of each opint in the segment, kerb edges finally extracted from the refined ground segment by appling the drivative of the gaussian function to 3d points.
+\cite{clode2004} used a Hough transformation to classify roads from aerial LiDAR data. Data was first aggregated into 
+Road pixel must lie on or near DTM, and have a certain intensity and normalised local point density. **My paper will extend this, inclusion of road shapefiles to remove known non roads (supervised), noted as a limitation in clode therefore, less focus on automated extraction, (as it isn't needed generally), more focus on automated identification of road features, i.e. width etc.**
+clode2004: segmentation of airborne lidar to road and non-road objects using hierarchical classification techniiques based on elevation and intensity information, accuracy impaired due to car parks and private roads.
+
+Create DTM from last pulse DSM
+Intensity identifies the type of road material (bitumen in their paper)
+This issue may be alleviated with the use of LiDAR data, where the majority of road extraction methodologies use height variation to delineate roads from kerbs. 
+
+// manmade smooth? can't find ref now...
+
+
+See \citep{kumar2013}:
+
+goulette2006: methodd for segmenting road, trees, and facades from terrestrial mobile lidar data. road sgemented as horizontal plane high density of points in the histogram + usedt o compute road width and curvature. Trees and facades identified as vertical planes and disconnected elements in the histogram.
+yuan2008: algoritm using fuzzy clusting method to cluster LiDAR points, straight lines then fitted to the linearly clustered data using slope information for extracting the road.
+elberink2009: automated method for 3d modelling highway infrastructure using airborne LiDAR + 2d topographic. Road polygons were extracted from the topographic map data using a map based seed-growing algorithm combined with a Hough transformation. points added to the correspondng road polygons using a LiDAR based seed-growing algorithm then mapped polygons
+lam2010, terrestrial mobile lidar data random sample consensus (RANSAC) planes to small sections then interconnected these fitterd planes using Kalman filtering. Further filtering powerlines etc.
+
+
+Majority attempt to delineate roads by distinguishing them from non-road objects but do not attempt to extract the road edges. Most for urban roads, rely on sufficient height or slope difference between the road and kerb points for etecting road sedges. Little or no research been carried out to extract rural roads, wheer non-road surface comprises grass-soil and edges not as easily defined by slope changes alone. Intensity and pulse width attributes from liDAR data can be a useful source of intermation for extracting these roads edges. 
+
+
+
+An overview of road extraction techniques from aerial LiDAR data are described in \cite{hatger2005}, the detection of straight lines within data, to derived feature outlines using a Hough transformation. Region growing algorithms, which take small regions identified as being true parts of the road surface, then growing these areas by adding neighbouring points with similar properties, and hierarchical classification, which splits the data into partitions that follow a common predicate, removing data sequentially. // reword this.
+
+
+
+From: \citep{hatger2005}
+- Segmentation through discontinuity, prominent points or edges, or areas fulfilling certain criteria in continuity.
+- Point operators which try to find isolated points, corners, or points being part of a one dimensional curve (Haralick and Shapira, 1992, Canny, 1986 (old))
+- Second step building contour chains from individual points.
+- alternatively, discontinuity perpendicular to a linear structure can be defined in terms of the continuous arass to the left and right of the structure (brugelmann,2000, wild and krzystek 1996. + region growing)
+- inclusion of as much information e.g. minimum width requirements etc (actually not defined in the UK however)
+- Continuous surfaces approximated by planes, usually horizontal
+
+Techniques from Hatger 2005
+General Planar Regin growsing Segmentation
+Iterating following:
+1. Find the best seed region which fulfils the desired predicate,
+2. Add elements to the seed region (i.e. grow it) as long as they are connected to it, and they too fulfil the predicate
+3. If the region cannot be grown anymore, accept it and go to 1. using the remaining elements.
+They use estimation of local planes, and look for the smallest residuals. The predicate is a certain maximum distance $e$ of the points to the plane given by its Hesse normal form
+
+The scan line grouping approach
+Less computationally expensive than region growing.
+- Presented by \citep{jiang1992}.
+- Raster data: plane $z = ax + by + d$ all points along the line $y = y0$ fulful the equatin $z = as + by0 + d$ the line equation. add entire scan lines
+Steps:
+1. Partitioning of each scan line y = y0 into linear segments fulfilling corresponding line equaitons
+2. Search for a seed region by investigating overlapping linear seegments of three successive lines
+3. Growing the best seed region by adding neighbouring line segments, as long as they still are part of the same plane
+4. Postprocessing: 
+
+(RANSAC), intoduced by (Fischler and Bolles, 1981). fixes errors
+
+
+Charainya gives information which is utilised in this paper for the modelling. i.e. Lum and Intensity are most useful for road detection
+
+
+
+- Extraction includes detection of planar or smooth surfaces, and the classification of points or point clusters based on local point patterns, echo intensity and echo count information \citep{vosselman2004;darmawati2008}
+
+2. Lidar points distirbute irregularly with non uniformity density. the point density in the overlapping area between fight strips is greater than non-overlapping regions. There is no point in areas occulded by tall objects. can be soled interpolating into intensity image (e.g. Zhao,2012, zhu 2009) binary image, Clode 2007. others see Samadzadegan 2009, Jiangui 2011.
+
+\citep{yadav2018}: Major limitation of existing methods to extract rural road surface as mostly without curb. Methologies such as Yang et al., 2013 which deals with curbs and boundaries characterized as ashpalt/soil and ashpalt vegetation and ashpalt/grassy bank. Exact edge location difficult if point density less and sufficiant elevatio jump not present at boundary of carriageway (Mc Elhinney et al., 2010). Wu et al., 2013 dependent on road range which cannot be calculated correctly if height diffrernce between road surface and shoulder not obvious.
+
+Clode 2004:
+
+Note that as they use point density of 1/2m, and intensity has a footprint of 20 - 30cm the intensity if not typically used. (Rottensteiner, 2003). **with my method we use a resolution of 25cm, much higher point density**
+
+
+
+- from \citep{vosselman2009a}: clode 2004a, pulse reflectance strength + dtm to detect roads . Later improved including buildings and vegetation.
+
+- Akel et al. 2005, road areas classifying smooth segments based on size and shape characteristics
+- Rieger 1999 used surface slope in a 20cm eleveation grid to detect roads in mountainous areas
+- Hatger and Brenner 2003,2005, laser scanning data at 0.5m to extract properties of roads for which centrelines arer known from a road database. Including height longitudinal and transversal slope, curvature, and width. Height profiles across road split into straight sgements. A RANSAC procedure on the end points of the sements with low slope values is used to fit straight lines to the road sides. \citep{hatger2003;hatger2005}
+
+
+\subsection{Rural Road Extraction}
+
+Traditional road extraction techniques from aerial imagery relied on human extraction that is both time consuming and prone to inaccuracy \citep{wang2015}. However, recent improvements in remote sensing technology now mean that automated extraction techniques have been explored which rely on the much higher resolution imagery available \citep{xu2018}. This paper will use Light Detection and Ranging (LiDAR) data, made available by the UK government for much of England. LiDAR is collected by measuring the distance from an aircraft to the ground, emitting laser pulses at regular intervals \citep{environmentagency2019}, allowing for very high resolution terrain models to be produced, with a resolution up to 25cm. Additionally the 'point clouds' produced by the laser pulses contain information that may be utilised to determine the qualities that are indicative of road locations \citep[e.g.][]{clode2004}.
+
+Additionally, luminescence information extracted from 25cm resolution aerial true colour imagery is available for research purposes for the entirety of the UK.
+
+
+
+
+Key factors in determining poor road quality:
+
+\begin{itemize}
+    \item Width \citep{taylor2002} \citep{aarts2006}
+    \item Surface quality
+    \item Blind corners/winding roads \citep{aarts2006} \citep{wu2013}
+    \item Junction Sharpness \citep{aarts2006}
+
+\end{itemize}
+// read these papers and identify why these should be considered when assessing road quality
+
+\section{Supervised Modelling Image Segmentation}
+
+\end{multicols}
+
+\chapter{Methodology}
 \label{ch:methods}
 
 \begin{multicols}{2}
@@ -272,7 +573,7 @@ Road centreline geometries were accessed through the \href{https://www.ordnances
 
 \section{LiDAR Preprocessing}
 
-The total number of LiDAR points used in this study is 9,419,272. All LIDAR data has a vertical accuracy of +/-15cm Root mean square error (RMSE). An overview of the LiDAR data selected for this study is given on Table \ref{tab:lidar}. The variables of primary interest are:
+The total number of LiDAR points used in this study is 9,419,272. All LIDAR data has a vertical accuracy of +/-15cm Root mean square error (RMSE). An overview of the LiDAR data selected for this study is given on Table \ref{tab:lidartab}. The variables of primary interest are:
 
 \begin{itemize}
     \item \textbf{Z:} The distance a laser pulse is reflected back to to scanner, calculated by the time taken for a return pulse to be detected.
@@ -324,7 +625,7 @@ where $\mathbf{p_i}$ is a single instance of a LiDAR point within the chosen poi
 
 \subsection{Normalisation}
 
-Ground points were classified using the Cloth Simulation Filtering (CSF) algorithm, as described in \cite{zhang2016}. Points were already classified in the data provided, however, as the classification technique was unknown, reclassification was considered necessary. The general implementation simulates the movements of a piece of cloth lying over the inverse of a point cloud, as the point cloud is flipped, the cloth settles beneath ground points, while covering points that lie separate to the ground, essentially forming a digital terrain model (DTM), cloth simulations are described in more detail in \cite{bridson2005}. The CSF algorithm is given;
+Ground points were classified using the Cloth Simulation Filtering (CSF) algorithm, as described in \cite{zhang2016}. Points were already classified in the data provided, however, as the classification technique was unknown, reclassification was considered necessary. The general implementation simulates the movements of a piece of cloth lying over the inverse of a point cloud, as the point cloud is flipped, the cloth settles beneath ground points, while covering points that lie separate to the ground, essentially forming a digital terrain model (DTM), cloth simulations are described in more detail in \cite{bridson2005} and subsection \ref{subs:dtm}. The CSF algorithm is given;
 
 $$
 X(t+\Delta t)=2 X(t)-X(t-\Delta t)+\frac{G}{m} \Delta t^{2},
@@ -362,8 +663,10 @@ This section combines data extracted through the OS road shapefiles preprocessed
 \caption{\label{tab:roadstab}OS Roads Data Summary}
 \centering
 \fontsize{8}{10}\selectfont
-\begin{tabular}{l>{\raggedright\arraybackslash}p{15em}}
+\begin{tabular}{l>{\raggedright\arraybackslash}p{12em}}
 \toprule
+  & Example\\
+\midrule
 id & idE381337E-E88D-4232-8CAD-F543F178EBE4\\
 endNode & id42B6F387-D838-445C-AA7A-6558362B7B9F\\
 startNode & idC8EE8B4C-D965-436A-BA02-A0925A6EA1B8\\
@@ -599,11 +902,13 @@ QGIS used to measure roughly the width at various points along each road using 2
 
 \begin{multicols}{2}
 
-\section{Overview of LiDAR Data}
+\section{Overview of Data}
 
-Table \ref{tab:lidar} indicates that there are likely some points with noise, particularly reflected by the highest intensity value (4063) relative to the mean value (187). Noise exclusion techniques are described in \cite{fang2004}, this paper takes a simplistic noise filtering technique that aims to solely remove extreme outliers from the observed intensity values in the chosen data.
+\subsection{LiDAR Point Cloud}
 
-\section{Overview of Roads}
+Table \ref{tab:lidartab} indicates that there are likely some points with noise, particularly reflected by the highest intensity value (4063) relative to the mean value (187). Noise exclusion techniques are described in \cite{fang2004}, this paper takes a simplistic noise filtering technique that aims to solely remove extreme outliers from the observed intensity values in the chosen data.
+
+\subsection{OS Road Geometry}
 
 Class differences, all singlecarriageway roads, therefore likely 60mph. Removed private roads. A roads + B roads + unclassified. Many unnamed roads, only identification possible through \texttt{identifier}, which splits roads by junctions.
 
@@ -643,10 +948,8 @@ Show figure of sample lines. Show the reduction in number of points (memory savi
 
 Covers 02
 
-\section{Widths and Road Quality}
 
-
-\section(Linear Probability Model)
+test.
 
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -670,6 +973,8 @@ First model (maximal):
 
 3. Compare global model 1 (best fit), to individual model using f1.
 
+
+
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
 
@@ -679,14 +984,8 @@ First model (maximal):
 
 
 
-
-{\centering \includegraphics[width=\linewidth]{figure/lm_figs-2} 
-
-}
-
-
-
 \end{knitrout}
+
 
 
 \begin{equation}
@@ -704,12 +1003,14 @@ First model (maximal):
 \section{Noise Filtering}
 
 \begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\linewidth]{figure/unnamed-chunk-9-1} 
+
+}
 
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{Error in (function (x, recursive = TRUE, use.names = TRUE) : argument "{}x"{} is missing, with no default}}
 
-{\ttfamily\noindent\bfseries\color{errorcolor}{Error in img[[rgb]]: no such index at level 1}}\end{kframe}
 \end{knitrout}
 
 // Manually measure a road width for a reference, i.e. how close to accurate different models are. GLM LM and individual filtered and unfiltered. Find max and min widths and mean, describe what likely causes the differences.
@@ -718,20 +1019,10 @@ First model (maximal):
 
 Very rough estimate of widths
 
-\begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{verbatim}
-Reading layer `roads_estwidth' from data source `/home/cjber/drive/uni/envs492/main/data/osroads/roads_estwidth.gpkg' using driver `GPKG'
-Simple feature collection with 41 features and 3 fields
-geometry type:  POLYGON
-dimension:      XY
-bbox:           xmin: 379999 ymin: 367999 xmax: 382001 ymax: 370001
-epsg (SRID):    27700
-proj4string:    +proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +units=m +no_defs
-\end{verbatim}
-\end{kframe}\begin{table}[t]
 
-\caption{\label{tab:unnamed-chunk-10}testing}
+\begin{table}[t]
+
+\caption{\label{tab:mtest_tab}testing}
 \centering
 \fontsize{8}{10}\selectfont
 \begin{tabular}{lr}
@@ -748,22 +1039,10 @@ lm $i$ & 83.26\\
 \end{table}
 
 
-\end{knitrout}
+
 
 \section{Road Assessment}
-\begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{verbatim}
-Reading layer `roads_estwidth' from data source `/home/cjber/drive/uni/envs492/main/data/osroads/roads_estwidth.gpkg' using driver `GPKG'
-Simple feature collection with 41 features and 3 fields
-geometry type:  POLYGON
-dimension:      XY
-bbox:           xmin: 379999 ymin: 367999 xmax: 382001 ymax: 370001
-epsg (SRID):    27700
-proj4string:    +proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +units=m +no_defs
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
+
 
 \begin{table}[H]
 
@@ -800,6 +1079,8 @@ Int Range & 0.32 & 0.34 & 0.43 & \\
 \end{knitrout}
 
 
+\section{Widths and Road Quality}
+
 \section{Road Analysis}
 
 // if there is time:
@@ -833,6 +1114,45 @@ estimate the road surface (assumed to be planar), leading
 to a standard deviation of about 15 cm /
 10  5 cm.
 
+Assessment strategy: assessing the results of an image processing work flow usually a textual description. but results can't be compared easily. Heipke1997 sugest a comparison between methods numerically, ratios derived from statistical test theory:
+
+be identiged.
+True positive (TP) – A phenomenon that is present within the input data and that has
+successfully been identiged within the output data.
+False positive (FP) – A phenomenon that is not present within the input data but that
+has falsely been found to be a phenomenon by the algorithm. Thus it is
+written to output data.
+False negative (FN) – A phenomenon that is present within the input data but that
+has not been identiged by the algorithm and therefore has been omitted
+from the output data.
+Then we degne Completeness by
+Completeness =
+TP
+.
+TP + FN
+(2.1)
+This is obvious and can directly be taken from degnition of TP and FN.
+Furthermore we degne Correctness by
+Correctness =
+TP
+.
+TP + FP
+(2.2)
+This is easy to see since we expect results not to contain features which are erroneous in
+a way that they contain features which are not present within input data. However, it
+is implied within this statement that we neglect those cases where features are present
+within the input data but are missing in the output. Finally Quality is degned by
+Quality =
+TP
+.
+TP + FP + FN
+(2.3)
+This can be considered as a kind of global measure for overall assessment of obtained
+results. It comprises e ects caused by both false positives and false negatives.
+Some but not all of the algorithms investigated in this paper use an assessment that is
+based on the above mentioned measures. Their results are reproduced where available.
+Otherwise, assessment is done by means of a textual description.
+
 
 // Mention logistic regression, considered but not used as results not better and requries a payoff.
 \end{multicols}
@@ -848,7 +1168,7 @@ to a standard deviation of about 15 cm /
 
 \begin{center}
 % remember to compile twice for current word count
-Word Count: 3596
+Word Count: 8149
 
 \end{center}
 
@@ -867,6 +1187,17 @@ Word Count: 3596
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{verbatim}
+Machine:     
+[1] "AMD Ryzen 5 2600 Six-Core Processor"
+Num cores:   
+[1] 12
+Num threads: 
+[1] 12
+RAM:         
+33.7 GB
+\end{verbatim}
+\end{kframe}
+\begin{kframe}\begin{verbatim}
 R version 3.6.1 (2019-07-05)
 Platform: x86_64-pc-linux-gnu (64-bit)
 Running under: Manjaro Linux
@@ -875,71 +1206,34 @@ Matrix products: default
 BLAS:   /usr/lib/libopenblasp-r0.3.6.so
 LAPACK: /usr/lib/liblapack.so.3.8.0
 
-locale:
- [1] LC_CTYPE=en_GB.UTF-8       LC_NUMERIC=C              
- [3] LC_TIME=en_GB.UTF-8        LC_COLLATE=en_GB.UTF-8    
- [5] LC_MONETARY=en_GB.UTF-8    LC_MESSAGES=en_GB.UTF-8   
- [7] LC_PAPER=en_GB.UTF-8       LC_NAME=C                 
- [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-[11] LC_MEASUREMENT=en_GB.UTF-8 LC_IDENTIFICATION=C       
-
 attached base packages:
-[1] stats     graphics  grDevices utils     datasets  methods   base     
+[1] parallel  stats     graphics  grDevices utils     datasets  methods  
+[8] base     
 
 other attached packages:
- [1] pbapply_1.4-1              rgdal_1.4-4               
- [3] future_1.14.0              varhandle_2.0.3           
- [5] forcats_0.4.0              stringr_1.4.0             
- [7] dplyr_0.8.3                purrr_0.3.2               
- [9] readr_1.3.1                tidyr_0.8.3               
-[11] tibble_2.1.3               tidyverse_1.2.1           
-[13] lidR_2.1.2                 raster_2.9-23             
-[15] sp_1.3-1                   scales_1.0.0              
-[17] kableExtra_1.1.0           data.table_1.12.2         
-[19] sf_0.7-7                   ggpubr_0.2.2              
-[21] magrittr_1.5               cowplot_1.0.0             
-[23] viridis_0.5.1              viridisLite_0.3.0         
-[25] broom_0.5.2                ggthemes_4.2.0            
-[27] RStoolbox_0.2.6            PerformanceAnalytics_1.5.3
-[29] xts_0.11-2                 zoo_1.8-6                 
-[31] Hmisc_4.2-0                ggplot2_3.2.0             
-[33] Formula_1.2-3              survival_2.44-1.1         
-[35] lattice_0.20-38            pacman_0.5.1              
-[37] knitr_1.24                 nvimcom_0.9-83            
-[39] colorout_1.2-1            
-
-loaded via a namespace (and not attached):
- [1] colorspace_1.4-1    ggsignif_0.6.0      class_7.3-15       
- [4] htmlTable_1.13.1    base64enc_0.1-3     rstudioapi_0.10    
- [7] listenv_0.7.0       rlas_1.3.2          prodlim_2018.04.18 
-[10] lubridate_1.7.4     xml2_1.2.1          codetools_0.2-16   
-[13] splines_3.6.1       doParallel_1.0.15   zeallot_0.1.0      
-[16] jsonlite_1.6        caret_6.0-84        cluster_2.1.0      
-[19] rgeos_0.5-1         compiler_3.6.1      httr_1.4.1         
-[22] backports_1.1.4     assertthat_0.2.1    Matrix_1.2-17      
-[25] lazyeval_0.2.2      cli_1.1.0           prettyunits_1.0.2  
-[28] acepack_1.4.1       htmltools_0.3.6     tools_3.6.1        
-[31] gtable_0.3.0        glue_1.3.1          reshape2_1.4.3     
-[34] Rcpp_1.0.2          RCSF_1.0.1          cellranger_1.1.0   
-[37] vctrs_0.2.0         nlme_3.1-140        iterators_1.0.12   
-[40] timeDate_3043.102   gower_0.2.1         xfun_0.8           
-[43] globals_0.12.4      rvest_0.3.4         XML_3.98-1.20      
-[46] MASS_7.3-51.4       ipred_0.9-9         hms_0.5.0          
-[49] parallel_3.6.1      RColorBrewer_1.1-2  geosphere_1.5-10   
-[52] gridExtra_2.3       rpart_4.1-15        latticeExtra_0.6-28
-[55] stringi_1.4.3       highr_0.8           foreach_1.4.7      
-[58] e1071_1.7-2         checkmate_1.9.4     lava_1.6.6         
-[61] rlang_0.4.0         pkgconfig_2.0.2     evaluate_0.14      
-[64] labeling_0.3        recipes_0.1.6       htmlwidgets_1.3    
-[67] tidyselect_0.2.5    plyr_1.8.4          R6_2.4.0           
-[70] generics_0.0.2      DBI_1.0.0           pillar_1.4.2       
-[73] haven_2.1.1         foreign_0.8-71      withr_2.1.2        
-[76] units_0.6-3         nnet_7.3-12         modelr_0.1.5       
-[79] crayon_1.3.4        KernSmooth_2.23-15  rmarkdown_1.14     
-[82] progress_1.2.2      grid_3.6.1          readxl_1.3.1       
-[85] ModelMetrics_1.2.2  digest_0.6.20       classInt_0.4-1     
-[88] webshot_0.5.1       stats4_3.6.1        munsell_0.5.0      
-[91] quadprog_1.5-7     
+ [1] devtools_2.1.0             usethis_1.5.1             
+ [3] benchmarkme_1.0.0          doParallel_1.0.15         
+ [5] iterators_1.0.12           foreach_1.4.7             
+ [7] Rtsne_0.15                 pbapply_1.4-1             
+ [9] rgdal_1.4-4                future_1.14.0             
+[11] varhandle_2.0.3            forcats_0.4.0             
+[13] stringr_1.4.0              dplyr_0.8.3               
+[15] purrr_0.3.2                readr_1.3.1               
+[17] tidyr_0.8.3                tibble_2.1.3              
+[19] tidyverse_1.2.1            lidR_2.1.2                
+[21] raster_2.9-23              sp_1.3-1                  
+[23] scales_1.0.0               kableExtra_1.1.0          
+[25] data.table_1.12.2          sf_0.7-7                  
+[27] ggpubr_0.2.2               magrittr_1.5              
+[29] cowplot_1.0.0              viridis_0.5.1             
+[31] viridisLite_0.3.0          broom_0.5.2               
+[33] ggthemes_4.2.0             RStoolbox_0.2.6           
+[35] PerformanceAnalytics_1.5.3 xts_0.11-2                
+[37] zoo_1.8-6                  Hmisc_4.2-0               
+[39] ggplot2_3.2.0              Formula_1.2-3             
+[41] survival_2.44-1.1          lattice_0.20-38           
+[43] pacman_0.5.1               knitr_1.24                
+[45] nvimcom_0.9-83             colorout_1.2-1            
 \end{verbatim}
 \end{kframe}
 \end{knitrout}

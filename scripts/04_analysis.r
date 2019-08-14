@@ -1,13 +1,19 @@
 source("../scripts/functions.r")
 
-road_est <- st_read("../data/osroads/roads_estwidth.gpkg") %>% 
+road_est <- st_read("../data/osroads/roads_estwidth.gpkg", quiet = TRUE) %>% 
     st_drop_geometry() %>%
     na.omit()
 
 
 
 widths <- fread("../data/final_data/final.csv") %>%
-    select(-c(V1, meanAngle, maxAngle, maxZ, meanZ,meanInt, rangeInt)) %>% 
+    select(-c(V1,
+              meanAngle,
+              maxAngle,
+              maxZ,
+              meanZ,
+              meanInt,
+              rangeInt)) %>% 
     merge(road_est, by = c("road_id", "roadFunction"))
 
 normalise_widths <- function(x){
@@ -20,5 +26,12 @@ norm_widths <- widths %>%
     t()
 
 final_data <- fread("../data/final_data/final.csv") %>%
-    select(-c(V1, maxAngle, maxZ, meanInt, lm1_mean, lm2_mean, lm3_mean, glm_mean)) %>% 
+    select(-c(V1,
+              maxAngle,
+              maxZ,
+              meanInt,
+              lm1_mean,
+              lm2_mean,
+              lm3_mean,
+              glm_mean)) %>% 
     merge(road_est, by = c("road_id", "roadFunction"))

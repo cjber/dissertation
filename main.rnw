@@ -108,9 +108,10 @@ knitr::read_chunk('./scripts/02_lm.r')
 
 \chapter{Literature}
 \label{ch:literature}
-\input{02_literature/literature.tex}
+<<literature, child = "02_literature/literature.rnw">>=
+@
 
-\chapter{Methods}
+\chapter{Methodology}
 \label{ch:methods}
 <<methods, child = "03_methods/methods.rnw">>=
 @
@@ -136,7 +137,7 @@ knitr::read_chunk('./scripts/02_lm.r')
 
 \begin{center}
 % remember to compile twice for current word count
-<<wc, engine ='bash', results = 'asis'>>=
+<<wc, engine ='bash', results = 'asis', cache = F>>=
 printf "Word Count: "
 python wclatex.py main.tex
 @
@@ -155,7 +156,21 @@ python wclatex.py main.tex
 
 \section{Session Information}
 <<session>>=
-sessionInfo()
+## Return the machine CPU
+cat("Machine:     "); print(get_cpu()$model_name)
+
+## Return number of true cores
+cat("Num cores:   "); print(detectCores(logical = FALSE))
+
+## Return number of threads
+cat("Num threads: "); print(detectCores(logical = TRUE))
+
+## Return the machine RAM
+cat("RAM:         "); print (get_ram()); cat("\n")
+
+x <- sessionInfo()
+x$loadedOnly <- NULL
+print(x, locale = F)
 @
 \newpage
 

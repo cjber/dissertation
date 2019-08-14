@@ -8,7 +8,7 @@ lidar_tab <- fread("../data/derived/model_data/lm_f.csv")
 
 \subsection{LiDAR Point Cloud}
 
-Table \ref{tab:lidar} indicates that there are likely some points with noise, particularly reflected by the highest intensity value (\Sexpr{max(lidar_tab$Intensity)}) relative to the mean value (\Sexpr{round(mean(lidar_tab$Intensity),0)}). Noise exclusion techniques are described in \cite{fang2004}, this paper takes a simplistic noise filtering technique that aims to solely remove extreme outliers from the observed intensity values in the chosen data.
+Table \ref{tab:lidartab} indicates that there are likely some points with noise, particularly reflected by the highest intensity value (\Sexpr{max(lidar_tab$Intensity)}) relative to the mean value (\Sexpr{round(mean(lidar_tab$Intensity),0)}). Noise exclusion techniques are described in \cite{fang2004}, this paper takes a simplistic noise filtering technique that aims to solely remove extreme outliers from the observed intensity values in the chosen data.
 
 \subsection{OS Road Geometry}
 
@@ -71,13 +71,14 @@ from \ref{fig:fig_buff} \textbf{(b)} intensities values for ground points below 
 // find Average intensity values for first and last returns, i.e. show the shadow below trees
 
 
-<<fig_lp, fig.cap = "LiDAR point clouds for one selected road section aggregated into 1m$^2$ grids, \\textbf{(A)} Base point cloud $Z$ values, \\textbf{(B)} Normalised Point cloud $Z$ values for only last returns ($lpz$) \\textbf{(C)} Normalised Point cloud $Intensity$ values for last return, \\textbf{(D)} Aerial Data combined to 1 band", fig.height = 15>>=
+<<fig_lp, fig.cap = "LiDAR point clouds for one selected road section aggregated into 1m$^2$ grids, \\textbf{(A)} Base point cloud $Z$ values, \\textbf{(B)} Normalised Point cloud $Z$ values for only last returns ($lpz$) \\textbf{(C)} Normalised Point cloud $Intensity$ values for last return, \\textbf{(D)} Aerial Data combined to 1 band", fig.height = 16>>=
 
 plot_grid(
 chm_gg,
 dsm_lp_gg,
 las_i_gg,
-aerial_gg, labels = "AUTO")
+aerial_gg, labels = "AUTO",
+label_size = 20)
 @
 
 \section{Perpendicular Sampling}
@@ -90,12 +91,8 @@ Show figure of sample lines. Show the reduction in number of points (memory savi
 
 Covers 02
 
-\section{Widths and Road Quality}
 
 test.
-
-
-\section{Linear Probability Model}
 
 <<>>=
 source("./fig_lm.r")
@@ -106,7 +103,7 @@ mean((sampled_las$lm3_dum == 1) == (sampled_las$road == 1))
 mean((sampled_las$glm1_dum == 1) == (sampled_las$road == 1))
 
 # filter out  > 0.05 p values for each point
-mean((filter$lmI_dum == 1) == (filter_las$road == 1))
+mean((filter_las$lmI_dum == 1) == (filter_las$road == 1))
 @
 
 
@@ -119,7 +116,7 @@ First model (maximal):
 
 3. Compare global model 1 (best fit), to individual model using f1.
 
-<<lm_figs>>=
+<<lm_prep>>=
 aerial_bbox <- bbox(aerial)
 
 bg <- data.frame(
@@ -129,7 +126,7 @@ bg <- data.frame(
   ymax = aerial_bbox[4]
 )
 
-ggRGB(aerial) +
+lm_f <- ggRGB(aerial) +
   geom_rect(data = bg, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = NA, colour = "black", size = 2) +
     geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
     geom_sf(
@@ -143,7 +140,7 @@ ggRGB(aerial) +
            theme_map()
 
 # unfiltered
-ggRGB(aerial) +
+lm_uf <- ggRGB(aerial) +
   geom_rect(data = bg, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = NA, colour = "black", size = 2) +
     geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
     geom_sf(
@@ -156,6 +153,14 @@ ggRGB(aerial) +
     ) +
     theme_map()
 @
+
+<<lm_figs, fig.height = 12>>=
+plot_grid(
+lm_f,
+lm_uf, labels = "AUTO",
+label_size = 20)
+@
+
 
 
 \begin{equation}
@@ -176,6 +181,7 @@ ggRGB(aerial) +
 source("./fig_noise.r")
 
 ggRGB(aerial) +
+  geom_rect(data = bg, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = NA, colour = "black", size = 2) +
     geom_sf(data = rd, colour = "red") +
     geom_sf(data = rd_fil, colour = "green")+
     theme_map()
@@ -199,8 +205,11 @@ norm_widths <- norm_widths %>%
     select(model, everything())
 
 names(norm_widths)  <- c("Model", "Accuracy")
+@
+<<mtest_tab, results='asis'>>=
 make_table(norm_widths, 2, cap = "testing")
 @
+
 
 \section{Road Assessment}
 <<>>=
@@ -252,6 +261,8 @@ make_table(cor_tab, dig = 2, cap = "Correlation Matrix") %>%
 PerformanceAnalytics::chart.Correlation(final_data, method = "pearson")
 @
 
+
+\section{Widths and Road Quality}
 
 \section{Road Analysis}
 

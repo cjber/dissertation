@@ -30,7 +30,7 @@ Road centreline geometries were accessed through the \href{https://www.ordnances
 
 \section{LiDAR Preprocessing}
 
-The total number of LiDAR points used in this study is \Sexpr{number_points}. All LIDAR data has a vertical accuracy of +/-15cm Root mean square error (RMSE). An overview of the LiDAR data selected for this study is given on Table \ref{tab:lidar}. The variables of primary interest are:
+The total number of LiDAR points used in this study is \Sexpr{number_points}. All LIDAR data has a vertical accuracy of +/-15cm Root mean square error (RMSE). An overview of the LiDAR data selected for this study is given on Table \ref{tab:lidartab}. The variables of primary interest are:
 
 \begin{itemize}
     \item \textbf{Z:} The distance a laser pulse is reflected back to to scanner, calculated by the time taken for a return pulse to be detected.
@@ -76,7 +76,7 @@ where $\mathbf{p_i}$ is a single instance of a LiDAR point within the chosen poi
 
 \subsection{Normalisation}
 
-Ground points were classified using the Cloth Simulation Filtering (CSF) algorithm, as described in \cite{zhang2016}. Points were already classified in the data provided, however, as the classification technique was unknown, reclassification was considered necessary. The general implementation simulates the movements of a piece of cloth lying over the inverse of a point cloud, as the point cloud is flipped, the cloth settles beneath ground points, while covering points that lie separate to the ground, essentially forming a digital terrain model (DTM), cloth simulations are described in more detail in \cite{bridson2005}. The CSF algorithm is given;
+Ground points were classified using the Cloth Simulation Filtering (CSF) algorithm, as described in \cite{zhang2016}. Points were already classified in the data provided, however, as the classification technique was unknown, reclassification was considered necessary. The general implementation simulates the movements of a piece of cloth lying over the inverse of a point cloud, as the point cloud is flipped, the cloth settles beneath ground points, while covering points that lie separate to the ground, essentially forming a digital terrain model (DTM), cloth simulations are described in more detail in \cite{bridson2005} and subsection \ref{subs:dtm}. The CSF algorithm is given;
 
 $$
 X(t+\Delta t)=2 X(t)-X(t-\Delta t)+\frac{G}{m} \Delta t^{2},
@@ -114,16 +114,15 @@ select(-c(geometry, length_uom, name1_lang, name2_lang))
 tmp <- do.call(
   data.frame,
   list(
-    Max = apply(roads_info, 2, max)
+    Example = apply(roads_info, 2, head, 1)
   )
 )
-roads_info <- t(roads_info[1, ])
 @
 
 <<roadstab, results='asis'>>=
-make_table(roads_info, cap = "OS Roads Data Summary",
-           col.names = c("Variable", "Example")) %>%
-  column_spec(2, width = "15em") %>%
+make_table(tmp, cap = "OS Roads Data Summary",
+           ) %>%
+  column_spec(2, width = "12em") %>%
   kable_styling(latex_options = "HOLD_position")
 @
 

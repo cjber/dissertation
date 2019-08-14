@@ -2,7 +2,7 @@
 source("./functions.r")
 
 # Create las catalog with all .laz files
-ctg <- catalog("../data/point/")
+ctg <- catalog(paste0(dir, "/data/point/"))
 opt_chunk_size(ctg) <- 500
 
 # create lax file to index + speed up process
