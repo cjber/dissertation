@@ -60,3 +60,6 @@ cent1_las$dum <- ifelse(cent1_las$pred >
   quantile(cent1_las$pred, .95), 1, 0)
 
 fwrite(cent1_las, "../data/final_data/sampled_cent1.csv")
+
+lmc <- cent1_las[cent1_las$pred == 1, ]
+lmc <- lapply(lmc, max_lines)

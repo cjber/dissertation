@@ -215,7 +215,7 @@ lm1 <- ggRGB(aerial) +
 @
 <<lmquant_plot>>=
 plot_grid(
-  lm15,
+  lm5,
   lm1,
   labels = "AUTO",
   label_size = 20,
@@ -276,7 +276,7 @@ plot_grid(
           glm1,
   labels = "AUTO",
   label_size = 20,
-  ncol = 2
+  ncol = 3
 )
 @
 
@@ -287,20 +287,23 @@ individual models enable the use of more reliable p values to filter out some re
 
 \section{Final Model Analysis}
 
-<<roadlines_prep>>=
+<<road_lines>>=
 source("./fig_roadlines.r")
-
-roadlines_plots <- lapply(road_slines, function(x){
-           ggplot() +
-               geom_sf(data = x)
-})
-
-plot_grid(roadlines_plots,
-labels = "AUTO",
-label_size = 20,
-ncol = 2)
+ggcent1 <- ggRGB(aerial) +
+  geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
+  geom_sf(data = cent1, colour = "red", alpha = 1) +
+  geom_sf(
+    data = cent1_las,
+    alpha = 0.5, colour = "green"
+  ) +
+  theme_map() +
+  theme(panel.border = element_rect(
+    colour = "black",
+    fill = NA, size = 1
+  )) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0))
 @
-
 
 Very rough estimate of widths
 <<>>=
@@ -320,23 +323,6 @@ names(norm_widths) <- c("Model", "Accuracy")
 make_table(norm_widths, 2, cap = "testing")
 @
 
-<<road_lines>>=
-source("./fig_roadlines.r")
-cent1 <- ggRGB(aerial) +
-  geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
-  geom_sf(data = cent1, colour = "red", alpha = 1) +
-  geom_sf(
-    data = cent1,
-    alpha = 0.5, colour = "green"
-  ) +
-  theme_map() +
-  theme(panel.border = element_rect(
-    colour = "black",
-    fill = NA, size = 1
-  )) +
-  scale_x_continuous(expand = c(0, 0)) +
-  scale_y_continuous(expand = c(0, 0))
-@
 
 
 
