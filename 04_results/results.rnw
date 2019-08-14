@@ -107,6 +107,7 @@ test.
 source("./fig_lm.r")
 # from logistic regression essential in R (pocket)
 mean((sampled_las$lm1_dum == 1) == (sampled_las$road == 1))
+mean((sampled_las$lm1_dum5 == 1) == (sampled_las$road == 1))
 mean((sampled_las$lm2_dum == 1) == (sampled_las$road == 1))
 mean((sampled_las$lm3_dum == 1) == (sampled_las$road == 1))
 mean((sampled_las$glm1_dum == 1) == (sampled_las$road == 1))
@@ -158,7 +159,7 @@ ggRGB(aerial) +
 
 // Manually measure a road width for a reference, i.e. how close to accurate different models are. GLM LM and individual filtered and unfiltered. Find max and min widths and mean, describe what likely causes the differences.
 
-<<lm_prep>>=
+<<lm_individual>>=
 # filtered individual model
 lmi <- ggRGB(aerial) +
   geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
@@ -174,13 +175,19 @@ lmi <- ggRGB(aerial) +
   )) +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0))
+@
 
+<<lmi_fig, fig.height = 18>>=
+lmi
+@
+
+<<>>=
 # unfiltered
-lm15 <- ggRGB(aerial) +
+lm5 <- ggRGB(aerial) +
   geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
   geom_sf(data = centrelines, colour = "red", alpha = 1) +
   geom_sf(
-    data = road_lm_nofilter[road_lm_nofilter$lm15_dum == 1, ],
+    data = road_lm_nofilter[road_lm_nofilter$lm1_dum5 == 1, ],
     alpha = 0.5, colour = "green"
   ) +
   theme_map() +
@@ -205,7 +212,18 @@ lm1 <- ggRGB(aerial) +
   )) +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0))
+@
+<<lmquant_plot>>=
+plot_grid(
+  lm15,
+  lm1,
+  labels = "AUTO",
+  label_size = 20,
+  ncol = 2
+)
+@
 
+<<>>=
 lm2 <- ggRGB(aerial) +
   geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
   geom_sf(data = centrelines, colour = "red", alpha = 1) +
@@ -251,20 +269,19 @@ glm1 <- ggRGB(aerial) +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0))
 @
-
-<<lm_figs, fig.height = 12>>=
+<<lms_fig>>=
 plot_grid(
-  lmi,
-  lm15,
-  lm1,
-  lm2,
-  lm3,
-  glm1,
+          lm2,
+          lm3,
+          glm1,
   labels = "AUTO",
   label_size = 20,
   ncol = 2
 )
 @
+
+
+
 
 individual models enable the use of more reliable p values to filter out some results, however given the centrelines are not accurate this doesn't work. Payoff doesn't seem that good even given proper centrelines.
 
@@ -304,6 +321,21 @@ make_table(norm_widths, 2, cap = "testing")
 @
 
 <<road_lines>>=
+source("./fig_roadlines.r")
+cent1 <- ggRGB(aerial) +
+  geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
+  geom_sf(data = cent1, colour = "red", alpha = 1) +
+  geom_sf(
+    data = cent1,
+    alpha = 0.5, colour = "green"
+  ) +
+  theme_map() +
+  theme(panel.border = element_rect(
+    colour = "black",
+    fill = NA, size = 1
+  )) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0))
 @
 
 

@@ -186,12 +186,12 @@ comb_ctg <- function(x) {
 }
 
 ## ---- compute_samples
-sample_lines <- c()
-compute_samples <- function(x) {
+compute_samples <- function(x, increment = 10, width = 30) {
+    sample_lines <- c()
   if (nrow(x) > 1) {
     road_node <- st_coordinates(x)
     tot_len <- 0
-    len_inc <- 10
+    len_inc <- increment
     len_ofs <- len_inc
     for (i in 2:nrow(road_node) - 1) {
       n1 <- road_node[i, ]
@@ -205,7 +205,7 @@ compute_samples <- function(x) {
 
         # Add results to output vector
         perp_segments <- calc_perp(
-          n1, n2, 30,
+          n1, n2, width,
           len_ofs - tot_len,
           proportion = FALSE
         )
@@ -332,6 +332,48 @@ max_lines <- function(x) {
   return(road_lm)
 }
 
+## ---- mid_pts
+mid_pts <- function(x) {
+  fixed_cents <- st_coordinates(x)[, 1:2]
+  x_mid <- mean(fixed_cents[, 1])
+  y_mid <- mean(fixed_cents[, 2])
+  mid_point <- cbind(x_mid, y_mid)
+  mid_point <- as.data.frame(mid_point)
+  mid_point <- mid_point %>%
+    st_as_sf(coords = c("x_mid", "y_mid"), crs = 27700)
+  return(mid_point)
+}
+
+## ---- true_cents
+true_cents <- function(x) {
+rd <- x$road_id
+  y <- x %>%
+    distinct()
+
+  n <- nrow(y) - 1
+  if (nrow(y) > 1) {
+    y <- lapply(X = 1:n, FUN = function(i) {
+      pair <- y[c(i, i + 1), ] %>%
+        st_combine()
+      line <- st_cast(pair, "LINESTRING")
+      return(line)
+    })
+    y <- do.call(c, y)
+    y <- y[as.numeric(st_length(y)) < 40]
+
+    y <- y %>%
+      st_combine() %>%
+      st_cast("MULTILINESTRING")
+    y <- y[1]
+    y <- y %>% st_sf()
+
+    y <- y[is.na(rd[1])]
+
+    y$road_id <- as.character(rd[1])
+    return(y)
+  }
+}
+
 ## -- model_comparison
 model_comparison <- function(model) {
   road_lm <- model[!is.na(model$roadFunction), ]
@@ -343,7 +385,6 @@ model_comparison <- function(model) {
   cent <- split(cent, f = cent$road_id)
   cent <- Filter(function(x) dim(x)[1] > 0, cent)
 
-  ## ---- find true widths
   widths <- mapply(opposite_length, samp, cent)
   widths <- do.call(rbind, widths)
   widths <- as.data.frame(widths)
