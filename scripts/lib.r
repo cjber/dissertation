@@ -1,0 +1,1 @@
+install.packages(c("PerformanceAnalytics","RStoolbox","ggthemes","RStoolbox","broom","viridis","viridisLite","cowplot","ggpubr","magrittr","sf","data.table","kableExtra","scales","lidR","raster","sp","knitr","nvimcom","tidyverse","parallel","varhandle","future","rgdal","pbapply","cowplot"))

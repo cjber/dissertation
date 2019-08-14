@@ -1,0 +1,64 @@
+\begin{multicols}{2}
+=== notes ===
+\citep{hatger2005}
+The idea now is to use this information in a more sensitive
+segmentation, trying to extract the true road extents.
+Of course, when there is no C0 (height) or C1 (inclination)
+discontinuity at the road boundaries, there is no way de-
+tecting it using laser scan data, and other data sources such
+as aerial images have to be used. However, the question
+is how reliable even small discontinuities can be detected.
+For example, a road may be bounded by an embankment,
+which usually is a relatively large structure. It may on the
+other hand be separated from the pavement or a traffic is-
+land by a kerb of only 15 cm in height. This seems to
+be hopeless, since it is close to the expected noise of the
+laser measurement. However, if one considers profiles per-
+pendicular to the road, the point is that a 10 m wide road,
+scanned with 1 m density, will yield 10 measurements to
+estimate the road surface (assumed to be planar), leading
+to a standard deviation of about 15 cm /
+10  5 cm.
+
+Assessment strategy: assessing the results of an image processing work flow usually a textual description. but results can't be compared easily. Heipke1997 sugest a comparison between methods numerically, ratios derived from statistical test theory:
+
+be identiged.
+True positive (TP) – A phenomenon that is present within the input data and that has
+successfully been identiged within the output data.
+False positive (FP) – A phenomenon that is not present within the input data but that
+has falsely been found to be a phenomenon by the algorithm. Thus it is
+written to output data.
+False negative (FN) – A phenomenon that is present within the input data but that
+has not been identiged by the algorithm and therefore has been omitted
+from the output data.
+Then we degne Completeness by
+Completeness =
+TP
+.
+TP + FN
+(2.1)
+This is obvious and can directly be taken from degnition of TP and FN.
+Furthermore we degne Correctness by
+Correctness =
+TP
+.
+TP + FP
+(2.2)
+This is easy to see since we expect results not to contain features which are erroneous in
+a way that they contain features which are not present within input data. However, it
+is implied within this statement that we neglect those cases where features are present
+within the input data but are missing in the output. Finally Quality is degned by
+Quality =
+TP
+.
+TP + FP + FN
+(2.3)
+This can be considered as a kind of global measure for overall assessment of obtained
+results. It comprises e ects caused by both false positives and false negatives.
+Some but not all of the algorithms investigated in this paper use an assessment that is
+based on the above mentioned measures. Their results are reproduced where available.
+Otherwise, assessment is done by means of a textual description.
+
+
+// Mention logistic regression, considered but not used as results not better and requries a payoff.
+\end{multicols}
