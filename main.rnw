@@ -49,7 +49,7 @@ knitr::read_chunk('./scripts/02_lm.r')
 \centering\begin{minipage}{\dimexpr\paperwidth-10cm}
     \hrule
     \vskip 5pt
- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla consectetur turpis ut libero efficitur, ullamcorper ultrices nulla elementum. Proin enim lorem, tempus sed tempus eget, fermentum vitae odio. Aenean congue urna id metus tincidunt efficitur. Donec finibus nec elit vitae tempor. Nullam eget vestibulum arcu. Nullam pulvinar sed quam nec ullamcorper. Curabitur at faucibus augue. Nulla scelerisque pretium sodales. Nulla facilisi. In id ipsum orci. Donec ex magna, sodales quis tempus a, sollicitudin sit amet odio. Proin nec molestie ante. Fusce ut hendrerit risus. Nunc eleifend magna dui, sit amet tempus velit tincidunt et. Duis iaculis convallis mi sed scelerisque. \citep{wang2015}
+ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla consectetur turpis ut libero efficitur, ullamcorper ultrices nulla elementum. Proin enim lorem, tempus sed tempus eget, fermentum vitae odio. Aenean congue urna id metus tincidunt efficitur. Donec finibus nec elit vitae tempor. Nullam eget vestibulum arcu. Nullam pulvinar sed quam nec ullamcorper. Curabitur at faucibus augue. Nulla scelerisque pretium sodales. Nulla facilisi. In id ipsum orci. Donec ex magna, sodales quis tempus a, sollicitudin sit amet odio. Proin nec molestie ante. Fusce ut hendrerit risus. Nunc eleifend magna dui, sit amet tempus velit tincidunt et. Duis iaculis convallis mi sed scelerisque.
     \vskip 5pt
     \hrule
     \vskip 10pt
@@ -106,7 +106,7 @@ knitr::read_chunk('./scripts/02_lm.r')
 <<introduction, child = "01_introduction/introduction.rnw">>=
 @
 
-\chapter{Literature}
+\chapter{Literature Review}
 \label{ch:literature}
 <<literature, child = "02_literature/literature.rnw">>=
 @
@@ -124,6 +124,11 @@ knitr::read_chunk('./scripts/02_lm.r')
 \chapter{Discussion}
 \label{ch:discussion}
 <<results, child = "05_discussion/discussion.rnw">>=
+@
+
+\chapter{Conclusion}
+\label{ch:conclusion}
+<<conclusion, child = "06_conclusion/conclusion.rnw">>=
 @
 
 % ===========================================================================================================
@@ -183,16 +188,21 @@ print(x, locale = F)
 <<ctg_to_df, echo = TRUE, eval = FALSE>>=
 @
 
+\subsection{Clip Samples} \label{code:clip_samples}
+<<clip_samples, echo = TRUE, eval = FALSE>>=
+@
+
 \subsection{LiDAR Clean} \label{code:lidr_clean}
 <<lidr_clean, echo = TRUE, eval = FALSE>>=
 @
 
-\subsection{Filter Noise} \label{code:filter_noise}
-<<filter_noise, echo = TRUE, eval = FALSE>>=
-@
 
 \subsection{Extract Buffer} \label{code:extract_buff}
 <<extract_buff, echo = TRUE, eval = FALSE>>=
+@
+
+\subsection{Find Distances} \label{code:find_dists}
+<<find_dists, echo = TRUE, eval = FALSE>>=
 @
 
 \subsection{Euclidean Distance} \label{code:euc}
@@ -215,8 +225,44 @@ print(x, locale = F)
 <<greyscale, eval = FALSE, echo = TRUE>>=
 @
 
-\subsection{Compute Linear Model} \label{code:lm_compute}
+\subsection{Compute Individual Linear Model} \label{code:lm_compute}
 <<lm_compute, eval = FALSE, echo = TRUE>>=
 @
+
+\subsection{Filter Returns}
+<<filter_returns, eval = FALSE, echo = TRUE>>=
+@
+
+\subsection{Filter Samples}
+<<filter_samples, eval = FALSE, echo = TRUE>>=
+@
+
+\subsection{Max Dist}
+<<max_dist, eval = FALSE, echo = TRUE>>=
+@
+
+\subsection{Max Lines}
+<<max_lines, eval = FALSE, echo = TRUE>>=
+@
+
+\subsection{Model Comparison}
+<<model_comparison, eval= FALSE, echo = TRUE>>=
+@
+
+\subsection{Opposite Length}
+<<opposite_length, eval = FALSE, echo = TRUE>>=
+@
+
+\subsection{Road Angles}
+<<road_angles, eval = FALSE, echo = TRUE>>=
+@
+
+\subsection{Height Change}
+<<height_change, eval = FALSE, echo = TRUE>>=
+@
+
+
+
+
 
 \end{document}

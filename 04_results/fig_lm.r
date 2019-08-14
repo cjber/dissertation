@@ -15,8 +15,6 @@ roads <- st_read("../data/derived/roads/roads_line.gpkg", quiet = TRUE)
 centrelines <- st_read("../data/derived/roads/roads_line.gpkg", quiet = TRUE) %>%
     st_set_crs(27700)
 
-roads_1m <- st_read("../data/derived/roads/roads.gpkg", quiet = TRUE)
-
 sample_lines <- st_read("../data/derived/roads/sample_lines.gpkg", quiet = TRUE)
 
 # example road section
@@ -25,12 +23,15 @@ rd_f <- "road_6"
 road_lm_filter <- road_lm_filter[road_lm_filter$road_id == rd_f, ]
 road_lm_nofilter <- road_lm_nofilter[road_lm_nofilter$road_id == rd_f, ]
 sample_lines <- sample_lines[sample_lines$road_id == rd_f, ]
-roads_1m <- roads_1m[roads_1m$road_id == rd_f, ]
+centrelines <- centrelines[centrelines$road_id == rd_f, ] %>% 
+    st_crop(sample_lines)
 
 jpgs <- Sys.glob("../data/aerial/*.jpg")
 jpgs <- lapply(jpgs, brick)
 aerial <- lapply(jpgs, function(x){
 return(tryCatch(crop(x, sample_lines), error=function(e) NULL))
 })
-aerial <- compact(aerial)
-aerial <- do.call(unlist, aerial)
+
+aerial <- aerial %>% 
+    compact() %>% 
+    brick()

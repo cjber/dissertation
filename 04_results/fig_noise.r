@@ -15,30 +15,6 @@ sample_lines <- sample_lines[sample_lines$road_id == "road_6", ]
 rd_split <- split(rd, rd$sample_id)
 
 rd_split <- rd_split %>% compact()
-rd_split <- lapply(rd_split, function(x) {
-    if (nrow(x) > 8) {
-  distances <- x %>%
-    st_distance() %>%
-    as.data.frame()
-
-  distances <- sapply(distances, as.numeric)
-
-  distances[distances == 0] <- 99
-
-  distances <- distances %>%
-    apply(2, min) %>%
-    as.data.frame() %>%
-    mutate(rowid = row_number())
-  names(distances) <- c("distance", "rowid")
-
-  distances <- distances[distances$distance < 1, ]
-
-  x_fil <- x %>% mutate(rowid = row_number())
-
-  x_fil <- x_fil[x_fil$rowid %in% distances$rowid, ]
-
-  return(x_fil)
-  
-}})
+rd_split <- lapply(rd_split, filter_samples)
 
 rd_fil <- do.call(rbind, rd_split)

@@ -33,12 +33,14 @@ These limits are set by the UK government, however local speed limits are determ
 
 The Road Safety Management Capacity Review \citep{departmentfortransport2018} outlines the current limitations with road safety management, with the lack of defined and measureable safety performance framework, noting that such a framework should set out the long term goal of total prevention of road deaths and injuries, achieving this through a reduction in average speeds on different road types, and an improvement in emergency response times. This review states that at present there is a distinct lack of both urban and rural road hiararchies, which could be used to better match appropriate speed limits, with function, layout and design. Again, this review notes that posted speed limits often allow for speed far in excess of the design limits of single carriageway rural roads, with inappropriate but alloable speed often a contributing factor in rural accidents. Finally the report calls for a review on national speed limits as soon as possible.
 
-A recent development for guidance in setting local speed limits is the prduction of the \textit{Speed Limit Apprasial Tool} \citep{departmentfortransport2013a}. This tool provides an automated method for the introduction of new speed limits for local councils. This tool takes observed traffic flow, accidents, speeds, descriptive information regarding the network and current costs, outputting prediced changed in these data for various speed limit changes. While this tool introduces some quantiative method for individual road speed limit assessments, it misses some key features outlined in past government framework proposals \citep[][e.g.]{departmentfortransport2018}, particularly in relation to road geometry.
+A recent development for guidance in setting local speed limits is the prduction of the \textit{Speed Limit Appraisal Tool} \citep{departmentfortransport2013a}. This tool provides an automated method for the introduction of new speed limits for local councils. This tool takes observed traffic flow, accidents, speeds, descriptive information regarding the network and current costs, outputting prediced changed in these data for various speed limit changes. While this tool introduces some quantiative method for individual road speed limit assessments, it misses some key features outlined in past government framework proposals \citep[][e.g.]{departmentfortransport2018}, particularly in relation to road geometry.
+
+This paper will focus particularly on the call for an improved understanding of rural road geometry to support the production of appropriate and quantifiable speed limits for rural single carriageway roads. Road geometry may be defined as the parameters of roads relating to geometric design, particularly relating to the appropriate road speed, stopping sight distance, passing sight distance, line of sight, number of lanes, lane width, footpaths, slopes, and material types \citep{jaakola2008}.
 
 \section{Introduction to LiDAR}
 \label{sec:overviewlidar}
 
-\subsection{Description of LiDAR}
+\subsection{Summary}
 
 LiDAR data is collected by emitting rapid laser pulses from an aircraft towards the ground which are reflected back, measuring the distance between the aircraft and surface objects at up to 500,000 measurements per second \citep{environmentagency2019}. This method produces a set of highly accurate three dimensional points which collectively are known as a LiDAR point 'cloud'. As LiDAR data detects all surface objects, the resultant point cloud produced will include all natural and man made structures, including buildings, roads, trees in addition to the natural variation in the terrain height, known as a digital surface model \citep{hatger2005}.
 
@@ -52,13 +54,13 @@ The main features unique to LiDAR, as opposed to similar aerial data collection 
     \item \textit{Elevation:} In addition to $x$ and $y$ coordinates, the distance between the plane and the reflected ground or object is recorded and assigned a $z$ value.
 \end{itemize}
 
-\subsection{Benefits of LiDAR}
+\subsection{Benefits}
 
 Rural roads in the UK are often characterised by dense hedgerows either side, often containing large oak trees which extend over the road surface. In addition to the reduction in corner visibility on these roads, standard aerial imagery suffers from the road surface being obscured by shadows from these trees, and the tree canopy itself. Aerial imagery also often suffers from obstruction due to clouds \citep{li2016}. Due to the inclusion of pulses with modern LiDAR data, the road surface can often be detected through the canopy by selecting the final pulse values, additionally the infrared laser pulses have smaller shadows, due to the narrow scanning angle of LiDAR \citep{shan2008}. Non LiDAR imagery often suffers from scene complexity, where road patterns, vehicles and lane markings reduce road heterogeneity \citep{li2016}.
 
-The 3D $z$ value information provided by LiDAR data allows for the separation of ground and objects on the surface, meaning roads and buildings are often easily separated, despite having similar reflectance (or intensity) \citep{shan2008}. Additionally, the reflectance of roads is often homogeneous, and distinctly separate from vegetation \citep{clode2004}.
+The 3D $z$ value information provided by LiDAR data allows for the separation of ground and objects on the surface, meaning roads and buildings are often easily separated, despite having similar reflectance (also known as intensity) \citep{sampath2008}. Additionally, the reflectance of roads is often homogeneous, and distinctly separate from vegetation \citep{clode2004}.
 
-\subsection{Flaws with LiDAR}
+\subsection{Limitations}
 
 LiDAR lacks any texture or spectral information, and often studies in road detection have combined LiDAR with imagery to alleviate this issue \citep{hu2004;zhu2004}, with the inclusion of luminescence information to aid with road classification \citep[e.g.][]{charaniya2004}. LiDAR points are distributed irregularly and with varying density, with point density often higher where flight strips overlap \citep{li2016}, and tall objects can occlude points, leaving limited data surrounding trees or buildings.
 
@@ -66,7 +68,7 @@ Often studies use LiDAR height data to identify kerbs to separate streets from p
 
 LiDAR data often requires a large amount of processing due to the irregular distribution of points, presence of noise and the number of variables that have to be considered, \cite{yadav2018} note that often papers do not include the computational time for processing this data, which can be time consuming.
 
-<<area_map, fig.cap="Study are highlighting road locations">>=
+<<area_map, fig.cap="Study area highlighting road geometries outlined in a lighter 30m buffer">>=
 source("../scripts/functions.r")
 
 rd <- st_read("../data/derived/roads/roads_buff_diss.gpkg", quiet = T) %>%

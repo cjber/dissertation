@@ -1,7 +1,6 @@
 \begin{multicols}{2}
 <<>>=
-# functions
-source("/home/cjber/drive/uni/envs492/main/scripts/functions.r")
+source("../scripts/functions.r")
 lidar_tab <- fread("../data/derived/model_data/lm_f.csv")
 @
 \section{Overview of Data}
@@ -22,48 +21,56 @@ Covers script 00.
 
 <<fig.show = 'hide'>>=
 source("./fig_lp.r")
-bg <- data.frame(
-  xmin = min(chm$x) - 1,
-  xmax = max(chm$x) + 1,
-  ymin = min(chm$y) - 1,
-  ymax = max(chm$y) + 1
-)
-
-
 roads <- roads[6, ]
 
 chm_gg <- ggplot() +
-  geom_rect(data = bg, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = "grey50", colour = "black", size = 2) +
   geom_raster(data = chm, aes(x = x, y = y, fill = value), alpha = 1) +
-  geom_sf(data = roads, colour = alpha("red",.3), fill = "black", alpha = 0.1) +
+  geom_sf(data = roads, colour = alpha("red", .3), fill = "black", alpha = 0.1) +
   scale_fill_viridis() +
   coord_sf() +
   theme_map() +
-  theme(legend.position = "none")
+  theme(panel.border = element_rect(
+    colour = "black",
+    fill = NA, size = 1
+  ), legend.position = "none") +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0))
 
 dsm_lp_gg <- ggplot() +
-  geom_rect(data = bg, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = "grey50", colour = "black", size = 2) +
   geom_raster(data = dsm_lp, aes(x = x, y = y, fill = value), alpha = 1) +
   scale_fill_viridis() +
   coord_fixed() +
   theme_map() +
-  theme(legend.position = "none")
+  theme(panel.border = element_rect(
+    colour = "black",
+    fill = NA, size = 1
+  ), legend.position = "none") +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0))
 
 las_i_gg <- ggplot() +
-  geom_rect(data = bg, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = "grey50", colour = "black", size = 2) +
   geom_raster(data = metrics, aes(x = x, y = y, fill = imean), alpha = 1) +
   scale_fill_viridis() +
   coord_fixed() +
   theme_map() +
-  theme(legend.position = "none")
+  theme(panel.border = element_rect(
+    colour = "black",
+    fill = NA, size = 1
+  ), legend.position = "none") +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0))
 
 aerial_gg <- ggplot() +
-  geom_rect(data = bg, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = "grey50", colour = "black", size = 2) +
   geom_raster(data = aerial, aes(x = x, y = y, fill = value), alpha = 1) +
   scale_fill_viridis() +
   coord_fixed() +
   theme_map() +
-  theme(legend.position = "none")
+  theme(panel.border = element_rect(
+    colour = "black",
+    fill = NA, size = 1
+  ), legend.position = "none") +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0))
 @
 
 from \ref{fig:fig_buff} \textbf{(b)} intensities values for ground points below the tree are much lower than those that are not below trees, essentially if including returns with higher than 1 return the intensity values are more unreliable.
@@ -74,11 +81,13 @@ from \ref{fig:fig_buff} \textbf{(b)} intensities values for ground points below 
 <<fig_lp, fig.cap = "LiDAR point clouds for one selected road section aggregated into 1m$^2$ grids, \\textbf{(A)} Base point cloud $Z$ values, \\textbf{(B)} Normalised Point cloud $Z$ values for only last returns ($lpz$) \\textbf{(C)} Normalised Point cloud $Intensity$ values for last return, \\textbf{(D)} Aerial Data combined to 1 band", fig.height = 16>>=
 
 plot_grid(
-chm_gg,
-dsm_lp_gg,
-las_i_gg,
-aerial_gg, labels = "AUTO",
-label_size = 20)
+  chm_gg,
+  dsm_lp_gg,
+  las_i_gg,
+  aerial_gg,
+  labels = "AUTO",
+  label_size = 20
+)
 @
 
 \section{Perpendicular Sampling}
@@ -116,53 +125,6 @@ First model (maximal):
 
 3. Compare global model 1 (best fit), to individual model using f1.
 
-<<lm_prep>>=
-aerial_bbox <- bbox(aerial)
-
-bg <- data.frame(
-  xmin = aerial_bbox[1] - 1,
-  xmax = aerial_bbox[3] + 1,
-  ymin = aerial_bbox[2] - 1,
-  ymax = aerial_bbox[4]
-)
-
-lm_f <- ggRGB(aerial) +
-  geom_rect(data = bg, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = NA, colour = "black", size = 2) +
-    geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
-    geom_sf(
-        data = road_lm_filter[road_lm_filter$lmI_dum == 1, ],
-        alpha = .5, colour = "green"
-    ) +
-    geom_sf(
-        data = road_lm_filter[road_lm_filter$road == 1, ],
-        alpha = .5, colour = "orange"
-    ) +
-           theme_map()
-
-# unfiltered
-lm_uf <- ggRGB(aerial) +
-  geom_rect(data = bg, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = NA, colour = "black", size = 2) +
-    geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
-    geom_sf(
-        data = road_lm_nofilter[road_lm_nofilter$lm1_dum == 1, ],
-        alpha = 0.5, colour = "green"
-    ) +
-    geom_sf(
-        data = road_lm_nofilter[road_lm_nofilter$road == 1, ],
-        alpha = .5, colour = "orange"
-    ) +
-    theme_map()
-@
-
-<<lm_figs, fig.height = 12>>=
-plot_grid(
-lm_f,
-lm_uf, labels = "AUTO",
-label_size = 20)
-@
-
-
-
 \begin{equation}
 \begin{aligned}
 \mathrm{Road}_{t} = \alpha 
@@ -176,48 +138,183 @@ label_size = 20)
 //for this section see 450 assess2, details on validation etc.
 
 \section{Noise Filtering}
-
 <<>>=
 source("./fig_noise.r")
+@
 
+<<fig_noise, fig.height = 18, fig.cap = "Removed points through filtering">>=
 ggRGB(aerial) +
-  geom_rect(data = bg, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = NA, colour = "black", size = 2) +
-    geom_sf(data = rd, colour = "red") +
-    geom_sf(data = rd_fil, colour = "green")+
-    theme_map()
+  geom_sf(data = rd, colour = "red") +
+  geom_sf(data = rd_fil, colour = "green") +
+  geom_sf(data = centrelines, colour = "red", alpha = 1) +
+  theme_map() +
+  theme(panel.border = element_rect(
+    colour = "black",
+    fill = NA, size = 1
+  )) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0))
 @
 
 // Manually measure a road width for a reference, i.e. how close to accurate different models are. GLM LM and individual filtered and unfiltered. Find max and min widths and mean, describe what likely causes the differences.
 
+<<lm_prep>>=
+# filtered individual model
+lmi <- ggRGB(aerial) +
+  geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
+  geom_sf(data = centrelines, colour = "red", alpha = 1) +
+  geom_sf(
+    data = road_lm_filter[road_lm_filter$lmI_dum == 1, ],
+    alpha = .5, colour = "green"
+  ) +
+          theme_map() +
+  theme(panel.border = element_rect(
+    colour = "black",
+    fill = NA, size = 1
+  )) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0))
+
+# unfiltered
+lm15 <- ggRGB(aerial) +
+  geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
+  geom_sf(data = centrelines, colour = "red", alpha = 1) +
+  geom_sf(
+    data = road_lm_nofilter[road_lm_nofilter$lm15_dum == 1, ],
+    alpha = 0.5, colour = "green"
+  ) +
+  theme_map() +
+  theme(panel.border = element_rect(
+    colour = "black",
+    fill = NA, size = 1
+  )) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0))
+
+lm1 <- ggRGB(aerial) +
+  geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
+  geom_sf(data = centrelines, colour = "red", alpha = 1) +
+  geom_sf(
+    data = road_lm_nofilter[road_lm_nofilter$lm1_dum == 1, ],
+    alpha = 0.5, colour = "green"
+  ) +
+  theme_map() +
+  theme(panel.border = element_rect(
+    colour = "black",
+    fill = NA, size = 1
+  )) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0))
+
+lm2 <- ggRGB(aerial) +
+  geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
+  geom_sf(data = centrelines, colour = "red", alpha = 1) +
+  geom_sf(
+    data = road_lm_nofilter[road_lm_nofilter$lm2_dum == 1, ],
+    alpha = 0.5, colour = "green"
+  ) +
+  theme_map() +
+  theme(panel.border = element_rect(
+    colour = "black",
+    fill = NA, size = 1
+  )) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0))
+
+lm3 <- ggRGB(aerial) +
+  geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
+  geom_sf(data = centrelines, colour = "red", alpha = 1) +
+  geom_sf(
+    data = road_lm_nofilter[road_lm_nofilter$lm3_dum == 1, ],
+    alpha = 0.5, colour = "green"
+  ) +
+  theme_map() +
+  theme(panel.border = element_rect(
+    colour = "black",
+    fill = NA, size = 1
+  )) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0))
+
+glm1 <- ggRGB(aerial) +
+  geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
+  geom_sf(data = centrelines, colour = "red", alpha = 1) +
+  geom_sf(
+    data = road_lm_nofilter[road_lm_nofilter$glm1_dum == 1, ],
+    alpha = 0.5, colour = "green"
+  ) +
+  theme_map() +
+  theme(panel.border = element_rect(
+    colour = "black",
+    fill = NA, size = 1
+  )) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0))
+@
+
+<<lm_figs, fig.height = 12>>=
+plot_grid(
+  lmi,
+  lm15,
+  lm1,
+  lm2,
+  lm3,
+  glm1,
+  labels = "AUTO",
+  label_size = 20,
+  ncol = 2
+)
+@
+
+individual models enable the use of more reliable p values to filter out some results, however given the centrelines are not accurate this doesn't work. Payoff doesn't seem that good even given proper centrelines.
+
 \section{Final Model Analysis}
 
-Very rough estimate of widths
+<<roadlines_prep>>=
+source("./fig_roadlines.r")
 
+roadlines_plots <- lapply(road_slines, function(x){
+           ggplot() +
+               geom_sf(data = x)
+})
+
+plot_grid(roadlines_plots,
+labels = "AUTO",
+label_size = 20,
+ncol = 2)
+@
+
+
+Very rough estimate of widths
 <<>>=
 source("../scripts/04_analysis.r")
 
-norm_widths <- norm_widths %>% 
-    as.data.frame() %>% 
-    slice(2:n() -1)
+norm_widths <- norm_widths %>%
+  as.data.frame() %>%
+  slice(2:n() - 1)
 
 norm_widths$model <- c("lm 1", "lm 2", "lm 3", "glm", "lm $i$")
-norm_widths <- norm_widths %>% 
-    select(model, everything())
+norm_widths <- norm_widths %>%
+  select(model, everything())
 
-names(norm_widths)  <- c("Model", "Accuracy")
+names(norm_widths) <- c("Model", "Accuracy")
 @
 <<mtest_tab, results='asis'>>=
 make_table(norm_widths, 2, cap = "testing")
 @
+
+<<road_lines>>=
+@
+
 
 
 \section{Road Assessment}
 <<>>=
 source("../scripts/04_analysis.r")
 
-final_data <- final_data %>% 
-    na.omit()  %>% 
-    select(c(lmi_mean, meanAngle, meanZ, rangeInt))
+final_data <- final_data %>%
+  na.omit() %>%
+  select(c(lmi_mean, meanAngle, meanZ, rangeInt))
 
 cor_tab <- rcorr(as.matrix(final_data), type = "pearson")
 
@@ -251,10 +348,12 @@ make_table(cor_tab, dig = 2, cap = "Correlation Matrix") %>%
   # footnote for significance
   footnote(
     general_title = " ",
-    general = c("*** Significant at the 0.001 level",
-                "** Significant at the 0.005 level",
-                "* Significant as the 0.01 level"),
-)
+    general = c(
+      "*** Significant at the 0.001 level",
+      "** Significant at the 0.005 level",
+      "* Significant as the 0.01 level"
+    ),
+  )
 @
 
 <<>>=

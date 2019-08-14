@@ -2,58 +2,21 @@
 
     \lettrine{T}{ypical} road extraction techniques have focused purely on urban road networks and involved methods which can be both computationally intensive and time consuming. Given the pressure for full quantitative assessments of the current speed limits in the rural network in the United Kingdom, there is a demand to produce comprehensive methods for rural road feature extraction. This paper primarily focuses on techniques for assessing the road geometry for roads considered to be rural connecting roads in the United Kingdom. This literature review will first outline the current understanding of the rural road network, considering the role of speed and speed limits in accident likelihood, rural accessibility, and a detailed look at current road extraction techniques involving aerial imagery and LiDAR, presenting the key differences and limitations of these studies when considering the rural road network in the UK.
 
-
-Road Geometry, from \cite{jaakola2008}documentation of both road geometry and road environment.
-Road geometry means the parameters used for the geometric design of roads, such as design speed,
-stopping sight distance, passing sight distance, line of sight, number of lanes, lane width, side foot path
-for pedestrians, longitudinal and transverse slope, road pavement materials, etc. Recently built roads
-follow modern geometric design parameters, and most of this information is already available, but for
-the oldest roads these data, which are required mostly for upgrading or assessing the quality of the
-roads, are unavailable or unusable. By road environment we refer to the vicinity of the road on both
-sides of the road, including buildings, trees, vegetation, electricity, traffic signs, traffic light poles and
-other objects [1]. We expect that the geometry of this kind of road environment can best be obtained
-either using airborne or vehicle-based laser scanning or using an integrated approach combining both
-systems. Supported with imaging sensors, the documentation can be completed with texture
-information, traffic sign semantics, etc.
-
-
-
 \section{British Rural Road Network}
 
-- How many roads are "rural", how much traffic
-Describe for the UK.
+\cite{taylor2002} conducted a comprehensive study outlining the key features of British rural roads, in an effort to improve the characterstics associated with accident rates, above that which was explored by the MASTER study which primarily consisted of European road data, with limited data for England \citep{baruya1998}. \cite{taylor2002} identify key features of 174 selected rural british roads across England which they use to classify roads into certain categories, this data was obtained through drive through video recordings.
 
-\cite{taylor2002} conducted a comprehensive study outlining the key features of British rural roads, in an effort to improve the characterstics associated with accident rates, above that which was explored by the MASTER study which primarily consisted of European road data, with limited data for England \citep{baruya1998}. \cite{taylor2002} identify key features of 174 selected rural british roads across England which they use to classify roads into certain categories, this data was obtained through drive through video recordings. The following data was obtained and used to categorise the quality of the road;
-
-\textit{Discrete data}
-
-\begin{itemize}
-    \item Type of junction (if present);
-    \item Number and type of minor junctions;
-    \item Number and type of accesses within the section;
-    \item Number of bends, classified into:
-        \subitem Sharp (bends with a warning sign);
-        \subitem medium;
-        \subitem slight
-\end{itemize}
-
-\textit{Semi-continuous data}
-
-\begin{itemize}
-    \item Lighting;
-    \item Reflecting road studs;
-    \item Kerbs;
-    \item Number of lanes;
-    \item Road markings;
-    \item Land use.
-\end{itemize}
-
-\textit{Continuous data}
-\begin{itemize}
-    \item Visibility;
-    \item Verge width and type;
-    \item Roadside type;
-\end{itemize}
+\begin{table}[H]
+\fontsize{8}{10}\selectfont
+\begin{tabular}{ll}
+\toprule
+\textbf{Type of data} & \textbf{Examples} \\
+\midrule
+Discrete data & \begin{tabular}[c]{@{}l@{}}Type of junction \\ Minor junctions \\ Accesses \\ Number of bends, classified into:\\ \quad Sharp (warning signposts) \\ \quad Medium \\ \quad Slight\end{tabular} \\ \\
+Semi-continuous data & \begin{tabular}[c]{@{}l@{}}Lighting \\ Reflecting road studs \\ Kerbs \\ Number of lanes \\ Road markings \\ Land use\end{tabular} \\ \\
+Continuous data & \begin{tabular}[c]{@{}l@{}}Visibility \\ Verge width and type \\ Roadside type \end{tabular}                                                                                                                              \\ \bottomrule
+\end{tabular}
+\end{table}
 
 Notably, the features unique to rural roads were observed to be the land use either side of a road, consisting mainly of residential, farming, wooded, open or industrial. Verges consisting of grass verges, pavement, low banks, ditches or none. Roadside type included the most dominant vertical feature closest to the road, including trees which may overhang the road, hedges, banks, fences and so on. This study also manually measured the road width for each site, and to determine the "hilliness" of roads, the number of 10m contour lines crossed were counted to give the total change in height.
 
@@ -183,112 +146,39 @@ The majority of current road classification techniques using LiDAR have focused 
 
 Many methods for road classification from LiDAR follow similar patterns, first identification of ground points through height data, and DTM extraction through interpolation, and subsequent classification based on the attributes of the point cloud \cite{vosselman2009}. Due to the 3D information provided by LiDAR data, kerbs can be segmented from roads, achieving a more accurate road edge location when kerbs are present. However, due to the often small jump between kerb and road, this methodology is limited to new terrestrial mobile LiDAR data collection.\cite{jaakola2008} produced a methodology using mobile LiDAR data to classify road edges by segmenting kerbstones based on the height gradient along the scanned profile, with a final completeness of 73.9\%, and correctness of 85.6\%. Additionally, road markings were segmented from the road surface using intensity information. The mobile data collection for this study obtained a point resolution of between 10cm$^2$ and 100cm$^2$, with driving speeds of 20km/h to 50km/h. \cite{jaakkola2008} note that due to the size of the data produced through this method, computation times were lengthy. \cite{yoon2009} similarly developed an approach for urban drivable terrain detection for automated vehicles through mobile LiDAR data, road edges were obtained through the slope and standard deviation of the height of points, finding the standard deviation to be far more efficient for edge detection. They note that while results were promising, it would take a very long time to collect data for a large number of roads, and at higher vehicle speeds, LiDAR points density is reduced below a usable threshold. 
 
-elberink2009: automated method for 3d modelling highway infrastructure using airborne LiDAR + 2d topographic. Road polygons were extracted from the topographic map data using a map based seed-growing algorithm combined with a Hough transformation. points added to the correspondng road polygons using a LiDAR based seed-growing algorithm then mapped polygons
+//- Extraction includes detection of planar or smooth surfaces, and the classification of points or point clusters based on local point patterns, echo intensity and echo count information \citep{vosselman2004;darmawati2008}
 
-Few supervised methods for road classification exist summarise these: \cite{guan2013; hul2008; dahlkamp2006;matkan2014;ferraz2016}. 
+// elberink2009: automated method for 3d modelling highway infrastructure using airborne LiDAR + 2d topographic. Road polygons were extracted from the topographic map data using a map based seed-growing algorithm combined with a Hough transformation. points added to the correspondng road polygons using a LiDAR based seed-growing algorithm then mapped polygons
 
+// 2. Lidar points distirbute irregularly with non uniformity density. the point density in the overlapping area between fight strips is greater than non-overlapping regions. There is no point in areas occulded by tall objects. can be soled interpolating into intensity image (e.g. Zhao,2012, zhu 2009) binary image, Clode 2007. others see Samadzadegan 2009, Jiangui 2011.
 
-// breifly mention deep learning approaches
+// Vosselman2009, developed a method for detecting kerbstones from airborne LiDAR data, based on the detection of small height jumps caused byt he kerbstones in the LiDAR point cloud data. Cars parked occluded kerbstones. \cite{vosselman2009a} used low flying airborne LiDAR point cloud data with a very high density of 10-20m$^2$
 
-\cite{charaniya2004}, supervised
+\subsection{Supervised Methods}
 
-\cite{vosselman2009a} used low flying airborne LiDAR point cloud data with a very high density of 10-20m$^2$
-
-
-
-Vosselman2009, developed a method for detecting kerbstones from airborne LiDAR data, based on the detection of small height jumps caused byt he kerbstones in the LiDAR point cloud data. Cars parked occluded kerbstones.
-Smadja2010 \citep{smadja2010}, algorithm for extracting roads fom Lidar data based on the daetection of slope break points coupled with ransac algorithm, road boundaries further processed to compute road curvature and road width information.
-zhang2010 detecting road edges in urban environment using terrestial lidar data, edge points identified based on elevation information. identified 3d road edges points projected on a ground plain to estimate road kerbs.
-McElhinney2010, extracting road edges from terresrial model lidar data, first set of lines fitted to the road cross sections based on the navigation data and then lidar points within the vicinity of the liens were determined. second stage, the points were analysed based on information such as slope, intensity, pulse widht and proximity to vehicle information in order to extract the road edges.
-Ibrahim2012, street kerb and surface from terrestrial mobile lidar point cloud data, segmented to ground and non ground based on point density, further refined analysing the morphological characteristic of the neighbourhood of each opint in the segment, kerb edges finally extracted from the refined ground segment by appling the drivative of the gaussian function to 3d points.
-
-// manmade smooth? can't find ref now...
-
-See \citep{kumar2013}:
-
-goulette2006: methodd for segmenting road, trees, and facades from terrestrial mobile lidar data. road sgemented as horizontal plane high density of points in the histogram + usedt o compute road width and curvature. Trees and facades identified as vertical planes and disconnected elements in the histogram.
-yuan2008: algoritm using fuzzy clusting method to cluster LiDAR points, straight lines then fitted to the linearly clustered data using slope information for extracting the road.
-lam2010, terrestrial mobile lidar data random sample consensus (RANSAC) planes to small sections then interconnected these fitterd planes using Kalman filtering. Further filtering powerlines etc.
-
-
-Majority attempt to delineate roads by distinguishing them from non-road objects but do not attempt to extract the road edges. Most for urban roads, rely on sufficient height or slope difference between the road and kerb points for etecting road sedges. Little or no research been carried out to extract rural roads, wheer non-road surface comprises grass-soil and edges not as easily defined by slope changes alone. Intensity and pulse width attributes from liDAR data can be a useful source of intermation for extracting these roads edges. 
-
-
-
-An overview of road extraction techniques from aerial LiDAR data are described in \cite{hatger2005}, the detection of straight lines within data, to derived feature outlines using a Hough transformation. Region growing algorithms, which take small regions identified as being true parts of the road surface, then growing these areas by adding neighbouring points with similar properties, and hierarchical classification, which splits the data into partitions that follow a common predicate, removing data sequentially. // reword this.
-
-
-
-From: \citep{hatger2005}
-- Segmentation through discontinuity, prominent points or edges, or areas fulfilling certain criteria in continuity.
-- Point operators which try to find isolated points, corners, or points being part of a one dimensional curve (Haralick and Shapira, 1992, Canny, 1986 (old))
-- Second step building contour chains from individual points.
-- alternatively, discontinuity perpendicular to a linear structure can be defined in terms of the continuous arass to the left and right of the structure (brugelmann,2000, wild and krzystek 1996. + region growing)
-- inclusion of as much information e.g. minimum width requirements etc (actually not defined in the UK however)
-- Continuous surfaces approximated by planes, usually horizontal
-
-Techniques from Hatger 2005
-General Planar Regin growsing Segmentation
-Iterating following:
-1. Find the best seed region which fulfils the desired predicate,
-2. Add elements to the seed region (i.e. grow it) as long as they are connected to it, and they too fulfil the predicate
-3. If the region cannot be grown anymore, accept it and go to 1. using the remaining elements.
-They use estimation of local planes, and look for the smallest residuals. The predicate is a certain maximum distance $e$ of the points to the plane given by its Hesse normal form
-
-The scan line grouping approach
-Less computationally expensive than region growing.
-- Presented by \citep{jiang1992}.
-- Raster data: plane $z = ax + by + d$ all points along the line $y = y0$ fulful the equatin $z = as + by0 + d$ the line equation. add entire scan lines
-Steps:
-1. Partitioning of each scan line y = y0 into linear segments fulfilling corresponding line equaitons
-2. Search for a seed region by investigating overlapping linear seegments of three successive lines
-3. Growing the best seed region by adding neighbouring line segments, as long as they still are part of the same plane
-4. Postprocessing: 
-
-(RANSAC), intoduced by (Fischler and Bolles, 1981). fixes errors
-
+// Few supervised methods for road classification exist summarise these: \cite{guan2013;hul2008;dahlkamp2006;matkan2014;ferraz2016;charaniya2004}. 
+//  ALSO SUPERVISED: - Hatger and Brenner 2003,2005, laser scanning data at 0.5m to extract properties of roads for which centrelines arer known from a road database. Including height longitudinal and transversal slope, curvature, and width. Height profiles across road split into straight sgements. A RANSAC procedure on the end points of the sements with low slope values is used to fit straight lines to the road sides. \citep{hatger2003;hatger2005}
 
 Charainya gives information which is utilised in this paper for the modelling. i.e. Lum and Intensity are most useful for road detection
 
+// summary:
 
-
-- Extraction includes detection of planar or smooth surfaces, and the classification of points or point clusters based on local point patterns, echo intensity and echo count information \citep{vosselman2004;darmawati2008}
-
-2. Lidar points distirbute irregularly with non uniformity density. the point density in the overlapping area between fight strips is greater than non-overlapping regions. There is no point in areas occulded by tall objects. can be soled interpolating into intensity image (e.g. Zhao,2012, zhu 2009) binary image, Clode 2007. others see Samadzadegan 2009, Jiangui 2011.
-
-\citep{yadav2018}: Major limitation of existing methods to extract rural road surface as mostly without curb. Methologies such as Yang et al., 2013 which deals with curbs and boundaries characterized as ashpalt/soil and ashpalt vegetation and ashpalt/grassy bank. Exact edge location difficult if point density less and sufficiant elevatio jump not present at boundary of carriageway (Mc Elhinney et al., 2010). Wu et al., 2013 dependent on road range which cannot be calculated correctly if height diffrernce between road surface and shoulder not obvious.
-
-Clode 2004:
-
-
-
-
-- from \citep{vosselman2009a}: clode 2004a, pulse reflectance strength + dtm to detect roads . Later improved including buildings and vegetation.
-
-- Akel et al. 2005, road areas classifying smooth segments based on size and shape characteristics
-- Rieger 1999 used surface slope in a 20cm eleveation grid to detect roads in mountainous areas
-- Hatger and Brenner 2003,2005, laser scanning data at 0.5m to extract properties of roads for which centrelines arer known from a road database. Including height longitudinal and transversal slope, curvature, and width. Height profiles across road split into straight sgements. A RANSAC procedure on the end points of the sements with low slope values is used to fit straight lines to the road sides. \citep{hatger2003;hatger2005}
 
 \subsection{Rural Road Extraction}
 
-Traditional road extraction techniques from aerial imagery relied on human extraction that is both time consuming and prone to inaccuracy \citep{wang2015}. However, recent improvements in remote sensing technology now mean that automated extraction techniques have been explored which rely on the much higher resolution imagery available \citep{xu2018}. This paper will use Light Detection and Ranging (LiDAR) data, made available by the UK government for much of England. LiDAR is collected by measuring the distance from an aircraft to the ground, emitting laser pulses at regular intervals \citep{environmentagency2019}, allowing for very high resolution terrain models to be produced, with a resolution up to 25cm. Additionally the 'point clouds' produced by the laser pulses contain information that may be utilised to determine the qualities that are indicative of road locations \citep[e.g.][]{clode2004}.
+See \citep{kumar2013}:
+Majority attempt to delineate roads by distinguishing them from non-road objects but do not attempt to extract the road edges. Most for urban roads, rely on sufficient height or slope difference between the road and kerb points for etecting road sedges. Little or no research been carried out to extract rural roads, wheer non-road surface comprises grass-soil and edges not as easily defined by slope changes alone. Intensity and pulse width attributes from liDAR data can be a useful source of intermation for extracting these roads edges. 
 
-Additionally, luminescence information extracted from 25cm resolution aerial true colour imagery is available for research purposes for the entirety of the UK.
-
-
-
+\citep{yadav2018}: Major limitation of existing methods to extract rural road surface as mostly without curb. Methologies such as Yang et al., 2013 which deals with curbs and boundaries characterized as ashpalt/soil and ashpalt vegetation and ashpalt/grassy bank. Exact edge location difficult if point density less and sufficiant elevatio jump not present at boundary of carriageway (Mc Elhinney et al., 2010). Wu et al., 2013 dependent on road range which cannot be calculated correctly if height diffrernce between road surface and shoulder not obvious.
 
 Key factors in determining poor road quality:
-
 \begin{itemize}
     \item Width \citep{taylor2002} \citep{aarts2006}
     \item Surface quality
     \item Blind corners/winding roads \citep{aarts2006} \citep{wu2013}
     \item Junction Sharpness \citep{aarts2006}
-
 \end{itemize}
-// read these papers and identify why these should be considered when assessing road quality
 
-\section{Supervised Modelling Image Segmentation}
+// read these papers and identify why these should be considered when assessing road quality
 
 \end{multicols}

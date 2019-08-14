@@ -50,7 +50,8 @@ make_table <- function(df, cap, dig = 2, ...) {
     format = "latex",
     escape = F
   ) %>%
-    kable_styling(font_size = 8)
+    kable_styling(font_size = 8)  %>% 
+    row_spec(0, bold = TRUE)
 }
 
 ## ---- ctg_to_df
@@ -315,43 +316,20 @@ max_dist <- function(x) {
   }
 }
 
-
+# consider optimisation?
 ## ---- max_lines
 max_lines <- function(x) {
   road_lm <- split(x, f = x$sample_id)
 
-  road_lm <- lapply(road_lm, filter_samples)
   road_lm <- road_lm %>% compact()
 
-  # find two farthest points
+  road_lm <- lapply(road_lm, filter_samples)
   road_lm <- lapply(road_lm, max_dist)
   road_lm <- do.call(rbind, road_lm)
   # find intersecting buffers
   road_lm <- st_join(road_lm, road_buff)
 
   return(road_lm)
-}
-
-## ---- road_polys
-road_polys <- function(x) {
-  # road polygons
-  road_pts <- x %>% st_cast("POINT")
-  road_pts <- split(road_pts, road_pts$road_id)
-  road_poly <- lapply(road_pts, function(x) {
-    x <- x %>%
-      st_union() %>%
-      st_convex_hull()
-    if (class(x)[1] == "sfc_POLYGON") {
-      return(x)
-    }
-  })
-
-  # remove na
-  road_poly <- road_poly %>% compact()
-  # do.call doesn't work not sure why
-  road_poly <- purrr::reduce(road_poly, c)
-
-  return(road_poly)
 }
 
 ## -- model_comparison

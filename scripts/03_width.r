@@ -14,21 +14,20 @@ road_buff <- st_read("../data/derived/roads/roads_buff.gpkg") %>%
     st_set_crs(27700)
 
 road_lm1 <- road_lm[road_lm$lm1_dum == 1, ]
+road_lm15 <- road_lm[road_lm$lm1_dum5 == 1, ]
 road_lm2 <- road_lm[road_lm$lm2_dum == 1, ]
 road_lm3 <- road_lm[road_lm$lm3_dum == 1, ]
 road_glm <- road_lm[road_lm$glm1_dum == 1, ]
 road_lmi <- road_fil[road_fil$lmI_dum == 1, ]
 
-linear_models <- list(road_lm1, road_lm2, road_lm3, road_glm, road_lmi)
-
+linear_models <- list(road_lm1, road_lm15, road_lm2, road_lm3, road_glm, road_lmi)
+# includes all filtering, max dist points
 linear_models <- lapply(linear_models, max_lines)
 
-road_polys <- lapply(linear_models, road_polys)
-
-# save polygons
-for (i in 1:length(road_polys)) {
+# save lines for comparison
+for (i in 1:length(linear_models)) {
     st_write(linear_models[[i]], 
-             paste0("../data/final_data/road_polys_", i, ".gpkg"),
+             paste0("../data/final_data/road_slines_", i, ".gpkg"),
              layer_options = "OVERWRITE=YES")
 }
 
@@ -141,7 +140,6 @@ las_height <- las_height %>%
 roads <- merge(roads, las_height, by = "road_id")
 
 ## ---- surface_qual
-
 las_qual <- las_rds %>%
     group_by(road_id) %>%
     summarise(

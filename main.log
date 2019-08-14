@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Arch Linux) (preloaded format=pdflatex 2019.8.9)  14 AUG 2019 11:26
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Arch Linux) (preloaded format=pdflatex 2019.8.9)  14 AUG 2019 17:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1176,7 +1176,7 @@ LaTeX Font Info:    Font shape `MDB/mdbch/m/n' will be
 (Font)              scaled to size 4.80003pt on input line 85.
 LaTeX Font Info:    Font shape `T1/mdbch/b/n' will be
 (Font)              scaled to size 6.72005pt on input line 90.
-<./template/uolLogo.png, id=274, 444.9423pt x 181.6386pt>
+<./template/uolLogo.png, id=312, 444.9423pt x 181.6386pt>
 File: ./template/uolLogo.png Graphic file (type png)
 <use ./template/uolLogo.png>
 Package pdftex.def Info: ./template/uolLogo.png  used on input line 92.
@@ -1267,235 +1267,232 @@ LaTeX Font Info:    Font shape `T1/mdbch/m/it' will be
 
 
 ]
+
+Package natbib Warning: Citation `jaakola2008' on page 2 undefined on input lin
+e 172.
+
 LaTeX Font Info:    Font shape `T1/mdbch/b/n' will be
-(Font)              scaled to size 11.52008pt on input line 172.
+(Font)              scaled to size 11.52008pt on input line 174.
 LaTeX Font Info:    Font shape `T1/mdbch/b/it' will be
-(Font)              scaled to size 9.60007pt on input line 175.
+(Font)              scaled to size 9.60007pt on input line 177.
 [2]
-
-Package natbib Warning: Citation `shan2008' on page 3 undefined on input line 1
-91.
-
 
 Package natbib Warning: Citation `shan2008' on page 3 undefined on input line 1
 93.
 
 
 Package natbib Warning: Citation `hu2004;zhu2004' on page 3 undefined on input 
-line 197.
+line 199.
 
 
 Package natbib Warning: Citation `kumar2013;vosselman2009a' on page 3 undefined
- on input line 199.
+ on input line 201.
 
-<figure/area_map-1.pdf, id=472, 505.89pt x 505.89pt>
+<figure/area_map-1.pdf, id=521, 505.89pt x 505.89pt>
 File: figure/area_map-1.pdf Graphic file (type pdf)
 <use figure/area_map-1.pdf>
-Package pdftex.def Info: figure/area_map-1.pdf  used on input line 206.
+Package pdftex.def Info: figure/area_map-1.pdf  used on input line 208.
 (pdftex.def)             Requested size: 222.62206pt x 222.62315pt.
 [3 <./figure/area_map-1.pdf>] [4]
 Chapter 2.
 Package lettrine.sty Info: Targeted height = 20.31363pt
 (lettrine.sty)             (no accent, loversize=0),
 (lettrine.sty)             Lettrine height = 20.31361pt (T);
-(lettrine.sty)             reported on input line 245.
-
-Package natbib Warning: Citation `jaakola2008' on page 5 undefined on input lin
-e 248.
-
+(lettrine.sty)             reported on input line 247.
+LaTeX Font Info:    Font shape `OT1/mdbch/m/n' will be
+(Font)              scaled to size 7.68005pt on input line 255.
+LaTeX Font Info:    Font shape `OML/mdbch/m/it' will be
+(Font)              scaled to size 7.68005pt on input line 255.
+LaTeX Font Info:    Font shape `OMS/mdbch/m/n' will be
+(Font)              scaled to size 7.68005pt on input line 255.
+LaTeX Font Info:    Font shape `OMX/mdbch/m/n' will be
+(Font)              scaled to size 7.68005pt on input line 255.
+LaTeX Font Info:    Font shape `OML/mdbch/m/n' will be
+(Font)              scaled to size 7.68005pt on input line 255.
+LaTeX Font Info:    Font shape `MDA/mdbch/m/n' will be
+(Font)              scaled to size 7.68005pt on input line 255.
+LaTeX Font Info:    Font shape `MDB/mdbch/m/n' will be
+(Font)              scaled to size 7.68005pt on input line 255.
 [5
 
 ]
 
 Package natbib Warning: Citation `departmentoftheenvironmenttransportandthe2000
-' on page 6 undefined on input line 316.
+' on page 6 undefined on input line 281.
 
 
 Package natbib Warning: Citation `finch1994;taylor2002' on page 6 undefined on 
-input line 329.
+input line 294.
 
 
 Package natbib Warning: Citation `richards2009' on page 6 undefined on input li
-ne 329.
+ne 294.
 
-[6] [7]
+[6]
 
-Package natbib Warning: Citation `jaakola2008' on page 8 undefined on input lin
-e 362.
+Package natbib Warning: Citation `jaakola2008' on page 7 undefined on input lin
+e 327.
 
-
-Package natbib Warning: Citation `charainya2004' on page 8 undefined on input l
-ine 376.
-
+[7]
 
 Package natbib Warning: Citation `maas1999' on page 8 undefined on input line 3
-85.
+46.
+
+
+Package natbib Warning: Citation `axelsson1998' on page 8 undefined on input li
+ne 363.
 
 [8]
 
-Package natbib Warning: Citation `axelsson1998' on page 9 undefined on input li
-ne 402.
+Package natbib Warning: Citation `yadav2018;kumar2013;smadja2010;jaakola2008' o
+n page 9 undefined on input line 389.
+
+LaTeX Font Info:    Font shape `T1/mdbch/m/n' will be
+(Font)              scaled to size 5.76004pt on input line 389.
+
+Package multicol Warning: I moved some lines to the next page.
+(multicol)                Footnotes on page 9 might be wrong on input line 390.
+
 
 [9]
 
 Package natbib Warning: Citation `jaakola2008' on page 10 undefined on input li
-ne 431.
-
-[10]
-
-Package natbib Warning: Citation `jiang1992' on page 11 undefined on input line
- 487.
-
-[11]
-
-Package natbib Warning: Citation `vosselman2004;darmawati2008' on page 12 undef
-ined on input line 502.
+ne 391.
 
 
-Package natbib Warning: Citation `hatger2003;hatger2005' on page 12 undefined o
-n input line 518.
+Package natbib Warning: Citation `vosselman2004;darmawati2008' on page 10 undef
+ined on input line 393.
 
 
-Overfull \vbox (7.33594pt too high) has occurred while \output is active []
+Package natbib Warning: Citation `guan2013;hul2008;dahlkamp2006;matkan2014;ferr
+az2016;charaniya2004' on page 10 undefined on input line 403.
 
 
-Overfull \vbox (12.21692pt too high) has occurred while \output is active []
+Package natbib Warning: Citation `hatger2003;hatger2005' on page 10 undefined o
+n input line 404.
 
-[12] [13]
+[10] [11]
 Chapter 3.
 LaTeX Font Info:    Font shape `T1/cmtt/m/n' will be
-(Font)              scaled to size 10.72006pt on input line 549.
-LaTeX Font Info:    Font shape `OT1/mdbch/m/n' will be
-(Font)              scaled to size 7.68005pt on input line 549.
-LaTeX Font Info:    Font shape `OML/mdbch/m/it' will be
-(Font)              scaled to size 7.68005pt on input line 549.
-LaTeX Font Info:    Font shape `OMS/mdbch/m/n' will be
-(Font)              scaled to size 7.68005pt on input line 549.
-LaTeX Font Info:    Font shape `OMX/mdbch/m/n' will be
-(Font)              scaled to size 7.68005pt on input line 549.
-LaTeX Font Info:    Font shape `OML/mdbch/m/n' will be
-(Font)              scaled to size 7.68005pt on input line 549.
-LaTeX Font Info:    Font shape `MDA/mdbch/m/n' will be
-(Font)              scaled to size 7.68005pt on input line 549.
-LaTeX Font Info:    Font shape `MDB/mdbch/m/n' will be
-(Font)              scaled to size 7.68005pt on input line 549.
-LaTeX Font Info:    Font shape `T1/mdbch/m/n' will be
-(Font)              scaled to size 5.76004pt on input line 549.
+(Font)              scaled to size 10.72006pt on input line 434.
 LaTeX Font Info:    Font shape `TS1/mdbch/m/n' will be
-(Font)              scaled to size 6.72005pt on input line 570.
+(Font)              scaled to size 6.72005pt on input line 455.
 
-Underfull \hbox (badness 10000) in paragraph at lines 569--571
+Underfull \hbox (badness 10000) in paragraph at lines 454--456
 []\T1/mdbch/m/n/10 Aerial im-agery was down-loaded through
  []
 
 
 Package multicol Warning: I moved some lines to the next page.
-(multicol)                Footnotes on page 14 might be wrong on input line 580
+(multicol)                Footnotes on page 12 might be wrong on input line 465
 .
 
-[14
+[12
 
 ]
 LaTeX Font Info:    Font shape `OT1/mdbch/b/n' will be
-(Font)              scaled to size 9.60007pt on input line 618.
+(Font)              scaled to size 9.60007pt on input line 503.
 LaTeX Font Info:    Font shape `OT1/mdbch/b/n' will be
-(Font)              scaled to size 6.72005pt on input line 618.
+(Font)              scaled to size 6.72005pt on input line 503.
 LaTeX Font Info:    Font shape `OT1/mdbch/b/n' will be
-(Font)              scaled to size 4.80003pt on input line 618.
+(Font)              scaled to size 4.80003pt on input line 503.
+[13]
+LaTeX Font Info:    Font shape `OT1/mdbch/b/n' will be
+(Font)              scaled to size 7.68005pt on input line 551.
+LaTeX Font Info:    Font shape `OT1/mdbch/b/n' will be
+(Font)              scaled to size 5.76004pt on input line 551.
+[14]
+
+LaTeX Warning: Reference `fig:sample_points' on page 15 undefined on input line
+ 648.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 679.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `fig:sample_points' on page 15 undefined on input line
+ 683.
+
 [15]
-LaTeX Font Info:    Font shape `OT1/mdbch/b/n' will be
-(Font)              scaled to size 7.68005pt on input line 666.
-LaTeX Font Info:    Font shape `OT1/mdbch/b/n' will be
-(Font)              scaled to size 5.76004pt on input line 666.
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 709.
+See the caption package documentation for explanation.
+
+LaTeX Font Info:    Font shape `OT1/mdbch/m/it' will be
+(Font)              scaled to size 9.60007pt on input line 723.
+LaTeX Font Info:    Font shape `OT1/mdbch/m/it' will be
+(Font)              scaled to size 6.72005pt on input line 723.
+LaTeX Font Info:    Font shape `OT1/mdbch/m/it' will be
+(Font)              scaled to size 4.80003pt on input line 723.
+
+LaTeX Warning: Reference `code:angles' on page 16 undefined on input line 739.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 767.
+See the caption package documentation for explanation.
+
 [16]
-
-LaTeX Warning: Reference `fig:sample_points' on page 17 undefined on input line
- 763.
-
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 794.
-See the caption package documentation for explanation.
-
-
-LaTeX Warning: Reference `fig:sample_points' on page 17 undefined on input line
- 798.
-
-[17]
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 824.
-See the caption package documentation for explanation.
-
-LaTeX Font Info:    Font shape `OT1/mdbch/m/it' will be
-(Font)              scaled to size 9.60007pt on input line 838.
-LaTeX Font Info:    Font shape `OT1/mdbch/m/it' will be
-(Font)              scaled to size 6.72005pt on input line 838.
-LaTeX Font Info:    Font shape `OT1/mdbch/m/it' will be
-(Font)              scaled to size 4.80003pt on input line 838.
-
-LaTeX Warning: Reference `code:angles' on page 18 undefined on input line 854.
-
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 882.
-See the caption package documentation for explanation.
-
-[18]
 Chapter 4.
 
-LaTeX Warning: Reference `fig:fig_buff' on page 19 undefined on input line 923.
+LaTeX Warning: Reference `fig:fig_buff' on page 17 undefined on input line 808.
 
 
-<figure/fig_lp-1.pdf, id=787, 505.89pt x 1156.32pt>
+<figure/fig_lp-1.pdf, id=827, 505.89pt x 1156.32pt>
 File: figure/fig_lp-1.pdf Graphic file (type pdf)
 <use figure/fig_lp-1.pdf>
-Package pdftex.def Info: figure/fig_lp-1.pdf  used on input line 931.
+Package pdftex.def Info: figure/fig_lp-1.pdf  used on input line 816.
 (pdftex.def)             Requested size: 222.62206pt x 508.85295pt.
 LaTeX Font Info:    Font shape `OT1/mdbch/m/it' will be
-(Font)              scaled to size 7.68005pt on input line 935.
+(Font)              scaled to size 7.68005pt on input line 820.
 LaTeX Font Info:    Font shape `OT1/mdbch/m/it' will be
-(Font)              scaled to size 5.76004pt on input line 935.
+(Font)              scaled to size 5.76004pt on input line 820.
 
 Overfull \vbox (3.06985pt too high) has occurred while \output is active []
 
 
 Overfull \vbox (3.06985pt too high) has occurred while \output is active []
 
-[19
+[17
 
  <./figure/fig_lp-1.pdf>]
 LaTeX Font Info:    Font shape `T1/cmtt/m/n' will be
-(Font)              scaled to size 8.57605pt on input line 956.
-<figure/lm_figs-1.pdf, id=813, 505.89pt x 867.24pt>
+(Font)              scaled to size 8.57605pt on input line 841.
+<figure/lm_figs-1.pdf, id=853, 505.89pt x 867.24pt>
 File: figure/lm_figs-1.pdf Graphic file (type pdf)
 <use figure/lm_figs-1.pdf>
-Package pdftex.def Info: figure/lm_figs-1.pdf  used on input line 981.
+Package pdftex.def Info: figure/lm_figs-1.pdf  used on input line 866.
 (pdftex.def)             Requested size: 222.62206pt x 381.63972pt.
-<figure/unnamed-chunk-9-1.pdf, id=814, 505.89pt x 505.89pt>
-File: figure/unnamed-chunk-9-1.pdf Graphic file (type pdf)
-<use figure/unnamed-chunk-9-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-9-1.pdf  used on input line 1008.
-
-(pdftex.def)             Requested size: 222.62206pt x 222.62315pt.
-
-Package multicol Warning: Floats and marginpars not allowed inside `multicols' 
-environment!.
-
+<figure/fig_roadlines-1.pdf, id=854, 505.89pt x 1300.86pt>
+File: figure/fig_roadlines-1.pdf Graphic file (type pdf)
+<use figure/fig_roadlines-1.pdf>
+Package pdftex.def Info: figure/fig_roadlines-1.pdf  used on input line 894.
+(pdftex.def)             Requested size: 222.62206pt x 572.45958pt.
+[18 <./figure/lm_figs-1.pdf>]
 
 Package multicol Warning: Floats and marginpars not allowed inside `multicols' 
 environment!.
 
-[20 <./figure/lm_figs-1.pdf>]
-<figure/unnamed-chunk-12-1.pdf, id=835, 505.89pt x 505.89pt>
+
+Package multicol Warning: Floats and marginpars not allowed inside `multicols' 
+environment!.
+
+<figure/unnamed-chunk-12-1.pdf, id=874, 505.89pt x 505.89pt>
 File: figure/unnamed-chunk-12-1.pdf Graphic file (type pdf)
 <use figure/unnamed-chunk-12-1.pdf>
-Package pdftex.def Info: figure/unnamed-chunk-12-1.pdf  used on input line 1073
-.
+Package pdftex.def Info: figure/unnamed-chunk-12-1.pdf  used on input line 962.
+
 (pdftex.def)             Requested size: 222.62206pt x 222.62315pt.
-[21 <./figure/unnamed-chunk-9-1.pdf> <./figure/unnamed-chunk-12-1.pdf>]
+[19 <./figure/fig_roadlines-1.pdf> <./figure/unnamed-chunk-12-1.pdf>]
 Chapter 5.
-(./main.bbl [22
+[20
+
+]
+Chapter 6.
+(./main.bbl [21
 
 ]
 LaTeX Font Info:    Font shape `T1/mdbch/m/n' will be
@@ -1515,87 +1512,87 @@ Underfull \hbox (badness 10000) in paragraph at lines 117--121
 \T1/mdbch/m/n/8 https://trl.co.uk/sites/default/files/PR058.pdf.  ZSCC:
  []
 
-[23
+[22
 
 ]
 LaTeX Font Info:    Font shape `TS1/mdbch/m/n' will be
-(Font)              scaled to size 7.68005pt on input line 200.
+(Font)              scaled to size 7.68005pt on input line 206.
 
-Underfull \hbox (badness 7203) in paragraph at lines 199--203
+Underfull \hbox (badness 7203) in paragraph at lines 205--209
 []\T1/mdbch/m/n/8 Noctor, I. (2004), `Change to kph limit to cost \TS1/mdbch/m/
 n/8 ¿\T1/mdbch/m/n/8 30m',
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 199--203
+Underfull \hbox (badness 10000) in paragraph at lines 205--209
 \T1/mdbch/m/n/8 https://www.irishtimes.com/life-and-style/motors/change-to-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 264--268
+Underfull \hbox (badness 10000) in paragraph at lines 269--273
 []\T1/mdbch/m/n/8 UK Gov-ern-ment (2011), `Ru-ral Ur-ban Clas-si-fi-ca-tion',
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 264--268
+Underfull \hbox (badness 10000) in paragraph at lines 269--273
 \T1/mdbch/m/n/8 https://www.gov.uk/government/collections/rural-urban-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 270--272
+Underfull \hbox (badness 10000) in paragraph at lines 275--277
 []\T1/mdbch/m/n/8 UK Gov-ern-ment (2019\T1/mdbch/m/it/8 a\T1/mdbch/m/n/8 ), `Fi
 nd open data - data.gov.uk',
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 274--277
+Underfull \hbox (badness 10000) in paragraph at lines 279--282
 []\T1/mdbch/m/n/8 UK Gov-ern-ment (2019\T1/mdbch/m/it/8 b\T1/mdbch/m/n/8 ), `Sp
 eed lim-its',
  []
 
-) [24]
+) [23]
 Appendix A.
-[25
+LaTeX Font Info:    Font shape `T1/cmtt/b/n' in size <8> not available
+(Font)              Font shape `T1/cmtt/bx/n' tried instead on input line 1090.
+
+LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <8> not available
+(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `T1/cmtt/m/n' will be
+(Font)              scaled to size 8.57605pt on input line 1090.
+[24
 
 
 ]
-LaTeX Font Info:    Font shape `T1/cmtt/b/n' in size <8> not available
-(Font)              Font shape `T1/cmtt/bx/n' tried instead on input line 1248.
-
-LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <8> not available
-(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 1248.
-LaTeX Font Info:    Font shape `T1/cmtt/m/n' will be
-(Font)              scaled to size 8.57605pt on input line 1248.
 LaTeX Font Info:    Font shape `T1/cmtt/m/it' will be
-(Font)              scaled to size 8.57605pt on input line 1292.
-[26] [27] [28]
+(Font)              scaled to size 8.57605pt on input line 1218.
+[25] [26] [27] [28] [29] [30] [31]
 
 Package natbib Warning: There were undefined citations.
 
 
 AED: lastpage setting LastPage
-[29]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1501.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1501.
+[32]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1702.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1702.
 (./main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1501.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1501.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1702.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1702.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 535A0D68EC95C926FF2DEB3246670F18;4003.
+(rerunfilecheck)             Checksum: D94B574489447F56EB1A86C8021C929D;4635.
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1501.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1702.
  ) 
 Here is how much of TeX's memory you used:
- 22882 strings out of 492623
- 407356 string characters out of 6135670
- 498811 words of memory out of 5000000
- 26070 multiletter control sequences out of 15000+600000
+ 22909 strings out of 492623
+ 407804 string characters out of 6135670
+ 494915 words of memory out of 5000000
+ 26082 multiletter control sequences out of 15000+600000
  113947 words of font info for 161 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 64i,15n,81p,1734b,846s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 64i,16n,81p,1815b,846s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/share/t
 exmf-dist/fonts/enc/dvips/ly1/texnansi.enc}{/usr/share/texmf-dist/fonts/enc/dvi
 ps/droid/droid-01.enc}</usr/share/texmf-dist/fonts/type1/public/droid/DroidSans
@@ -1611,10 +1608,10 @@ are/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr8t.pfb></usr/share/tex
 mf-dist/fonts/type1/public/mathdesign/mdbch/md-chri7m.pfb></usr/share/texmf-dis
 t/fonts/type1/public/cm-super/sftt0800.pfb></usr/share/texmf-dist/fonts/type1/p
 ublic/cm-super/sftt1000.pfb>
-Output written on main.pdf (35 pages, 5877814 bytes).
+Output written on main.pdf (38 pages, 5808807 bytes).
 PDF statistics:
- 980 PDF objects out of 1000 (max. 8388607)
- 881 compressed objects within 9 object streams
- 168 named destinations out of 1000 (max. 500000)
- 619 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1053 PDF objects out of 1200 (max. 8388607)
+ 950 compressed objects within 10 object streams
+ 183 named destinations out of 1000 (max. 500000)
+ 699 words of extra memory for PDF output out of 10000 (max. 10000000)
 

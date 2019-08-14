@@ -77,7 +77,7 @@
 \centering\begin{minipage}{\dimexpr\paperwidth-10cm}
     \hrule
     \vskip 5pt
- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla consectetur turpis ut libero efficitur, ullamcorper ultrices nulla elementum. Proin enim lorem, tempus sed tempus eget, fermentum vitae odio. Aenean congue urna id metus tincidunt efficitur. Donec finibus nec elit vitae tempor. Nullam eget vestibulum arcu. Nullam pulvinar sed quam nec ullamcorper. Curabitur at faucibus augue. Nulla scelerisque pretium sodales. Nulla facilisi. In id ipsum orci. Donec ex magna, sodales quis tempus a, sollicitudin sit amet odio. Proin nec molestie ante. Fusce ut hendrerit risus. Nunc eleifend magna dui, sit amet tempus velit tincidunt et. Duis iaculis convallis mi sed scelerisque. \citep{wang2015}
+ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla consectetur turpis ut libero efficitur, ullamcorper ultrices nulla elementum. Proin enim lorem, tempus sed tempus eget, fermentum vitae odio. Aenean congue urna id metus tincidunt efficitur. Donec finibus nec elit vitae tempor. Nullam eget vestibulum arcu. Nullam pulvinar sed quam nec ullamcorper. Curabitur at faucibus augue. Nulla scelerisque pretium sodales. Nulla facilisi. In id ipsum orci. Donec ex magna, sodales quis tempus a, sollicitudin sit amet odio. Proin nec molestie ante. Fusce ut hendrerit risus. Nunc eleifend magna dui, sit amet tempus velit tincidunt et. Duis iaculis convallis mi sed scelerisque.
     \vskip 5pt
     \hrule
     \vskip 10pt
@@ -167,12 +167,14 @@ These limits are set by the UK government, however local speed limits are determ
 
 The Road Safety Management Capacity Review \citep{departmentfortransport2018} outlines the current limitations with road safety management, with the lack of defined and measureable safety performance framework, noting that such a framework should set out the long term goal of total prevention of road deaths and injuries, achieving this through a reduction in average speeds on different road types, and an improvement in emergency response times. This review states that at present there is a distinct lack of both urban and rural road hiararchies, which could be used to better match appropriate speed limits, with function, layout and design. Again, this review notes that posted speed limits often allow for speed far in excess of the design limits of single carriageway rural roads, with inappropriate but alloable speed often a contributing factor in rural accidents. Finally the report calls for a review on national speed limits as soon as possible.
 
-A recent development for guidance in setting local speed limits is the prduction of the \textit{Speed Limit Apprasial Tool} \citep{departmentfortransport2013a}. This tool provides an automated method for the introduction of new speed limits for local councils. This tool takes observed traffic flow, accidents, speeds, descriptive information regarding the network and current costs, outputting prediced changed in these data for various speed limit changes. While this tool introduces some quantiative method for individual road speed limit assessments, it misses some key features outlined in past government framework proposals \citep[][e.g.]{departmentfortransport2018}, particularly in relation to road geometry.
+A recent development for guidance in setting local speed limits is the prduction of the \textit{Speed Limit Appraisal Tool} \citep{departmentfortransport2013a}. This tool provides an automated method for the introduction of new speed limits for local councils. This tool takes observed traffic flow, accidents, speeds, descriptive information regarding the network and current costs, outputting prediced changed in these data for various speed limit changes. While this tool introduces some quantiative method for individual road speed limit assessments, it misses some key features outlined in past government framework proposals \citep[][e.g.]{departmentfortransport2018}, particularly in relation to road geometry.
+
+This paper will focus particularly on the call for an improved understanding of rural road geometry to support the production of appropriate and quantifiable speed limits for rural single carriageway roads. Road geometry may be defined as the parameters of roads relating to geometric design, particularly relating to the appropriate road speed, stopping sight distance, passing sight distance, line of sight, number of lanes, lane width, footpaths, slopes, and material types \citep{jaakola2008}.
 
 \section{Introduction to LiDAR}
 \label{sec:overviewlidar}
 
-\subsection{Description of LiDAR}
+\subsection{Summary}
 
 LiDAR data is collected by emitting rapid laser pulses from an aircraft towards the ground which are reflected back, measuring the distance between the aircraft and surface objects at up to 500,000 measurements per second \citep{environmentagency2019}. This method produces a set of highly accurate three dimensional points which collectively are known as a LiDAR point 'cloud'. As LiDAR data detects all surface objects, the resultant point cloud produced will include all natural and man made structures, including buildings, roads, trees in addition to the natural variation in the terrain height, known as a digital surface model \citep{hatger2005}.
 
@@ -186,13 +188,13 @@ The main features unique to LiDAR, as opposed to similar aerial data collection 
     \item \textit{Elevation:} In addition to $x$ and $y$ coordinates, the distance between the plane and the reflected ground or object is recorded and assigned a $z$ value.
 \end{itemize}
 
-\subsection{Benefits of LiDAR}
+\subsection{Benefits}
 
 Rural roads in the UK are often characterised by dense hedgerows either side, often containing large oak trees which extend over the road surface. In addition to the reduction in corner visibility on these roads, standard aerial imagery suffers from the road surface being obscured by shadows from these trees, and the tree canopy itself. Aerial imagery also often suffers from obstruction due to clouds \citep{li2016}. Due to the inclusion of pulses with modern LiDAR data, the road surface can often be detected through the canopy by selecting the final pulse values, additionally the infrared laser pulses have smaller shadows, due to the narrow scanning angle of LiDAR \citep{shan2008}. Non LiDAR imagery often suffers from scene complexity, where road patterns, vehicles and lane markings reduce road heterogeneity \citep{li2016}.
 
-The 3D $z$ value information provided by LiDAR data allows for the separation of ground and objects on the surface, meaning roads and buildings are often easily separated, despite having similar reflectance (or intensity) \citep{shan2008}. Additionally, the reflectance of roads is often homogeneous, and distinctly separate from vegetation \citep{clode2004}.
+The 3D $z$ value information provided by LiDAR data allows for the separation of ground and objects on the surface, meaning roads and buildings are often easily separated, despite having similar reflectance (also known as intensity) \citep{sampath2008}. Additionally, the reflectance of roads is often homogeneous, and distinctly separate from vegetation \citep{clode2004}.
 
-\subsection{Flaws with LiDAR}
+\subsection{Limitations}
 
 LiDAR lacks any texture or spectral information, and often studies in road detection have combined LiDAR with imagery to alleviate this issue \citep{hu2004;zhu2004}, with the inclusion of luminescence information to aid with road classification \citep[e.g.][]{charaniya2004}. LiDAR points are distributed irregularly and with varying density, with point density often higher where flight strips overlap \citep{li2016}, and tall objects can occlude points, leaving limited data surrounding trees or buildings.
 
@@ -207,7 +209,7 @@ LiDAR data often requires a large amount of processing due to the irregular dist
 
 }
 
-\caption[Study are highlighting road locations]{Study are highlighting road locations}\label{fig:area_map}
+\caption[Study area highlighting road geometries outlined in a lighter 30m buffer]{Study area highlighting road geometries outlined in a lighter 30m buffer}\label{fig:area_map}
 \end{figure}
 
 
@@ -237,65 +239,28 @@ This paper is organised into chapters, first a literature review, outlining the 
 
 \end{multicols}
 
-\chapter{Literature}
+\chapter{Literature Review}
 \label{ch:literature}
 
 \begin{multicols}{2}
 
     \lettrine{T}{ypical} road extraction techniques have focused purely on urban road networks and involved methods which can be both computationally intensive and time consuming. Given the pressure for full quantitative assessments of the current speed limits in the rural network in the United Kingdom, there is a demand to produce comprehensive methods for rural road feature extraction. This paper primarily focuses on techniques for assessing the road geometry for roads considered to be rural connecting roads in the United Kingdom. This literature review will first outline the current understanding of the rural road network, considering the role of speed and speed limits in accident likelihood, rural accessibility, and a detailed look at current road extraction techniques involving aerial imagery and LiDAR, presenting the key differences and limitations of these studies when considering the rural road network in the UK.
 
-
-Road Geometry, from \cite{jaakola2008}documentation of both road geometry and road environment.
-Road geometry means the parameters used for the geometric design of roads, such as design speed,
-stopping sight distance, passing sight distance, line of sight, number of lanes, lane width, side foot path
-for pedestrians, longitudinal and transverse slope, road pavement materials, etc. Recently built roads
-follow modern geometric design parameters, and most of this information is already available, but for
-the oldest roads these data, which are required mostly for upgrading or assessing the quality of the
-roads, are unavailable or unusable. By road environment we refer to the vicinity of the road on both
-sides of the road, including buildings, trees, vegetation, electricity, traffic signs, traffic light poles and
-other objects [1]. We expect that the geometry of this kind of road environment can best be obtained
-either using airborne or vehicle-based laser scanning or using an integrated approach combining both
-systems. Supported with imaging sensors, the documentation can be completed with texture
-information, traffic sign semantics, etc.
-
-
-
 \section{British Rural Road Network}
 
-- How many roads are "rural", how much traffic
-Describe for the UK.
+\cite{taylor2002} conducted a comprehensive study outlining the key features of British rural roads, in an effort to improve the characterstics associated with accident rates, above that which was explored by the MASTER study which primarily consisted of European road data, with limited data for England \citep{baruya1998}. \cite{taylor2002} identify key features of 174 selected rural british roads across England which they use to classify roads into certain categories, this data was obtained through drive through video recordings.
 
-\cite{taylor2002} conducted a comprehensive study outlining the key features of British rural roads, in an effort to improve the characterstics associated with accident rates, above that which was explored by the MASTER study which primarily consisted of European road data, with limited data for England \citep{baruya1998}. \cite{taylor2002} identify key features of 174 selected rural british roads across England which they use to classify roads into certain categories, this data was obtained through drive through video recordings. The following data was obtained and used to categorise the quality of the road;
-
-\textit{Discrete data}
-
-\begin{itemize}
-    \item Type of junction (if present);
-    \item Number and type of minor junctions;
-    \item Number and type of accesses within the section;
-    \item Number of bends, classified into:
-        \subitem Sharp (bends with a warning sign);
-        \subitem medium;
-        \subitem slight
-\end{itemize}
-
-\textit{Semi-continuous data}
-
-\begin{itemize}
-    \item Lighting;
-    \item Reflecting road studs;
-    \item Kerbs;
-    \item Number of lanes;
-    \item Road markings;
-    \item Land use.
-\end{itemize}
-
-\textit{Continuous data}
-\begin{itemize}
-    \item Visibility;
-    \item Verge width and type;
-    \item Roadside type;
-\end{itemize}
+\begin{table}[H]
+\fontsize{8}{10}\selectfont
+\begin{tabular}{ll}
+\toprule
+\textbf{Type of data} & \textbf{Examples} \\
+\midrule
+Discrete data & \begin{tabular}[c]{@{}l@{}}Type of junction \\ Minor junctions \\ Accesses \\ Number of bends, classified into:\\ \quad Sharp (warning signposts) \\ \quad Medium \\ \quad Slight\end{tabular} \\ \\
+Semi-continuous data & \begin{tabular}[c]{@{}l@{}}Lighting \\ Reflecting road studs \\ Kerbs \\ Number of lanes \\ Road markings \\ Land use\end{tabular} \\ \\
+Continuous data & \begin{tabular}[c]{@{}l@{}}Visibility \\ Verge width and type \\ Roadside type \end{tabular}                                                                                                                              \\ \bottomrule
+\end{tabular}
+\end{table}
 
 Notably, the features unique to rural roads were observed to be the land use either side of a road, consisting mainly of residential, farming, wooded, open or industrial. Verges consisting of grass verges, pavement, low banks, ditches or none. Roadside type included the most dominant vertical feature closest to the road, including trees which may overhang the road, hedges, banks, fences and so on. This study also manually measured the road width for each site, and to determine the "hilliness" of roads, the number of 10m contour lines crossed were counted to give the total change in height.
 
@@ -371,10 +336,6 @@ Road geometry means the parameters used for the geometric design of roads, such 
 
 Aerial LiDAR classification typically follows two objectives, the classification of ground and non-ground points, and the classification of surface objects, including buildings, trees or roads \citep{charaniya2004}. Classification takes two forms, \textit{supervised} and \textit{unsupervised}, supervised classification taking a \textit{training} dataset and using it to estimate the paramaters associated with the outcome hoping to be classified. These parameters are then used on unknown data, with a similar distribution to the training set, and used to classify features \citep{charaniya2004}.
 
-Most past work on the classification of LiDAR data has been produced through unsupervised classification, where no training dataset is provided, often producing a coarse classification than could be obtained through supervised classification.
-
-from \citep{charainya2004}:
-
 \subsection{Digital Terrain Models}
 \label{subs:dtm}
 
@@ -415,130 +376,54 @@ Ground based lidar: \citep{yadav2018}
 // small history of road extraction here
 // list varying resolution increases per papers?
 // timeline of aerial image quality/lidar
+// Note that as they use point density of 1/2m, and intensity has a footprint of 20 - 30cm the intensity if not typically used. (Rottensteiner, 2003). **with my method we use a resolution of 25cm, much higher point density**
 
-short intro:
+In comparison the extraction of vegetation and buildings from LiDAR, the extraction of roads poses far more of a challenge, due to there being less prominent height differences \citep{vosselman2009a}. Road classification is essentially a data clustering method to categorise data into road and non-road points, enabled through discovering patterns and relationship between variables and validation of findings \citep{saeedi2009} Clustering may be achieved through various algorithms, categorised generally into partitioning methods, hierarchical methods, density-based methods, grid-based methods, and model-based methods \citep{saeedi2009}.\cite{yadav2018} note that the periodic assessment of roads is greatly important due to the increasing traffic load, and new automated techniques will enable this in areas where in the past it had not been feasible. Due to the heterogeneous nature of certain roads types, the road environment is often complex, meaning collection and accurate processing of road features is challenging \citep{yadav2018}.
 
-Much tougher than object extraction from surface, height differences less prominent, less relevant for road mapping. vosselman2009a
 
-Many proposed road classification methods have used purely unsupervised...
+Road classification methodologies have historically used purely aerial imagery, providing only road pixels and 2D location information \citep{yadav2018}. \cite{ferchichi2005} used high resolution satellite imagery for road centreline extraction from a suburban area based on cluster coverage. They used image segmentation through maximum likelihood to assign pixels to road and non-road classes, making the assumption that both classes gave a Gaussian distribution. Features for classification include the angular second-movement, contrast, and entropy of the image, based off image texture analysis by \cite{dubes1992}. Results of the classification gave significant noise, noted as a possibility due to non conformance with a Gaussian distribution, however, centreline extraction from the resultant classification removed any pixels with low density and ran a $K$-means clustering algorithm iteratively to determine road clusters. \cite{wan2007} produced an automated method for mapping urban and suburban roads using high resolution satellite imagery, using spectral, context, shape and the structural features or roads. Using fuzzy segmentation, classification of buildings, parking areas, and road clusters were obtain, but with large levels of noise. Angular texture analysis was able to reduce this noise, however large areas of incorrectly classified roads appear present results. Additionally, while not mentioned in this study, the method proposed fails to address the differentiation between road and pavement, a key issue with the use of 2D imagery. \cite{hormese2016}: automated road extraction from high res satellite images. new availability of v high res sattelite,( not aerial )
 
-Road classification is essentially a data clustering method to categorise data into road and non-road points, enabled through discovering patterns and relationship between variables and validation of findings \citep{saeedi2009} Clustering may be achieved through various algorithms, categorised generally into partitioning methods, hierarchical methods, density-based methods, grid-based methods, and model-based methods \citep{saeedi2009}.\cite{yadav2018} note that the periodic assessment of roads is greatly important due to the increasing traffic load, and new automated techniques will enable this in areas where in the past it had not been feasible. Due to the heterogeneous nature of certain roads types, the road environment is often complex, meaning collection and accurate processing of road features is challenging\citep{yadav2018}.
-
-Road classification methodologies have historically used purely aerial imagery, providing only road pixels and 2D location information \citep{yadav2018}. \cite{ferchichi2005} used high resolution satellite imagery for road centreline extraction from a suburban area based on cluster coverage. They used image segmentation through maximum likelihood to assign pixels to road and non-road classes, making the assumption that both classes gave a Gaussian distribution. Features for classification include the angular second-movement, contrast, and entropy of the image, based off image texture analysis by \cite{dubes1992}. Results of the classification gave significant noise, noted as a possibility due to non conformance with a Gaussian distribution, however, centreline extraction from the resultant classification removed any pixels with low density and ran a $K$-means clustering algorithm iteratively to determine road clusters. \cite{wan2007} produced an automated method for mapping urban and suburban roads using high resolution satellite imagery, using spectral, context, shape and the structural features or roads. Using fuzzy segmentation, classification of buildings, parking areas, and road clusters were obtain, but with large levels of noise. Angular texture analysis was able to reduce this noise, however large areas of incorrectly classified roads appear present results. Additionally, while not mentioned in this study, the method proposed fails to address the differentiation between road and pavement, a key issue with the use of 2D imagery.
 
 \subsection{LiDAR Road Classification}
 
-Several methods for road classification from LiDAR follow similar patterns, first identification of ground points through height data, and DTM extraction through interpolation, and subsequent classification based on the attributes of the point cloud \cite{vosselman2009}. Due to the 3D information provided by LiDAR data, kerbs can be segmented from roads, achieving a more accurate road edge location when kerbs are present. However, due to the often small jump between kerb and road, this methodology is limited to new terrestrial mobile LiDAR data collection.\cite{jaakola2008} produced a methodology using mobile LiDAR data to classify road edges by segmenting kerbstones based on the height gradient along the scanned profile, with a final completeness of 73.9\%, and correctness of 85.6\%. Additionally, road markings were segmented from the road surface using intensity information. The mobile data collection for this study obtained a point resolution of between 10cm$^2$ and 100cm$^2$, with driving speeds of 20km/h to 50km/h. \cite{jaakkola2008} note that due to the size of the data produced through this method, computation times are lengthy and algorithms have to ensure efficiency. \cite{yoon2009} similarly developed an approach for urban drivable terrain detection for automated vehicles through mobile LiDAR data, road edges were obtained through the slope and standard deviation of the height of points, finding the standard deviation to be far more efficient for edge detection. They note that while results were promising, it would take a very long time to collect data for a large number of roads, and at higher vehicle speeds, LiDAR points density is reduced below a usable threshold. 
+The majority of current road classification techniques using LiDAR have focused on unsupervised classification, often with the goal in vehicle automation using mobile LiDAR data \citep[][e.g.]{yadav2018;kumar2013;smadja2010;jaakola2008}. Applications using aerial LiDAR have also followed this trend for unsupervised classification. \cite{clode2004} used a sequential Hough filtering transformation to classify roads using aerial LiDAR data, achieved by first taking only the last pulse LiDAR coordinates, considered a digital surface model (DSM)\footnote{Contaning all surface objects, including ground points, vegetation, and man made structures such as buildings and roads.}. To obtain a DTM from the DSM, \cite{clode2004} used a method as proposed in \cite{rottensteiner2003}, using a square structural element and grey scale opening to filter non-terrain objects. \cite{clode2004} note that at the time of production, intensity data with LiDAR had been often subject to large amounts of noise, and their use of intensity values for road detection was only a recent possibility. Road classification was subsequently achieved through both intensity and height filtering. Minimum and maximum intensity values for the road surface type (bitumen) were used to remove points that fell outside these values, and points that were outside a selected tolerance from the DTM were also removed. This methodology achieved a completeness of 86\%, correctness of 69\% and quality of 65\%, quantified by the use of a ground truth model. This methodology provides a simplistic method for unsupervised road classification that reached similar levels of accuracy as more complex methods for the time, at the expense of certain assumptions, namely the road surface material.
 
-\cite{vosselman2009a} used low flying airborne LiDAR point cloud data with a very high density of 10-20m$^2$
+Many methods for road classification from LiDAR follow similar patterns, first identification of ground points through height data, and DTM extraction through interpolation, and subsequent classification based on the attributes of the point cloud \cite{vosselman2009}. Due to the 3D information provided by LiDAR data, kerbs can be segmented from roads, achieving a more accurate road edge location when kerbs are present. However, due to the often small jump between kerb and road, this methodology is limited to new terrestrial mobile LiDAR data collection.\cite{jaakola2008} produced a methodology using mobile LiDAR data to classify road edges by segmenting kerbstones based on the height gradient along the scanned profile, with a final completeness of 73.9\%, and correctness of 85.6\%. Additionally, road markings were segmented from the road surface using intensity information. The mobile data collection for this study obtained a point resolution of between 10cm$^2$ and 100cm$^2$, with driving speeds of 20km/h to 50km/h. \cite{jaakkola2008} note that due to the size of the data produced through this method, computation times were lengthy. \cite{yoon2009} similarly developed an approach for urban drivable terrain detection for automated vehicles through mobile LiDAR data, road edges were obtained through the slope and standard deviation of the height of points, finding the standard deviation to be far more efficient for edge detection. They note that while results were promising, it would take a very long time to collect data for a large number of roads, and at higher vehicle speeds, LiDAR points density is reduced below a usable threshold. 
 
-Road Edge Detection:
+//- Extraction includes detection of planar or smooth surfaces, and the classification of points or point clusters based on local point patterns, echo intensity and echo count information \citep{vosselman2004;darmawati2008}
 
-Vosselman2009, developed a method for detecting kerbstones from airborne LiDAR data, based on the detection of small height jumps caused byt he kerbstones in the LiDAR point cloud data. Cars parked occluded kerbstones.
-Smadja2010 \citep{smadja2010}, algorithm for extracting roads fom Lidar data based on the daetection of slope break points coupled with ransac algorithm, road boundaries further processed to compute road curvature and road width information.
-zhang2010 detecting road edges in urban environment using terrestial lidar data, edge points identified based on elevation information. identified 3d road edges points projected on a ground plain to estimate road kerbs.
-McElhinney2010, extracting road edges from terresrial model lidar data, first set of lines fitted to the road cross sections based on the navigation data and then lidar points within the vicinity of the liens were determined. second stage, the points were analysed based on information such as slope, intensity, pulse widht and proximity to vehicle information in order to extract the road edges.
-Ibrahim2012, street kerb and surface from terrestrial mobile lidar point cloud data, segmented to ground and non ground based on point density, further refined analysing the morphological characteristic of the neighbourhood of each opint in the segment, kerb edges finally extracted from the refined ground segment by appling the drivative of the gaussian function to 3d points.
-\cite{clode2004} used a Hough transformation to classify roads from aerial LiDAR data. Data was first aggregated into 
-Road pixel must lie on or near DTM, and have a certain intensity and normalised local point density. **My paper will extend this, inclusion of road shapefiles to remove known non roads (supervised), noted as a limitation in clode therefore, less focus on automated extraction, (as it isn't needed generally), more focus on automated identification of road features, i.e. width etc.**
-clode2004: segmentation of airborne lidar to road and non-road objects using hierarchical classification techniiques based on elevation and intensity information, accuracy impaired due to car parks and private roads.
+// elberink2009: automated method for 3d modelling highway infrastructure using airborne LiDAR + 2d topographic. Road polygons were extracted from the topographic map data using a map based seed-growing algorithm combined with a Hough transformation. points added to the correspondng road polygons using a LiDAR based seed-growing algorithm then mapped polygons
 
-Create DTM from last pulse DSM
-Intensity identifies the type of road material (bitumen in their paper)
-This issue may be alleviated with the use of LiDAR data, where the majority of road extraction methodologies use height variation to delineate roads from kerbs. 
+// 2. Lidar points distirbute irregularly with non uniformity density. the point density in the overlapping area between fight strips is greater than non-overlapping regions. There is no point in areas occulded by tall objects. can be soled interpolating into intensity image (e.g. Zhao,2012, zhu 2009) binary image, Clode 2007. others see Samadzadegan 2009, Jiangui 2011.
 
-// manmade smooth? can't find ref now...
+// Vosselman2009, developed a method for detecting kerbstones from airborne LiDAR data, based on the detection of small height jumps caused byt he kerbstones in the LiDAR point cloud data. Cars parked occluded kerbstones. \cite{vosselman2009a} used low flying airborne LiDAR point cloud data with a very high density of 10-20m$^2$
 
+\subsection{Supervised Methods}
 
-See \citep{kumar2013}:
-
-goulette2006: methodd for segmenting road, trees, and facades from terrestrial mobile lidar data. road sgemented as horizontal plane high density of points in the histogram + usedt o compute road width and curvature. Trees and facades identified as vertical planes and disconnected elements in the histogram.
-yuan2008: algoritm using fuzzy clusting method to cluster LiDAR points, straight lines then fitted to the linearly clustered data using slope information for extracting the road.
-elberink2009: automated method for 3d modelling highway infrastructure using airborne LiDAR + 2d topographic. Road polygons were extracted from the topographic map data using a map based seed-growing algorithm combined with a Hough transformation. points added to the correspondng road polygons using a LiDAR based seed-growing algorithm then mapped polygons
-lam2010, terrestrial mobile lidar data random sample consensus (RANSAC) planes to small sections then interconnected these fitterd planes using Kalman filtering. Further filtering powerlines etc.
-
-
-Majority attempt to delineate roads by distinguishing them from non-road objects but do not attempt to extract the road edges. Most for urban roads, rely on sufficient height or slope difference between the road and kerb points for etecting road sedges. Little or no research been carried out to extract rural roads, wheer non-road surface comprises grass-soil and edges not as easily defined by slope changes alone. Intensity and pulse width attributes from liDAR data can be a useful source of intermation for extracting these roads edges. 
-
-
-
-An overview of road extraction techniques from aerial LiDAR data are described in \cite{hatger2005}, the detection of straight lines within data, to derived feature outlines using a Hough transformation. Region growing algorithms, which take small regions identified as being true parts of the road surface, then growing these areas by adding neighbouring points with similar properties, and hierarchical classification, which splits the data into partitions that follow a common predicate, removing data sequentially. // reword this.
-
-
-
-From: \citep{hatger2005}
-- Segmentation through discontinuity, prominent points or edges, or areas fulfilling certain criteria in continuity.
-- Point operators which try to find isolated points, corners, or points being part of a one dimensional curve (Haralick and Shapira, 1992, Canny, 1986 (old))
-- Second step building contour chains from individual points.
-- alternatively, discontinuity perpendicular to a linear structure can be defined in terms of the continuous arass to the left and right of the structure (brugelmann,2000, wild and krzystek 1996. + region growing)
-- inclusion of as much information e.g. minimum width requirements etc (actually not defined in the UK however)
-- Continuous surfaces approximated by planes, usually horizontal
-
-Techniques from Hatger 2005
-General Planar Regin growsing Segmentation
-Iterating following:
-1. Find the best seed region which fulfils the desired predicate,
-2. Add elements to the seed region (i.e. grow it) as long as they are connected to it, and they too fulfil the predicate
-3. If the region cannot be grown anymore, accept it and go to 1. using the remaining elements.
-They use estimation of local planes, and look for the smallest residuals. The predicate is a certain maximum distance $e$ of the points to the plane given by its Hesse normal form
-
-The scan line grouping approach
-Less computationally expensive than region growing.
-- Presented by \citep{jiang1992}.
-- Raster data: plane $z = ax + by + d$ all points along the line $y = y0$ fulful the equatin $z = as + by0 + d$ the line equation. add entire scan lines
-Steps:
-1. Partitioning of each scan line y = y0 into linear segments fulfilling corresponding line equaitons
-2. Search for a seed region by investigating overlapping linear seegments of three successive lines
-3. Growing the best seed region by adding neighbouring line segments, as long as they still are part of the same plane
-4. Postprocessing: 
-
-(RANSAC), intoduced by (Fischler and Bolles, 1981). fixes errors
-
+// Few supervised methods for road classification exist summarise these: \cite{guan2013;hul2008;dahlkamp2006;matkan2014;ferraz2016;charaniya2004}. 
+//  ALSO SUPERVISED: - Hatger and Brenner 2003,2005, laser scanning data at 0.5m to extract properties of roads for which centrelines arer known from a road database. Including height longitudinal and transversal slope, curvature, and width. Height profiles across road split into straight sgements. A RANSAC procedure on the end points of the sements with low slope values is used to fit straight lines to the road sides. \citep{hatger2003;hatger2005}
 
 Charainya gives information which is utilised in this paper for the modelling. i.e. Lum and Intensity are most useful for road detection
 
-
-
-- Extraction includes detection of planar or smooth surfaces, and the classification of points or point clusters based on local point patterns, echo intensity and echo count information \citep{vosselman2004;darmawati2008}
-
-2. Lidar points distirbute irregularly with non uniformity density. the point density in the overlapping area between fight strips is greater than non-overlapping regions. There is no point in areas occulded by tall objects. can be soled interpolating into intensity image (e.g. Zhao,2012, zhu 2009) binary image, Clode 2007. others see Samadzadegan 2009, Jiangui 2011.
-
-\citep{yadav2018}: Major limitation of existing methods to extract rural road surface as mostly without curb. Methologies such as Yang et al., 2013 which deals with curbs and boundaries characterized as ashpalt/soil and ashpalt vegetation and ashpalt/grassy bank. Exact edge location difficult if point density less and sufficiant elevatio jump not present at boundary of carriageway (Mc Elhinney et al., 2010). Wu et al., 2013 dependent on road range which cannot be calculated correctly if height diffrernce between road surface and shoulder not obvious.
-
-Clode 2004:
-
-Note that as they use point density of 1/2m, and intensity has a footprint of 20 - 30cm the intensity if not typically used. (Rottensteiner, 2003). **with my method we use a resolution of 25cm, much higher point density**
-
-
-
-- from \citep{vosselman2009a}: clode 2004a, pulse reflectance strength + dtm to detect roads . Later improved including buildings and vegetation.
-
-- Akel et al. 2005, road areas classifying smooth segments based on size and shape characteristics
-- Rieger 1999 used surface slope in a 20cm eleveation grid to detect roads in mountainous areas
-- Hatger and Brenner 2003,2005, laser scanning data at 0.5m to extract properties of roads for which centrelines arer known from a road database. Including height longitudinal and transversal slope, curvature, and width. Height profiles across road split into straight sgements. A RANSAC procedure on the end points of the sements with low slope values is used to fit straight lines to the road sides. \citep{hatger2003;hatger2005}
+// summary:
 
 
 \subsection{Rural Road Extraction}
 
-Traditional road extraction techniques from aerial imagery relied on human extraction that is both time consuming and prone to inaccuracy \citep{wang2015}. However, recent improvements in remote sensing technology now mean that automated extraction techniques have been explored which rely on the much higher resolution imagery available \citep{xu2018}. This paper will use Light Detection and Ranging (LiDAR) data, made available by the UK government for much of England. LiDAR is collected by measuring the distance from an aircraft to the ground, emitting laser pulses at regular intervals \citep{environmentagency2019}, allowing for very high resolution terrain models to be produced, with a resolution up to 25cm. Additionally the 'point clouds' produced by the laser pulses contain information that may be utilised to determine the qualities that are indicative of road locations \citep[e.g.][]{clode2004}.
+See \citep{kumar2013}:
+Majority attempt to delineate roads by distinguishing them from non-road objects but do not attempt to extract the road edges. Most for urban roads, rely on sufficient height or slope difference between the road and kerb points for etecting road sedges. Little or no research been carried out to extract rural roads, wheer non-road surface comprises grass-soil and edges not as easily defined by slope changes alone. Intensity and pulse width attributes from liDAR data can be a useful source of intermation for extracting these roads edges. 
 
-Additionally, luminescence information extracted from 25cm resolution aerial true colour imagery is available for research purposes for the entirety of the UK.
-
-
-
+\citep{yadav2018}: Major limitation of existing methods to extract rural road surface as mostly without curb. Methologies such as Yang et al., 2013 which deals with curbs and boundaries characterized as ashpalt/soil and ashpalt vegetation and ashpalt/grassy bank. Exact edge location difficult if point density less and sufficiant elevatio jump not present at boundary of carriageway (Mc Elhinney et al., 2010). Wu et al., 2013 dependent on road range which cannot be calculated correctly if height diffrernce between road surface and shoulder not obvious.
 
 Key factors in determining poor road quality:
-
 \begin{itemize}
     \item Width \citep{taylor2002} \citep{aarts2006}
     \item Surface quality
     \item Blind corners/winding roads \citep{aarts2006} \citep{wu2013}
     \item Junction Sharpness \citep{aarts2006}
-
 \end{itemize}
-// read these papers and identify why these should be considered when assessing road quality
 
-\section{Supervised Modelling Image Segmentation}
+// read these papers and identify why these should be considered when assessing road quality
 
 \end{multicols}
 
@@ -592,7 +477,7 @@ The total number of LiDAR points used in this study is 9,419,272. All LIDAR data
 \fontsize{8}{10}\selectfont
 \begin{tabular}{lrrrr}
 \toprule
-  & Mean & SD & Min & Max\\
+\textbf{ } & \textbf{Mean} & \textbf{SD} & \textbf{Min} & \textbf{Max}\\
 \midrule
 Z & 80.55 & 5.95 & 64.85 & 115.79\\
 Intensity & 176.57 & 125.08 & 1.00 & 4064.00\\
@@ -665,7 +550,7 @@ This section combines data extracted through the OS road shapefiles preprocessed
 \fontsize{8}{10}\selectfont
 \begin{tabular}{l>{\raggedright\arraybackslash}p{12em}}
 \toprule
-  & Example\\
+\textbf{ } & \textbf{Example}\\
 \midrule
 id & idE381337E-E88D-4232-8CAD-F543F178EBE4\\
 endNode & id42B6F387-D838-445C-AA7A-6558362B7B9F\\
@@ -1002,10 +887,11 @@ First model (maximal):
 
 \section{Noise Filtering}
 
+
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
 
-{\centering \includegraphics[width=\linewidth]{figure/unnamed-chunk-9-1} 
+{\centering \includegraphics[width=\linewidth]{figure/fig_roadlines-1} 
 
 }
 
@@ -1027,16 +913,19 @@ Very rough estimate of widths
 \fontsize{8}{10}\selectfont
 \begin{tabular}{lr}
 \toprule
-Model & Accuracy\\
+\textbf{Model} & \textbf{Accuracy}\\
 \midrule
-lm 1 & 76.01\\
-lm 2 & 77.60\\
-lm 3 & 71.91\\
-glm & 70.70\\
+lm 1 & 76.10\\
+lm 2 & 77.72\\
+lm 3 & 71.71\\
+glm & 70.51\\
 lm $i$ & 83.26\\
 \bottomrule
 \end{tabular}
 \end{table}
+
+
+
 
 
 
@@ -1051,7 +940,7 @@ lm $i$ & 83.26\\
 \fontsize{8}{10}\selectfont
 \begin{tabular}{lllll}
 \toprule
-Variable & Width & Max Angle & Max Z & Int Range\\
+\textbf{Variable} & \textbf{Width} & \textbf{Max Angle} & \textbf{Max Z} & \textbf{Int Range}\\
 \midrule
 Width &  & 0.22 & 0.44 & 0.32\\
 Max Angle & 0.22 &  & 0.43 & 0.34\\
@@ -1157,6 +1046,13 @@ Otherwise, assessment is done by means of a textual description.
 // Mention logistic regression, considered but not used as results not better and requries a payoff.
 \end{multicols}
 
+\chapter{Conclusion}
+\label{ch:conclusion}
+
+\begin{multicols}{2}
+
+\end{multicols}{2}
+
 % ===========================================================================================================
 % Bibliography
 % ===========================================================================================================
@@ -1168,7 +1064,7 @@ Otherwise, assessment is done by means of a textual description.
 
 \begin{center}
 % remember to compile twice for current word count
-Word Count: 8149
+Word Count: 7224
 
 \end{center}
 
@@ -1188,15 +1084,25 @@ Word Count: 8149
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{verbatim}
 Machine:     
-[1] "AMD Ryzen 5 2600 Six-Core Processor"
-Num cores:   
-[1] 12
-Num threads: 
-[1] 12
-RAM:         
-33.7 GB
 \end{verbatim}
-\end{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{Error in get\_cpu(): could not find function "{}get\_cpu"{}}}\begin{verbatim}
+Num cores:   
+\end{verbatim}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{Error in detectCores(logical = FALSE): could not find function "{}detectCores"{}}}\begin{verbatim}
+Num threads: 
+\end{verbatim}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{Error in detectCores(logical = TRUE): could not find function "{}detectCores"{}}}\begin{verbatim}
+RAM:         
+\end{verbatim}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{Error in get\_ram(): could not find function "{}get\_ram"{}}}\end{kframe}
 \begin{kframe}\begin{verbatim}
 R version 3.6.1 (2019-07-05)
 Platform: x86_64-pc-linux-gnu (64-bit)
@@ -1207,33 +1113,30 @@ BLAS:   /usr/lib/libopenblasp-r0.3.6.so
 LAPACK: /usr/lib/liblapack.so.3.8.0
 
 attached base packages:
-[1] parallel  stats     graphics  grDevices utils     datasets  methods  
-[8] base     
+[1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] devtools_2.1.0             usethis_1.5.1             
- [3] benchmarkme_1.0.0          doParallel_1.0.15         
- [5] iterators_1.0.12           foreach_1.4.7             
- [7] Rtsne_0.15                 pbapply_1.4-1             
- [9] rgdal_1.4-4                future_1.14.0             
-[11] varhandle_2.0.3            forcats_0.4.0             
-[13] stringr_1.4.0              dplyr_0.8.3               
-[15] purrr_0.3.2                readr_1.3.1               
-[17] tidyr_0.8.3                tibble_2.1.3              
-[19] tidyverse_1.2.1            lidR_2.1.2                
-[21] raster_2.9-23              sp_1.3-1                  
-[23] scales_1.0.0               kableExtra_1.1.0          
-[25] data.table_1.12.2          sf_0.7-7                  
-[27] ggpubr_0.2.2               magrittr_1.5              
-[29] cowplot_1.0.0              viridis_0.5.1             
-[31] viridisLite_0.3.0          broom_0.5.2               
-[33] ggthemes_4.2.0             RStoolbox_0.2.6           
-[35] PerformanceAnalytics_1.5.3 xts_0.11-2                
-[37] zoo_1.8-6                  Hmisc_4.2-0               
-[39] ggplot2_3.2.0              Formula_1.2-3             
-[41] survival_2.44-1.1          lattice_0.20-38           
-[43] pacman_0.5.1               knitr_1.24                
-[45] nvimcom_0.9-83             colorout_1.2-1            
+ [1] pbapply_1.4-1              rgdal_1.4-4               
+ [3] future_1.14.0              varhandle_2.0.3           
+ [5] forcats_0.4.0              stringr_1.4.0             
+ [7] dplyr_0.8.3                purrr_0.3.2               
+ [9] readr_1.3.1                tidyr_0.8.3               
+[11] tibble_2.1.3               tidyverse_1.2.1           
+[13] lidR_2.1.2                 raster_2.9-23             
+[15] sp_1.3-1                   scales_1.0.0              
+[17] kableExtra_1.1.0           data.table_1.12.2         
+[19] sf_0.7-7                   ggpubr_0.2.2              
+[21] magrittr_1.5               cowplot_1.0.0             
+[23] viridis_0.5.1              viridisLite_0.3.0         
+[25] broom_0.5.2                ggthemes_4.2.0            
+[27] RStoolbox_0.2.6            PerformanceAnalytics_1.5.3
+[29] xts_0.11-2                 zoo_1.8-6                 
+[31] Hmisc_4.2-0                ggplot2_3.2.0             
+[33] Formula_1.2-3              survival_2.44-1.1         
+[35] lattice_0.20-38            devtools_2.1.0            
+[37] usethis_1.5.1              pacman_0.5.1              
+[39] knitr_1.24                 nvimcom_0.9-83            
+[41] colorout_1.2-1            
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -1246,18 +1149,19 @@ other attached packages:
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{make_table} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{df}\hlstd{,} \hlkwc{cap}\hlstd{,} \hlkwc{dig} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{...}\hlstd{) \{}
-    \hlkwd{require}\hlstd{(kableExtra)}
-    \hlkwd{require}\hlstd{(tidyverse)}
+  \hlkwd{require}\hlstd{(kableExtra)}
+  \hlkwd{require}\hlstd{(tidyverse)}
 
-    \hlkwd{options}\hlstd{(}\hlkwc{knitr.kable.NA} \hlstd{=} \hlstr{""}\hlstd{)}
-    \hlkwd{kable}\hlstd{(df,}
-        \hlkwc{digits} \hlstd{= dig,} \hlkwc{caption} \hlstd{= cap,}
-        \hlkwc{linesep} \hlstd{=} \hlstr{""}\hlstd{,}
-        \hlkwc{longtable} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{booktabs} \hlstd{=} \hlnum{TRUE}\hlstd{,}
-        \hlkwc{format} \hlstd{=} \hlstr{"latex"}\hlstd{,}
-        \hlkwc{escape} \hlstd{= F}
-    \hlstd{)} \hlopt{%>%}
-        \hlkwd{kable_styling}\hlstd{(}\hlkwc{font_size} \hlstd{=} \hlnum{8}\hlstd{)}
+  \hlkwd{options}\hlstd{(}\hlkwc{knitr.kable.NA} \hlstd{=} \hlstr{""}\hlstd{)}
+  \hlkwd{kable}\hlstd{(df,}
+    \hlkwc{digits} \hlstd{= dig,} \hlkwc{caption} \hlstd{= cap,}
+    \hlkwc{linesep} \hlstd{=} \hlstr{""}\hlstd{,}
+    \hlkwc{longtable} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{booktabs} \hlstd{=} \hlnum{TRUE}\hlstd{,}
+    \hlkwc{format} \hlstd{=} \hlstr{"latex"}\hlstd{,}
+    \hlkwc{escape} \hlstd{= F}
+  \hlstd{)} \hlopt{%>%}
+    \hlkwd{kable_styling}\hlstd{(}\hlkwc{font_size} \hlstd{=} \hlnum{8}\hlstd{)}  \hlopt{%>%}
+    \hlkwd{row_spec}\hlstd{(}\hlnum{0}\hlstd{,} \hlkwc{bold} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \hlstd{\}}
 \end{alltt}
 \end{kframe}
@@ -1267,13 +1171,35 @@ other attached packages:
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{ctg_to_df} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{cluster}\hlstd{) \{}
-    \hlstd{las} \hlkwb{<-} \hlkwd{readLAS}\hlstd{(cluster)}
-    \hlkwa{if} \hlstd{(}\hlkwd{is.empty}\hlstd{(las)) \{}
-        \hlkwd{return}\hlstd{(}\hlkwa{NULL}\hlstd{)}
-    \hlstd{\}}
-    \hlstd{las} \hlkwb{<-} \hlkwd{as.spatial}\hlstd{(las)}
-    \hlstd{las} \hlkwb{<-} \hlkwd{as.data.frame}\hlstd{(las)}
-    \hlkwd{return}\hlstd{(las)}
+  \hlstd{las} \hlkwb{<-} \hlkwd{readLAS}\hlstd{(cluster)}
+  \hlkwa{if} \hlstd{(}\hlkwd{is.empty}\hlstd{(las)) \{}
+    \hlkwd{return}\hlstd{(}\hlkwa{NULL}\hlstd{)}
+  \hlstd{\}}
+  \hlstd{las} \hlkwb{<-} \hlkwd{as.spatial}\hlstd{(las)}
+  \hlstd{las} \hlkwb{<-} \hlkwd{as.data.frame}\hlstd{(las)}
+  \hlkwd{return}\hlstd{(las)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsection{Clip Samples} \label{code:clip_samples}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{clip_samples} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{cluster}\hlstd{,} \hlkwc{x}\hlstd{) \{}
+  \hlstd{las} \hlkwb{<-} \hlkwd{readLAS}\hlstd{(cluster)}
+  \hlkwa{if} \hlstd{(}\hlkwd{is.empty}\hlstd{(las)) \{}
+    \hlkwd{return}\hlstd{(}\hlkwa{NULL}\hlstd{)}
+  \hlstd{\}}
+  \hlstd{las} \hlkwb{<-} \hlstd{las} \hlopt{%>%}
+    \hlkwd{as.spatial}\hlstd{()} \hlopt{%>%}
+    \hlkwd{st_as_sf}\hlstd{(las)} \hlopt{%>%}
+    \hlkwd{st_set_crs}\hlstd{(}\hlnum{27700}\hlstd{)} \hlopt{%>%}
+    \hlkwd{st_join}\hlstd{(x)}
+
+  \hlstd{las} \hlkwb{<-} \hlstd{las[}\hlkwd{is.na}\hlstd{(las}\hlopt{$}\hlstd{sample_id)} \hlopt{==} \hlnum{FALSE}\hlstd{, ]}
+  \hlkwd{return}\hlstd{(las)}
 \hlstd{\}}
 \end{alltt}
 \end{kframe}
@@ -1284,30 +1210,28 @@ other attached packages:
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{lidr_clean} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{cluster}\hlstd{) \{}
-    \hlstd{las} \hlkwb{<-} \hlkwd{readLAS}\hlstd{(cluster)}
-    \hlkwa{if} \hlstd{(}\hlkwd{is.empty}\hlstd{(las)) \{}
-        \hlkwd{return}\hlstd{(}\hlkwa{NULL}\hlstd{)}
-    \hlstd{\}}
-    \hlkwd{epsg}\hlstd{(las)} \hlkwb{<-} \hlnum{27700}
-    \hlcom{# remove all but last return}
-    \hlstd{las} \hlkwb{<-} \hlkwd{lasfilter}\hlstd{(las, NumberOfReturns} \hlopt{==} \hlstd{ReturnNumber)}
+  \hlstd{las} \hlkwb{<-} \hlkwd{readLAS}\hlstd{(cluster)}
+  \hlkwa{if} \hlstd{(}\hlkwd{is.empty}\hlstd{(las)) \{}
+    \hlkwd{return}\hlstd{(}\hlkwa{NULL}\hlstd{)}
+  \hlstd{\}}
+  \hlkwd{epsg}\hlstd{(las)} \hlkwb{<-} \hlnum{27700}
+  \hlcom{# remove all but last return}
+  \hlstd{las} \hlkwb{<-} \hlkwd{lasfilter}\hlstd{(las, NumberOfReturns} \hlopt{==} \hlstd{ReturnNumber)}
 
-    \hlcom{# find ground points}
-    \hlstd{las} \hlkwb{<-} \hlkwd{lasground}\hlstd{(las,} \hlkwd{csf}\hlstd{())}
+  \hlcom{# find ground points}
+  \hlstd{las} \hlkwb{<-} \hlkwd{lasground}\hlstd{(las,} \hlkwd{csf}\hlstd{())}
 
-    \hlcom{## Create Point DEM}
-    \hlcom{# interpolate ground points to create raster dtm. Uses Classification = 2}
-    \hlcom{# very large number of points, therefore idw used as opposed to kriging}
-    \hlstd{dtm} \hlkwb{<-} \hlkwd{grid_terrain}\hlstd{(las,} \hlnum{1}\hlstd{,} \hlkwd{knnidw}\hlstd{(}\hlkwc{k} \hlstd{=} \hlnum{10}\hlstd{,} \hlkwc{p} \hlstd{=} \hlnum{2}\hlstd{))}
-    \hlcom{# normalise heights using dtm}
-    \hlstd{las} \hlkwb{<-} \hlkwd{lasnormalize}\hlstd{(las, dtm)}
-    \hlkwd{return}\hlstd{(las)}
+  \hlcom{## Create Point DEM}
+  \hlcom{# interpolate ground points to create raster dtm. Uses Classification = 2}
+  \hlcom{# very large number of points, therefore idw used as opposed to kriging}
+  \hlstd{dtm} \hlkwb{<-} \hlkwd{grid_terrain}\hlstd{(las,} \hlnum{1}\hlstd{,} \hlkwd{knnidw}\hlstd{(}\hlkwc{k} \hlstd{=} \hlnum{10}\hlstd{,} \hlkwc{p} \hlstd{=} \hlnum{2}\hlstd{))}
+  \hlcom{# normalise heights using dtm}
+  \hlstd{las} \hlkwb{<-} \hlkwd{lasnormalize}\hlstd{(las, dtm)}
+  \hlkwd{return}\hlstd{(las)}
 \hlstd{\}}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-
-\subsection{Filter Noise} \label{code:filter_noise}
 
 
 \subsection{Extract Buffer} \label{code:extract_buff}
@@ -1315,24 +1239,36 @@ other attached packages:
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{extract_buff} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{cluster}\hlstd{,} \hlkwc{clip_input}\hlstd{) \{}
-    \hlstd{las} \hlkwb{<-} \hlkwd{readLAS}\hlstd{(cluster)}
+  \hlstd{las} \hlkwb{<-} \hlkwd{readLAS}\hlstd{(cluster)}
 
-    \hlkwa{if} \hlstd{(}\hlkwd{is.empty}\hlstd{(las)) \{}
-        \hlkwd{return}\hlstd{(}\hlkwa{NULL}\hlstd{)}
-    \hlstd{\}}
+  \hlkwa{if} \hlstd{(}\hlkwd{is.empty}\hlstd{(las)) \{}
+    \hlkwd{return}\hlstd{(}\hlkwa{NULL}\hlstd{)}
+  \hlstd{\}}
 
-    \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.null}\hlstd{(clip_input)) \{}
-        \hlstd{las} \hlkwb{<-} \hlkwd{lasclip}\hlstd{(las, clip_input)}
+  \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.null}\hlstd{(clip_input)) \{}
+    \hlstd{las} \hlkwb{<-} \hlkwd{lasclip}\hlstd{(las, clip_input)}
 
-        \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(las)} \hlopt{>} \hlnum{1}\hlstd{) \{}
-            \hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(las)) \{}
-                \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.empty}\hlstd{(las[[i]])) \{}
-                    \hlstd{las} \hlkwb{<-} \hlkwd{do.call}\hlstd{(rbind, las)}
-                    \hlkwd{return}\hlstd{(las)}
-                \hlstd{\}}
-            \hlstd{\}}
+    \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(las)} \hlopt{>} \hlnum{1}\hlstd{) \{}
+      \hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(las)) \{}
+        \hlkwa{if} \hlstd{(}\hlopt{!}\hlkwd{is.empty}\hlstd{(las[[i]])) \{}
+          \hlstd{las} \hlkwb{<-} \hlkwd{do.call}\hlstd{(rbind, las)}
+          \hlkwd{return}\hlstd{(las)}
         \hlstd{\}}
+      \hlstd{\}}
     \hlstd{\}}
+  \hlstd{\}}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsection{Find Distances} \label{code:find_dists}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{find_dists} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{y}\hlstd{) \{}
+  \hlstd{d} \hlkwb{<-} \hlkwd{st_distance}\hlstd{(x, y)}
+  \hlkwd{return}\hlstd{(d)}
 \hlstd{\}}
 \end{alltt}
 \end{kframe}
@@ -1344,7 +1280,7 @@ other attached packages:
 \begin{alltt}
 \hlcom{# Function to calculate Euclidean distance between 2 points}
 \hlstd{euclidean_distance} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{p1}\hlstd{,} \hlkwc{p2}\hlstd{) \{}
-    \hlkwd{return}\hlstd{(}\hlkwd{sqrt}\hlstd{((p2[}\hlnum{1}\hlstd{]} \hlopt{-} \hlstd{p1[}\hlnum{1}\hlstd{])}\hlopt{**}\hlnum{2} \hlopt{+} \hlstd{(p2[}\hlnum{2}\hlstd{]} \hlopt{-} \hlstd{p1[}\hlnum{2}\hlstd{])}\hlopt{**}\hlnum{2}\hlstd{))}
+  \hlkwd{return}\hlstd{(}\hlkwd{sqrt}\hlstd{((p2[}\hlnum{1}\hlstd{]} \hlopt{-} \hlstd{p1[}\hlnum{1}\hlstd{])}\hlopt{**}\hlnum{2} \hlopt{+} \hlstd{(p2[}\hlnum{2}\hlstd{]} \hlopt{-} \hlstd{p1[}\hlnum{2}\hlstd{])}\hlopt{**}\hlnum{2}\hlstd{))}
 \hlstd{\}}
 \end{alltt}
 \end{kframe}
@@ -1358,38 +1294,38 @@ other attached packages:
 \hlcom{# For point at interval, which can be a proportion of the segment length, or a constant}
 \hlcom{# At distance n from the source line}
 \hlstd{calc_perp} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{p1}\hlstd{,} \hlkwc{p2}\hlstd{,} \hlkwc{n}\hlstd{,} \hlkwc{interval} \hlstd{=} \hlnum{0.5}\hlstd{,} \hlkwc{proportion} \hlstd{=} \hlnum{TRUE}\hlstd{) \{}
-    \hlcom{# Calculate x and y distances}
-    \hlstd{x_len} \hlkwb{<-} \hlstd{p2[}\hlnum{1}\hlstd{]} \hlopt{-} \hlstd{p1[}\hlnum{1}\hlstd{]}
-    \hlstd{y_len} \hlkwb{<-} \hlstd{p2[}\hlnum{2}\hlstd{]} \hlopt{-} \hlstd{p1[}\hlnum{2}\hlstd{]}
+  \hlcom{# Calculate x and y distances}
+  \hlstd{x_len} \hlkwb{<-} \hlstd{p2[}\hlnum{1}\hlstd{]} \hlopt{-} \hlstd{p1[}\hlnum{1}\hlstd{]}
+  \hlstd{y_len} \hlkwb{<-} \hlstd{p2[}\hlnum{2}\hlstd{]} \hlopt{-} \hlstd{p1[}\hlnum{2}\hlstd{]}
 
-    \hlcom{# If proportion calculate reference point from tot_length}
-    \hlkwa{if} \hlstd{(proportion) \{}
-        \hlstd{point} \hlkwb{<-} \hlkwd{c}\hlstd{(p1[}\hlnum{1}\hlstd{]} \hlopt{+} \hlstd{x_len} \hlopt{*} \hlstd{interval, p1[}\hlnum{2}\hlstd{]} \hlopt{+} \hlstd{y_len} \hlopt{*} \hlstd{interval)}
-    \hlstd{\}}
-    \hlcom{# Else use the constant value}
-    \hlkwa{else} \hlstd{\{}
-        \hlstd{tot_len} \hlkwb{<-} \hlkwd{euclidean_distance}\hlstd{(p1, p2)}
-        \hlstd{point} \hlkwb{<-} \hlkwd{c}\hlstd{(}
-            \hlstd{p1[}\hlnum{1}\hlstd{]} \hlopt{+} \hlstd{x_len} \hlopt{/} \hlstd{tot_len} \hlopt{*} \hlstd{interval,}
-            \hlstd{p1[}\hlnum{2}\hlstd{]} \hlopt{+} \hlstd{y_len} \hlopt{/} \hlstd{tot_len} \hlopt{*} \hlstd{interval}
-        \hlstd{)}
-    \hlstd{\}}
-
-    \hlcom{# Calculate the x and y distances from reference point}
-    \hlcom{# to point on line n distance away}
-    \hlstd{ref_len} \hlkwb{<-} \hlkwd{euclidean_distance}\hlstd{(point, p2)}
-    \hlstd{xn_len} \hlkwb{<-} \hlstd{(n} \hlopt{/} \hlstd{ref_len)} \hlopt{*} \hlstd{(p2[}\hlnum{1}\hlstd{]} \hlopt{-} \hlstd{point[}\hlnum{1}\hlstd{])}
-    \hlstd{yn_len} \hlkwb{<-} \hlstd{(n} \hlopt{/} \hlstd{ref_len)} \hlopt{*} \hlstd{(p2[}\hlnum{2}\hlstd{]} \hlopt{-} \hlstd{point[}\hlnum{2}\hlstd{])}
-
-    \hlcom{# Invert the x and y lengths and add/subtract from the refrence point}
-    \hlstd{ref_points} \hlkwb{<-} \hlkwd{rbind}\hlstd{(}
-        \hlstd{point,}
-        \hlkwd{c}\hlstd{(point[}\hlnum{1}\hlstd{]} \hlopt{+} \hlstd{yn_len, point[}\hlnum{2}\hlstd{]} \hlopt{-} \hlstd{xn_len),}
-        \hlkwd{c}\hlstd{(point[}\hlnum{1}\hlstd{]} \hlopt{-} \hlstd{yn_len, point[}\hlnum{2}\hlstd{]} \hlopt{+} \hlstd{xn_len)}
+  \hlcom{# If proportion calculate reference point from tot_length}
+  \hlkwa{if} \hlstd{(proportion) \{}
+    \hlstd{point} \hlkwb{<-} \hlkwd{c}\hlstd{(p1[}\hlnum{1}\hlstd{]} \hlopt{+} \hlstd{x_len} \hlopt{*} \hlstd{interval, p1[}\hlnum{2}\hlstd{]} \hlopt{+} \hlstd{y_len} \hlopt{*} \hlstd{interval)}
+  \hlstd{\}}
+  \hlcom{# Else use the constant value}
+  \hlkwa{else} \hlstd{\{}
+    \hlstd{tot_len} \hlkwb{<-} \hlkwd{euclidean_distance}\hlstd{(p1, p2)}
+    \hlstd{point} \hlkwb{<-} \hlkwd{c}\hlstd{(}
+      \hlstd{p1[}\hlnum{1}\hlstd{]} \hlopt{+} \hlstd{x_len} \hlopt{/} \hlstd{tot_len} \hlopt{*} \hlstd{interval,}
+      \hlstd{p1[}\hlnum{2}\hlstd{]} \hlopt{+} \hlstd{y_len} \hlopt{/} \hlstd{tot_len} \hlopt{*} \hlstd{interval}
     \hlstd{)}
+  \hlstd{\}}
 
-    \hlcom{# Return the reference points}
-    \hlkwd{return}\hlstd{(ref_points)}
+  \hlcom{# Calculate the x and y distances from reference point}
+  \hlcom{# to point on line n distance away}
+  \hlstd{ref_len} \hlkwb{<-} \hlkwd{euclidean_distance}\hlstd{(point, p2)}
+  \hlstd{xn_len} \hlkwb{<-} \hlstd{(n} \hlopt{/} \hlstd{ref_len)} \hlopt{*} \hlstd{(p2[}\hlnum{1}\hlstd{]} \hlopt{-} \hlstd{point[}\hlnum{1}\hlstd{])}
+  \hlstd{yn_len} \hlkwb{<-} \hlstd{(n} \hlopt{/} \hlstd{ref_len)} \hlopt{*} \hlstd{(p2[}\hlnum{2}\hlstd{]} \hlopt{-} \hlstd{point[}\hlnum{2}\hlstd{])}
+
+  \hlcom{# Invert the x and y lengths and add/subtract from the refrence point}
+  \hlstd{ref_points} \hlkwb{<-} \hlkwd{rbind}\hlstd{(}
+    \hlstd{point,}
+    \hlkwd{c}\hlstd{(point[}\hlnum{1}\hlstd{]} \hlopt{+} \hlstd{yn_len, point[}\hlnum{2}\hlstd{]} \hlopt{-} \hlstd{xn_len),}
+    \hlkwd{c}\hlstd{(point[}\hlnum{1}\hlstd{]} \hlopt{-} \hlstd{yn_len, point[}\hlnum{2}\hlstd{]} \hlopt{+} \hlstd{xn_len)}
+  \hlstd{)}
+
+  \hlcom{# Return the reference points}
+  \hlkwd{return}\hlstd{(ref_points)}
 \hlstd{\}}
 \end{alltt}
 \end{kframe}
@@ -1400,11 +1336,11 @@ other attached packages:
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{comb_ctg} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
-    \hlstd{las} \hlkwb{<-} \hlkwd{readLAS}\hlstd{(x)}
-    \hlkwa{if} \hlstd{(}\hlkwd{is.empty}\hlstd{(las)) \{}
-        \hlkwd{return}\hlstd{(}\hlkwa{NULL}\hlstd{)}
-    \hlstd{\}}
-    \hlkwd{return}\hlstd{(las)}
+  \hlstd{las} \hlkwb{<-} \hlkwd{readLAS}\hlstd{(x)}
+  \hlkwa{if} \hlstd{(}\hlkwd{is.empty}\hlstd{(las)) \{}
+    \hlkwd{return}\hlstd{(}\hlkwa{NULL}\hlstd{)}
+  \hlstd{\}}
+  \hlkwd{return}\hlstd{(las)}
 \hlstd{\}}
 \end{alltt}
 \end{kframe}
@@ -1416,43 +1352,43 @@ other attached packages:
 \begin{alltt}
 \hlstd{sample_lines} \hlkwb{<-} \hlkwd{c}\hlstd{()}
 \hlstd{compute_samples} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
-    \hlkwa{if} \hlstd{(}\hlkwd{nrow}\hlstd{(x)} \hlopt{>} \hlnum{1}\hlstd{) \{}
-        \hlstd{road_node} \hlkwb{<-} \hlkwd{st_coordinates}\hlstd{(x)}
-        \hlstd{tot_len} \hlkwb{<-} \hlnum{0}
-        \hlstd{len_inc} \hlkwb{<-} \hlnum{10}
-        \hlstd{len_ofs} \hlkwb{<-} \hlstd{len_inc}
-        \hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{2}\hlopt{:}\hlkwd{nrow}\hlstd{(road_node)} \hlopt{-} \hlnum{1}\hlstd{) \{}
-            \hlstd{n1} \hlkwb{<-} \hlstd{road_node[i, ]}
-            \hlstd{n2} \hlkwb{<-} \hlstd{road_node[i} \hlopt{+} \hlnum{1}\hlstd{, ]}
+  \hlkwa{if} \hlstd{(}\hlkwd{nrow}\hlstd{(x)} \hlopt{>} \hlnum{1}\hlstd{) \{}
+    \hlstd{road_node} \hlkwb{<-} \hlkwd{st_coordinates}\hlstd{(x)}
+    \hlstd{tot_len} \hlkwb{<-} \hlnum{0}
+    \hlstd{len_inc} \hlkwb{<-} \hlnum{10}
+    \hlstd{len_ofs} \hlkwb{<-} \hlstd{len_inc}
+    \hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{2}\hlopt{:}\hlkwd{nrow}\hlstd{(road_node)} \hlopt{-} \hlnum{1}\hlstd{) \{}
+      \hlstd{n1} \hlkwb{<-} \hlstd{road_node[i, ]}
+      \hlstd{n2} \hlkwb{<-} \hlstd{road_node[i} \hlopt{+} \hlnum{1}\hlstd{, ]}
 
-            \hlstd{len_seg} \hlkwb{<-} \hlkwd{euclidean_distance}\hlstd{(n1, n2)}
-            \hlstd{len_ofs} \hlkwb{<-} \hlstd{len_ofs} \hlopt{+} \hlstd{len_inc}
+      \hlstd{len_seg} \hlkwb{<-} \hlkwd{euclidean_distance}\hlstd{(n1, n2)}
+      \hlstd{len_ofs} \hlkwb{<-} \hlstd{len_ofs} \hlopt{+} \hlstd{len_inc}
 
-            \hlkwa{while} \hlstd{(len_ofs} \hlopt{<=} \hlstd{tot_len} \hlopt{+} \hlstd{len_seg) \{}
-                \hlstd{len_ofs} \hlkwb{<-} \hlstd{len_ofs} \hlopt{+} \hlstd{len_inc}
+      \hlkwa{while} \hlstd{(len_ofs} \hlopt{<=} \hlstd{tot_len} \hlopt{+} \hlstd{len_seg) \{}
+        \hlstd{len_ofs} \hlkwb{<-} \hlstd{len_ofs} \hlopt{+} \hlstd{len_inc}
 
-                \hlcom{# Add results to output vector}
-                \hlstd{perp_segments} \hlkwb{<-} \hlkwd{calc_perp}\hlstd{(}
-                    \hlstd{n1, n2,} \hlnum{30}\hlstd{,}
-                    \hlstd{len_ofs} \hlopt{-} \hlstd{tot_len,}
-                    \hlkwc{proportion} \hlstd{=} \hlnum{FALSE}
-                \hlstd{)}
+        \hlcom{# Add results to output vector}
+        \hlstd{perp_segments} \hlkwb{<-} \hlkwd{calc_perp}\hlstd{(}
+          \hlstd{n1, n2,} \hlnum{30}\hlstd{,}
+          \hlstd{len_ofs} \hlopt{-} \hlstd{tot_len,}
+          \hlkwc{proportion} \hlstd{=} \hlnum{FALSE}
+        \hlstd{)}
 
-                \hlstd{multipoints} \hlkwb{<-} \hlkwd{st_multipoint}\hlstd{(}\hlkwd{matrix}\hlstd{(perp_segments,} \hlkwc{ncol} \hlstd{=} \hlnum{2}\hlstd{))}
-                \hlstd{pts} \hlkwb{<-} \hlkwd{st_cast}\hlstd{(}\hlkwd{st_geometry}\hlstd{(multipoints),} \hlstr{"POINT"}\hlstd{)}
-                \hlstd{n} \hlkwb{<-} \hlkwd{length}\hlstd{(pts)}
+        \hlstd{multipoints} \hlkwb{<-} \hlkwd{st_multipoint}\hlstd{(}\hlkwd{matrix}\hlstd{(perp_segments,} \hlkwc{ncol} \hlstd{=} \hlnum{2}\hlstd{))}
+        \hlstd{pts} \hlkwb{<-} \hlkwd{st_cast}\hlstd{(}\hlkwd{st_geometry}\hlstd{(multipoints),} \hlstr{"POINT"}\hlstd{)}
+        \hlstd{n} \hlkwb{<-} \hlkwd{length}\hlstd{(pts)}
 
-                \hlstd{pair} \hlkwb{<-} \hlkwd{st_combine}\hlstd{(}\hlkwd{c}\hlstd{(pts[}\hlnum{1}\hlstd{], pts[}\hlnum{2}\hlstd{], pts[}\hlnum{3}\hlstd{]))}
-                \hlstd{linestring} \hlkwb{<-} \hlkwd{st_cast}\hlstd{(pair,} \hlstr{"LINESTRING"}\hlstd{)} \hlopt{%>%}
-                    \hlkwd{st_buffer}\hlstd{(}\hlnum{2}\hlstd{)} \hlopt{%>%}
-                    \hlkwd{st_sf}\hlstd{()} \hlopt{%>%}
-                    \hlkwd{mutate}\hlstd{(}\hlkwc{road_id} \hlstd{=} \hlkwd{as.character}\hlstd{(}\hlkwd{unique}\hlstd{(x}\hlopt{$}\hlstd{road_id)))}
-                \hlstd{sample_lines} \hlkwb{<-} \hlkwd{rbind}\hlstd{(sample_lines, linestring)}
-            \hlstd{\}}
-            \hlstd{tot_len} \hlkwb{<-} \hlstd{tot_len} \hlopt{+} \hlstd{len_seg}
-        \hlstd{\}}
+        \hlstd{pair} \hlkwb{<-} \hlkwd{st_combine}\hlstd{(}\hlkwd{c}\hlstd{(pts[}\hlnum{1}\hlstd{], pts[}\hlnum{2}\hlstd{], pts[}\hlnum{3}\hlstd{]))}
+        \hlstd{linestring} \hlkwb{<-} \hlkwd{st_cast}\hlstd{(pair,} \hlstr{"LINESTRING"}\hlstd{)} \hlopt{%>%}
+          \hlkwd{st_buffer}\hlstd{(}\hlnum{2}\hlstd{)} \hlopt{%>%}
+          \hlkwd{st_sf}\hlstd{()} \hlopt{%>%}
+          \hlkwd{mutate}\hlstd{(}\hlkwc{road_id} \hlstd{=} \hlkwd{as.character}\hlstd{(}\hlkwd{unique}\hlstd{(x}\hlopt{$}\hlstd{road_id)))}
+        \hlstd{sample_lines} \hlkwb{<-} \hlkwd{rbind}\hlstd{(sample_lines, linestring)}
+      \hlstd{\}}
+      \hlstd{tot_len} \hlkwb{<-} \hlstd{tot_len} \hlopt{+} \hlstd{len_seg}
     \hlstd{\}}
-    \hlkwd{return}\hlstd{(sample_lines)}
+  \hlstd{\}}
+  \hlkwd{return}\hlstd{(sample_lines)}
 \hlstd{\}}
 \end{alltt}
 \end{kframe}
@@ -1463,39 +1399,304 @@ other attached packages:
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{greyscale} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
-    \hlstd{x} \hlkwb{<-} \hlstd{(x[[}\hlnum{1}\hlstd{]]} \hlopt{+} \hlstd{x[[}\hlnum{2}\hlstd{]]} \hlopt{+} \hlstd{x[[}\hlnum{3}\hlstd{]])} \hlopt{/} \hlnum{3}
+  \hlstd{x} \hlkwb{<-} \hlstd{(x[[}\hlnum{1}\hlstd{]]} \hlopt{+} \hlstd{x[[}\hlnum{2}\hlstd{]]} \hlopt{+} \hlstd{x[[}\hlnum{3}\hlstd{]])} \hlopt{/} \hlnum{3}
 \hlstd{\}}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
 
-\subsection{Compute Linear Model} \label{code:lm_compute}
+\subsection{Compute Individual Linear Model} \label{code:lm_compute}
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{lm_compute} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{f}\hlstd{)} \hlkwd{tryCatch}\hlstd{(\{}
-        \hlstd{m} \hlkwb{<-} \hlkwd{lm}\hlstd{(}\hlkwc{formula} \hlstd{= f,} \hlkwc{data} \hlstd{= x)}
+    \hlstd{m} \hlkwb{<-} \hlkwd{lm}\hlstd{(}\hlkwc{formula} \hlstd{= f,} \hlkwc{data} \hlstd{= x)}
 
-        \hlstd{p} \hlkwb{<-} \hlstd{m} \hlopt{%>%}
-            \hlkwd{tidy}\hlstd{()} \hlopt{%>%}
-            \hlstd{dplyr}\hlopt{::}\hlkwd{select}\hlstd{(}\hlkwc{p} \hlstd{= p.value)}
+    \hlstd{p} \hlkwb{<-} \hlstd{m} \hlopt{%>%}
+      \hlkwd{tidy}\hlstd{()} \hlopt{%>%}
+      \hlstd{dplyr}\hlopt{::}\hlkwd{select}\hlstd{(}\hlkwc{p} \hlstd{= p.value)}
 
-        \hlstd{pred_m} \hlkwb{<-} \hlkwd{predict}\hlstd{(m, x,} \hlkwc{type} \hlstd{=} \hlstr{"response"}\hlstd{)}
+    \hlstd{pred_m} \hlkwb{<-} \hlkwd{predict}\hlstd{(m, x,} \hlkwc{type} \hlstd{=} \hlstr{"response"}\hlstd{)}
 
-        \hlkwa{if} \hlstd{(}\hlkwd{sum}\hlstd{(p)} \hlopt{/} \hlkwd{nrow}\hlstd{(p)} \hlopt{<} \hlnum{0.05}\hlstd{) \{}
-            \hlstd{x}\hlopt{$}\hlstd{lm} \hlkwb{<-} \hlstd{pred_m}
-        \hlstd{\}} \hlkwa{else} \hlstd{\{}
-            \hlstd{x}\hlopt{$}\hlstd{lm} \hlkwb{<-} \hlnum{NA}
-        \hlstd{\}}
+    \hlkwa{if} \hlstd{(}\hlkwd{sum}\hlstd{(p)} \hlopt{/} \hlkwd{nrow}\hlstd{(p)} \hlopt{<} \hlnum{0.05}\hlstd{) \{}
+      \hlstd{x}\hlopt{$}\hlstd{lm} \hlkwb{<-} \hlstd{pred_m}
+    \hlstd{\}} \hlkwa{else} \hlstd{\{}
+      \hlstd{x}\hlopt{$}\hlstd{lm} \hlkwb{<-} \hlnum{NA}
+    \hlstd{\}}
 
-        \hlstd{x}\hlopt{$}\hlstd{lmI_dum} \hlkwb{<-} \hlkwd{ifelse}\hlstd{(x}\hlopt{$}\hlstd{lm} \hlopt{>} \hlkwd{quantile}\hlstd{(x}\hlopt{$}\hlstd{lm,} \hlnum{.95}\hlstd{),} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{)}
-        \hlstd{x}\hlopt{$}\hlstd{lmI_dum} \hlkwb{<-} \hlkwd{ifelse}\hlstd{(x}\hlopt{$}\hlstd{lm} \hlopt{>} \hlkwd{quantile}\hlstd{(x}\hlopt{$}\hlstd{lm,} \hlnum{.95}\hlstd{),} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{)}
-        \hlstd{x}\hlopt{$}\hlstd{p_val} \hlkwb{<-} \hlkwd{sum}\hlstd{(p)}
+    \hlstd{x}\hlopt{$}\hlstd{lmI_dum} \hlkwb{<-} \hlkwd{ifelse}\hlstd{(x}\hlopt{$}\hlstd{lm} \hlopt{>} \hlkwd{quantile}\hlstd{(x}\hlopt{$}\hlstd{lm,} \hlnum{.95}\hlstd{),} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{)}
+    \hlstd{x}\hlopt{$}\hlstd{lmI_dum} \hlkwb{<-} \hlkwd{ifelse}\hlstd{(x}\hlopt{$}\hlstd{lm} \hlopt{>} \hlkwd{quantile}\hlstd{(x}\hlopt{$}\hlstd{lm,} \hlnum{.95}\hlstd{),} \hlnum{1}\hlstd{,} \hlnum{0}\hlstd{)}
+    \hlstd{x}\hlopt{$}\hlstd{p_val} \hlkwb{<-} \hlkwd{sum}\hlstd{(p)}
 
-        \hlkwd{return}\hlstd{(x)}
-    \hlstd{\},} \hlkwc{error} \hlstd{=} \hlkwa{function}\hlstd{(}\hlkwc{e}\hlstd{)} \hlkwa{NULL}\hlstd{)}
+    \hlkwd{return}\hlstd{(x)}
+  \hlstd{\},} \hlkwc{error} \hlstd{=} \hlkwa{function}\hlstd{(}\hlkwc{e}\hlstd{)} \hlkwa{NULL}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
+
+\subsection{Filter Returns}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{filter_returns} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
+  \hlstd{road} \hlkwb{<-} \hlstd{x[x}\hlopt{$}\hlstd{road} \hlopt{==} \hlnum{1}\hlstd{, ]}
+  \hlkwa{if} \hlstd{(}\hlkwd{max}\hlstd{(road}\hlopt{$}\hlstd{NumberOfReturns)} \hlopt{==} \hlnum{1}\hlstd{) \{}
+    \hlkwd{return}\hlstd{(x)}
+  \hlstd{\}}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsection{Filter Samples}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{filter_samples} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{s}\hlstd{) \{}
+  \hlcom{# find rows far below mean}
+  \hlkwa{if} \hlstd{(}\hlkwd{nrow}\hlstd{(s)} \hlopt{>} \hlkwd{mean}\hlstd{(}\hlkwd{nrow}\hlstd{(s))} \hlopt{/} \hlnum{4}\hlstd{) \{}
+    \hlcom{# remove outlier points}
+    \hlstd{distances} \hlkwb{<-} \hlstd{s} \hlopt{%>%}
+      \hlkwd{st_distance}\hlstd{()} \hlopt{%>%}
+      \hlkwd{apply}\hlstd{(}\hlnum{1}\hlstd{,} \hlkwc{FUN} \hlstd{=} \hlkwa{function}\hlstd{(}\hlkwc{y}\hlstd{) \{}
+        \hlkwd{min}\hlstd{(y[y} \hlopt{>} \hlnum{0}\hlstd{])}
+      \hlstd{\})} \hlopt{%>%}
+      \hlkwd{as.data.frame}\hlstd{()} \hlopt{%>%}
+      \hlkwd{mutate}\hlstd{(}\hlkwc{rowid} \hlstd{=} \hlkwd{row_number}\hlstd{())} \hlopt{%>%}
+      \hlkwd{select}\hlstd{(}\hlkwc{min_dist} \hlstd{=} \hlstr{"."}\hlstd{, rowid)}
+
+    \hlcom{# above 1m from any other point}
+    \hlstd{distances} \hlkwb{<-} \hlstd{distances[distances}\hlopt{$}\hlstd{min_dist} \hlopt{<} \hlnum{1}\hlstd{, ]}
+
+    \hlstd{s} \hlkwb{<-} \hlstd{s} \hlopt{%>%} \hlkwd{mutate}\hlstd{(}\hlkwc{rowid} \hlstd{=} \hlkwd{row_number}\hlstd{())}
+
+    \hlstd{s} \hlkwb{<-} \hlstd{s[s}\hlopt{$}\hlstd{rowid} \hlopt{%in%} \hlstd{distances}\hlopt{$}\hlstd{rowid, ]}
+    \hlkwd{return}\hlstd{(s)}
+  \hlstd{\}}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsection{Max Dist}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{max_dist} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
+  \hlstd{tot_dists} \hlkwb{<-} \hlkwd{c}\hlstd{()}
+  \hlstd{distances} \hlkwb{<-} \hlstd{x} \hlopt{%>%}
+    \hlkwd{st_distance}\hlstd{(}\hlkwc{by_element} \hlstd{=} \hlnum{FALSE}\hlstd{)} \hlopt{%>%}
+    \hlkwd{unclass}\hlstd{()} \hlopt{%>%}
+    \hlstr{"[<-"}\hlstd{(}\hlkwd{lower.tri}\hlstd{(.,} \hlkwc{diag} \hlstd{=} \hlnum{TRUE}\hlstd{),} \hlnum{NA}\hlstd{)} \hlopt{%>%}
+    \hlkwd{as_tibble}\hlstd{()} \hlopt{%>%}
+    \hlkwd{rowid_to_column}\hlstd{()} \hlopt{%>%}
+    \hlkwd{gather}\hlstd{(colid, distance,} \hlkwd{starts_with}\hlstd{(}\hlstr{"V"}\hlstd{),}
+      \hlkwc{na.rm} \hlstd{=} \hlnum{TRUE}
+    \hlstd{)} \hlopt{%>%}
+    \hlkwd{arrange}\hlstd{(}\hlkwd{desc}\hlstd{(distance))}
+
+  \hlkwa{if} \hlstd{(}\hlkwd{nrow}\hlstd{(distances)} \hlopt{>} \hlnum{0}\hlstd{) \{}
+    \hlstd{distances}\hlopt{$}\hlstd{colid} \hlkwb{<-} \hlkwd{gsub}\hlstd{(}\hlstr{"[^0-9.-]"}\hlstd{,} \hlstr{""}\hlstd{, distances}\hlopt{$}\hlstd{colid)}
+    \hlstd{tot_dists} \hlkwb{<-} \hlkwd{rbind}\hlstd{(tot_dists,} \hlkwd{max}\hlstd{(distances}\hlopt{$}\hlstd{distance))}
+
+    \hlstd{distances} \hlkwb{<-} \hlkwd{as.list}\hlstd{(distances[}\hlnum{1}\hlstd{,} \hlnum{1}\hlopt{:}\hlnum{2}\hlstd{])} \hlopt{%>%}
+      \hlkwd{unlist}\hlstd{()} \hlopt{%>%}
+      \hlkwd{as.numeric}\hlstd{()}
+
+    \hlstd{x} \hlkwb{<-} \hlstd{x[distances, ]} \hlopt{%>%}
+      \hlkwd{st_combine}\hlstd{()} \hlopt{%>%}
+      \hlkwd{st_sf}\hlstd{()} \hlopt{%>%}
+      \hlkwd{st_cast}\hlstd{(}\hlstr{"LINESTRING"}\hlstd{)}
+    \hlkwd{return}\hlstd{(x)}
+  \hlstd{\}}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsection{Max Lines}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{max_lines} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
+  \hlstd{road_lm} \hlkwb{<-} \hlkwd{split}\hlstd{(x,} \hlkwc{f} \hlstd{= x}\hlopt{$}\hlstd{sample_id)}
+
+  \hlstd{road_lm} \hlkwb{<-} \hlstd{road_lm} \hlopt{%>%} \hlkwd{compact}\hlstd{()}
+
+  \hlstd{road_lm} \hlkwb{<-} \hlkwd{lapply}\hlstd{(road_lm, filter_samples)}
+  \hlstd{road_lm} \hlkwb{<-} \hlkwd{lapply}\hlstd{(road_lm, max_dist)}
+  \hlstd{road_lm} \hlkwb{<-} \hlkwd{do.call}\hlstd{(rbind, road_lm)}
+  \hlcom{# find intersecting buffers}
+  \hlstd{road_lm} \hlkwb{<-} \hlkwd{st_join}\hlstd{(road_lm, road_buff)}
+
+  \hlkwd{return}\hlstd{(road_lm)}
+\hlstd{\}}
+
+\hlcom{## -- model_comparison}
+\hlstd{model_comparison} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{model}\hlstd{) \{}
+  \hlstd{road_lm} \hlkwb{<-} \hlstd{model[}\hlopt{!}\hlkwd{is.na}\hlstd{(model}\hlopt{$}\hlstd{roadFunction), ]}
+  \hlstd{rds} \hlkwb{<-} \hlkwd{unique}\hlstd{(model}\hlopt{$}\hlstd{road_id)}
+  \hlstd{road_lm} \hlkwb{<-} \hlkwd{split}\hlstd{(road_lm,} \hlkwc{f} \hlstd{= road_lm}\hlopt{$}\hlstd{road_id)}
+
+  \hlstd{samp} \hlkwb{<-} \hlkwd{Filter}\hlstd{(}\hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{dim}\hlstd{(x)[}\hlnum{1}\hlstd{]} \hlopt{>} \hlnum{0}\hlstd{, road_lm)}
+  \hlstd{cent} \hlkwb{<-} \hlstd{centrelines[centrelines}\hlopt{$}\hlstd{road_id} \hlopt{%in%} \hlstd{rds, ]}
+  \hlstd{cent} \hlkwb{<-} \hlkwd{split}\hlstd{(cent,} \hlkwc{f} \hlstd{= cent}\hlopt{$}\hlstd{road_id)}
+  \hlstd{cent} \hlkwb{<-} \hlkwd{Filter}\hlstd{(}\hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{dim}\hlstd{(x)[}\hlnum{1}\hlstd{]} \hlopt{>} \hlnum{0}\hlstd{, cent)}
+
+  \hlcom{## ---- find true widths}
+  \hlstd{widths} \hlkwb{<-} \hlkwd{mapply}\hlstd{(opposite_length, samp, cent)}
+  \hlstd{widths} \hlkwb{<-} \hlkwd{do.call}\hlstd{(rbind, widths)}
+  \hlstd{widths} \hlkwb{<-} \hlkwd{as.data.frame}\hlstd{(widths)}
+
+  \hlstd{widths}\hlopt{$}\hlstd{opposite} \hlkwb{<-} \hlkwd{as.numeric}\hlstd{(}\hlkwd{unfactor}\hlstd{(widths}\hlopt{$}\hlstd{opposite))}
+
+  \hlstd{widths} \hlkwb{<-} \hlstd{widths[widths}\hlopt{$}\hlstd{opposite} \hlopt{>} \hlnum{2} \hlopt{&} \hlstd{widths}\hlopt{$}\hlstd{opposite} \hlopt{<} \hlnum{8}\hlstd{, ]}
+
+  \hlstd{widths} \hlkwb{<-} \hlstd{widths} \hlopt{%>%}
+    \hlkwd{group_by}\hlstd{(V2)} \hlopt{%>%}
+    \hlkwd{select}\hlstd{(}\hlkwc{road_id} \hlstd{= V2, opposite)} \hlopt{%>%}
+    \hlkwd{summarise}\hlstd{(}
+      \hlkwc{mean_width} \hlstd{=} \hlkwd{mean}\hlstd{(opposite)}
+    \hlstd{)}
+
+  \hlkwd{return}\hlstd{(widths)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsection{Model Comparison}
+
+
+\subsection{Opposite Length}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{opposite_length} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{samp}\hlstd{,} \hlkwc{cent}\hlstd{) \{}
+  \hlstd{tot_width} \hlkwb{<-} \hlkwd{c}\hlstd{()}
+  \hlstd{cent} \hlkwb{<-} \hlstd{cent} \hlopt{%>%} \hlkwd{st_cast}\hlstd{(}\hlstr{"POINT"}\hlstd{)}
+  \hlstd{n} \hlkwb{<-} \hlkwd{nrow}\hlstd{(cent)} \hlopt{-} \hlnum{1}
+  \hlstd{nodelines} \hlkwb{<-} \hlkwd{lapply}\hlstd{(}\hlkwc{X} \hlstd{=} \hlnum{1}\hlopt{:}\hlstd{n,} \hlkwc{FUN} \hlstd{=} \hlkwa{function}\hlstd{(}\hlkwc{i}\hlstd{) \{}
+    \hlstd{pair} \hlkwb{<-} \hlstd{cent[}\hlkwd{c}\hlstd{(i, i} \hlopt{+} \hlnum{1}\hlstd{), ]} \hlopt{%>%}
+      \hlkwd{st_combine}\hlstd{()}
+    \hlstd{line} \hlkwb{<-} \hlkwd{st_cast}\hlstd{(pair,} \hlstr{"LINESTRING"}\hlstd{)}
+    \hlkwd{return}\hlstd{(line)}
+  \hlstd{\})}
+
+  \hlstd{samp} \hlkwb{<-} \hlstd{samp} \hlopt{%>%}
+    \hlkwd{mutate}\hlstd{(}\hlkwc{row_id} \hlstd{=} \hlkwd{row_number}\hlstd{())}
+  \hlstd{samp} \hlkwb{<-} \hlkwd{split}\hlstd{(samp, samp}\hlopt{$}\hlstd{row_id)}
+  \hlkwa{for} \hlstd{(n} \hlkwa{in} \hlstd{nodelines) \{}
+    \hlkwa{for} \hlstd{(s} \hlkwa{in} \hlstd{samp) \{}
+      \hlstd{int} \hlkwb{<-} \hlkwd{as.numeric}\hlstd{(}\hlkwd{st_crosses}\hlstd{(n, s))}
+      \hlstd{int[}\hlkwd{is.na}\hlstd{(int)]} \hlkwb{<-} \hlnum{0}
+      \hlkwa{if} \hlstd{(int} \hlopt{==} \hlnum{1}\hlstd{) \{}
+        \hlstd{n1} \hlkwb{<-} \hlkwd{st_coordinates}\hlstd{(n)[}\hlnum{1}\hlstd{, ]}
+        \hlstd{n2} \hlkwb{<-} \hlkwd{st_coordinates}\hlstd{(n)[}\hlnum{2}\hlstd{, ]}
+        \hlstd{x} \hlkwb{<-} \hlstd{n1[}\hlnum{1}\hlstd{]} \hlopt{-} \hlstd{n2[}\hlnum{1}\hlstd{]}
+        \hlstd{y} \hlkwb{<-} \hlstd{n1[}\hlnum{2}\hlstd{]} \hlopt{-} \hlstd{n2[}\hlnum{2}\hlstd{]}
+        \hlstd{ang_rad} \hlkwb{<-} \hlkwd{atan2}\hlstd{(x, y)}
+        \hlstd{ang_deg} \hlkwb{<-} \hlstd{ang_rad} \hlopt{*} \hlnum{180} \hlopt{/} \hlstd{pi}
+        \hlkwa{if} \hlstd{(ang_rad} \hlopt{<} \hlnum{0}\hlstd{) \{}
+          \hlstd{ang_deg} \hlkwb{<-} \hlstd{ang_deg} \hlopt{+} \hlnum{180}
+        \hlstd{\}}
+
+        \hlstd{n1} \hlkwb{<-} \hlkwd{st_coordinates}\hlstd{(s)[}\hlnum{1}\hlstd{, ]}
+        \hlstd{n2} \hlkwb{<-} \hlkwd{st_coordinates}\hlstd{(s)[}\hlnum{2}\hlstd{, ]}
+        \hlstd{x} \hlkwb{<-} \hlstd{n1[}\hlnum{1}\hlstd{]} \hlopt{-} \hlstd{n2[}\hlnum{2}\hlstd{]}
+        \hlstd{y} \hlkwb{<-} \hlstd{n1[}\hlnum{2}\hlstd{]} \hlopt{-} \hlstd{n2[}\hlnum{2}\hlstd{]}
+
+        \hlstd{ang_rad} \hlkwb{<-} \hlkwd{atan2}\hlstd{(x, y)}
+        \hlstd{ang_deg_c} \hlkwb{<-} \hlstd{ang_rad} \hlopt{*} \hlnum{180} \hlopt{/} \hlstd{pi}
+        \hlkwa{if} \hlstd{(ang_rad} \hlopt{<} \hlnum{0}\hlstd{) \{}
+          \hlstd{ang_deg_c} \hlkwb{<-} \hlstd{ang_deg} \hlopt{+} \hlnum{180}
+        \hlstd{\}}
+
+        \hlstd{theta} \hlkwb{<-} \hlstd{ang_deg} \hlopt{-} \hlstd{ang_deg_c}
+        \hlstd{theta} \hlkwb{<-} \hlstd{theta} \hlopt{-} \hlnum{45} \hlcom{# position relation to perp line}
+
+        \hlstd{c1_len} \hlkwb{<-} \hlkwd{st_length}\hlstd{(s)}
+        \hlstd{opposite} \hlkwb{<-} \hlkwd{abs}\hlstd{(}\hlkwd{as.numeric}\hlstd{(c1_len)} \hlopt{*} \hlkwd{cos}\hlstd{(}\hlkwd{as.numeric}\hlstd{(theta)))}
+        \hlstd{opposite} \hlkwb{<-} \hlkwd{cbind}\hlstd{(}
+          \hlstd{opposite,} \hlkwd{as.character}\hlstd{(}\hlkwd{unique}\hlstd{(cent}\hlopt{$}\hlstd{road_id)),}
+          \hlkwd{as.character}\hlstd{(}\hlkwd{unique}\hlstd{(cent}\hlopt{$}\hlstd{sample_id))}
+        \hlstd{)}
+        \hlstd{tot_width} \hlkwb{<-} \hlkwd{rbind}\hlstd{(tot_width, opposite)}
+      \hlstd{\}}
+    \hlstd{\}}
+  \hlstd{\}}
+  \hlkwd{return}\hlstd{(tot_width)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsection{Road Angles}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{road_angles} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{rd}\hlstd{) \{}
+  \hlstd{coords} \hlkwb{<-} \hlstd{rd} \hlopt{%>%} \hlkwd{st_coordinates}\hlstd{()}
+  \hlstd{angle} \hlkwb{<-} \hlkwd{c}\hlstd{()}
+  \hlkwa{if} \hlstd{(}\hlkwd{nrow}\hlstd{(coords)} \hlopt{>} \hlnum{1}\hlstd{) \{}
+    \hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlstd{(}\hlkwd{nrow}\hlstd{(rd)} \hlopt{-} \hlnum{1}\hlstd{)) \{}
+      \hlstd{n1} \hlkwb{<-} \hlstd{coords[i, ]}
+      \hlstd{n2} \hlkwb{<-} \hlstd{coords[i} \hlopt{+} \hlnum{1}\hlstd{, ]}
+      \hlstd{x} \hlkwb{<-} \hlstd{n1[}\hlnum{1}\hlstd{]} \hlopt{-} \hlstd{n2[}\hlnum{1}\hlstd{]}
+      \hlstd{y} \hlkwb{<-} \hlstd{n1[}\hlnum{2}\hlstd{]} \hlopt{-} \hlstd{n2[}\hlnum{2}\hlstd{]}
+      \hlstd{ang_rad} \hlkwb{<-} \hlkwd{atan2}\hlstd{(x, y)}
+      \hlstd{ang_deg} \hlkwb{<-} \hlstd{ang_rad} \hlopt{/} \hlstd{pi} \hlopt{*} \hlnum{180}
+
+      \hlkwa{if} \hlstd{(ang_rad} \hlopt{<} \hlnum{0}\hlstd{) \{}
+        \hlstd{ang_deg} \hlkwb{<-} \hlstd{ang_deg} \hlopt{+} \hlnum{180}
+      \hlstd{\}}
+      \hlstd{angle} \hlkwb{<-} \hlkwd{append}\hlstd{(angle, ang_deg)}
+    \hlstd{\}}
+  \hlstd{\}}
+
+  \hlstd{normal_ang} \hlkwb{<-} \hlkwd{c}\hlstd{()}
+  \hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{2}\hlopt{:}\hlkwd{length}\hlstd{(angle)) \{}
+    \hlcom{# here i - 1 is theta 1, i is theta 2}
+    \hlstd{normal} \hlkwb{<-} \hlkwd{abs}\hlstd{(angle[i]} \hlopt{-} \hlstd{(angle[i} \hlopt{-} \hlnum{1}\hlstd{]))}
+    \hlstd{normal_ang} \hlkwb{<-} \hlkwd{rbind}\hlstd{(normal_ang, normal)}
+  \hlstd{\}}
+  \hlstd{normal_ang} \hlkwb{<-} \hlkwd{cbind}\hlstd{(}
+    \hlstd{normal_ang,}
+    \hlkwd{as.character}\hlstd{(}\hlkwd{rep}\hlstd{(}\hlkwd{unique}\hlstd{(rd}\hlopt{$}\hlstd{road_id),} \hlkwd{nrow}\hlstd{(normal_ang)))}
+  \hlstd{)}
+  \hlkwd{return}\hlstd{(normal_ang)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\subsection{Height Change}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{height_change} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
+  \hlstd{elev} \hlkwb{<-} \hlkwd{c}\hlstd{()}
+  \hlstd{samples} \hlkwb{<-} \hlkwd{split}\hlstd{(x, x}\hlopt{$}\hlstd{sample_id)}
+  \hlkwa{if} \hlstd{(}\hlkwd{length}\hlstd{(samples)} \hlopt{>} \hlnum{2}\hlstd{) \{}
+    \hlkwa{for} \hlstd{(s} \hlkwa{in} \hlnum{2}\hlopt{:}\hlkwd{length}\hlstd{(samples)} \hlopt{-} \hlnum{1}\hlstd{) \{}
+      \hlstd{pair} \hlkwb{<-} \hlstd{samples[}\hlkwd{c}\hlstd{(s, s} \hlopt{+} \hlnum{1}\hlstd{)]}
+      \hlstd{n1} \hlkwb{<-} \hlkwd{mean}\hlstd{(pair[[}\hlnum{1}\hlstd{]]}\hlopt{$}\hlstd{Z)}
+      \hlstd{n2} \hlkwb{<-} \hlkwd{mean}\hlstd{(pair[[}\hlnum{2}\hlstd{]]}\hlopt{$}\hlstd{Z)}
+      \hlstd{e} \hlkwb{<-} \hlkwd{abs}\hlstd{(n1} \hlopt{-} \hlstd{n2)}
+      \hlstd{e} \hlkwb{<-} \hlkwd{cbind}\hlstd{(}
+        \hlkwd{as.character}\hlstd{(}\hlkwd{unique}\hlstd{(samples[[s]]}\hlopt{$}\hlstd{road_id)), e}
+      \hlstd{)}
+      \hlstd{elev} \hlkwb{<-} \hlkwd{rbind}\hlstd{(elev, e)}
+    \hlstd{\}}
+  \hlstd{\}}
+  \hlkwd{return}\hlstd{(elev)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+
+
 
 \end{document}
