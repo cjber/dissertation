@@ -80,6 +80,8 @@ joined_output$dists <- dists
 
 coords <- joined_output %>%
     st_coordinates()
+
+# change to data.frame
 joined_output <- joined_output %>%
     st_drop_geometry() %>%
     mutate(
@@ -87,5 +89,4 @@ joined_output <- joined_output %>%
         Y = coords[, 2]
     )
 
-# change to data.frame
 fwrite(joined_output, "../data/derived/model_data/sampled_las.csv")

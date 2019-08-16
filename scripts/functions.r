@@ -2,17 +2,15 @@
 library(pacman)
 
 pkgs <- c(
+  "ENVS450",
   "devtools",
   "Hmisc",
   "PerformanceAnalytics",
-  "RStoolbox",
   "ggthemes",
   "RStoolbox",
   "broom",
   "viridis",
-  "cowplot",
   "viridisLite",
-  "cowplot",
   "ggpubr",
   "magrittr",
   "sf",
@@ -29,16 +27,21 @@ pkgs <- c(
   "future",
   "rgdal",
   "pbapply",
-  "cowplot"
+  "cowplot",
+  "bibtex",
+  "benchmarkme",
+  "parallel"
 )
 
 pacman::p_load(pkgs, character.only = T)
+
+
 
 ## ---- home_dir
 dir <- "/home/cjber/drive/uni/envs492/main/"
 
 ## ---- make_table
-make_table <- function(df, cap, dig = 2, ...) {
+make_table <- function(df, cap = "", dig = 2, col_names = NA, ...) {
   require(kableExtra)
   require(tidyverse)
 
@@ -48,7 +51,8 @@ make_table <- function(df, cap, dig = 2, ...) {
     linesep = "",
     longtable = FALSE, booktabs = TRUE,
     format = "latex",
-    escape = F
+    escape = F,
+    col.names = col_names
   ) %>%
     kable_styling(font_size = 8)  %>% 
     row_spec(0, bold = TRUE)
@@ -247,8 +251,8 @@ lm_compute <- function(x, f) tryCatch({
       x$lm <- NA
     }
 
-    x$lmI_dum <- ifelse(x$lm > quantile(x$lm, .95), 1, 0)
-    x$lmI_dum <- ifelse(x$lm > quantile(x$lm, .95), 1, 0)
+    x$I_dum <- ifelse(x$lm > quantile(x$lm, .95), 1, 0)
+    x$I_dum <- ifelse(x$lm > quantile(x$lm, .95), 1, 0)
     x$p_val <- sum(p)
 
     return(x)
@@ -265,7 +269,7 @@ filter_returns <- function(x) {
 ## ---- filter_samples
 filter_samples <- function(s) {
   # find rows far below mean
-  if (nrow(s) > mean(nrow(s)) / 4) {
+  if (nrow(s) > 8) {
     # remove outlier points
     distances <- s %>%
       st_distance() %>%
@@ -318,16 +322,21 @@ max_dist <- function(x) {
 
 # consider optimisation?
 ## ---- max_lines
-max_lines <- function(x) {
+max_lines <- function(x, cents) {
   road_lm <- split(x, f = x$sample_id)
 
   road_lm <- road_lm %>% compact()
 
+  # filter samples with few points
   road_lm <- lapply(road_lm, filter_samples)
+  road_lm <- road_lm %>% compact()
+  # create linestrings
   road_lm <- lapply(road_lm, max_dist)
   road_lm <- do.call(rbind, road_lm)
-  # find intersecting buffers
-  road_lm <- st_join(road_lm, road_buff)
+  road_lm$length <- as.numeric(st_length(road_lm))
+  # find intersecting buffers, ensure intersects centreline
+  # prevents lines taller than wide
+  road_lm <- st_join(road_lm, cents)
 
   return(road_lm)
 }
@@ -346,12 +355,11 @@ mid_pts <- function(x) {
 
 ## ---- true_cents
 true_cents <- function(x) {
-rd <- x$road_id
+rd <- unique(x$road_id)
   y <- x %>%
     distinct()
-
   n <- nrow(y) - 1
-  if (nrow(y) > 1) {
+  if (nrow(y) > 2) {
     y <- lapply(X = 1:n, FUN = function(i) {
       pair <- y[c(i, i + 1), ] %>%
         st_combine()
@@ -367,14 +375,14 @@ rd <- x$road_id
     y <- y[1]
     y <- y %>% st_sf()
 
-    y <- y[is.na(rd[1])]
+    y <- y[is.na(rd)]
 
-    y$road_id <- as.character(rd[1])
+    y$road_id <- as.character(rd)
     return(y)
   }
 }
 
-## -- model_comparison
+## --- model_comparison
 model_comparison <- function(model) {
   road_lm <- model[!is.na(model$roadFunction), ]
   rds <- unique(model$road_id)
@@ -418,6 +426,7 @@ opposite_length <- function(samp, cent) {
   samp <- samp %>%
     mutate(row_id = row_number())
   samp <- split(samp, samp$row_id)
+
   for (n in nodelines) {
     for (s in samp) {
       int <- as.numeric(st_crosses(n, s))

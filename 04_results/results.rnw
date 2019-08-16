@@ -79,7 +79,6 @@ from \ref{fig:fig_buff} \textbf{(b)} intensities values for ground points below 
 
 
 <<fig_lp, fig.cap = "LiDAR point clouds for one selected road section aggregated into 1m$^2$ grids, \\textbf{(A)} Base point cloud $Z$ values, \\textbf{(B)} Normalised Point cloud $Z$ values for only last returns ($lpz$) \\textbf{(C)} Normalised Point cloud $Intensity$ values for last return, \\textbf{(D)} Aerial Data combined to 1 band", fig.height = 16>>=
-
 plot_grid(
   chm_gg,
   dsm_lp_gg,
@@ -100,31 +99,7 @@ Show figure of sample lines. Show the reduction in number of points (memory savi
 
 Covers 02
 
-
-test.
-
-<<>>=
-source("./fig_lm.r")
-# from logistic regression essential in R (pocket)
-mean((sampled_las$lm1_dum == 1) == (sampled_las$road == 1))
-mean((sampled_las$lm1_dum5 == 1) == (sampled_las$road == 1))
-mean((sampled_las$lm2_dum == 1) == (sampled_las$road == 1))
-mean((sampled_las$lm3_dum == 1) == (sampled_las$road == 1))
-mean((sampled_las$glm1_dum == 1) == (sampled_las$road == 1))
-
-# filter out  > 0.05 p values for each point
-mean((filter_las$lmI_dum == 1) == (filter_las$road == 1))
-@
-
-
-First model (maximal):
-
-//NOTES//
-1. Unfiltered vs filtered global maximal model.. Filters include no samples with multiple returns (partial canopy obstruction). excludes far toomany points
-
-2. Compare global models 1/2/3, and generalised linear model using f1.
-
-3. Compare global model 1 (best fit), to individual model using f1.
+Models: 
 
 \begin{equation}
 \begin{aligned}
@@ -136,6 +111,108 @@ First model (maximal):
 \end{aligned}
 \end{equation}
 
+\begin{equation}
+\begin{aligned}
+\mathrm{Road}_{t} = \alpha 
+    &+ \beta_{1}  \mathrm{Intensity}_{t} \\
+    &+ \beta_{3}  \mathrm{Z}_{t} \\
+    &+ \beta_{4}  \mathrm{Dist}_{t} + \epsilon
+\end{aligned}
+\end{equation}
+
+GLM
+
+and f1, with 90\% quantiles, for better centrelines.
+
+test.
+Correlation of lidar variables
+<<sampledlas>>=
+sampled_las <- fread("../data/derived/model_data/sampled_las.csv")
+
+corr <- sampled_las %>%
+  select(c(
+    Z, gpstime, Intensity, ReturnNumber, NumberOfReturns,
+    ScanDirectionFlag, EdgeOfFlightline, ScanAngleRank,
+    road, lum, dists
+  ))
+
+# Create a matrix of all correlations between continuous variables
+correlation.matrix <- cor(corr, method = "spearman")
+
+# Sort by highest correlations in relation to Unemployed
+corResults <- cor.results(correlation.matrix,
+  sort.by = "abs.r", data = corr,
+  var.name = "road"
+)
+# Show only two numbers after the decimal
+corResults <- format(corResults, digits = 2)
+
+# Combine significance column with r values (asterisks)
+corResults$r <- paste(corResults$r, corResults$sig.)
+
+# Drop the columns of the dataframe
+corResults <- select(corResults, -c("x", "p.value", "sig."))
+
+# Rename all columns
+names(corResults) <- c(
+  "Variable", "Rho", "Lower CI †",
+  "Upper CI †"
+)
+@
+<<corr_table, results = 'asis'>>=
+# Create Table 1
+make_table(corResults, # align col 1 left, rest centred
+  cap = "Spearman's rank correlation coefficients for all variables in relation to the road outcome variable",
+  align = c("l", "c", "c", "c"),
+) %>%
+  footnote(
+    general_title = " ",
+    general = c(
+      "* Significant at the 0.05 level;",
+      "** Significant at the 0.01 level;",
+      "*** Significant at the 0.001 level;",
+      "† 95% Confidence Interval"
+    )
+  ) %>%
+  row_spec(c(1, 2, 4, 7), bold = T)
+@
+
+
+<<lmdistributions>>=
+fread("../data/derived/model_data/linearmodels.csv")
+##### plot scatter of pred dists
+@
+
+
+<<>>=
+source("./fig_lm.r")
+# from logistic regression essential in R (pocket)
+lm1 <- mean((sampled_las$lm1_dum == 1) == (sampled_las$road == 1))
+lm90 <- mean((sampled_las$lm1_dum90 == 1) == (sampled_las$road == 1))
+glm1 <- mean((sampled_las$glm1_dum == 1) == (sampled_las$road == 1))
+
+# filter out  > 0.05 p values for each point
+lmi <- mean((filter_las$lmI_dum == 1) == (filter_las$road == 1))
+
+lm_assess <- rbind(lm1, lm90, glm1) %>%
+  as.data.frame()
+@
+<<>>=
+make_table(lm_assess, cap = "test")
+@
+
+
+
+First model (maximal):
+
+//NOTES//
+1. Unfiltered vs filtered global maximal model.. Filters include no samples with multiple returns (partial canopy obstruction). excludes far toomany points
+
+2. Compare global models 1/2/3, and generalised linear model using f1.
+
+3. Compare global model 1 (best fit), to individual model using f1.
+
+
 //for this section see 450 assess2, details on validation etc.
 
 \section{Noise Filtering}
@@ -143,7 +220,7 @@ First model (maximal):
 source("./fig_noise.r")
 @
 
-<<fig_noise, fig.height = 18, fig.cap = "Removed points through filtering">>=
+<<fig_noise, fig.height = 14, fig.cap = "Removed points through filtering">>=
 ggRGB(aerial) +
   geom_sf(data = rd, colour = "red") +
   geom_sf(data = rd_fil, colour = "green") +
@@ -159,50 +236,24 @@ ggRGB(aerial) +
 
 // Manually measure a road width for a reference, i.e. how close to accurate different models are. GLM LM and individual filtered and unfiltered. Find max and min widths and mean, describe what likely causes the differences.
 
-<<lm_individual>>=
-# filtered individual model
-lmi <- ggRGB(aerial) +
-  geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
-  geom_sf(data = centrelines, colour = "red", alpha = 1) +
-  geom_sf(
-    data = road_lm_filter[road_lm_filter$lmI_dum == 1, ],
-    alpha = .5, colour = "green"
-  ) +
-          theme_map() +
-  theme(panel.border = element_rect(
-    colour = "black",
-    fill = NA, size = 1
-  )) +
-  scale_x_continuous(expand = c(0, 0)) +
-  scale_y_continuous(expand = c(0, 0))
-@
+note that individual models do not work at all.
 
-<<lmi_fig, fig.height = 18>>=
-lmi
-@
+
+Reveals that centrelines giving inaccurate results when off the side of the road. Taking 90\% quantile gives more of the road segment but more points. 95\% gives more accurate width but less information for road.
+
+individual models enable the use of more reliable p values to filter out some results, however given the centrelines are not accurate this doesn't work. Payoff doesn't seem that good even given proper centrelines.
+
+
+\section{Final Model Analysis}
 
 <<>>=
+source("../scripts/05_analysis.r")
 # unfiltered
-lm5 <- ggRGB(aerial) +
-  geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
-  geom_sf(data = centrelines, colour = "red", alpha = 1) +
-  geom_sf(
-    data = road_lm_nofilter[road_lm_nofilter$lm1_dum5 == 1, ],
-    alpha = 0.5, colour = "green"
-  ) +
-  theme_map() +
-  theme(panel.border = element_rect(
-    colour = "black",
-    fill = NA, size = 1
-  )) +
-  scale_x_continuous(expand = c(0, 0)) +
-  scale_y_continuous(expand = c(0, 0))
-
 lm1 <- ggRGB(aerial) +
   geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
   geom_sf(data = centrelines, colour = "red", alpha = 1) +
   geom_sf(
-    data = road_lm_nofilter[road_lm_nofilter$lm1_dum == 1, ],
+    data = widths_1,
     alpha = 0.5, colour = "green"
   ) +
   theme_map() +
@@ -212,38 +263,12 @@ lm1 <- ggRGB(aerial) +
   )) +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0))
-@
-<<lmquant_plot>>=
-plot_grid(
-  lm5,
-  lm1,
-  labels = "AUTO",
-  label_size = 20,
-  ncol = 2
-)
-@
 
-<<>>=
 lm2 <- ggRGB(aerial) +
   geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
   geom_sf(data = centrelines, colour = "red", alpha = 1) +
   geom_sf(
-    data = road_lm_nofilter[road_lm_nofilter$lm2_dum == 1, ],
-    alpha = 0.5, colour = "green"
-  ) +
-  theme_map() +
-  theme(panel.border = element_rect(
-    colour = "black",
-    fill = NA, size = 1
-  )) +
-  scale_x_continuous(expand = c(0, 0)) +
-  scale_y_continuous(expand = c(0, 0))
-
-lm3 <- ggRGB(aerial) +
-  geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
-  geom_sf(data = centrelines, colour = "red", alpha = 1) +
-  geom_sf(
-    data = road_lm_nofilter[road_lm_nofilter$lm3_dum == 1, ],
+    data = widths_2,
     alpha = 0.5, colour = "green"
   ) +
   theme_map() +
@@ -258,7 +283,7 @@ glm1 <- ggRGB(aerial) +
   geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
   geom_sf(data = centrelines, colour = "red", alpha = 1) +
   geom_sf(
-    data = road_lm_nofilter[road_lm_nofilter$glm1_dum == 1, ],
+    data = widths_3,
     alpha = 0.5, colour = "green"
   ) +
   theme_map() +
@@ -269,26 +294,49 @@ glm1 <- ggRGB(aerial) +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0))
 @
-<<lms_fig>>=
+<<lmquant_plot, fig.env = "figure*", fig.pos = "t", fig.cap = "test">>=
 plot_grid(
-          lm2,
-          lm3,
-          glm1,
+  lm90,
+  lm1,
+  glm1,
   labels = "AUTO",
   label_size = 20,
   ncol = 3
 )
 @
 
+Using width estimates:
+<<>>=
 
+norm_widths <- norm_widths %>%
+  as.data.frame() %>%
+  slice(2:n() - 1)
 
+norm_widths$model <- c("lm 1", "lm 1 (90 quant)", "glm", "lmi", "lm1 (new cent)")
+norm_widths <- norm_widths %>%
+  select(model, everything())
 
-individual models enable the use of more reliable p values to filter out some results, however given the centrelines are not accurate this doesn't work. Payoff doesn't seem that good even given proper centrelines.
+names(norm_widths) <- c("Model", "Accuracy")
+@
+<<mtest_tab, results='asis'>>=
+make_table(norm_widths, 2, cap = "testing")
+@
 
-\section{Final Model Analysis}
+Using refined centrelines and noise filtered. Using model 
 
 <<road_lines>>=
 source("./fig_roadlines.r")
+
+ggcentcompare <- ggRGB(aerial) +
+  geom_sf(data = centrelines, colour = "red", size = 1) +
+  geom_sf(data = cent1, colour = "green", size = 1) +
+  theme_map() +
+  theme(panel.border = element_rect(
+    colour = "black",
+    fill = NA, size = 1
+  )) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0))
 ggcent1 <- ggRGB(aerial) +
   geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
   geom_sf(data = cent1, colour = "red", alpha = 1) +
@@ -305,34 +353,42 @@ ggcent1 <- ggRGB(aerial) +
   scale_y_continuous(expand = c(0, 0))
 @
 
-Very rough estimate of widths
-<<>>=
-source("../scripts/04_analysis.r")
-
-norm_widths <- norm_widths %>%
-  as.data.frame() %>%
-  slice(2:n() - 1)
-
-norm_widths$model <- c("lm 1", "lm 2", "lm 3", "glm", "lm $i$")
-norm_widths <- norm_widths %>%
-  select(model, everything())
-
-names(norm_widths) <- c("Model", "Accuracy")
+<<cent1_fig, fig.cap = "test">>=
+plot_grid(
+  ggcentcompare,
+  ggcent1,
+  labels = "AUTO",
+  label_size = 20,
+  ncol = 2
+)
 @
-<<mtest_tab, results='asis'>>=
-make_table(norm_widths, 2, cap = "testing")
-@
-
-
-
 
 \section{Road Assessment}
 <<>>=
-source("../scripts/04_analysis.r")
+source("../scripts/05_analysis.r")
 
 final_data <- final_data %>%
-  na.omit() %>%
-  select(c(lmi_mean, meanAngle, meanZ, rangeInt))
+  arrange(roadFunction) %>%
+  mutate(meanAngle = replace_na(meanAngle, 0))
+
+final_data$road_id <- gsub("road_", "", final_data$road_id)
+
+make_table(final_data,
+  cap = "test",
+  col_names = c(
+    "Road ID",
+    "Road Function",
+    "Mean Angle",
+    "Mean $Z$",
+    "Intensity Range",
+    "Classified Width",
+    "Estimated True Width"
+  )
+)
+@
+<<>>=
+final_data <- final_data %>%
+  select(c(lm1_mean_cent1, meanAngle, meanZ, rangeInt))
 
 cor_tab <- rcorr(as.matrix(final_data), type = "pearson")
 
@@ -375,7 +431,7 @@ make_table(cor_tab, dig = 2, cap = "Correlation Matrix") %>%
 @
 
 <<>>=
-PerformanceAnalytics::chart.Correlation(final_data, method = "pearson")
+
 @
 
 

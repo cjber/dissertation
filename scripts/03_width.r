@@ -1,40 +1,48 @@
 source("./functions.r")
 ## ---- widths
-road_lm <- fread("../data/derived/model_data/lm_u.csv") %>%
+road_lm <- fread("../data/derived/model_data/linearmodels.csv") %>%
     as.data.frame() %>%
     st_as_sf(coords = c("X", "Y"), crs = 27700)
 
-road_fil <- fread("../data/derived/model_data/lm_f.csv") %>%
-    as.data.frame() %>%
-    st_as_sf(coords = c("X", "Y"), crs = 27700)
-
-roads <- st_read("../data/derived/roads/roads_line.gpkg") %>%
+roads <- st_read("../data/derived/roads/roads_line.gpkg")
+roads_5m <- st_read("../data/derived/roads/roads_line.gpkg") %>% 
     st_buffer(5)
-road_buff <- st_read("../data/derived/roads/roads_buff.gpkg") %>%
-    st_set_crs(27700)
 
 road_lm1 <- road_lm[road_lm$lm1_dum == 1, ]
-# more accurate centrelines
-road_lm15 <- road_lm[road_lm$lm1_dum5 == 1, ]
 road_lm2 <- road_lm[road_lm$lm2_dum == 1, ]
-road_lm3 <- road_lm[road_lm$lm3_dum == 1, ]
 road_glm <- road_lm[road_lm$glm1_dum == 1, ]
-road_lmi <- road_fil[road_fil$lmI_dum == 1, ]
+
+# more accurate centrelines
+road_lm90 <- road_lm[road_lm$lm1_dum90 == 1, ]
 
 linear_models <- list(
     road_lm1,
-    road_lm15,
     road_lm2,
-    road_lm3,
-    road_glm,
-    road_lmi
+    road_glm
 )
+
 # includes all filtering, max dist points
-linear_models <- lapply(linear_models, max_lines)
+linear_models <- lapply(linear_models, max_lines, cents = roads)
 
-fixed_cents <- linear_models[2]
+linear_models <- lapply(linear_models, function(x){
+x <- x[x$length  > 2 & x$length < 8, ]
+return(x)
+})
+
+for (i in 1:length(linear_models)) {
+    st_write(linear_models[[i]],
+             paste0("../data/derived/model_data/widths_", i, ".gpkg"), layer_options = "OVERWRITE=yes")
+}
+
+# find correct centrelines
+fixed_cents <- list(
+    road_lm90
+)
+
+# includes all filtering, max dist points
+fixed_cents <- lapply(fixed_cents, max_lines, cents = roads)
+
 fixed_cents <- do.call(rbind, fixed_cents)
-
 fixed_cents <- fixed_cents %>%
     mutate(rowid = row_number())
 
@@ -43,30 +51,21 @@ mid_points <- lapply(mid_point, mid_pts)
 
 mid_points <- do.call(rbind, mid_points)
 mid_points <- mid_points %>%
-    st_join(roads)
+    st_join(roads_5m)
 mid_rds <- split(mid_points, mid_points$road_id)
 
+# remove empty geoms
+mid_rds <- Filter(function(x) dim(x)[1] > 0, mid_rds)
 cents <- lapply(mid_rds, true_cents)
 cents <- compact(cents)
 cents <- do.call(rbind, cents)
 
-st_write(cents, "../data/final_data/cent_iteration1.gpkg",
+st_write(cents, "../data/derived/roads/cent_iteration1.gpkg",
     layer_options = "OVERWRITE=yes"
 )
-
-# save lines for comparison
-for (i in 1:length(linear_models)) {
-    st_write(linear_models[[i]],
-        paste0("../data/final_data/road_slines_", i, ".gpkg"),
-        layer_options = "OVERWRITE=YES"
-    )
-}
-
-centrelines <- st_read("../data/derived/roads/roads.gpkg") %>%
-    st_set_crs(27700)
 ####
+centrelines <- st_read("../data/derived/roads/roads_line.gpkg")
 linear_widths <- lapply(linear_models, model_comparison)
-
 linear_widths <- linear_widths %>%
     reduce(left_join, by = "road_id")
 
@@ -74,9 +73,7 @@ names(linear_widths) <- c(
     "road_id",
     "lm1_mean",
     "lm2_mean",
-    "lm3_mean",
-    "glm_mean",
-    "lmi_mean"
+    "glm_mean"
 )
 roads <- merge(roads, linear_widths, by = "road_id")
 

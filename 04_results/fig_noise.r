@@ -18,3 +18,11 @@ rd_split <- rd_split %>% compact()
 rd_split <- lapply(rd_split, filter_samples)
 
 rd_fil <- do.call(rbind, rd_split)
+
+widths_lm1 <- st_read("../data/final_data/road_slines_1.gpkg")
+widths_lm90 <- st_read("../data/final_data/road_slines_1.gpkg")
+widths_lmglm <- st_read("../data/final_data/road_slines_1.gpkg")
+
+widths_lm1 <- widths_lm1[widths_lm1$road_id == "road_6", ]
+widths_lm90 <- widths_lm90[widths_lm90$road_id == "road_6", ]
+widths_lmglm <- widths_lmglm[widths_lmglm$road_id == "road_6", ]

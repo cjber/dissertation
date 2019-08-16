@@ -34,6 +34,11 @@ knitr::read_chunk('./scripts/00_clean.r')
 knitr::read_chunk('./scripts/01_samples.r')
 knitr::read_chunk('./scripts/02_lm.r')
 @
+<<writebib>>=
+source("./scripts/functions.r")
+
+write.bib(pkgs, "rbib.bib")
+@
 
 % ===========================================================================================================
 % Cover
@@ -118,7 +123,7 @@ knitr::read_chunk('./scripts/02_lm.r')
 
 \chapter{Results}
 \label{ch:results}
-<<results, child = "04_results/results.rnw">>=
+<<results, child = "04_results/results.rnw", cache= F>>=
 @
 
 \chapter{Discussion}
@@ -131,6 +136,10 @@ knitr::read_chunk('./scripts/02_lm.r')
 <<conclusion, child = "06_conclusion/conclusion.rnw">>=
 @
 
+<<nocites, echo=FALSE, eval=TRUE>>=
+# no cite all loaded packages from external bib
+cat("\\input{", paste0(pkgs, collapse = ','),"}")
+@
 % ===========================================================================================================
 % Bibliography
 % ===========================================================================================================
@@ -138,7 +147,7 @@ knitr::read_chunk('./scripts/02_lm.r')
 \bibliographystyle{agsm}
 \linespread{1}
 
-\bibliography{kbib}
+\bibliography{kbib, rbib}
 
 \begin{center}
 % remember to compile twice for current word count
