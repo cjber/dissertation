@@ -2,7 +2,8 @@ source("../scripts/functions.r")
 widths_1 <- st_read("../data/derived/model_data/widths_1.gpkg") # lm1
 widths_2 <- st_read("../data/derived/model_data/widths_2.gpkg") # glm1
 widths_3 <- st_read("../data/derived/model_data/widths_3.gpkg") # lm190
-widths_IND <- st_read("../data/derived/model_data/widths_IND.gpkg") # ind lm with new cents
+cent1 <- st_read("../data/derived/roads/cent_iteration1.gpkg")
+cent1 <- cent1[cent1$road_id == "road_6", ]
 
 road_est <- st_read("../data/osroads/roads_estwidth.gpkg", quiet = TRUE) %>% 
     st_drop_geometry() %>%
@@ -38,6 +39,6 @@ final_data <- fread("../data/final_data/final.csv") %>%
               meanInt,
               lm1_mean,
               lm2_mean,
-              glm_mean,
+              glm_mean
               )) %>%
     merge(road_est, by = c("road_id", "roadFunction"))

@@ -19,8 +19,6 @@ pkgs <- c(
   "scales",
   "lidR",
   "raster",
-  "sp",
-  "knitr",
   "nvimcom",
   "tidyverse",
   "varhandle",
@@ -327,7 +325,7 @@ max_lines <- function(x, cents) {
 
   road_lm <- road_lm %>% compact()
 
-  # filter samples with few points
+  # filter samples with few points and isolated points  >1m
   road_lm <- lapply(road_lm, filter_samples)
   road_lm <- road_lm %>% compact()
   # create linestrings
@@ -384,7 +382,7 @@ rd <- unique(x$road_id)
 
 ## --- model_comparison
 model_comparison <- function(model) {
-  road_lm <- model[!is.na(model$roadFunction), ]
+  road_lm <- model[!is.na(model$road_id), ]
   rds <- unique(model$road_id)
   road_lm <- split(road_lm, f = road_lm$road_id)
 

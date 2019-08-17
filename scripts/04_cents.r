@@ -6,6 +6,7 @@ sampled_las <- fread("../data/derived/model_data/sampled_las.csv") %>%
     st_as_sf(coords = c("X", "Y"), crs = 27700)
 aerial <- raster("../data/derived/aerial/aerial_crop.tif")
 
+
 # improved roads centrelines
 roads <- cent1 %>%
     st_buffer(2)
@@ -25,7 +26,6 @@ joined_output$road <- as.numeric(joined_output$road > 0)
 # crop aerial data
 lum <- raster::extract(aerial, joined_output)
 joined_output$lum <- as.numeric(lum)
-
 
 # find dists from centrelines
 joined_output <- split(joined_output, f = joined_output$road_id)
@@ -52,65 +52,115 @@ cent1_las <- joined_output %>%
         Y = coords[, 2]
     )
 
-# individual linear probability model: has to filter out canopy
+# linear models with improved centrelines
+# for this section see social survey + ss assessment 2
+f1 <- as.formula("road ~ Intensity + lum + dists + Z + NumberOfReturns")
+lm1 <- lm(data = cent1_las, formula = f1)
+lm1_pred <- predict(lm1, cent1_las, type = "response")
+
+f2 <- as.formula("road ~ Intensity + dists + Z + NumberOfReturns")
+lm2 <- lm(data = cent1_las, formula = f1)
+lm2_pred <- predict(lm2, cent1_las, type = "response")
+
+cent1_las$lm1_pred <- lm1_pred
+cent1_las$lm1_dum <- ifelse(cent1_las$lm1_pred >
+  quantile(cent1_las$lm1_pred, .95), 1, 0)
+
+cent1_las$lm2_pred <- lm2_pred
+cent1_las$lm2_dum <- ifelse(cent1_las$lm2_pred >
+  quantile(cent1_las$lm2_pred, .95), 1, 0)
+
+# individual linear probability model: has to filter out canopy: proof of concept
 cent1_las <- split(cent1_las, cent1_las$sample_id)
+cent1_las <- lapply(cent1_las, filter_returns)
 f1 <- as.formula("road ~ Intensity + lum + dists + Z + NumberOfReturns")
 cent1_las <- lapply(cent1_las, lm_compute, f = f1)
 cent1_las <- do.call(rbind, cent1_las)
 
 fwrite(cent1_las, "../data/final_data/final_cent1.csv")
 
-lmc <- cent1_las[cent1_las$I_dum == 1, ] %>%
+lmi <- cent1_las[cent1_las$I_dum == 1, ] %>%
     as.data.frame() %>%
     st_as_sf(coords = c("X", "Y"), crs = 27700)
-lmc <- list(lmc)
+lm1 <- cent1_las[cent1_las$lm1_dum == 1, ] %>%
+    as.data.frame() %>%
+    st_as_sf(coords = c("X", "Y"), crs = 27700)
+lm2 <- cent1_las[cent1_las$lm2_dum == 1, ] %>%
+    as.data.frame() %>%
+    st_as_sf(coords = c("X", "Y"), crs = 27700)
 
+lm_max_widths <- list(lmi, lm1, lm2)
 
 road_buff <- st_read("../data/derived/roads/roads_buff.gpkg")
 
 centrelines <- do.call(rbind, centrelines)
 # includes all filtering, max dist points
-lmc <- lapply(lmc, max_lines, cents = centrelines)
-lmc <- lmc[[1]]
+lm_max_widths <- lapply(lm_max_widths, max_lines, cents = centrelines)
 
-lmc <- lmc[lmc$length < 8 & lmc$length  >2, ]
+lm_max_widths <- lapply(lm_max_widths, function(x) {
+                            x <- x[x$length < 8 & x$length > 2, ]
+                    x <- x[!is.na(x$road_id), ]
 
-lmc <- lmc[!is.na(lmc$road_id), ]
+  })
 
 # save lines for comparison
-st_write(lmc,"../data/derived/model_data/widths_IND.gpkg",
+for (i in 1:length(lm_max_widths)) {
+st_write(lm_max_widths[[i]],paste0("../data/derived/model_data/widths_", i, ".gpkg"),
          layer_options = "OVERWRITE=YES")
+}
 
 ####
-rds <- unique(lmc$road_id)
-road_lm <- split(lmc, f = lmc$road_id)
 
-samp <- Filter(function(x) dim(x)[1] > 0, road_lm)
-cent <- centrelines[centrelines$road_id %in% rds, ]
-cent <- split(cent, f = cent$road_id)
-cent <- Filter(function(x) dim(x)[1] > 0, cent)
+centrelines <- st_read("../data/derived/roads/cent_iteration1.gpkg")
+linear_widths <- lapply(lm_max_widths, model_comparison)
+linear_widths <- linear_widths %>%
+    reduce(left_join, by = "road_id")
 
-# here
-widths <- mapply(opposite_length, samp, cent)
-widths <- do.call(rbind, widths)
-widths <- as.data.frame(widths)
-
-widths$opposite <- as.numeric(unfactor(widths$opposite))
-
-widths <- widths[widths$opposite > 2 & widths$opposite < 8, ]
-
-widths_lmc <- widths %>%
-    group_by(V2) %>%
-    select(road_id = V2, opposite) %>%
-    summarise(
-        mean_width = mean(opposite)
-    )
-
-names(widths_lmc) <- c(
+names(linear_widths) <- c(
     "road_id",
-    "lm_IND_cent1"
+    "lmi_mean",
+    "lm1_mean",
+    "lm2_mean"
 )
+
 roads <- fread("../data/final_data/final.csv")
 
-roads <- merge(roads, widths_lmc, by = "road_id")
+roads <- merge(roads, linear_widths, by = "road_id")
+
+lm0 <- sampled_las[sampled_las$lm1_dum == 1, ] %>%
+    as.data.frame() %>%
+    st_as_sf(coords = c("X", "Y"), crs = 27700)
+
+lm_max_widths <- list(lm0)
+
+road_buff <- st_read("../data/derived/roads/roads_buff.gpkg")
+centrelines <- st_read('../data/derived/roads/roads_line.gpkg')
+
+# includes all filtering, max dist points
+lm_max_widths <- lapply(lm_max_widths, max_lines, cents = centrelines)
+
+lm_max_widths <- lapply(lm_max_widths, function(x) {
+                            x <- x[x$length < 8 & x$length > 2, ]
+                    x <- x[!is.na(x$road_id), ]
+
+  })
+
+# save lines for comparison
+for (i in 1:length(lm_max_widths)) {
+st_write(lm_max_widths[[i]],paste0("../data/derived/model_data/widths_", 0, ".gpkg"),
+         layer_options = "OVERWRITE=YES")
+}
+
+####
+
+linear_widths <- lapply(lm_max_widths, model_comparison)
+linear_widths <- linear_widths %>%
+    reduce(left_join, by = "road_id")
+
+names(linear_widths) <- c(
+    "road_id",
+    "lm0_mean"
+)
+
+roads <- merge(roads, linear_widths, by = "road_id")
 fwrite(roads, "../data/final_data/final.csv")

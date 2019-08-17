@@ -39,7 +39,6 @@ joined_output <- merge(comb, roads_df, by = "road_id")
 int <- st_contains(roads, joined_output, sparse = FALSE) %>%
     colSums()
 
-
 joined_output$road <- int
 
 # turn to binary, some road buffers overlap

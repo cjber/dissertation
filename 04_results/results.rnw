@@ -1,7 +1,7 @@
 \begin{multicols}{2}
 <<>>=
 source("../scripts/functions.r")
-lidar_tab <- fread("../data/derived/model_data/lm_f.csv")
+lidar_tab <- fread("../data/derived/model_data/linearmodels.csv")
 @
 \section{Overview of Data}
 
@@ -95,6 +95,12 @@ Covers 01
 
 Show figure of sample lines. Show the reduction in number of points (memory saving)
 
+<<samplelines>>=
+st_read("../data/derived/roads/sample_lines.gpkg")
+las <- catalog("../data/derived/ctg/")
+sampled_las <- fread("../data/derived/model_data/sampled_las.csv")
+@
+
 \section{Linear Probability Model}
 
 Covers 02
@@ -179,29 +185,44 @@ make_table(corResults, # align col 1 left, rest centred
 
 
 <<lmdistributions>>=
-fread("../data/derived/model_data/linearmodels.csv")
-##### plot scatter of pred dists
-@
+lm_preds <- fread("../data/derived/model_data/linearmodels.csv") %>% 
+select(c(lm1_pred)) %>% 
+melt() # longtable
 
+lm1 <- lm_preds[lm_preds$variable == "lm1_pred", ]
+lm1_quant <- quantile(lm1$value, .95) %>% 
+    as.numeric()
+lm1_quant90 <- quantile(lm1$value, .9) %>% 
+    as.numeric()
+lm1_quant80 <- quantile(lm1$value, .8) %>% 
+    as.numeric()
+
+ggplot() +
+    geom_histogram(data = lm1, aes(x = value), bins = 100) +
+    geom_vline(xintercept = lm1_quant) +
+    geom_vline(xintercept = lm1_quant90) +
+    geom_vline(xintercept = lm1_quant80) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0)) +
+  xlim(c(-0.25, .25)) +
+  theme_bw()
+
+@
 
 <<>>=
 source("./fig_lm.r")
 # from logistic regression essential in R (pocket)
+
 lm1 <- mean((sampled_las$lm1_dum == 1) == (sampled_las$road == 1))
 lm90 <- mean((sampled_las$lm1_dum90 == 1) == (sampled_las$road == 1))
-glm1 <- mean((sampled_las$glm1_dum == 1) == (sampled_las$road == 1))
+lm80 <- mean((sampled_las$lm1_dum80 == 1) == (sampled_las$road == 1))
 
-# filter out  > 0.05 p values for each point
-lmi <- mean((filter_las$lmI_dum == 1) == (filter_las$road == 1))
-
-lm_assess <- rbind(lm1, lm90, glm1) %>%
+lm_assess <- rbind(lm1, lm90, lm80) %>%
   as.data.frame()
 @
 <<>>=
 make_table(lm_assess, cap = "test")
 @
-
-
 
 First model (maximal):
 
@@ -216,8 +237,91 @@ First model (maximal):
 //for this section see 450 assess2, details on validation etc.
 
 \section{Noise Filtering}
+
 <<>>=
 source("./fig_noise.r")
+@
+
+Compare quantiles: choose which to use for new centreline extraction.
+
+<<quant_noise>>=
+ggRGB(aerial) +
+  geom_sf(data = rd, colour = "red") +
+  geom_sf(data = road_lm[road_lm$road_id == "road_6", ], colour = "green") +
+  geom_sf(data = centrelines, colour = "red", alpha = 1) +
+  theme_map() +
+  theme(panel.border = element_rect(
+    colour = "black",
+    fill = NA, size = 1
+  )) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0))
+
+ggRGB(aerial) +
+  geom_sf(data = rd, colour = "red") +
+  geom_sf(data = road_lm90[road_lm$road_id == "road_6", ], colour = "green") +
+  geom_sf(data = centrelines, colour = "red", alpha = 1) +
+  theme_map() +
+  theme(panel.border = element_rect(
+    colour = "black",
+    fill = NA, size = 1
+  )) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0))
+
+ggRGB(aerial) +
+  geom_sf(data = rd, colour = "red") +
+  geom_sf(data = road_lm80[road_lm$road_id == "road_6", ], colour = "green") +
+  geom_sf(data = centrelines, colour = "red", alpha = 1) +
+  theme_map() +
+  theme(panel.border = element_rect(
+    colour = "black",
+    fill = NA, size = 1
+  )) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0))
+@
+
+
+From above, lm90 gives more accurate centrelines locations. therefore, new centrelines created from the centre of these points.
+
+<<road_lines>>=
+source("./fig_roadlines.r")
+
+ggcentcompare <- ggRGB(aerial) +
+  geom_sf(data = centrelines, colour = "red", size = 1) +
+  geom_sf(data = cent1, colour = "green", size = 1) +
+  theme_map() +
+  theme(panel.border = element_rect(
+    colour = "black",
+    fill = NA, size = 1
+  )) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0))
+ggcent1 <- ggRGB(aerial) +
+  geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
+  geom_sf(data = cent1, colour = "red", alpha = 1) +
+  geom_sf(
+    data = cent1_las,
+    alpha = 0.5, colour = "green"
+  ) +
+  theme_map() +
+  theme(panel.border = element_rect(
+    colour = "black",
+    fill = NA, size = 1
+  )) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0))
+@
+
+<<cent1_fig, fig.cap = "test">>=
+plot_grid(
+  ggcentcompare,
+  ggcent1,
+  labels = "AUTO",
+  label_size = 20,
+  ncol = 2
+)
 @
 
 <<fig_noise, fig.height = 14, fig.cap = "Removed points through filtering">>=
@@ -247,7 +351,13 @@ individual models enable the use of more reliable p values to filter out some re
 \section{Final Model Analysis}
 
 <<>>=
-source("../scripts/05_analysis.r")
+# use final_cent1
+widths_1 <- widths_1[widths_1$road_id == "road_6", ]
+widths_2 <- widths_2[widths_2$road_id == "road_6", ]
+widths_3 <- widths_3[widths_3$road_id == "road_6", ]
+widths_IND <- widths_IND[widths_IND$road_id == "road_6",]
+
+
 # unfiltered
 lm1 <- ggRGB(aerial) +
   geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
@@ -293,6 +403,21 @@ glm1 <- ggRGB(aerial) +
   )) +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0))
+
+lm1IND <- ggRGB(aerial) +
+  geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
+  geom_sf(data = cent1, colour = "red", alpha = 1) +
+  geom_sf(
+    data = widths_IND,
+    alpha = 0.5, colour = "green"
+  ) +
+  theme_map() +
+  theme(panel.border = element_rect(
+    colour = "black",
+    fill = NA, size = 1
+  )) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0))
 @
 <<lmquant_plot, fig.env = "figure*", fig.pos = "t", fig.cap = "test">>=
 plot_grid(
@@ -324,44 +449,6 @@ make_table(norm_widths, 2, cap = "testing")
 
 Using refined centrelines and noise filtered. Using model 
 
-<<road_lines>>=
-source("./fig_roadlines.r")
-
-ggcentcompare <- ggRGB(aerial) +
-  geom_sf(data = centrelines, colour = "red", size = 1) +
-  geom_sf(data = cent1, colour = "green", size = 1) +
-  theme_map() +
-  theme(panel.border = element_rect(
-    colour = "black",
-    fill = NA, size = 1
-  )) +
-  scale_x_continuous(expand = c(0, 0)) +
-  scale_y_continuous(expand = c(0, 0))
-ggcent1 <- ggRGB(aerial) +
-  geom_sf(data = sample_lines, colour = "black", alpha = 0.1) +
-  geom_sf(data = cent1, colour = "red", alpha = 1) +
-  geom_sf(
-    data = cent1_las,
-    alpha = 0.5, colour = "green"
-  ) +
-  theme_map() +
-  theme(panel.border = element_rect(
-    colour = "black",
-    fill = NA, size = 1
-  )) +
-  scale_x_continuous(expand = c(0, 0)) +
-  scale_y_continuous(expand = c(0, 0))
-@
-
-<<cent1_fig, fig.cap = "test">>=
-plot_grid(
-  ggcentcompare,
-  ggcent1,
-  labels = "AUTO",
-  label_size = 20,
-  ncol = 2
-)
-@
 
 \section{Road Assessment}
 <<>>=
@@ -428,10 +515,6 @@ make_table(cor_tab, dig = 2, cap = "Correlation Matrix") %>%
       "* Significant as the 0.01 level"
     ),
   )
-@
-
-<<>>=
-
 @
 
 

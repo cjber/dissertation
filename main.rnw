@@ -34,10 +34,11 @@ knitr::read_chunk('./scripts/00_clean.r')
 knitr::read_chunk('./scripts/01_samples.r')
 knitr::read_chunk('./scripts/02_lm.r')
 @
-<<writebib>>=
+<<writebib, cache = F, results = 'asis'>>=
 source("./scripts/functions.r")
-
 write.bib(pkgs, "rbib.bib")
+# no cite all loaded packages from external bib
+cat(paste0("\\nocite{", paste0(pkgs, collapse = ',', sep = ''),"}"))
 @
 
 % ===========================================================================================================
@@ -136,10 +137,6 @@ write.bib(pkgs, "rbib.bib")
 <<conclusion, child = "06_conclusion/conclusion.rnw">>=
 @
 
-<<nocites, echo=FALSE, eval=TRUE>>=
-# no cite all loaded packages from external bib
-cat("\\input{", paste0(pkgs, collapse = ','),"}")
-@
 % ===========================================================================================================
 % Bibliography
 % ===========================================================================================================

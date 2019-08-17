@@ -1,13 +1,8 @@
 source("../scripts/functions.r")
 
-sampled_las <- fread("../data/derived/model_data/lm_u.csv")
-filter_las <- fread("../data/derived/model_data/lm_f.csv")
+sampled_las <- fread("../data/derived/model_data/linearmodels.csv")
 
-road_lm_filter <- fread("../data/derived/model_data/lm_f.csv") %>%
-    as.data.frame() %>%
-    st_as_sf(coords = c("X", "Y"), crs = 27700)
-
-road_lm_nofilter <- fread("../data/derived/model_data/lm_u.csv") %>%
+road_lm <- fread("../data/derived/model_data/linearmodels.csv") %>%
     as.data.frame() %>%
     st_as_sf(coords = c("X", "Y"), crs = 27700)
 
@@ -20,8 +15,7 @@ sample_lines <- st_read("../data/derived/roads/sample_lines.gpkg", quiet = TRUE)
 # example road section
 rd_f <- "road_6"
 
-road_lm_filter <- road_lm_filter[road_lm_filter$road_id == rd_f, ]
-road_lm_nofilter <- road_lm_nofilter[road_lm_nofilter$road_id == rd_f, ]
+road_lm <- road_lm[road_lm$road_id == rd_f, ]
 sample_lines <- sample_lines[sample_lines$road_id == rd_f, ]
 centrelines <- centrelines[centrelines$road_id == rd_f, ] %>% 
     st_crop(sample_lines)

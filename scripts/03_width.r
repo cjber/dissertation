@@ -8,33 +8,8 @@ roads <- st_read("../data/derived/roads/roads_line.gpkg")
 roads_5m <- st_read("../data/derived/roads/roads_line.gpkg") %>% 
     st_buffer(5)
 
-road_lm1 <- road_lm[road_lm$lm1_dum == 1, ]
-road_lm2 <- road_lm[road_lm$lm2_dum == 1, ]
-road_glm <- road_lm[road_lm$glm1_dum == 1, ]
-
-# more accurate centrelines
 road_lm90 <- road_lm[road_lm$lm1_dum90 == 1, ]
-
-linear_models <- list(
-    road_lm1,
-    road_lm2,
-    road_glm
-)
-
-# includes all filtering, max dist points
-linear_models <- lapply(linear_models, max_lines, cents = roads)
-
-linear_models <- lapply(linear_models, function(x){
-x <- x[x$length  > 2 & x$length < 8, ]
-return(x)
-})
-
-for (i in 1:length(linear_models)) {
-    st_write(linear_models[[i]],
-             paste0("../data/derived/model_data/widths_", i, ".gpkg"), layer_options = "OVERWRITE=yes")
-}
-
-# find correct centrelines
+# find improved centrelines
 fixed_cents <- list(
     road_lm90
 )
@@ -63,19 +38,6 @@ cents <- do.call(rbind, cents)
 st_write(cents, "../data/derived/roads/cent_iteration1.gpkg",
     layer_options = "OVERWRITE=yes"
 )
-####
-centrelines <- st_read("../data/derived/roads/roads_line.gpkg")
-linear_widths <- lapply(linear_models, model_comparison)
-linear_widths <- linear_widths %>%
-    reduce(left_join, by = "road_id")
-
-names(linear_widths) <- c(
-    "road_id",
-    "lm1_mean",
-    "lm2_mean",
-    "glm_mean"
-)
-roads <- merge(roads, linear_widths, by = "road_id")
 
 ## ---- angles
 roads_split <- st_read("../data/derived/roads/roads_line.gpkg") %>%
