@@ -1,7 +1,9 @@
 source("../scripts/functions.r")
-widths_1 <- st_read("../data/derived/model_data/widths_1.gpkg") # lm1
-widths_2 <- st_read("../data/derived/model_data/widths_2.gpkg") # glm1
-widths_3 <- st_read("../data/derived/model_data/widths_3.gpkg") # lm190
+widths_0 <- st_read("../data/final_data/widths_0.gpkg") # lm0
+widths_1 <- st_read("../data/final_data/widths_1.gpkg") # lmi
+widths_2 <- st_read("../data/final_data/widths_2.gpkg") # lm1
+widths_3 <- st_read("../data/final_data/widths_3.gpkg") # lm2
+
 cent1 <- st_read("../data/derived/roads/cent_iteration1.gpkg")
 cent1 <- cent1[cent1$road_id == "road_6", ]
 
