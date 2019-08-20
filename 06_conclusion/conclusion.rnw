@@ -1,5 +1,1 @@
-\begin{multicols}{2}
-
     Method that provides a ground between simplistic filtering methods, and more complex methods such as deep learning neural networks, using the resources poroduced by government ran organisations.
-
-\end{multicols}{2}

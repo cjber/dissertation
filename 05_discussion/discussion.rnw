@@ -1,5 +1,27 @@
-\begin{multicols}{2}
-=== notes ===
+The proposed methodology provides a road classification method which considers the need for an optimised and efficient extraction of road widths to combine with other road features and geometry for use in an automated national road assessment. This method builds upon past classification methodolodies with the inclusion of Ordanance Survey road centreline geometries allowing for a supervised classification, without the need for the manual, time consuming creation of a training dataset. The primary goal is primarily to provide a fully scalable classification, for a national rural assessment for all roads in England, given access to Ordrnance Survey centrelines, and LiDAR point cloud data.
+
+The results of this paper can be considered to present the overall goal of automated road feature extraction, split into two main sections, the first being automated road width extraction, and second, the automated extraction of other road features.
+
+\section{Automated Road Width Extraction}
+
+Table \ref{tab:final_table} gives the results of the selected technique for road extraction, using the second global linear probability model. Particular emphasis on the association between road width and the 
+
+\section{Interpretations}
+Interpretations: what do the results mean?
+
+\section{Implications}
+    Implications: why do the results matter?
+
+Road speeds in more detail, rural social mobility etc etc.
+
+\section{Limitations}
+    Limitations: what can’t the results tell us?
+
+\section{Recommendations}
+    Recommendations: what practical actions or scientific studies should follow?
+
+\section{Urban and Rural Road Classification}
+
 \citep{hatger2005}
 The idea now is to use this information in a more sensitive
 segmentation, trying to extract the true road extents.
@@ -21,8 +43,8 @@ to a standard deviation of about 15 cm /
 10  5 cm.
 
 Assessment strategy: assessing the results of an image processing work flow usually a textual description. but results can't be compared easily. Heipke1997 sugest a comparison between methods numerically, ratios derived from statistical test theory:
-
 be identiged.
+
 True positive (TP) – A phenomenon that is present within the input data and that has
 successfully been identiged within the output data.
 False positive (FP) – A phenomenon that is not present within the input data but that
@@ -61,4 +83,3 @@ Otherwise, assessment is done by means of a textual description.
 
 
 // Mention logistic regression, considered but not used as results not better and requries a payoff.
-\end{multicols}

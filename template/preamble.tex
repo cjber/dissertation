@@ -18,9 +18,10 @@
             ]{caption}
 
 %\setlength{\parskip}{1em}
+\edef\restoreparindent{\parindent=\the\parindent\relax}
+\usepackage{parskip}
+\restoreparindent
 
-%\usepackage[font=sf]{floatrow}
-%\floatsetup[table]{capposition=top}
 % todo notes
 \usepackage{todonotes}
 
@@ -93,8 +94,8 @@
 \usepackage{makecell}
 
 % Hyperlinks
-\definecolor{darkblue}{rgb}{0.0,0.0,0.3}
-\definecolor{darkred}{rgb}{0.3,0.0,0.0}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.4}
+\definecolor{darkred}{rgb}{0.4,0.0,0.0}
 \usepackage{hyperref}
 \hypersetup{
     colorlinks = true,

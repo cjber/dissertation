@@ -15,24 +15,22 @@ opts_knit$set(self.contained = TRUE)
 
 # Defaults
 opts_chunk$set(
-  fig.align = "center", fig.pos = "H", # required for multicols
+  fig.align = "center", fig.pos = "htbp",
   cache = TRUE, echo = FALSE,
   cache.path = "data/cache/",
   message = FALSE, size = "footnotesize",
   background = rgb(0.97, 0.97, 0.97),
   warning = FALSE,
-  comment = NA, out.width = '\\linewidth'
+  comment = NA, out.width = '.75\\linewidth',
+  tidy = TRUE
 )
 # fix some warning messages
 knit_hooks$set(document = function(x) {sub('\\usepackage[]{color}', '\\usepackage{xcolor}', x, fixed = TRUE)})
 @
 
 <<external, cache = FALSE>>=
-# Read in chunks from external scripts
+# Read in function chunks
 knitr::read_chunk('./scripts/functions.r')
-knitr::read_chunk('./scripts/00_clean.r')
-knitr::read_chunk('./scripts/01_samples.r')
-knitr::read_chunk('./scripts/02_lm.r')
 @
 <<writebib, cache = F, results = 'asis'>>=
 source("./scripts/functions.r")
@@ -40,6 +38,8 @@ write.bib(pkgs, "rbib.bib")
 # no cite all loaded packages from external bib
 cat(paste0("\\nocite{", paste0(pkgs, collapse = ',', sep = ''),"}"))
 @
+
+
 
 % ===========================================================================================================
 % Cover
@@ -197,7 +197,9 @@ print(x, locale = F)
 \subsection{Clip Samples} \label{code:clip_samples}
 <<clip_samples, echo = TRUE, eval = FALSE>>=
 @
-
+\subsection{Filter LAS Noise} \label{code:las_filter_noise}
+<<las_filter_noise, echo = TRUE, eval = FALSE>>=
+@
 \subsection{LiDAR Clean} \label{code:lidr_clean}
 <<lidr_clean, echo = TRUE, eval = FALSE>>=
 @

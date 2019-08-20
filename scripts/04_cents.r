@@ -59,7 +59,7 @@ lm1 <- lm(data = cent1_las, formula = f1)
 lm1_pred <- predict(lm1, cent1_las, type = "response")
 
 f2 <- as.formula("road ~ Intensity + dists + Z + NumberOfReturns")
-lm2 <- lm(data = cent1_las, formula = f1)
+lm2 <- lm(data = cent1_las, formula = f2)
 lm2_pred <- predict(lm2, cent1_las, type = "response")
 
 cent1_las$lm1_pred <- lm1_pred
@@ -88,6 +88,13 @@ lm1 <- cent1_las[cent1_las$lm1_dum == 1, ] %>%
 lm2 <- cent1_las[cent1_las$lm2_dum == 1, ] %>%
     as.data.frame() %>%
     st_as_sf(coords = c("X", "Y"), crs = 27700)
+
+lm2 <- split(lm2, lm2$road_id)
+tot_pts <- lapply(lm2, function(x) {
+    tot_pts <- nrow(x)
+    return(tot_pts)
+})
+lm2 <- do.call(rbind, lm2)
 
 lm_max_widths <- list(lmi, lm1, lm2)
 
@@ -122,6 +129,12 @@ names(linear_widths) <- c(
     "lm1_mean",
     "lm2_mean"
 )
+tot_pts <- do.call(rbind, tot_pts) %>%
+    as.data.frame() %>%
+    rownames_to_column()
+names(tot_pts) <- c("road_id", "tot_pts")
+
+linear_widths <- merge(linear_widths, tot_pts, by = "road_id")
 
 roads <- fread("../data/final_data/final.csv")
 

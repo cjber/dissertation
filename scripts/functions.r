@@ -28,41 +28,44 @@ pkgs <- c(
   "cowplot",
   "bibtex",
   "benchmarkme",
-  "parallel"
+  "parallel",
+  "showtext"
 )
 
 pacman::p_load(pkgs, character.only = T)
-
-
-
-## ---- home_dir
 dir <- "/home/cjber/drive/uni/envs492/main/"
 
 ## ---- make_table
-make_table <- function(df, cap = "", dig = 2, col_names = NA, ...) {
+make_table <- function(df, cap = "", dig = 2, col_names = NA, table_env = "table", ...) {
   require(kableExtra)
   require(tidyverse)
 
   options(knitr.kable.NA = "")
   kable(df,
     digits = dig, caption = cap,
-    linesep = "",
-    longtable = FALSE, booktabs = TRUE,
+    linesep = "", # remove 5 row spacing
+    longtable = FALSE, booktabs = TRUE, # latex opts
     format = "latex",
-    escape = F,
-    col.names = col_names
+    escape = F, # allow maths chars
+    col.names = col_names,
+    table.env = table_env # change to figure*
   ) %>%
-    kable_styling(font_size = 8)  %>% 
+    kable_styling(font_size = 9, position = 'center') %>%
     row_spec(0, bold = TRUE)
 }
 
 ## ---- ctg_to_df
 ctg_to_df <- function(cluster) {
+  # read cluster as LAS
   las <- readLAS(cluster)
+  # dont read empty clusters
+  # all subsequent ctg funcs need these
   if (is.empty(las)) {
     return(NULL)
   }
+  # convert to sp class
   las <- as.spatial(las)
+  # sp to df
   las <- as.data.frame(las)
   return(las)
 }
@@ -73,13 +76,32 @@ clip_samples <- function(cluster, x) {
   if (is.empty(las)) {
     return(NULL)
   }
+  # las to sp, sf then spatial join
   las <- las %>%
     as.spatial() %>%
     st_as_sf(las) %>%
     st_set_crs(27700) %>%
     st_join(x)
 
+  # clip points by removing NA values
   las <- las[is.na(las$sample_id) == FALSE, ]
+  return(las)
+}
+
+## ---- las_filter_noise
+las_filter_noise <- function(cluster, sensitivity) {
+  las <- readLAS(cluster)
+  if (is.empty(las)) {
+    return(NULL)
+  }
+  # find 95th quantile intensity values per 10m^2
+  p95 <- grid_metrics(las, ~ quantile(Intensity, probs = 0.95), 10)
+  # join by merging
+  las <- lasmergespatial(las, p95, "p95")
+  # remove above 95th quantile
+  las <- lasfilter(las, Intensity < p95 * sensitivity)
+  # remove unneeded var
+  las$p95 <- NULL
   return(las)
 }
 
@@ -89,7 +111,6 @@ lidr_clean <- function(cluster) {
   if (is.empty(las)) {
     return(NULL)
   }
-  epsg(las) <- 27700
   # remove all but last return
   las <- lasfilter(las, NumberOfReturns == ReturnNumber)
 
@@ -113,9 +134,13 @@ extract_buff <- function(cluster, clip_input) {
     return(NULL)
   }
 
+  # ensure no null input
   if (!is.null(clip_input)) {
     las <- lasclip(las, clip_input)
 
+  # bind clipped inputs together
+  # as gives list depending on number of
+  # sp objects
     if (length(las) > 1) {
       for (i in 1:length(las)) {
         if (!is.empty(las[[i]])) {
@@ -129,12 +154,14 @@ extract_buff <- function(cluster, clip_input) {
 
 ## ---- find_dists
 find_dists <- function(x, y) {
+  # euclidean distance with sf
   d <- st_distance(x, y)
   return(d)
 }
 
 ## ---- euc
 # Function to calculate Euclidean distance between 2 points
+# using coordinate data
 euclidean_distance <- function(p1, p2) {
   return(sqrt((p2[1] - p1[1])**2 + (p2[2] - p1[2])**2))
 }
@@ -188,13 +215,17 @@ comb_ctg <- function(x) {
 }
 
 ## ---- compute_samples
+# default of 10m increments and 30m width either side of a line
 compute_samples <- function(x, increment = 10, width = 30) {
-    sample_lines <- c()
+  sample_lines <- c()
   if (nrow(x) > 1) {
+    # split linestring into coordinates
     road_node <- st_coordinates(x)
     tot_len <- 0
     len_inc <- increment
     len_ofs <- len_inc
+    # for each linestring "node"
+    # find dist between them
     for (i in 2:nrow(road_node) - 1) {
       n1 <- road_node[i, ]
       n2 <- road_node[i + 1, ]
@@ -202,21 +233,26 @@ compute_samples <- function(x, increment = 10, width = 30) {
       len_seg <- euclidean_distance(n1, n2)
       len_ofs <- len_ofs + len_inc
 
+      # max length of linestring
       while (len_ofs <= tot_len + len_seg) {
         len_ofs <- len_ofs + len_inc
 
         # Add results to output vector
+        # for each node of a linestring
         perp_segments <- calc_perp(
           n1, n2, width,
           len_ofs - tot_len,
           proportion = FALSE
         )
 
+        # combine to multipts
         multipoints <- st_multipoint(matrix(perp_segments, ncol = 2))
         pts <- st_cast(st_geometry(multipoints), "POINT")
         n <- length(pts)
 
+        # points to perp lines
         pair <- st_combine(c(pts[1], pts[2], pts[3]))
+        # then to linestring + buffer to polygon
         linestring <- st_cast(pair, "LINESTRING") %>%
           st_buffer(2) %>%
           st_sf() %>%
@@ -229,34 +265,39 @@ compute_samples <- function(x, increment = 10, width = 30) {
   return(sample_lines)
 }
 ## ---- greyscale
+# combine three band rgb
 greyscale <- function(x) {
   x <- (x[[1]] + x[[2]] + x[[3]]) / 3
 }
 
 ## ---- lm_compute
+# function to compute individual linear models per
+# sample
 lm_compute <- function(x, f) tryCatch({
     m <- lm(formula = f, data = x)
 
+    # find p vals
     p <- m %>%
       tidy() %>%
       dplyr::select(p = p.value)
 
     pred_m <- predict(m, x, type = "response")
 
+    # remove average p val above 0.05
     if (sum(p) / nrow(p) < 0.05) {
       x$lm <- pred_m
     } else {
       x$lm <- NA
     }
 
+    # find 95th quantiles
     x$I_dum <- ifelse(x$lm > quantile(x$lm, .95), 1, 0)
-    x$I_dum <- ifelse(x$lm > quantile(x$lm, .95), 1, 0)
-    x$p_val <- sum(p)
 
     return(x)
   }, error = function(e) NULL)
 
 ## ---- filter_returns
+# remove samples with any road points with a return above 1
 filter_returns <- function(x) {
   road <- x[x$road == 1, ]
   if (max(road$NumberOfReturns) == 1) {
@@ -266,9 +307,11 @@ filter_returns <- function(x) {
 
 ## ---- filter_samples
 filter_samples <- function(s) {
-  # find rows far below mean
+  # find rows with fewer than 8 samples
+  # 8 chosen as ~2m^2 given 25cm res
   if (nrow(s) > 8) {
     # remove outlier points
+    # distance based isolation filtering
     distances <- s %>%
       st_distance() %>%
       apply(1, FUN = function(y) {
@@ -278,19 +321,24 @@ filter_samples <- function(s) {
       mutate(rowid = row_number()) %>%
       select(min_dist = ".", rowid)
 
-    # above 1m from any other point
+    # given min dist between two points
+    # remove any above 1m from any other point
     distances <- distances[distances$min_dist < 1, ]
 
     s <- s %>% mutate(rowid = row_number())
 
+    # remove excluded index values
     s <- s[s$rowid %in% distances$rowid, ]
     return(s)
   }
 }
 
 ## ---- max_dist
+# two furthest points in a sample
+# convert to a linestring to assume max detected road points
 max_dist <- function(x) {
   tot_dists <- c()
+# gives largest distances for a collection of pts
   distances <- x %>%
     st_distance(by_element = FALSE) %>%
     unclass() %>%
@@ -302,6 +350,7 @@ max_dist <- function(x) {
     ) %>%
     arrange(desc(distance))
 
+# use colid to find index of pts with largest distances
   if (nrow(distances) > 0) {
     distances$colid <- gsub("[^0-9.-]", "", distances$colid)
     tot_dists <- rbind(tot_dists, max(distances$distance))
@@ -310,6 +359,7 @@ max_dist <- function(x) {
       unlist() %>%
       as.numeric()
 
+  # convert two pts to linestring
     x <- x[distances, ] %>%
       st_combine() %>%
       st_sf() %>%
@@ -318,8 +368,9 @@ max_dist <- function(x) {
   }
 }
 
-# consider optimisation?
 ## ---- max_lines
+# combines points filtering and max dist linestrings
+# adds linestring length for later
 max_lines <- function(x, cents) {
   road_lm <- split(x, f = x$sample_id)
 
@@ -340,6 +391,7 @@ max_lines <- function(x, cents) {
 }
 
 ## ---- mid_pts
+# find mid point between linestring
 mid_pts <- function(x) {
   fixed_cents <- st_coordinates(x)[, 1:2]
   x_mid <- mean(fixed_cents[, 1])
@@ -352,8 +404,10 @@ mid_pts <- function(x) {
 }
 
 ## ---- true_cents
+# using mid points convert a list of mid points into
+# linestring, i.e. new road centreline
 true_cents <- function(x) {
-rd <- unique(x$road_id)
+  rd <- unique(x$road_id)
   y <- x %>%
     distinct()
   n <- nrow(y) - 1
@@ -365,12 +419,14 @@ rd <- unique(x$road_id)
       return(line)
     })
     y <- do.call(c, y)
-    y <- y[as.numeric(st_length(y)) < 40]
+    # remove some noise through filtering out v large lines
+    # optimal was qualitatively assessed
+    y <- y[as.numeric(st_length(y)) <
+      sum(as.numeric(st_length(y))) / (length(y) / 4)]
 
     y <- y %>%
       st_combine() %>%
       st_cast("MULTILINESTRING")
-    y <- y[1]
     y <- y %>% st_sf()
 
     y <- y[is.na(rd)]
@@ -380,7 +436,75 @@ rd <- unique(x$road_id)
   }
 }
 
-## --- model_comparison
+
+## ---- opposite_length
+# use atan2 to find true width of roads given
+# a non perpendicular line, convert to perpendicular to find width
+opposite_length <- function(samp, cent) {
+  tot_width <- c()
+  cent <- cent %>% st_cast("POINT")
+  n <- nrow(cent) - 1
+  nodelines <- lapply(X = 1:n, FUN = function(i) {
+    pair <- cent[c(i, i + 1), ] %>%
+      st_combine()
+    line <- st_cast(pair, "LINESTRING")
+    return(line)
+  })
+
+  samp <- samp %>%
+    mutate(row_id = row_number())
+  samp <- split(samp, samp$row_id)
+
+  for (n in nodelines) {
+    for (s in samp) {
+      # find which centreline it is associated with
+      # as road consist of multiple
+      int <- as.numeric(st_crosses(n, s))
+      int[is.na(int)] <- 0
+      # with correct line, find perpendicular angle
+      # and length
+      if (int == 1) {
+        n1 <- st_coordinates(n)[1, ]
+        n2 <- st_coordinates(n)[2, ]
+        x <- n1[1] - n2[1]
+        y <- n1[2] - n2[2]
+        ang_rad <- atan2(x, y)
+        ang_deg <- ang_rad * 180 / pi
+        if (ang_rad < 0) {
+          ang_deg <- ang_deg + 180
+        }
+
+        n1 <- st_coordinates(s)[1, ]
+        n2 <- st_coordinates(s)[2, ]
+        x <- n1[1] - n2[2]
+        y <- n1[2] - n2[2]
+
+        ang_rad <- atan2(x, y)
+        ang_deg_c <- ang_rad * 180 / pi
+        if (ang_rad < 0) {
+          ang_deg_c <- ang_deg + 180
+        }
+
+        theta <- ang_deg - ang_deg_c
+        theta <- theta - 45 # position relative to perp line
+
+        c1_len <- st_length(s)
+        # pythagoras to find opposite line length
+        opposite <- abs(as.numeric(c1_len) * cos(as.numeric(theta)))
+        opposite <- cbind(
+          opposite, as.character(unique(cent$road_id)),
+          as.character(unique(cent$sample_id))
+        )
+        tot_width <- rbind(tot_width, opposite)
+      }
+    }
+  }
+  return(tot_width)
+}
+
+## ---- model_comparison
+# find estimated mean widths per road
+# remove noise given no road above 8m and below 2m
 model_comparison <- function(model) {
   road_lm <- model[!is.na(model$road_id), ]
   rds <- unique(model$road_id)
@@ -409,65 +533,9 @@ model_comparison <- function(model) {
   return(widths)
 }
 
-## ---- opposite_length
-opposite_length <- function(samp, cent) {
-  tot_width <- c()
-  cent <- cent %>% st_cast("POINT")
-  n <- nrow(cent) - 1
-  nodelines <- lapply(X = 1:n, FUN = function(i) {
-    pair <- cent[c(i, i + 1), ] %>%
-      st_combine()
-    line <- st_cast(pair, "LINESTRING")
-    return(line)
-  })
-
-  samp <- samp %>%
-    mutate(row_id = row_number())
-  samp <- split(samp, samp$row_id)
-
-  for (n in nodelines) {
-    for (s in samp) {
-      int <- as.numeric(st_crosses(n, s))
-      int[is.na(int)] <- 0
-      if (int == 1) {
-        n1 <- st_coordinates(n)[1, ]
-        n2 <- st_coordinates(n)[2, ]
-        x <- n1[1] - n2[1]
-        y <- n1[2] - n2[2]
-        ang_rad <- atan2(x, y)
-        ang_deg <- ang_rad * 180 / pi
-        if (ang_rad < 0) {
-          ang_deg <- ang_deg + 180
-        }
-
-        n1 <- st_coordinates(s)[1, ]
-        n2 <- st_coordinates(s)[2, ]
-        x <- n1[1] - n2[2]
-        y <- n1[2] - n2[2]
-
-        ang_rad <- atan2(x, y)
-        ang_deg_c <- ang_rad * 180 / pi
-        if (ang_rad < 0) {
-          ang_deg_c <- ang_deg + 180
-        }
-
-        theta <- ang_deg - ang_deg_c
-        theta <- theta - 45 # position relation to perp line
-
-        c1_len <- st_length(s)
-        opposite <- abs(as.numeric(c1_len) * cos(as.numeric(theta)))
-        opposite <- cbind(
-          opposite, as.character(unique(cent$road_id)),
-          as.character(unique(cent$sample_id))
-        )
-        tot_width <- rbind(tot_width, opposite)
-      }
-    }
-  }
-  return(tot_width)
-}
-
 ## ---- road_angles
+# atan2 to find angle between two centreline segments
+# relative to previous centreline orientation
 road_angles <- function(rd) {
   coords <- rd %>% st_coordinates()
   angle <- c()
@@ -477,16 +545,16 @@ road_angles <- function(rd) {
       n2 <- coords[i + 1, ]
       x <- n1[1] - n2[1]
       y <- n1[2] - n2[2]
-      ang_rad <- atan2(x, y)
+      ang_rad <- atan2(y, x)
       ang_deg <- ang_rad / pi * 180
 
-      if (ang_rad < 0) {
-        ang_deg <- ang_deg + 180
-      }
       angle <- append(angle, ang_deg)
+      # left of N same as right of N
+      angle <- abs(angle)
     }
   }
 
+  # normalise angle, i.e. use prev orientation to find true difference in angle
   normal_ang <- c()
   for (i in 2:length(angle)) {
     # here i - 1 is theta 1, i is theta 2
@@ -501,6 +569,7 @@ road_angles <- function(rd) {
 }
 
 ## ---- height_change
+# find difference in average height between two samples
 height_change <- function(x) {
   elev <- c()
   samples <- split(x, x$sample_id)

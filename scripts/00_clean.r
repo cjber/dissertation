@@ -2,41 +2,45 @@
 source("./functions.r")
 
 # Create las catalog with all .laz files
-ctg <- catalog(paste0(dir, "/data/point/"))
+ctg <- catalog("../data/point/")
 opt_chunk_size(ctg) <- 500
+opt_chunk_buffer(ctg) <- 20
 
 # create lax file to index + speed up process
 plan(multisession, workers = 6L)
 set_lidr_threads(12L)
+# speed up lax computation time
 lidR:::catalog_laxindex(ctg)
 
-# run once
+# ctg to points csv
 las <- catalog_apply(ctg, ctg_to_df)
 las <- do.call(rbind, las)
-las <- las %>% 
-    select(-c(Synthetic_flag,
-    Keypoint_flag,
-    Withheld_flag))
+las <- las %>%
+    select(-c(
+        Synthetic_flag,
+        Keypoint_flag,
+        Withheld_flag
+    ))
 
 fwrite(las, "../data/point/points.csv")
 
 # filter using sql expressions why not
 # very very slow to read in full gpkg, don't run unless new data added
-#roads <- st_read("../data/osroads/oproad_gpkg_gb/data/oproad_gb.gpkg",
+# roads <- st_read("../data/osroads/oproad_gpkg_gb/data/oproad_gb.gpkg",
 #    layer = "RoadLink", query =
 #        "SELECT * FROM RoadLink WHERE
 #         formOfWay = \"Single Carriageway\" AND
 #         roadFunction <> \"Restricted Local Access Road\" "
-#) %>%
+# ) %>%
 #    select(c(roadFunction, geom)) %>%
 #    st_zm() # remove z axis
 
-#roads <- as_Spatial(roads)
-#roads <- raster::crop(roads, as.matrix(extent(ctg))) %>%
+# roads <- as_Spatial(roads)
+# roads <- raster::crop(roads, as.matrix(extent(ctg))) %>%
 #    st_as_sf() %>%
 #    mutate(road_id = paste0("road_", row_number()))
 
-#st_write(roads, "../data/osroads/oproad_crop.gpkg")
+# st_write(roads, "../data/osroads/oproad_crop.gpkg")
 roads <- st_read("../data/osroads/oproad_crop.gpkg")
 
 # keep line polys
@@ -65,20 +69,44 @@ st_write(roads_buff_union, "../data/derived/roads/roads_buff_diss.gpkg",
 roads_buff <- st_read("../data/derived/roads/roads_buff.gpkg") %>%
     as_Spatial()
 
-ctg_ <- catalog("../data/point/")
+ctg <- catalog("../data/point/")
 opt_output_files(ctg) <- "../data/derived/ctg_clean/{ID}_clean"
 opt_chunk_size(ctg) <- 500
+opt_chunk_buffer(ctg) <- 20
 catalog_apply(ctg, lidr_clean)
 
 ctg <- catalog("../data/derived/ctg_clean/")
 opt_output_files(ctg) <- "../data/derived/ctg_buff/{ID}_tile"
 opt_chunk_size(ctg) <- 500
+opt_chunk_buffer(ctg) <- 20
 catalog_apply(ctg, extract_buff, roads_buff)
 
+ctg <- catalog("../data/derived/ctg_buff/")
+opt_output_files(ctg) <- "../data/derived/ctg/{ID}_tile"
+opt_chunk_size(ctg) <- 500
+opt_chunk_buffer(ctg) <- 20
+catalog_apply(ctg, las_filter_noise, sensitivity = 1.2)
+
+# non normalised ctg
 ctg_notnorm <- catalog("../data/point/")
 opt_output_files(ctg_notnorm) <- "../data/derived/ctg_notnorm/{ID}_tile"
 opt_chunk_size(ctg_notnorm) <- 500
+opt_chunk_buffer(ctg_notnorm) <- 20
 catalog_apply(ctg_notnorm, extract_buff, roads_buff)
+
+# ctg to points csv
+ctg <- catalog("../data/derived/ctg/")
+las <- catalog_apply(ctg, ctg_to_df)
+las <- do.call(rbind, las)
+las <- las %>%
+    select(-c(
+        Synthetic_flag,
+        Keypoint_flag,
+        Withheld_flag
+    ))
+
+fwrite(las, "../data/point/points_clean.csv")
+
 
 # read in written roads file
 roads <- read_sf("../data/derived/roads/roads.gpkg")

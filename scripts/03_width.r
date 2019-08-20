@@ -57,8 +57,8 @@ angles$angle <- as.numeric(unfactor(angles$angle))
 angles <- angles %>%
     group_by(road_id) %>%
     summarise(
-        meanAngle = mean(angle),
-        maxAngle = max(angle)
+        mean_angle = mean(angle),
+        max_angle = max(angle)
     )
 
 roads <- merge(roads, angles, by = "road_id")
@@ -122,8 +122,7 @@ names(las_height) <- c("road_id", "Z")
 las_height <- las_height %>%
     group_by(road_id) %>%
     summarise(
-        maxZ = max(as.numeric(unfactor(Z))),
-        meanZ = mean(as.numeric(unfactor(Z))),
+        tot_z = sum(as.numeric(unfactor(Z))),
     ) %>%
     drop_na()
 
@@ -133,11 +132,11 @@ roads <- merge(roads, las_height, by = "road_id")
 las_qual <- las_rds %>%
     group_by(road_id) %>%
     summarise(
-        meanInt = mean(Intensity),
-        rangeInt = max(Intensity) - min(Intensity)
+        mean_int = mean(Intensity),
+        range_int = max(Intensity) - min(Intensity)
     ) %>%
     drop_na() %>%
-    select(c(road_id, meanInt, rangeInt))
+    select(c(road_id, mean_int, range_int))
 
 roads <- merge(roads, las_qual, by = "road_id") %>%
     st_drop_geometry()
