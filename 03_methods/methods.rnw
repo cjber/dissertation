@@ -54,8 +54,7 @@ tmp <- do.call(
 @
 
 <<lidartab, results='asis'>>=
-make_table(tmp, cap = "LiDAR Point Cloud Summary Data") %>%
-  kable_styling(latex_options = "HOLD_position")
+make_table(tmp, cap = "LiDAR Point Cloud Summary Data")
 @
 
 \subsection{Last Pulse}
@@ -157,8 +156,7 @@ tmp <- do.call(
 <<roadstab, results='asis'>>=
 make_table(tmp, cap = "OS Roads Data Summary",
            ) %>%
-  column_spec(2, width = "12em") %>%
-  kable_styling(latex_options = "HOLD_position")
+  column_spec(2, width = "12em")
 @
 
 \subsection{Road Sampling}
