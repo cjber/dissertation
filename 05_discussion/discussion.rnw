@@ -1,85 +1,152 @@
-The proposed methodology provides a road classification method which considers the need for an optimised and efficient extraction of road widths to combine with other road features and geometry for use in an automated national road assessment. This method builds upon past classification methodolodies with the inclusion of Ordanance Survey road centreline geometries allowing for a supervised classification, without the need for the manual, time consuming creation of a training dataset. The primary goal is primarily to provide a fully scalable classification, for a national rural assessment for all roads in England, given access to Ordrnance Survey centrelines, and LiDAR point cloud data.
+The proposed methodology provides a road classification method which considers the need for an optimised and efficient extraction of road widths to combine with other road features and geometry for use in an automated national road assessment. This method builds upon past classification methodologies with the inclusion of Ordinance Survey road centreline geometries allowing for a supervised classification, without the need for the manual, time consuming creation of a training dataset. The primary goal is primarily to provide a fully scalable classification, for a national rural assessment for all roads in England, given access to Ordinance Survey centrelines, and LiDAR point cloud data.
 
 The results of this paper can be considered to present the overall goal of automated road feature extraction, split into two main sections, the first being automated road width extraction, and second, the automated extraction of other road features.
 
 \section{Automated Road Width Extraction}
 
-Table \ref{tab:final_table} gives the results of the selected technique for road extraction, using the second global linear probability model. Particular emphasis on the association between road width and the 
+Direct comparison between the computational efficiency of this method and past methods is not possible due to the unique data used in this study. However, \cite{zhang2016} outline some specifications of the dataset used in their supervised road centreline extraction using LiDAR and aerial imagery. With aerial imagery at a resolution of 15cm, and a total 5200 by 5000 pixels, the study area therefore covers \Sexpr{5200/(1/.15)}m by \Sexpr{5000/(1/.15)}m. Similar to the 1km$^2$ for this study. The total time taken for object extraction for this area in their method was \Sexpr{2272/60} minutes, compared with the \Sexpr{time_taken} minutes proposed in this paper. It is expected that the method propsed by \cite{zhang2016} should take far longer to compute due to being the inclusion of complex methodologies such as image segmentation through random forest classification. The methodology proposed by \cite{zhang2016} and other supervised road classification techniques rely on the existance of a training dataset, either derived through manual image segmentation, or the preexisting data itself.For this reason, I propose that practical applications of road classification should focus more on the inclusion of such data, including known road centreline geometries to provide a basis for techniques.
 
-\section{Interpretations}
-Interpretations: what do the results mean?
+As outlined in subsection \ref{subsec:supervised}, few papers utilised a supervised methodology for road classification, 
+
+- Comparison between other techniques, automated/non-automated.
+- Compare supervised/non-supervised. Findings compared with other studies.
+NOTE: aerial data appears to provide little improvement over pure LiDAR. Appears in places to reduce accuracy due to the presence of shadows.
+- Past studies of UK rural roads.
+- 
+\section{Outcomes}
+\subsection{Stopping Sight Distance}
+
+Stopping Sight Distances are an important consideration for rural British roads, from qualitative observation of aerial imagery, and personal knowledge, hedgerows that bank the verges either side of many rural British roads often fully obscure the sight line around sharp bends, meaning it is often impossible to see oncoming traffic or obstacles, which, given the nature of these roads can often be large farm vehicles which spill into multiple lanes, or hazards such as farm animals, or unsafe road conditions. It is worth mentioning that the majority of hedgerows have automatic protection under the Hedgerow Regulations 1997 \citep{ukgovernment1997} for numerous historic and environmental reasons \citep[e.g. protected species;][]{ukgovernment1981}, as such, their removal for road safety is rarely granted.
+
+Stopping Sight Distance is defined as the ability to see an object in the roadway with enough distance to stop, \ref{tab:ssd} outlines the calculated stopping sight distances at certain speeds, giving a rough indication of the distance required between a car and bend in a road. For example, \ref{tab:ssd} indicates that at 100kph (60mph), stopping sight distance is recommended to be 185m. Broadly, for a road to be considered appropriate for a 60mph limit, it could be said that it should not have a bend which impairs the line of sight more than every 185m, or a requirement of at most 5.4 bends per km. Roughly quantifying this, given the number of changes in road direction per road segment, extracted from the OS Road centreline geometries, none of the observed roads achieve this, while some roads have an excess of 100 bends per km. 
+
+Assumptions for certain road regulations are made that drivers will slow to appropriate speeds to adapt to road conditions, either in poor weather, or to approach a sharp bend, however \cite{layton2012} note that often this is not that case, and drivers often do not slow appreciably to account for these conditions. Therefore, the consideration that speed limits should more accurately reflect the conditions of the road. Additionally, stopping sight distances observed by \cite{layton2012} are significantly longer for larger vehicles such as trucks, given the large farm vehicles often present on country roads, speed policy should take this into account.
+
+\begin{table}[t]
+\centering
+\fontsize{9}{10}\selectfont
+\caption{Recommended minimum Stopping Sight Distances at certain speeds \citep{layton2012}}
+\label{tab:ssd}
+\begin{tabular}{lllll}
+\toprule
+\textbf{Speed} &
+\multicolumn{2}{l}{\textbf{Stopping Sight Distance}} &
+\multicolumn{2}{l}{\textbf{Typical Emergency Stopping Distance (m)}} \\ 
+\midrule
+Design Speed &
+Calculated &
+Design &
+Wet Pavement &
+Dry Pavement \\
+(km/h) &
+(2.5$^s$, a=3.4m/s$^2$) &
+(2.5$^s$, a) &
+(1$^s$, f$_{wet}$) &
+(1$^s$, f$_{dry}$) \\
+\midrule
+30 & 31.2 & 35 & 17.1 & 14.2 \\
+40 & 46.2 & 50 & 27.7 & 21.6 \\
+50 & 63.5 & 65 & 42.0 & 30.3 \\
+60 & 83.0 & 85 & 59.6 & 40.3 \\
+70 & 104.9 & 105 & 81.7 & 51.6 \\
+80 & 129.0 & 130 & 106.1 & 64.2 \\
+90 & 155.5 & 160 & 131.2 & 78.1 \\
+100 & 184.2 & 185 & 163.4 & 93.4 \\
+110 & 215.3 & 220 & 200.6 & 110.0 \\
+120 & 248.6 & 250 & 235.7 & 127.9 \\
+ \bottomrule
+\end{tabular}
+\end{table}
+
+Road features extracted may be used to inform the current likely stopping sight distances, combining key features such as the width of roads, which influences the sight line, the max bend angle within a road segment, and the elevation change.
+
+// - height total change refs (larger vehicles etc.)
+// - width (larger vehicles, emergency services)
+// expand this.
+
+<<rd30, fig.cap="Road ID: 30, showing features of a narrow road with sharp bend">>=
+source("../scripts/functions.r")
+roads <- st_read("../data/derived/roads/roads_line.gpkg", quiet = TRUE)
+
+# example road section
+rd_f <- "road_30"
+
+roads <- roads[roads$road_id == rd_f, ]
+
+jpgs <- Sys.glob("../data/aerial/*.jpg")
+jpgs <- lapply(jpgs, brick)
+aerial <- lapply(jpgs, function(x) {
+  return(tryCatch(crop(x, roads), error = function(e) NULL))
+})
+aerial <- aerial %>%
+  compact()
+aerial <- do.call(merge,aerial)
+
+ggRGB(aerial) +
+geom_sf(data = roads, colour = alpha("green",.4), size = 1) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0)) +
+theme_map()
+@
+
+- food and road quality (links social mobility i think \citep{minten1999})
+- \citep{bosona2011} improvements in supply chains through GIS.
+- \citep{farmer2003}: rural healthcare, fewer healthcare professionals in rural communities, mention also the centralisation of hospital services. \citep{velaga2012,mungall2005}. \citep{haynes2000}. Remeber to link social mobility, accessibility, etc. to connections, rural road network etc. If we understand the rural road network, systematically, with a focus on determining features on individual roads, we can better understand the limitations of roads, and the specific connections that lead to lack of accessibility, rather than an aggregation of data.
 
 \section{Implications}
-    Implications: why do the results matter?
 
-Road speeds in more detail, rural social mobility etc etc.
+\subsection{Rural and Urban Divide}
+
+The divide between rural and urban health outcomes has been shown to relate to social mobility and migration of healthier and more socially mobile groups into rural areas, leaving behind less mobile groups, in urban settings \citep{riva2011}. Net movement out of rural areas is particularly influenced primarily by young adults moving to urbanised areas \citep{champion2004} // find recent ref //. While \cite{riva2011} suggest that social mobility is purely the reason for improved health outcomes in rural England, particularly given there is evidence to suggest that urban centralisation of hospital services should have a negative impact on rural health outcomes \citep{haynes2000,farmer2003}, the question remains; what is driving out those with less social mobility, and young adults? Given health outcomes in rural areas are broadly better than those in urban areas, and have been for some time \citep{watt1994a}, why do certain groups select urban areas over rural? 
+
+\subsection{Accessibility and Connectivity in Rural Communities}
+
+\cite{velaga2012} outline the divide in connectivity in rural communities:
+Access to healthcare, education, work, other services such as shopping centres. key issue.
+Accessibility: defined in terms of economic and social oportunity, as poximity or facility for spatial interaction \cite{gutierrez2009}. Alternative to physical mobility includes internet access etc. \cite{kenyon2002,kenyon2003}.
+
+Transport context: Facility or opportunities with which basic services can be reached from a given location by using a certain transport system \citep{guiterrez2009}.
+
+Rural; limited or no connection to public transport; traditionally rural transport based pre4dominantly on road vehicles \cite{dingen2000,gray2001}. lack of tranaport accessibility and connectivity in rural areas strong impact on those with limited access to private motorisd transport, such as children, older people, people with disabilities, \cite{kenyon2002,seu2003,as2011}. Use of transport telematics that encompass a range of advanced computer, ict, navigation and positioning systems and digital technologies in the filed of transport can improve the efficiency and service quality of trnaport systems. \citep{giannopoulos2004,sussman2005,deeter2009}. Real-time bus arrival information at bus stops, intelligent public transport systems, and shared flexible transport management \cite{chowdhury2003,robinson2009,nelson2010,politis2010}. // Note link between these and the requirement for a full understanding of the rural road netork
+
+\cite{velaga2012} Transport technology issues in rural areas: digital tech often used to make mainstream public services such as education healthcare and transport more effective and efficient \cite{boulton2010}. bradband internet access, smart phones pc. Notion of digital divide in gender, age, income, race and location \cite{digitalbritain2009,boulton2010}. // note that this somewhat explains the desire for young adults to move out of rural areas, due to the lack of suitable broadband and the services that come with it. link to roads lol.
+
+advanced tech can significantly influence lifestyles changes, particulrly in rural areas \cite{wilson2008}, lack of public tranaport service availability and efficiency can provide conditions which are hihgly suited to the development of more flexible demand responsive transsort services which are often supported by transport telematics. may develop more readily in social contexts notable for high levels of community involvement and support, e.g. less concern sharing personal info. \cite{mclean2001}.
+
+////
+Strong urban bias in the application of new technologies; particulalry true within the transport industry \cite{malechi2003}. why?  here you go :
+
+1. Service area: Rural transport agencies often serve large areas with long trips. As a results, assisting passengeres needs is not easy and attending immediately to a problem that arises on the road is difficult (e.g. rescheduling trips when an incident occurs.)
+
+2. Service coordination: there are different basic public services e.g. health care and education with overlapping areass of service prosivin. it is challenging to coordinate services and resources among the agencies and other providers.
+
+3. Infrastructure: rural areas suffer a lack of communication infrastructure e.g. wireless communications serivces. realtime communication from and to rural passengers is one of the major issues
+
+4. Fleet size: Although tech can solve severla transportation problems in remote erural areas, it might be dificult to fund and develop at a small scale.
+
+// Note that they don't mention road network quality and understanding, surely this is also a key problem???
+
+
+Flexible integrated transport services \cite{palmer2004}. promising development in rural transport, would require knowledge of roads.
+
+
+
+\citep{riva2011}. Lack of mobility shown to reduce health outcomes for all ages, what causes lack of mobility? Lack of services?
+Young people in rural areas less mobile due to socioeconomic and health reasons. Migration to rural aras in England increasing rural and urban health inequalities, people forced to move to poor urban areas, why? 
+:
+\cite{hodge2004}: Generalising the countryside dangerous, It is dangerous to generalise about the countryside, since different areas face different problems (DETR and MAFF, 2000, p. 10). Underlying problems may all stem from connectivity between rural areas and outside, links with the rural road network.
 
 \section{Limitations}
-    Limitations: what can’t the results tell us?
+    Limitations: what can not the results tell us?
+
+    - \citep{steyvers2000}: note that road delineation lines also affect quality of roads. Method proposed doesn't account for ease of road edge detection through painted lines, quality of road edges etc. see also \citep{dewaard2004,charlton2018,charlton2016}
+    - Drivers beliefs of correct speed limits: \citep{charlton2017}.
 
 \section{Recommendations}
     Recommendations: what practical actions or scientific studies should follow?
 
+- Improvements to road centreline extraction: see other studies.
+
 \section{Urban and Rural Road Classification}
-
-\citep{hatger2005}
-The idea now is to use this information in a more sensitive
-segmentation, trying to extract the true road extents.
-Of course, when there is no C0 (height) or C1 (inclination)
-discontinuity at the road boundaries, there is no way de-
-tecting it using laser scan data, and other data sources such
-as aerial images have to be used. However, the question
-is how reliable even small discontinuities can be detected.
-For example, a road may be bounded by an embankment,
-which usually is a relatively large structure. It may on the
-other hand be separated from the pavement or a traffic is-
-land by a kerb of only 15 cm in height. This seems to
-be hopeless, since it is close to the expected noise of the
-laser measurement. However, if one considers profiles per-
-pendicular to the road, the point is that a 10 m wide road,
-scanned with 1 m density, will yield 10 measurements to
-estimate the road surface (assumed to be planar), leading
-to a standard deviation of about 15 cm /
-10  5 cm.
-
-Assessment strategy: assessing the results of an image processing work flow usually a textual description. but results can't be compared easily. Heipke1997 sugest a comparison between methods numerically, ratios derived from statistical test theory:
-be identiged.
-
-True positive (TP) – A phenomenon that is present within the input data and that has
-successfully been identiged within the output data.
-False positive (FP) – A phenomenon that is not present within the input data but that
-has falsely been found to be a phenomenon by the algorithm. Thus it is
-written to output data.
-False negative (FN) – A phenomenon that is present within the input data but that
-has not been identiged by the algorithm and therefore has been omitted
-from the output data.
-Then we degne Completeness by
-Completeness =
-TP
-.
-TP + FN
-(2.1)
-This is obvious and can directly be taken from degnition of TP and FN.
-Furthermore we degne Correctness by
-Correctness =
-TP
-.
-TP + FP
-(2.2)
-This is easy to see since we expect results not to contain features which are erroneous in
-a way that they contain features which are not present within input data. However, it
-is implied within this statement that we neglect those cases where features are present
-within the input data but are missing in the output. Finally Quality is degned by
-Quality =
-TP
-.
-TP + FP + FN
-(2.3)
-This can be considered as a kind of global measure for overall assessment of obtained
-results. It comprises e ects caused by both false positives and false negatives.
-Some but not all of the algorithms investigated in this paper use an assessment that is
-based on the above mentioned measures. Their results are reproduced where available.
-Otherwise, assessment is done by means of a textual description.
-
 
 // Mention logistic regression, considered but not used as results not better and requries a payoff.

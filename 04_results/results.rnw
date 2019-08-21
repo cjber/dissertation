@@ -5,7 +5,9 @@ time_taken <- read.csv("../scripts/time_taken.csv")
 time_taken <- time_taken$x
 @
 
-As noted in \ref{sec:overview}, computation time is considered an important aspect of this analysis, the total time taken for this analysis, including all data preprocessing, perpendicular sample line extraction, LiDAR sample extraction, constructin of linear models, and reprocessing of road centrelines, road feature extraction, and further analysis is \Sexpr{round(time_taken, 2)} minutes.
+As noted in Section \ref{sec:overview}, computation time is considered an important aspect of this analysis, the total time taken for this analysis, including all data preprocessing, perpendicular sample line extraction, LiDAR sample extraction, construction of linear models, and reprocessing of road centrelines, road feature extraction, and further analysis is \Sexpr{round(time_taken, 2)} minutes.
+
+This chapter sill first outline the results relating to data preprocessing, particularly focusing on LiDAR including both the filtering and sampling techniques employed in this methodology. Following this, road classification through various Linear Probability Models are compared, and selected based on both quantitative and qualitative information. The effects of improving the road centreline locations is also explored in relation to the linear models through the production of the road outcome variable.
 
 // outline this results section here.
 
@@ -26,8 +28,8 @@ hist_i <- ggplot(clean_las, aes(x = Intensity)) +
   theme(
     axis.ticks.y = element_blank(),
     axis.line = element_blank(),
-    axis.text = element_text(size = 9, family="roboto"),
-    axis.title = element_text(size = 10, family="robotosl"),
+    axis.text = element_text(size = 9, family = "roboto"),
+    axis.title = element_text(size = 10, family = "robotosl"),
     axis.text.y = element_blank(),
     legend.title = element_blank(),
     legend.position = "bottom",
@@ -44,8 +46,10 @@ hist_i
 las <- catalog("/home/cjber/drive/uni/envs492/main/data/point")
 roads_buff <- read_sf("/home/cjber/drive/uni/envs492/main/data/derived/roads/roads_buff.gpkg", quiet = TRUE)
 aerial <- raster("/home/cjber/drive/uni/envs492/main/data/derived/aerial/aerial_crop.tif")
-las <- lasclip(las, extent(roads_buff[6, ]))
-aerial <- raster::crop(aerial, extent(roads_buff[6, ]))
+
+rd_f <- "road_6"
+las <- lasclip(las, extent(roads_buff[roads_buff$road_id == rd_f,]))
+aerial <- raster::crop(aerial, extent(roads_buff[roads_buff$road_id == rd_f,]))
 aerial <- aggregate(aerial, fact = 8)
 
 aerial <- as(aerial, "SpatialPixelsDataFrame")
@@ -99,7 +103,7 @@ metrics <- grid_metrics(norm_lp, ~ myMetrics(Z, Intensity), res = 2)
 metrics <- as(metrics, "SpatialPixelsDataFrame")
 metrics <- as.data.frame(metrics)
 colnames(metrics) <- c("zmean", "imean", "x", "y")
-roads <- roads_buff[6, ]
+roads <- roads_buff[roads_buff$road_id == "road_6", ]
 
 chm_gg <- ggplot() +
   geom_raster(data = chm, aes(x = x, y = y, fill = value), alpha = 1) +
@@ -255,8 +259,7 @@ make_table(corResults, # align col 1 left, rest centred
       "† 95% Confidence Interval"
     )
   ) %>%
-  row_spec(c(1, 2, 4, 6, 7), bold = T) %>% 
-  kable_styling(latex_options = "HOLD_position")
+  row_spec(c(1, 2, 4, 6, 7), bold = T)
 @
 
 This first (maximal) model was constructed as;
@@ -322,7 +325,6 @@ centrelines <- st_read("../data/derived/roads/roads_line.gpkg", quiet = TRUE) %>
 sample_lines <- st_read("../data/derived/roads/sample_lines.gpkg", quiet = TRUE)
 
 # example road section
-rd_f <- "road_6"
 
 road_lm <- road_lm[road_lm$road_id == rd_f, ]
 sample_lines <- sample_lines[sample_lines$road_id == rd_f, ]
@@ -489,7 +491,7 @@ gg_cent1 <- ggRGB(aerial) +
 
 <<fig_noisecent, fig.cap = "Comparison between Linear Probability models applied to; (A) OS Road Centrelines, and (B) Derived Centrelines. Green points give classified road locations, red show classified road locations removed through isolation based filtering">>=
 plot_grid(
-ggcent,
+  ggcent,
   gg_cent0,
   gg_cent1,
   labels = "AUTO",
@@ -512,6 +514,7 @@ road_est <- st_read("../data/osroads/roads_estwidth.gpkg", quiet = TRUE) %>%
 # width comparison
 widths <- fread("../data/final_data/final.csv") %>%
   select(-c(
+    len,
     V1,
     mean_angle,
     max_angle,
@@ -520,26 +523,26 @@ widths <- fread("../data/final_data/final.csv") %>%
     range_int,
     tot_pts
   )) %>%
-  merge(road_est, by = c("road_id", "roadFunction"))
+  merge(road_est, by = c("road_id", "roadFunction")) %>%
+  na.omit()
 
-normalise_widths <- function(x) {
-  x <- x / widths$estWidth * 100
-  x <- replace(x, x > 100, 100 - x)
+normalise_widths <- function(x, y) {
+    ifelse(x > y, 100 - ((x/y) * 100 - 100), x/y * 100) 
 }
 
-
-# normalised comparison relative to known
 norm_widths <- widths %>%
-  mutate_at(vars(3:length(widths)), normalise_widths) %>%
-  select(-estWidth)
+    mutate_at(3:ncol(widths), ~normalise_widths(., estWidth)) %>% 
+    select(-estWidth)
 
 norm_means <- widths %>%
-  mutate_at(vars(3:length(widths)), normalise_widths) %>%
+   mutate_at(3:ncol(widths), ~normalise_widths(., estWidth)) %>% 
   summarise_at(vars(1:length(widths)), funs(mean), na.rm = T) %>%
   select(-estWidth)
 
+norm_means$road_id <- "Means:"
+
 norm_widths <- norm_widths %>%
-  arrange(desc(lmi_mean), desc(lm1_mean), desc(lm2_mean), desc(lm0_mean)) %>%
+  arrange(desc(lmi_mean), desc(lm2_mean), desc(lm1_mean), desc(lm0_mean)) %>%
   rbind(norm_means)
 
 norm_widths$road_id <- gsub("road_", "", norm_widths$road_id)
@@ -557,8 +560,7 @@ make_table(norm_widths,
   )
 ) %>%
   row_spec(nrow(norm_widths), bold = T) %>%
-  row_spec(nrow(norm_widths) - 1, hline_after = T) %>%
-  kable_styling(latex_options = "HOLD_position")
+  row_spec(nrow(norm_widths) - 1, hline_after = T)
 @
 
 Table \ref{tab:est_widths} gives a normalised comparison between each linear model, and its associated estimated road width. Normalisation was achieved through finding the relative difference in width as a percentage;
@@ -577,23 +579,7 @@ where $\mathbf{W}_{n}$ is the normalised width, $\mathbf{W}$ is the average widt
 \end{aligned}
 \]
 
-given $\mathbf{W}_{n} > 100$. Table \ref{tab:est_widths} gives insight into the effectiveness of various linear probability models for each road, and road type. While average values all give relative accuracy in the region of 70\%, it appears likely that without adjusting the road centrelines, model probabilities are reduced given \textbf{LM 0} gives the lowest average accuracy in relation to the other three models using improved centrelines for outcome variable creation. Unexpectadly, the roads with the highest accuracy are Minor Roads, rather than B roads. For certain roads, the accuracy of the derived centrelines appear to vastly reduce model accuracy, (For example Road 36; Table \ref{tab:est_widths}).
-
-<<>>=
-# widths and other variables
-# choose most accurate width
-norm_means <- norm_means[3:length(norm_means)] %>%
-  t() %>%
-  as.data.frame() %>%
-  rownames_to_column()
-
-names(norm_means) <- c("Model", "Accuracy")
-norm_means$Model <- c("LM I", "LM 1", "LM 2", "LM 0")
-@
-
-<<test_tab>>=
-make_table(norm_means, 2, cap = "testing")
-@
+given $\mathbf{W}_{n} > 100$. Table \ref{tab:est_widths} gives insight into the effectiveness of various linear probability models for each road, and road type. While average values all give relative accuracy in the region of 70\%, it appears likely that without adjusting the road centrelines, model probabilities are reduced given \textbf{LM 0} gives the lowest average accuracy in relation to the other three models using improved centrelines for outcome variable creation. Unexpectedly, the roads with the highest accuracy are Minor Roads, rather than B roads. For certain roads, the accuracy of the derived centrelines appear to vastly reduce model accuracy, (For example Road 36; Table \ref{tab:est_widths}).
 
 \section{Road Assessment}
 <<final_data, results = 'asis'>>=
@@ -611,14 +597,14 @@ final_data <- fread("../data/final_data/final.csv") %>%
 
 final_data <- final_data %>%
   arrange(as.numeric(road_id)) %>%
-  mutate(max_angle = replace_na(max_angle, 0)) %>% 
-  merge(road, by = c("road_id", "roadFunction")) %>% 
+  mutate(max_angle = replace_na(max_angle, 0)) %>%
+  merge(road, by = c("road_id", "roadFunction")) %>%
   mutate(length = as.numeric(st_length(geom)))
 
 final_data$road_id <- gsub("road_", "", final_data$road_id)
 
-summary_data <- final_data %>% 
-    select(-c(geom, length, tot_pts))
+summary_data <- final_data %>%
+  select(-c(geom, length, tot_pts, len.x, len.y))
 @
 <<>>=
 cor_tab <- rcorr(as.matrix(summary_data[, 3:length(summary_data)]), type = "spearman")
@@ -649,7 +635,6 @@ cor_tab <- cbind(Variable, cor_tab)
 <<cor_table, results = 'asis'>>=
 # function to convert significance figures into p asterisks
 make_table(cor_tab, dig = 2, cap = "Correlation Matrix") %>%
-  kable_styling(latex_options = "HOLD_position") %>%
   # footnote for significance
   footnote(
     general_title = " ",
@@ -661,13 +646,12 @@ make_table(cor_tab, dig = 2, cap = "Correlation Matrix") %>%
   )
 @
 
-
 \section{Analysis of Road Features}
 
-
 <<final>>=
-final_norm <- final_data %>% 
-select(-geom)
+final_norm <- final_data %>%
+  select(-c(geom, len.x, len.y)) %>% 
+  na.omit()
 final_norm$reliability <- final_norm$tot_pts / final_norm$length
 
 range_norm <- function(x) {
@@ -676,22 +660,22 @@ range_norm <- function(x) {
 
 # normalised comparison relative to known
 final_norm[, 3:6] <- final_norm[, 3:6] %>%
-    mutate_if(is.character, as.numeric) %>% 
+  mutate_if(is.character, as.numeric) %>%
   mutate(lm2_mean = 1 / lm2_mean) %>%
   lapply(range_norm) %>%
   as.data.frame()
 
 final_norm <- final_norm %>%
   mutate(qual_index = select(., max_angle:lm2_mean) %>% rowSums()) %>%
-  mutate(qual_index = 1 - qual_index) %>% 
-  arrange(desc(qual_index)) %>% 
+  mutate(qual_index = 1 - qual_index) %>%
+  arrange(desc(qual_index)) %>%
   select(-c(length, tot_pts))
 
-qual_index <- final_norm %>% 
-    select(road_id, reliability, qual_index)
+qual_index <- final_norm %>%
+  select(road_id, reliability, qual_index)
 
-summary_data <- merge(summary_data, qual_index, by = "road_id") %>% 
-    arrange(desc(qual_index))
+summary_data <- merge(summary_data, qual_index, by = "road_id") %>%
+  arrange(desc(qual_index))
 @
 
 <<final_table>>=
@@ -706,7 +690,37 @@ make_table(summary_data,
     "Width \\textbf{(LM 2)}",
     "Reliability $(\\mathbf{P}_{n} / \\mathbf{L}$)",
     "RQI"
-  ),
-  table_env = "table*"
+  )
+)
+@
+
+\subsection{Further Analysis}
+
+<<>>=
+roads <- st_read("../data/derived/roads/roads_line.gpkg", quiet = TRUE) %>%
+  mutate(len = as.numeric(st_length(geom))) %>%
+  st_cast("POINT") %>%
+  group_by(road_id) %>%
+  summarise(
+    num_bend = n() - 1,
+    len = mean(len) / 1000,
+    roadFunction = unique(roadFunction)
+  )
+
+rd_bends <- roads %>%
+  mutate(bend_km = num_bend / len) %>%
+  st_drop_geometry() %>%
+  select(-roadFunction) %>%
+  arrange(desc(bend_km))
+
+rd_bends$road_id <- gsub("road_", "", rd_bends$road_id)
+make_table(rd_bends,
+  cap = "Bends per km",
+  col_names = c(
+    "Road ID",
+    "Number of Bends",
+    "Road Length",
+    "Bends per km"
+  )
 )
 @

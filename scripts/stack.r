@@ -122,3 +122,22 @@ for (n in nodelines) {
     }
 }
 
+
+##### replace
+library(tidyverse)
+road_id <- c("road_1", "road_2", "road_3", "road_4")
+roadFunction <- c("B", "B")
+lm1_mean <- c(2,3,4,7)
+lm2_mean <- c(5,9,3,2)
+lm_estimate <- c(5,5,5,5)
+widths <- data.frame(road_id, roadFunction, lm1_mean, lm2_mean, lm_estimate)
+
+normalise_widths <- function(x, e) {
+  x <- x / e * 100
+  x <- replace(x, x > 100, (100 - (x - 100)))
+}
+
+
+# normalised comparison relative to known
+norm_widths <- widths %>%
+  mutate_at(vars(3:length(widths)), normalise_widths, e = widths$lm_estimate)

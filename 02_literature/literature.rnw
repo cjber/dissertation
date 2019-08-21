@@ -1,16 +1,15 @@
-    \lettrine{T}{ypical} road extraction techniques have focused purely on urban road networks and involved methods which can be both computationally intensive and time consuming. Given the pressure for full quantitative assessments of the current speed limits in the rural network in the United Kingdom, there is a demand to produce comprehensive methods for rural road feature extraction. This paper primarily focuses on techniques for assessing the road geometry for roads considered to be rural connecting roads in the United Kingdom. This literature review will first outline the current understanding of the rural road network, considering the role of speed and speed limits in accident likelihood, rural accessibility, and a detailed look at current road extraction techniques involving aerial imagery and LiDAR, presenting the key differences and limitations of these studies when considering the rural road network in the UK.
-
+    \lettrine{T}{ypical} road classification techniques have focused purely on urban road networks and involved methods which can be both computationally intensive and time consuming. Given the pressure for a full quantitative assessment of the current speed limits in the rural network in the United Kingdom, there is a demand to produce comprehensive methods for rural road feature extraction. This paper primarily focuses on techniques for assessing the road geometry for roads considered to be rural connecting roads in the United Kingdom. This literature review will first outline the current understanding of the rural road network, considering the role of speed and speed limits in accident likelihood, rural accessibility, and a detailed look at current road extraction techniques involving aerial imagery and LiDAR, presenting the key differences and limitations of these studies when considering the rural road network in the UK.
 
 \section{British Rural Road Network}
 
-\cite{taylor2002} conducted a comprehensive study outlining the key features of British rural roads, in an effort to improve the characterstics associated with accident rates, above that which was explored by the MASTER study which primarily consisted of European road data, with limited data for England \citep{baruya1998}. \cite{taylor2002} identify key features of 174 selected rural british roads across England which they use to classify roads into certain categories, this data was obtained through drive through video recordings.
+\cite{taylor2002} conducted a comprehensive study outlining the key features of British rural roads, in an effort to improve the characterstics associated with accident rates, beyond the past \textit{Speed-accident relationship on European Roads} (MASTER) study which primarily consisted of European road data, with limited data for England \citep{baruya1998}. \cite{taylor2002} identify key features of 174 selected rural british roads across England which they use to classify roads into certain categories, this data was obtained through drive through video recordings.
 
 
-Notably, the features unique to rural roads were observed to be the land use either side of a road, consisting mainly of residential, farming, wooded, open or industrial. Verges consisting of grass verges, pavement, low banks, ditches or none. Roadside type included the most dominant vertical feature closest to the road, including trees which may overhang the road, hedges, banks, fences and so on. This study also manually measured the road width for each site, and to determine the "hilliness" of roads, the number of 10m contour lines crossed were counted to give the total change in height.
+Notably, the features unique to rural roads were observed to be the land use either side of a road, consisting mainly of residential, farming, wooded, open or industrial. Verges consisting of grass verges, pavement, low banks, ditches or none. Roadside type including the most dominant vertical feature closest to the road, including trees which may overhang the road, hedges, banks, fences and so on. This study also manually measured the road width for each site, and to determine the "hilliness" of roads, the number of 10m contour lines crossed were counted to give the total change in height.
 
 \begin{table}[t]
     \centering
-\fontsize{8}{10}\selectfont
+\fontsize{9}{10}\selectfont
 \caption{Features Identified as Important to Rural road Analysis}
 \begin{tabular}{ll}
 \toprule
@@ -22,7 +21,7 @@ Continuous data & \begin{tabular}[c]{@{}l@{}}Visibility \\ Verge width and type 
 \end{tabular}
 \end{table}
 
-\cite{taylor2002} found that the average width of British rural roads varied from 2m to 10.2m with a mean width or 6.5m. Most were two lane roads, however a small number were single track. The mean length of roads was 3km, around half the sites had more than 3 bends per km with 1 third showing 1 severe bend per km. Most roads were flat, showing less than a 10m rise per km.
+\cite{taylor2002} found that the average width of British rural roads varied from 2m to 10.2m with a mean width of 6.5m. Most were two lane roads, however a small number were single track. The mean length of roads was 3km, around half the sites had more than 3 bends per km with 1 third showing 1 severe bend per km. Most roads were flat, showing less than a 10m rise per km.
 
 Road quality in this assessment was determined through categorising roads into four key groups:
 
@@ -36,10 +35,10 @@ Road quality in this assessment was determined through categorising roads into f
     \item \textbf{Group 4:} Roads with a low density of bends, junctions and accesses and a high traffic speed. \textit{These are high quality roads.}
 \end{itemize}
 
-This study therefore attempted to outline a rural road hierarchy in relation to road function, and certain road geometries, which addresses issues outlined in the Government's review of speed policy \citep{departmentoftheenvironmenttransportandthe2000}. However, due to the nature of the data collection for this study, time constraints mean that producing a full road hierarchy for all rural roads within England is impractical and requires a review of the methodology. Additionally the speed policy review notes that road hierarchies should inform appropriate speeds for each road.
+This study therefore attempted to outline a rural road hierarchy in relation to road function, and certain road geometries, which addresses issues outlined in the Government's review of speed policy \citep{transportandthedepartmentoftheenvironment2000}. However, due to the nature of the data collection for this study, time constraints mean that producing a full road hierarchy for all rural roads within England is impractical and requires a review of the methodology. Additionally the speed policy review notes that road hierarchies should inform appropriate speeds for each road.
 
 
-See \citep{taylor2000}
+// See \citep{taylor2000}
 
 \subsection{Rural Speed Limits}
 
@@ -124,6 +123,8 @@ Vegetation in particular exhibits multiple returns, whereas most man made surfac
 
 \section{Road Classification}
 
+// For additional information look at \cite{hatger2005}..
+
 In comparison the extraction of vegetation and buildings from LiDAR, the extraction of roads poses far more of a challenge, due to there being less prominent height differences \citep{vosselman2009a}. Road classification is essentially a data clustering method to categorise data into road and non-road points, enabled through discovering patterns and relationship between variables and validation of findings \citep{saeedi2009} Clustering may be achieved through various algorithms, categorised generally into partitioning methods, hierarchical methods, density-based methods, grid-based methods, and model-based methods \citep{saeedi2009}. \cite{yadav2018} note that the periodic assessment of roads is greatly important due to the increasing traffic load, and new automated techniques will enable this in areas where in the past it had not been feasible. Due to the heterogeneous nature of certain roads types, the road environment is often complex, meaning collection and accurate processing of road features is challenging \citep{yadav2018}. 
 
 Road classification methodologies have historically used purely aerial imagery, providing only road pixels and 2D location information \citep{yadav2018}. \cite{ferchichi2005} used high resolution satellite imagery for road centreline extraction from a suburban area based on cluster coverage. They used image segmentation through maximum likelihood to assign pixels to road and non-road classes, making the assumption that both classes gave a Gaussian distribution. Features for classification include the angular second-movement, contrast, and entropy of the image, based off image texture analysis by \cite{dubes1992}. Results of the classification gave significant noise, noted as a possibility due to non conformance with a Gaussian distribution, however, centreline extraction from the resultant classification removed any pixels with low density and ran a $K$-means clustering algorithm iteratively to determine road clusters. \cite{wan2007} produced an automated method for mapping urban and suburban roads using high resolution satellite imagery, using spectral, context, shape and the structural features or roads. Using fuzzy segmentation, classification of buildings, parking areas, and road clusters were obtained, but with large levels of noise. Angular texture analysis was able to reduce this noise, however large areas of incorrectly classified roads appear present results. Additionally, while not mentioned in this study, the method proposed fails to address the differentiation between road and pavement, a key issue with the use of 2D imagery.
@@ -144,7 +145,7 @@ Many subsequent methods for road classification from LiDAR follow similar patter
 
 // Vosselman2009, developed a method for detecting kerbstones from airborne LiDAR data, based on the detection of small height jumps caused byt he kerbstones in the LiDAR point cloud data. Cars parked occluded kerbstones. \cite{vosselman2009a} used low flying airborne LiDAR point cloud data with a very high density of 10-20m$^2$
 
-\subsection{Supervised Methods}
+\subsection{Supervised Methods}\label{subsec:supervised}
 
 Few supervised methodologies exist for LiDAR road extraction, \cite{guan2013} used both aerial imagary and LiDAR data in combination with a training dataset to classify urban roads. The training dataset took gave human labelled features, and used to train a maximum likelihood classification model. \cite{matkan2014} extracted roads from LiDAR using a Support-vector Machine (SVM) classification. Again, training samples enabled classification into roads, trees, buildings, grassland and cement. Accuracy was determined through testing on three known road datasets, giving 63\% to 66\% accuracy. \cite{ferraz2016} used supervised random forest classification to detect large-scale forest roads using LiDAR. They note particularly that given the scale of these roads, the efficiency of road extraction is most important, managing to achieve 80\% accuracy with individual roads processed at 2 minutes per kilometer. Despite being forest roads however, the canopy was often not obscuring roads due to their reasonably wide surface, and as such this method produced inaccuracies in areas where the canopy was dense and covering the detected road. \cite{charaniya2004} trained a mixture of Gaussian models using key features of both LiDAR and aerial imagery data. They found that for classification of buildings and roads, the key features of LiDAR that enable extraction were the height, intensity, and the number of returns, in addition to luminescance information obtained from the aerial imagery. Results gave an accuracy of 66\%-84\%.
 
@@ -167,6 +168,6 @@ Finally, outlining the key features that may be considered when determining road
     \item \textbf{Blind corners/winding roads:} Blind corners increase the risk of accidents, and higher speeds mean stopping distances are often above the distance visible around rural road corners in the UK. Blind corners are particularly an issue due to the tall hedgerows that often bank rural roads  \citep{aarts2006,wu2013}
 \end{itemize}
 
-Computation time is considered in this study to be a core concept for consideration, noted in \citep{zhang2016} as a key limitation of particular classification techniques, that is often not taken into consideration. The data processing and analysis throughout this paper considers optimisation of code to be of particular interest, and aims to produce results that match more complex methods, but taking a more simplistic, and less computaitonally intensive methodology.
+Computation time is considered in this study to be a core concept for consideration, noted in \citep{zhang2016} as a key limitation of particular classification techniques, that is often not taken into consideration. The data processing and analysis throughout this paper considers optimisation of code to be of particular interest, and aims to produce results that match more complex methods, but taking a more simplistic, and less computationally intensive methodology.
 
 // add more to outline the paper here.

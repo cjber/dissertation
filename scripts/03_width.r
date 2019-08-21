@@ -5,7 +5,7 @@ road_lm <- fread("../data/derived/model_data/linearmodels.csv") %>%
     st_as_sf(coords = c("X", "Y"), crs = 27700)
 
 roads <- st_read("../data/derived/roads/roads_line.gpkg")
-roads_5m <- st_read("../data/derived/roads/roads_line.gpkg") %>% 
+roads_5m <- st_read("../data/derived/roads/roads_line.gpkg") %>%
     st_buffer(5)
 
 road_lm90 <- road_lm[road_lm$lm1_dum90 == 1, ]
@@ -83,6 +83,11 @@ las_rds <- las_rds[las_rds$NumberOfReturns == 1 &
 rds <- st_read("../data/derived/roads/roads.gpkg") %>%
     st_transform(27700)
 
+rd_line <- st_read("../data/derived/roads/roads_line.gpkg", quiet = TRUE) %>% 
+    mutate(len = as.numeric(st_length(geom))) %>% 
+    select(c(road_id, len)) %>% 
+    st_drop_geometry()
+
 roads_df <- rds %>% st_drop_geometry()
 
 las_rds <- las_rds %>%
@@ -119,10 +124,13 @@ las_height <- do.call(rbind, las_height)
 las_height <- as.data.frame(las_height)
 
 names(las_height) <- c("road_id", "Z")
+las_height <- las_height %>% 
+    merge(rd_line, by = "road_id")
+
 las_height <- las_height %>%
     group_by(road_id) %>%
     summarise(
-        tot_z = sum(as.numeric(unfactor(Z))),
+        tot_z = sum(as.numeric(unfactor(Z))) / (mean(len)/1000),
     ) %>%
     drop_na()
 

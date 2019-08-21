@@ -2,7 +2,7 @@
 
     All code is hosted on my personal \href{https://github.com/cjber/}{GitHub account}. Also hosted are my complete dotfiles, used in conjunction with the Linux distribution Manjaro, with the i3 window manager. All writing and code was produced using \href{https://neovim.io}{\texttt{neovim}} with my personal configuration to implement integrated development environment (IDE) style features for writing R code, while also providing essential features for writing in \LaTeX{}. \texttt{neovim} has the benefit of being both highly customisable, and lightweight, which allows for much lower system utilisation compared with R Studio when working with large datasets. One essential \texttt{vim} package to mention is the \href{https://github.com/jalvesaq/Nvim-R}{Nvim-R} vim package.
 
-    Given in Appendix \ref{a:code} are the code snippets utilised in this methodology, for many equations, the relevent code is given as a reference to the appendix location.
+    Given in Appendix \ref{a:code} are the code snippets utilised in this methodology, for many equations, the relevant code is given as a reference to the appendix location.
 
 \section{Data}
 \label{sec:data}
@@ -88,7 +88,7 @@ With the classification of ground points, (given $Classification = 2$), a full D
 
 \subsection{Points Extent}
 
-With the normalised last pulse point cloud, the point cloud was clipped to within a 30m extent of each known road location, using the OS road shapefiles. Selecting a 30m extent ensured that even with slight inaccuracy in road location, the road LiDAR points would likely not be excluded. A large number of unimportant points were therefore removed, saving on computational resources. Additionally this extent ensured that both road and non road points were included, but reduced the chance of false positives from occuring as fewer non road points were now included in the analysis.
+With the normalised last pulse point cloud, the point cloud was clipped to within a 30m extent of each known road location, using the OS road shapefiles. Selecting a 30m extent ensured that even with slight inaccuracy in road location, the road LiDAR points would likely not be excluded. A large number of unimportant points were therefore removed, saving on computational resources. Additionally this extent ensured that both road and non road points were included, but reduced the chance of false positives from occurring as fewer non road points were now included in the analysis.
 
 \subsection{Noise Filtering}\label{subsec:noise}
 
@@ -128,9 +128,8 @@ And each 500$m^2$ area collectively represents the overall processed point cloud
 \section{Road Analysis}
 \label{sec:road-extraction}
 
-This section combines data extracted through the OS road shapefiles preprocessed LiDAR data, and aerial imagery to obtain a set of creteria to assess the chosen road network. These criteria are;
+This section combines data extracted through the OS road shapefiles preprocessed LiDAR data, and aerial imagery to obtain a set of criteria to assess the chosen road network. These criteria are;
 
-// Class differences, all singlecarriageway roads, therefore likely 60mph. Removed private roads. A roads + B roads + unclassified. Many unnamed roads, only identification possible through \texttt{identifier}, which splits roads by junctions.
 
 \begin{itemize}
 \itemsep0em
@@ -140,6 +139,8 @@ This section combines data extracted through the OS road shapefiles preprocessed
     \item Surface Quality
 \end{itemize}
 
+// Class differences, all single carriageway roads, therefore likely 60mph. Removed private roads. A roads + B roads + unclassified. Many unnamed roads, only identification possible through \texttt{identifier}, which splits roads by junctions.
+// filtered out roads below 50m, (generally partial roads cutoff by selection of 1km area)
 
 <<>>=
 roads_info <- fread("/home/cjber/drive/uni/envs492/main/data/osroads/roads_info.csv") %>% 
@@ -162,7 +163,7 @@ make_table(tmp, cap = "OS Roads Data Summary",
 
 \subsection{Road Sampling}
 
-The LiDAR point cloud data was sampled at regular 10 meter intervals for each road, perpendicular to the road direction, ensuring that when road directin changed, the sampling locations remained perpendicular. Each road was first split into nodes at which road direction changes, and from this, points at 10 meter intervals between two connected nodes were calculated;
+The LiDAR point cloud data was sampled at regular 10 meter intervals for each road, perpendicular to the road direction, ensuring that when road direction changed, the sampling locations remained perpendicular. Each road was first split into nodes at which road direction changes, and from this, points at 10 meter intervals between two connected nodes were calculated;
 $$
 p_k = p_1 + |p_2 - p_1| \times I_k
 $$
@@ -264,9 +265,19 @@ $\mathbf{S}$ now gave of a collection of predicted road points for each sample l
 \label{fig:sample_points}
 \end{figure}
 
-To determine the width of the road section, according to the final two selected points at every node, pythagoras could be used to find the opposite line length, perpendicular to the road segement, considering the distance between the two points to be the hypoenuse of a right angled triangle (\ref{fig:sample_points}). The averge width for each road identifier was then found.
+To determine the width of the road section, according to the final two selected points at every node, Pythagoras could be used to find the opposite line length, perpendicular to the road segment, considering the distance between the two points to be the hypotenuse of a right angled triangle (\ref{fig:sample_points}). The average width for each road identifier was then found.
 
 $|K_1K_2| = Hypotenuse$, $O_K = Opposite$, therefore $O_K = |K_1K_2| \times cos(\theta_K)$
+
+\subsection{Improved Road Centrelines}
+
+During the analysis of the linear models, it was noted that road centrelines were often inaccurate, giving road outcome values that were not representative of the road surface. In an attempt to adjust for this, road centrelines were adjusted based on the centre location of road points in each sample classified through an initial linear probability model. To find the mid point between two points $\left(x_{1}, y_{1}\right)$ and $\left(x_{2}, y_{2}\right)$ can be expressed as;
+
+$$
+\left(\frac{x_{1}+x_{2}}{2}, \frac{y_{1}+y_{2}}{2}\right)
+$$
+
+With the mid point of each classified road sample, these were than joined for form new centrelines, and a further linear probability model was ran and compared, to determine the effectiveness of this technique.
 
 \section{Road Angles}
 
@@ -362,7 +373,7 @@ The elevation change between two road node points was calculated by first select
 
 \subsection{Surface Quality}
 
-Surface quality was assessed roughly through the range in intensity values found in each known road point, and the average number of returns for a road for sample lines not obtructed by canopy, indicated by single returns.
+Surface quality was assessed roughly through the range in intensity values found in each known road point, and the average number of returns for a road for sample lines not obstructed by canopy, indicated by single returns.
 
 \subsection{Estimate of True Widths}
 

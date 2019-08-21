@@ -41,7 +41,10 @@ fwrite(las, "../data/point/points.csv")
 #    mutate(road_id = paste0("road_", row_number()))
 
 # st_write(roads, "../data/osroads/oproad_crop.gpkg")
-roads <- st_read("../data/osroads/oproad_crop.gpkg")
+roads <- st_read("../data/osroads/oproad_crop.gpkg") %>% 
+    mutate(len = as.numeric(st_length(geom)),
+           road_id = as.character(road_id)) %>% 
+    subset(len > 50)
 
 # keep line polys
 roads_line <- roads
