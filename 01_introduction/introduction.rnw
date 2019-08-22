@@ -55,17 +55,15 @@ The main features unique to LiDAR, as opposed to similar aerial data collection 
     \item \textit{Elevation:} In addition to $x$ and $y$ coordinates, the distance between the plane and the reflected ground or object is recorded and assigned a $z$ value.
 \end{itemize}
 
-// what will LiDAR be used for in this paper
-
 \subsection{Benefits over Aerial Imagery}
 
 Rural roads in the UK are often characterised by dense hedgerows either side, often containing large oak trees which extend over the road surface. In addition to the reduction in corner visibility on these roads, standard aerial imagery suffers from the road surface being obscured by shadows from these trees and hedgerows, and the tree canopy itself. Aerial imagery also often suffers from obstruction due to clouds \citep{li2016}. Due to the inclusion of pulses with modern LiDAR data, the road surface can often be detected through the canopy by selecting the final pulse returns, additionally the infrared laser pulses have smaller shadows, due to the narrow scanning angle of LiDAR \citep{wang2009}. Non LiDAR imagery often suffers from scene complexity, where road patterns, vehicles and lane markings reduce road heterogeneity \citep{li2016}.
 
-The 3D $z$ value information provided by LiDAR data allows for the separation of ground and objects on the surface, meaning roads and buildings are often easily separated, despite having similar reflectance [also known as intensity;][]\citep{sampath2008}. Additionally, the reflectance of roads is often homogeneous, and distinctly separate from vegetation \citep{clode2004}.
+The 3D $z$ value information provided by LiDAR data allows for the separation of ground and objects on the surface, meaning roads and buildings are often easily separated, despite having similar reflectance \citep[also known as intensity;][]{sampath2008}. Additionally, the reflectance of roads is often homogeneous, and distinctly separate from vegetation \citep{clode2004}.
 
 \subsection{Limitations}
 
-LiDAR lacks any texture or spectral information, and often studies in road classification have combined LiDAR with aerial imagery to alleviate this issue \citep{hu2004,zhu2004}, with the inclusion of luminescence information to aid with road classification \citep[e.g.][]{charaniya2004}. LiDAR points are distributed irregularly and with varying density, with point density often higher where flight strips overlap \citep{li2016}, and tall objects can occlude points, leaving more limited data surrounding trees or buildings.
+LiDAR lacks any texture or spectral information, and often studies in road classification have combined LiDAR with aerial imagery to alleviate this issue \citep{hui2004,zhang2003}, with the inclusion of luminescence information to aid with road classification \citep[e.g.][]{charaniya2004}. LiDAR points are distributed irregularly and with varying density, with point density often higher where flight strips overlap \citep{li2016}, and tall objects can occlude points, leaving more limited data surrounding trees or buildings.
 
 Often road classification methodologies use LiDAR height data to identify kerbs to separate streets from pavement \citep{kumar2013,vosselman2009a}, however rural roads often have no kerb, and are at the same level as the surrounding vegetation if they are managed grass verges \citep{yadav2018}.
 
@@ -114,8 +112,4 @@ Key Aims:
 
 The site selected in this study was chosen to include a selection of B, and Unclassified local roads within a rural setting. Particularly the roads chosen are often partially obscured by tree canopies and do not have visible kerbs, both key features in rural British roads.
 
-This paper is organised into chapters, first a literature review, outlining the broad implications of speed limits, rural road networks, and object extraction particuarly in relation to LiDAR aerial point clouds. Second, a detailed description of the methodology involved in this paper will outline the techniques used to classify road widths, in addition to the other road geometric information. A results section will primarily assess the method for road extraction, through sensitivity analysis and some qualitative observations, a short section will then explore the findings. Finally a discussion will detail the implications of the findings, and suggest areas for methdological improvement.
-
-// improve this, why am i doing this, e.g. production of method will aid speed limits, emergency response etc.
-
-// Include more infrastructure to support the over-arching narrative argument. E.g. The intro. should include a brief overview of the argument (sections) to come [signposting], and there should be more linking sentences between sections to help the reader understand both that the focus is being changed and why.
+This paper is organised into chapters, first a literature review, outlining the broad implications of speed limits, rural road networks, and object extraction particularly in relation to LiDAR aerial point clouds. Second, a detailed description of the methodology involved in this paper will outline the techniques used to classify road widths, in addition to the other road geometric information. A results section will primarily assess the method for road extraction, through sensitivity analysis and some qualitative observations, a short section will then explore the findings. Finally a discussion will detail the implications of the findings, and suggest areas for methodological improvement. 

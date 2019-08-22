@@ -1,0 +1,104 @@
+
+\section{Session Information}
+<<session>>=
+## Return the machine CPU
+cat("Machine:     "); print(get_cpu()$model_name)
+
+## Return number of true cores
+cat("Num cores:   "); print(detectCores(logical = FALSE))
+
+## Return number of threads
+cat("Num threads: "); print(detectCores(logical = TRUE))
+
+## Return the machine RAM
+cat("RAM:         "); print (get_ram()); cat("\n")
+
+x <- sessionInfo()
+x$loadedOnly <- NULL
+print(x, locale = F)
+@
+\newpage
+
+\section{Functions}
+
+\subsection{Formatting} \label{code:make_table}
+<<make_table, echo = TRUE, eval = FALSE>>=
+@
+\subsection{Catalog to Dataframe} \label{code:ctg_to_df}
+<<ctg_to_df, echo = TRUE, eval = FALSE>>=
+@
+
+\subsection{Clip Samples} \label{code:clip_samples}
+<<clip_samples, echo = TRUE, eval = FALSE>>=
+@
+\subsection{Filter LAS Noise} \label{code:las_filter_noise}
+<<las_filter_noise, echo = TRUE, eval = FALSE>>=
+@
+\subsection{LiDAR Clean} \label{code:lidr_clean}
+<<lidr_clean, echo = TRUE, eval = FALSE>>=
+@
+
+
+\subsection{Extract Buffer} \label{code:extract_buff}
+<<extract_buff, echo = TRUE, eval = FALSE>>=
+@
+
+\subsection{Find Distances} \label{code:find_dists}
+<<find_dists, echo = TRUE, eval = FALSE>>=
+@
+
+\subsection{Euclidean Distance} \label{code:euc}
+<<euc, eval = FALSE, echo = TRUE>>=
+@
+
+\subsection{Perpendicular Sampling} \label{code:perp}
+<<perp, eval = FALSE, echo = TRUE>>=
+@
+
+\subsection{Combine Catalog} \label{code:comb_ctg}
+<<comb_ctg, eval = FALSE, echo = TRUE>>=
+@
+
+\subsection{Compute Samples} \label{code:compute_samples}
+<<compute_samples, eval = FALSE, echo = TRUE>>=
+@
+
+\subsection{Greyscale} \label{code:greyscale}
+<<greyscale, eval = FALSE, echo = TRUE>>=
+@
+
+\subsection{Compute Individual Linear Model} \label{code:lm_compute}
+<<lm_compute, eval = FALSE, echo = TRUE>>=
+@
+
+\subsection{Filter Returns}
+<<filter_returns, eval = FALSE, echo = TRUE>>=
+@
+
+\subsection{Filter Samples}
+<<filter_samples, eval = FALSE, echo = TRUE>>=
+@
+
+\subsection{Max Dist}
+<<max_dist, eval = FALSE, echo = TRUE>>=
+@
+
+\subsection{Max Lines}
+<<max_lines, eval = FALSE, echo = TRUE>>=
+@
+
+\subsection{Model Comparison}
+<<model_comparison, eval= FALSE, echo = TRUE>>=
+@
+
+\subsection{Opposite Length}
+<<opposite_length, eval = FALSE, echo = TRUE>>=
+@
+
+\subsection{Road Angles}
+<<road_angles, eval = FALSE, echo = TRUE>>=
+@
+
+\subsection{Height Change}
+<<height_change, eval = FALSE, echo = TRUE>>=
+@

@@ -2,12 +2,12 @@
 
 \section{British Rural Road Network}
 
-\cite{taylor2002} conducted a comprehensive study outlining the key features of British rural roads, in an effort to improve the characterstics associated with accident rates, beyond the past \textit{Speed-accident relationship on European Roads} (MASTER) study which primarily consisted of European road data, with limited data for England \citep{baruya1998}. \cite{taylor2002} identify key features of 174 selected rural british roads across England which they use to classify roads into certain categories, this data was obtained through drive through video recordings.
+\cite{taylor2002} conducted a comprehensive study outlining the key features of British rural roads, in an effort to improve the characteristics associated with accident rates, beyond the past \textit{Speed-accident relationship on European Roads} (MASTER) study which primarily consisted of European road data, with limited data for England \citep{baruya1998}. \cite{taylor2002} identify key features of 174 selected rural British roads across England which they use to classify roads into certain categories, this data was obtained through drive through video recordings.
 
 
 Notably, the features unique to rural roads were observed to be the land use either side of a road, consisting mainly of residential, farming, wooded, open or industrial. Verges consisting of grass verges, pavement, low banks, ditches or none. Roadside type including the most dominant vertical feature closest to the road, including trees which may overhang the road, hedges, banks, fences and so on. This study also manually measured the road width for each site, and to determine the "hilliness" of roads, the number of 10m contour lines crossed were counted to give the total change in height.
 
-\begin{table}[t]
+\begin{table}[htbp]
     \centering
 \fontsize{9}{10}\selectfont
 \caption{Features Identified as Important to Rural road Analysis}
@@ -36,9 +36,6 @@ Road quality in this assessment was determined through categorising roads into f
 \end{itemize}
 
 This study therefore attempted to outline a rural road hierarchy in relation to road function, and certain road geometries, which addresses issues outlined in the Government's review of speed policy \citep{transportandthedepartmentoftheenvironment2000}. However, due to the nature of the data collection for this study, time constraints mean that producing a full road hierarchy for all rural roads within England is impractical and requires a review of the methodology. Additionally the speed policy review notes that road hierarchies should inform appropriate speeds for each road.
-
-
-// See \citep{taylor2000}
 
 \subsection{Rural Speed Limits}
 
@@ -163,11 +160,9 @@ Many recent road extraction techniques have relied on kerb extraction or the det
 Finally, outlining the key features that may be considered when determining road quality will help to inform the methodology for road feature extraction in this study. These are:
 
 \begin{itemize}
-    \item \textbf{Width:} Narrower roads are associated with an increased number of accidents in many studies of rural roads \citep{taylor2002,aarts2006}
+    \item \textbf{Width:} Narrower roads are associated with an increased number of accidents in many studies of rural roads \citep{taylor2002,aarts2006,taylor2000}
     \item \textbf{Surface quality:} Poor quality road surfaces have been shown to increase the number of road traffic accidents \citep{fleming2009}
     \item \textbf{Blind corners/winding roads:} Blind corners increase the risk of accidents, and higher speeds mean stopping distances are often above the distance visible around rural road corners in the UK. Blind corners are particularly an issue due to the tall hedgerows that often bank rural roads  \citep{aarts2006,wu2013}
 \end{itemize}
 
-Computation time is considered in this study to be a core concept for consideration, noted in \citep{zhang2016} as a key limitation of particular classification techniques, that is often not taken into consideration. The data processing and analysis throughout this paper considers optimisation of code to be of particular interest, and aims to produce results that match more complex methods, but taking a more simplistic, and less computationally intensive methodology.
-
-// add more to outline the paper here.
+Computation time is considered in this study to be a core concept for consideration, noted in \citep{zhang2016} as a key limitation of particular classification techniques, that is often not taken into consideration. The data processing and analysis throughout this paper considers optimisation of code to be of particular interest, and aims to produce results that match more complex methods, but taking a more simplistic, and less computationally intensive methodology. While the focus of this study is primarily on the methodology, the discussion will outline in particular the applications of this approach to road feature extraction, addressing the broad issues that are inherent due to the lack of quantitative information regarding the majority of the road network in the UK.

@@ -1,0 +1,28 @@
+<<rd_bends>>=
+roads <- st_read("../data/derived/roads/roads_line.gpkg", quiet = TRUE) %>%
+  mutate(len = as.numeric(st_length(geom))) %>%
+  st_cast("POINT") %>%
+  group_by(road_id) %>%
+  summarise(
+    num_bend = n() - 2,
+    len = mean(len) / 1000,
+    roadFunction = unique(roadFunction)
+  )
+
+rd_bends <- roads %>%
+  mutate(bend_km = num_bend / len) %>%
+  st_drop_geometry() %>%
+  select(-roadFunction) %>%
+  arrange(desc(bend_km))
+
+rd_bends$road_id <- gsub("road_", "", rd_bends$road_id)
+make_table(rd_bends,
+  cap = "Bends for each road",
+  col_names = c(
+    "Road ID",
+    "Number of Bends",
+    "Road Length",
+    "Bends per km"
+  )
+)
+@

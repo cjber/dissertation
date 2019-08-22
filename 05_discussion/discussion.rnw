@@ -2,9 +2,11 @@ The proposed methodology provides a road classification method which considers t
 
 The results of this paper can be considered to present the overall goal of automated road feature extraction, split into two main sections, the first being automated road width extraction, and second, the automated extraction of other road features.
 
-\section{Automated Road Width Extraction}
+\section{Road Classification and Width Extraction}
 
-Direct comparison between the computational efficiency of this method and past methods is not possible due to the unique data used in this study. However, \cite{zhang2016} outline some specifications of the dataset used in their supervised road centreline extraction using LiDAR and aerial imagery. With aerial imagery at a resolution of 15cm, and a total 5200 by 5000 pixels, the study area therefore covers \Sexpr{5200/(1/.15)}m by \Sexpr{5000/(1/.15)}m. Similar to the 1km$^2$ for this study. The total time taken for object extraction for this area in their method was \Sexpr{2272/60} minutes, compared with the \Sexpr{time_taken} minutes proposed in this paper. It is expected that the method propsed by \cite{zhang2016} should take far longer to compute due to being the inclusion of complex methodologies such as image segmentation through random forest classification. The methodology proposed by \cite{zhang2016} and other supervised road classification techniques rely on the existance of a training dataset, either derived through manual image segmentation, or the preexisting data itself.For this reason, I propose that practical applications of road classification should focus more on the inclusion of such data, including known road centreline geometries to provide a basis for techniques.
+// Mention logistic regression, considered but not used as results not better and requires a payoff.
+
+Direct comparison between the computational efficiency of this method and past methods is not possible due to the unique data used in this study. However, \cite{zhang2016} outline some specifications of the dataset used in their supervised road centreline extraction using LiDAR and aerial imagery. With aerial imagery at a resolution of 15cm, and a total 5200 by 5000 pixels, the study area therefore covers \Sexpr{5200/(1/.15)}m by \Sexpr{5000/(1/.15)}m. Similar to the 1km$^2$ for this study. The total time taken for object extraction for this area in their method was \Sexpr{2272/60} minutes, compared with the \Sexpr{time_taken} minutes proposed in this paper. It is expected that the method proposed by \cite{zhang2016} should take far longer to compute due to being the inclusion of complex methodologies such as image segmentation through random forest classification. The methodology proposed by \cite{zhang2016} and other supervised road classification techniques rely on the existence of a training dataset, either derived through manual image segmentation, or the preexisting data itself.For this reason, I propose that practical applications of road classification should focus more on the inclusion of such data, including known road centreline geometries to provide a basis for techniques.
 
 As outlined in subsection \ref{subsec:supervised}, few papers utilised a supervised methodology for road classification, 
 
@@ -12,8 +14,9 @@ As outlined in subsection \ref{subsec:supervised}, few papers utilised a supervi
 - Compare supervised/non-supervised. Findings compared with other studies.
 NOTE: aerial data appears to provide little improvement over pure LiDAR. Appears in places to reduce accuracy due to the presence of shadows.
 - Past studies of UK rural roads.
-- 
-\section{Outcomes}
+
+\section{Applications of this Methodology}
+
 \subsection{Stopping Sight Distance}
 
 Stopping Sight Distances are an important consideration for rural British roads, from qualitative observation of aerial imagery, and personal knowledge, hedgerows that bank the verges either side of many rural British roads often fully obscure the sight line around sharp bends, meaning it is often impossible to see oncoming traffic or obstacles, which, given the nature of these roads can often be large farm vehicles which spill into multiple lanes, or hazards such as farm animals, or unsafe road conditions. It is worth mentioning that the majority of hedgerows have automatic protection under the Hedgerow Regulations 1997 \citep{ukgovernment1997} for numerous historic and environmental reasons \citep[e.g. protected species;][]{ukgovernment1981}, as such, their removal for road safety is rarely granted.
@@ -27,7 +30,7 @@ Assumptions for certain road regulations are made that drivers will slow to appr
 \fontsize{9}{10}\selectfont
 \caption{Recommended minimum Stopping Sight Distances at certain speeds \citep{layton2012}}
 \label{tab:ssd}
-\begin{tabular}{lllll}
+\begin{tabular}{lcccc}
 \toprule
 \textbf{Speed} &
 \multicolumn{2}{l}{\textbf{Stopping Sight Distance}} &
@@ -64,77 +67,42 @@ Road features extracted may be used to inform the current likely stopping sight 
 // - width (larger vehicles, emergency services)
 // expand this.
 
-<<rd30, fig.cap="Road ID: 30, showing features of a narrow road with sharp bend">>=
-source("../scripts/functions.r")
-roads <- st_read("../data/derived/roads/roads_line.gpkg", quiet = TRUE)
+\subsection{Rural Accessibility}
 
-# example road section
-rd_f <- "road_30"
+Accessibility has several definitions, either in terms of economic and social opportunity, or as a proximity and facility for spatial interaction \cite{guiterrez2009}. Transport disadvantage is a key limitation of physical accessibility, that may be either due to  limitations such as lack of public transport, a poor road network, or a persons physical inability to reach a destination due to disability \citep{smith2012}. Often transport disadvantage may be alleviated through access to public transport, as this removes the requirement for private transport ownership, limited by both income and ability to drive. However, public transport in rural areas is often limited or absent, meaning rural transport predominantly relies on private road vehicles, limiting access for those two are unable to drive, such as children, the elderly, and people with disabilities \citep{manthorpe2008}. Additionally, this reliance of private transport increases the minimum cost of living in rural communities, given car ownership is often considered mandatory and often isn't taken into account when assessing the minimum cost of living in rural areas \citep{smith2012}. For those who are unable to access private transport, this limit accessibility is considered limited through capability, rather than pure accessibility through journey times and other factors \citep{currie2008}. Rural areas in particular often have larger elderly populations, meaning capability is often a key issue in areas with poor public transport, and can lead to social exclusion for those without cars \citep{solomon2009}. Often there are special services in place for easily definable groups that attempt to alleviate the issue with transport disadvantage and social exclusion, such as free bus travel for the elderly, however, these services often do not account for those who are transport disadvantaged but are not easily defined, particularly for those who have no access to public transport \citep{mulley2009}
 
-roads <- roads[roads$road_id == rd_f, ]
+Accessibility to destinations is often defined through journey times for populations to particular key services, in particular, the UK Government uses official accessibility indicators to set minimum thresholds for journey time access to education, health services, employment and retail hubs \citep{departmentfortransport2016}, also taking into account the availability of public transport services. Accessibility in rural areas is found to be far poorer than urban areas based off minimum travel times to various services, and while travel by car generally reduces travel times, the rate is still far below urban areas. To fully understand the implication of such analysis, the underlying data should also be considered. As mentioned, the accessibility index produced by the UK Government uses underlying journey times obtained through separate analysis based on theoretical journey times using public transport times, and average traffic speeds for areas \citep{departmentfortransport2018a}. This data is simplified, giving the start point of journeys as a single point within Output Area census units, and aggregated road speeds. The output of this data is given at the LSOA level which is then used for accessibility analysis. Journey times are obtained through mass collection of GPS data by INRIX \cite{inrix2019} which is then used in TRACC software \cite{tracc2019}.
 
-jpgs <- Sys.glob("../data/aerial/*.jpg")
-jpgs <- lapply(jpgs, brick)
-aerial <- lapply(jpgs, function(x) {
-  return(tryCatch(crop(x, roads), error = function(e) NULL))
-})
-aerial <- aerial %>%
-  compact()
-aerial <- do.call(merge,aerial)
+Rural healthcare accessibility is becoming more of an issue given fewer healthcare professionals now live in rural communities, \citep{farmer2003}, and the urban centralisation of hospital services \citep{mungall2005}, means that understanding the level of access that each rural community has to these services is more important than ever. Additionally, improving the understanding of rural road networks will enable improved emergency response times.
 
-ggRGB(aerial) +
-geom_sf(data = roads, colour = alpha("green",.4), size = 1) +
-  scale_x_continuous(expand = c(0, 0)) +
-  scale_y_continuous(expand = c(0, 0)) +
-theme_map()
-@
+There is a strong urban bias for the development of new transport technologies \citep{malechi2003}, explained through key issues particular to rural transport systems;
 
-- food and road quality (links social mobility i think \citep{minten1999})
-- \citep{bosona2011} improvements in supply chains through GIS.
-- \citep{farmer2003}: rural healthcare, fewer healthcare professionals in rural communities, mention also the centralisation of hospital services. \citep{velaga2012,mungall2005}. \citep{haynes2000}. Remeber to link social mobility, accessibility, etc. to connections, rural road network etc. If we understand the rural road network, systematically, with a focus on determining features on individual roads, we can better understand the limitations of roads, and the specific connections that lead to lack of accessibility, rather than an aggregation of data.
+\begin{itemize}
+    \item \textbf{Service area:} Rural transport agencies often serve large areas with long trips. As a results, assisting passengers needs is not easy and attending immediately to a problem that arises on the road is difficult (e.g. rescheduling trips when an incident occurs.)
+    \item \textbf{Service Coordination:} There are different basic public services e.g. healthcare and education with overlapping areas of services. It is challenging to coordinate services and resources among the agencies and other providers.
+    \item \textbf{Infrastructure:} Rural areas suffer a lack of communication infrastructure e.g. wireless communications services, real-time communication from and to rural passengers.
+    \item \textbf{Fleet size:} Although tech can solve several transportation problems in remote rural areas, it might be difficult to fund and develop at a small scale.
+\begin{flushright}
+    \footnotesize{\citep{riva2011}}
+\end{flushright}
+\end{itemize}
 
-\section{Implications}
+While it may appear that many of these issues are inherent to rural areas, and unsolvable, the optimisation of transport technologies for rural areas may be made more achievable through access to the comprehensive road data provided through the methods proposed in this paper. \cite{palmer2004} state that flexible integrated transport services are a likely public transport implementation that would benefit rural areas without the limitations outlined above, such a technology would rely extensively on a full understanding of the road network on which it would be dispatched.
 
-\subsection{Rural and Urban Divide}
+\citep{mulley2009} state that the demand for a full implementation of public transport systems in many rural areas often does not justify demand, and local authorities rely on optimisation of funding, which has led to the discontinuation of many rural public transport networks. This calls for developments for the alleviation of social exclusion, that do not employ conventional solutions. The \cite{departmentfortransport2016} call for "Unconventional modes" of public transport in such areas, building mainly on a bottom up approach to meet direct demand, additionally vehicles supplied through such an implementation would account for suitability to both road conditions and consumer demand, allowing for vehicles smaller than a typical bus for example \citep{mulley2009}.
 
-The divide between rural and urban health outcomes has been shown to relate to social mobility and migration of healthier and more socially mobile groups into rural areas, leaving behind less mobile groups, in urban settings \citep{riva2011}. Net movement out of rural areas is particularly influenced primarily by young adults moving to urbanised areas \citep{champion2004} // find recent ref //. While \cite{riva2011} suggest that social mobility is purely the reason for improved health outcomes in rural England, particularly given there is evidence to suggest that urban centralisation of hospital services should have a negative impact on rural health outcomes \citep{haynes2000,farmer2003}, the question remains; what is driving out those with less social mobility, and young adults? Given health outcomes in rural areas are broadly better than those in urban areas, and have been for some time \citep{watt1994a}, why do certain groups select urban areas over rural? 
-
-\subsection{Accessibility and Connectivity in Rural Communities}
-
-\cite{velaga2012} outline the divide in connectivity in rural communities:
-Access to healthcare, education, work, other services such as shopping centres. key issue.
-Accessibility: defined in terms of economic and social oportunity, as poximity or facility for spatial interaction \cite{gutierrez2009}. Alternative to physical mobility includes internet access etc. \cite{kenyon2002,kenyon2003}.
-
-Transport context: Facility or opportunities with which basic services can be reached from a given location by using a certain transport system \citep{guiterrez2009}.
-
-Rural; limited or no connection to public transport; traditionally rural transport based pre4dominantly on road vehicles \cite{dingen2000,gray2001}. lack of tranaport accessibility and connectivity in rural areas strong impact on those with limited access to private motorisd transport, such as children, older people, people with disabilities, \cite{kenyon2002,seu2003,as2011}. Use of transport telematics that encompass a range of advanced computer, ict, navigation and positioning systems and digital technologies in the filed of transport can improve the efficiency and service quality of trnaport systems. \citep{giannopoulos2004,sussman2005,deeter2009}. Real-time bus arrival information at bus stops, intelligent public transport systems, and shared flexible transport management \cite{chowdhury2003,robinson2009,nelson2010,politis2010}. // Note link between these and the requirement for a full understanding of the rural road netork
+There is a significant call for the inclusion of a more comprehensive understanding of the road network through advanced computational techniques to improve the efficiency and quality of existing transport systems \citep{deete2009}, including a more flexible transport management system \citep{robinson2009}. Technologies are already used frequently to make mainstream public services more effective and efficient, such as healthcare and education \citep{builton2010}. 
 
 \cite{velaga2012} Transport technology issues in rural areas: digital tech often used to make mainstream public services such as education healthcare and transport more effective and efficient \cite{boulton2010}. bradband internet access, smart phones pc. Notion of digital divide in gender, age, income, race and location \cite{digitalbritain2009,boulton2010}. // note that this somewhat explains the desire for young adults to move out of rural areas, due to the lack of suitable broadband and the services that come with it. link to roads lol.
 
-advanced tech can significantly influence lifestyles changes, particulrly in rural areas \cite{wilson2008}, lack of public tranaport service availability and efficiency can provide conditions which are hihgly suited to the development of more flexible demand responsive transsort services which are often supported by transport telematics. may develop more readily in social contexts notable for high levels of community involvement and support, e.g. less concern sharing personal info. \cite{mclean2001}.
+The divide between rural and urban health outcomes has been shown to relate to social mobility and migration of healthier and more socially mobile groups into rural areas, leaving behind less mobile groups, in urban settings \citep{riva2011}. Net movement out of rural areas is particularly influenced primarily by young adults moving to urbanised areas \citep{champion2004} // find recent ref //. While \cite{riva2011} suggest that social mobility is purely the reason for improved health outcomes in rural England, particularly given there is evidence to suggest that urban centralisation of hospital services should have a negative impact on rural health outcomes \citep{haynes2000,farmer2003}, the question remains; what is driving out those with less social mobility, and young adults? Given health outcomes in rural areas are broadly better than those in urban areas, and have been for some time \citep{watt1994a}, why do certain groups select urban areas over rural? 
+Social Mobility, less mobility in rural areas in young people due to socioeconomic and health reasons, despite many studies claiming good health outcomes in rural areas. Migration of young people from rural to poor urban areas, potentially due to current lack of accessibility, causes lack of job opportunities, and lack of access to key services means younger people have no choice but to move to any urban area that does \citep{riva2011}.
 
-////
-Strong urban bias in the application of new technologies; particulalry true within the transport industry \cite{malechi2003}. why?  here you go :
+The methodology I have presented would allow for an accurate journey time prediction that does not rely on the complex aggregation of expensive GPS data which is then aggregated to census units. It is likely that for significantly rural areas, particularly those with poor GPS connections, this road speed information is likely particularly inaccurate, often for example in consumer grade GPS systems, optimal routes chosen appear to more often than not, choose the most direct route when presented with a rural road network, rather than select a route based on an accurate assessment of the true speed achievable on a route. The proposed method will allow for estimations based on true features of roads, including width, height change, bends and surface quality to produce an assessment to determine the likely journey times for each individual road within any rural area covered. Particularly, \cite{hodge2004} state that generalisation of the countryside is dangerous, as due to the sparse population of such areas, aggregation typically groups areas which feature a range of different problems, it makes sense that for a better understanding of rural accessibility in relation to the road network, the focus should be at the road level, and not an aggregation into census units.
 
-1. Service area: Rural transport agencies often serve large areas with long trips. As a results, assisting passengeres needs is not easy and attending immediately to a problem that arises on the road is difficult (e.g. rescheduling trips when an incident occurs.)
+\subsection{Other Applications}
 
-2. Service coordination: there are different basic public services e.g. health care and education with overlapping areass of service prosivin. it is challenging to coordinate services and resources among the agencies and other providers.
-
-3. Infrastructure: rural areas suffer a lack of communication infrastructure e.g. wireless communications serivces. realtime communication from and to rural passengers is one of the major issues
-
-4. Fleet size: Although tech can solve severla transportation problems in remote erural areas, it might be dificult to fund and develop at a small scale.
-
-// Note that they don't mention road network quality and understanding, surely this is also a key problem???
-
-
-Flexible integrated transport services \cite{palmer2004}. promising development in rural transport, would require knowledge of roads.
-
-
-
-\citep{riva2011}. Lack of mobility shown to reduce health outcomes for all ages, what causes lack of mobility? Lack of services?
-Young people in rural areas less mobile due to socioeconomic and health reasons. Migration to rural aras in England increasing rural and urban health inequalities, people forced to move to poor urban areas, why? 
-:
-\cite{hodge2004}: Generalising the countryside dangerous, It is dangerous to generalise about the countryside, since different areas face different problems (DETR and MAFF, 2000, p. 10). Underlying problems may all stem from connectivity between rural areas and outside, links with the rural road network.
+Supply chains rely on a well maintained road infrastructure, and as such, many rural areas are considered to be "Lagging Rural Regions", due to their geographical remoteness, poor infrastructures, low population density and limited employment opportunities, often supported economically by an agricultural backbone \citep{ilbery2004}. Improving the economy of such areas therefore relies primarily on the effectiveness of the supply chains, often limited due to the poor infrastructures \citep{mardsen2002}, and recent demand for large scale supply chains is limited in these areas due to the overall quality of the road network. To further understand the limitations of rural supply chains inherently relies on a full understanding of the road network, whether to acknowledge where limitations exist, or to develop opportunities for optimisation of the supply chains. \cite{bosona2011} call for location analysis of supply chains through quantifiable data, to better optimise supply routes.
 
 \section{Limitations}
     Limitations: what can not the results tell us?
@@ -143,10 +111,8 @@ Young people in rural areas less mobile due to socioeconomic and health reasons.
     - Drivers beliefs of correct speed limits: \citep{charlton2017}.
 
 \section{Recommendations}
+
     Recommendations: what practical actions or scientific studies should follow?
 
 - Improvements to road centreline extraction: see other studies.
 
-\section{Urban and Rural Road Classification}
-
-// Mention logistic regression, considered but not used as results not better and requries a payoff.

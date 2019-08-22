@@ -52,6 +52,8 @@ cent1_las <- joined_output %>%
         Y = coords[, 2]
     )
 
+fwrite(cent1_las, "../data/derived/model_data/cent1_lm.csv")
+
 # linear models with improved centrelines
 # for this section see social survey + ss assessment 2
 f1 <- as.formula("road ~ Intensity + lum + dists + Z + NumberOfReturns")
@@ -69,6 +71,7 @@ cent1_las$lm1_dum <- ifelse(cent1_las$lm1_pred >
 cent1_las$lm2_pred <- lm2_pred
 cent1_las$lm2_dum <- ifelse(cent1_las$lm2_pred >
     quantile(cent1_las$lm2_pred, .95), 1, 0)
+
 
 # individual linear probability model: has to filter out canopy: proof of concept
 cent1_las <- split(cent1_las, cent1_las$sample_id)

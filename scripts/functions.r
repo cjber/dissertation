@@ -14,7 +14,6 @@ pkgs <- c(
   "ggpubr",
   "magrittr",
   "sf",
-  "data.table",
   "kableExtra",
   "scales",
   "lidR",
@@ -29,7 +28,10 @@ pkgs <- c(
   "bibtex",
   "benchmarkme",
   "parallel",
-  "showtext"
+  "showtext",
+  "data.table",
+  "dtplyr",
+  "dplyr"
 )
 
 pacman::p_load(pkgs, character.only = T)
@@ -63,8 +65,10 @@ ctg_to_df <- function(cluster) {
   if (is.empty(las)) {
     return(NULL)
   }
-  # convert to sp class
-  las <- as.spatial(las)
+  # to sp then tibble
+  las <- las %>%
+      as.spatial() %>%
+      as_tibble()
   # sp to df
   las <- as.data.frame(las)
   return(las)
