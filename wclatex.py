@@ -18,6 +18,8 @@ comment = re.compile("\%.*")
 markup = re.compile(r"\\(?:emph|textbf)\{(.*?)\}")
 
 figure = re.compile(r"\\begin{figure}.*?\\end{figure}")
+table = re.compile(r"\\begin{table}.*?\\end{table}")
+mathal = re.compile(r"\\begin{aligned}.*?\\end{aligned}")
 math = re.compile(r"\${1,2}.+?\${1,2}")
 commands = re.compile(r"\\\w+((\*)?\{.*?\})*")
 numbers = re.compile(r"\d+(.\d*)?")
@@ -40,9 +42,11 @@ c = c.replace("/", " ");
 c = c.replace("-", "") # or space!?
 
 # TODO test
-#c = sub(figure, "", c)
+c = figure.sub("", c)
+c = table.sub("", c)
 c = markup.sub(r"\1", c)
 c = math.sub("", c)
+c = mathal.sub("", c)
 c = commands.sub("", c)
 c = numbers.sub("", c)
 c = nonwords.sub(" ", c)

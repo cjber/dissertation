@@ -31,7 +31,8 @@ pkgs <- c(
   "showtext",
   "data.table",
   "dtplyr",
-  "dplyr"
+  "dplyr",
+  "lmtest"
 )
 
 pacman::p_load(pkgs, character.only = T)
@@ -439,7 +440,6 @@ true_cents <- function(x) {
     return(y)
   }
 }
-
 
 ## ---- opposite_length
 # use atan2 to find true width of roads given

@@ -86,12 +86,20 @@ print(x, locale = F)
 <<max_lines, eval = FALSE, echo = TRUE>>=
 @
 
-\subsection{Model Comparison}\label{code:model_comparison}
-<<model_comparison, eval= FALSE, echo = TRUE>>=
+\subsection{Mid Points}\label{code:mid_pts}
+<<mid_pts, eval = FALSE, echo = TRUE>>=
+@
+
+\subsection{True Centrelines}\label{code:true_cents}
+<<true_cents, eval = FALSE, echo = TRUE>>=
 @
 
 \subsection{Opposite Length}\label{code:opposite_length}
 <<opposite_length, eval = FALSE, echo = TRUE>>=
+@
+
+\subsection{Model Comparison}\label{code:model_comparison}
+<<model_comparison, eval= FALSE, echo = TRUE>>=
 @
 
 \subsection{Road Angles}\label{code:road_angles}
