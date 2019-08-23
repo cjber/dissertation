@@ -76,7 +76,7 @@ cent1_las$lm2_dum <- ifelse(cent1_las$lm2_pred >
 # individual linear probability model: has to filter out canopy: proof of concept
 cent1_las <- split(cent1_las, cent1_las$sample_id)
 cent1_las <- lapply(cent1_las, filter_returns)
-f1 <- as.formula("road ~ Intensity + lum + dists + Z + NumberOfReturns")
+f1 <- as.formula("road ~ Intensity + dists + Z + NumberOfReturns")
 cent1_las <- lapply(cent1_las, lm_compute, f = f1)
 cent1_las <- do.call(rbind, cent1_las)
 

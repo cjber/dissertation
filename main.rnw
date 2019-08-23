@@ -141,7 +141,6 @@ cat(paste0("\\nocite{", paste0(pkgs, collapse = ',', sep = ''),"}"))
 
 \bibliographystyle{agsm}
 \linespread{1}
-
 \bibliography{kbib, rbib}
 
 \begin{center}
@@ -152,7 +151,6 @@ python wclatex.py main.tex
 @
 \end{center}
 
-\thispagestyle{newchapter}
 \cleardoublepage
 
 % ===========================================================================================================

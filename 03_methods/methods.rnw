@@ -223,13 +223,11 @@ $$
 
 To exclude as much noise as possible from both the LiDAR point cloud intensity information, and aerial luminescence, only points with the ground classification ($Classification = 2$), and points with only a single laser return pulse were included in the models.
 
-\subsection{Linear Probability Model}
+\subsection{Linear Probability Models}
 
-Individual linear probability models were constructed for each sample location for each road, giving results for a cluster of points across a perpendicular segment of each road every 10m. Road centrelines were selected as the outcome variable, provided by the OS road network line shapefiles, buffered to 2m to ensure a three dimensional cross section of points.
+To classify road and non-road, linear models were constructed and compared to assess effectiveness. A maximal approach was chosen, selecting all appropriate predictor variables, iterating through models by removing variables that did not significantly influence the model outcome, or created noise.
 
-Models were constructed using a maximal approach, selecting all appropriate predictor variables, iterating through models by removing variables that did not significantly influence the model outcome, or created noise.
-
-An additional variable $Dist$ was included, representing the shortest distance from a point to the centreline of the road it is associated with, considering that road points should be weighted more towards points that are closer to the centre-point of the road.
+An additional variable $Dist$ was created and included, representing the shortest distance from a point to the centreline of the road it is associated with, considering that road points should be weighted more towards points that are closer to the centre-point of the road.
 
 Linear probability models essentially follow the same formula as a linear regression model:
 
@@ -350,7 +348,7 @@ With the mid point of each classified road sample, these were than joined for fo
     \footnotesize{\ref{code:true_cents}}
 \end{flushright}
 
-// Addition of individual linear prob model
+Given the improvement in road centreline locations, it was considered feasible to construct linear probability models individually for each sample location on each road. This technique would allow for per road variation in material type or quality, and potentially reduce the amount of noise brought in from inaccurate centrelines. Preliminary testing of this method revealed that it was essential to remove any sample containing tree canopy, as given the small number of points, the predictions were based off points that misrepresented true road points. Additionally, individual linear models allowed for some filtering through p values //// improve
 
 \subsection{Road Angles}
 

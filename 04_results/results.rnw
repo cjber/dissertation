@@ -393,7 +393,7 @@ plot_grid(
 )
 @
 
-Figure \ref{fig:quant_fig} reveals that qualitatively, the optimal choice for a quantile filtering of the linear probability distribution is likely the 95th quantile (Figure \ref{fig:quant_fig} \textbf{(A)}). However, observation of the southern section of Figure \ref{fig:quant_fig} \textbf{(A)} reveals that inaccurate centreline locations have led to an incomplete linear model analysis. To compensate for this, a further method proposed aims to improve the accuracy of the given road centreline locations. Additionally, Figure \ref{fig:lmdistributions} reveals that for the 95th quantile probability values, shadow from road hedgerows appears to reduce the model accuracy, as noticable towards the top end of the road. For this reason, a second model was constructed for later comparison, which removes the $luminescance$ information provided by the aerial imagery.
+Figure \ref{fig:quant_fig} reveals that qualitatively, the optimal choice for a quantile filtering of the linear probability distribution is likely the 95th quantile (Figure \ref{fig:quant_fig} \textbf{(A)}). However, observation of the southern section of Figure \ref{fig:quant_fig} \textbf{(A)} reveals that inaccurate centreline locations have led to an incomplete linear model analysis. To compensate for this, a further method proposed aims to improve the accuracy of the given road centreline locations. Additionally, Figure \ref{fig:lmdistributions} reveals that for the 95th quantile probability values, shadow from road hedgerows appears to reduce the model accuracy, as noticeable towards the top end of the road. For this reason, a second model was constructed for later comparison, which removes the $luminescence$ information provided by the aerial imagery.
 
 \begin{equation}
 \begin{aligned}
@@ -408,7 +408,7 @@ Figure \ref{fig:quant_fig} reveals that qualitatively, the optimal choice for a 
 
 To improve road centreline location accuracy, the 90th quantile results from the first linear probability analysis were used, due to there being a more complete selection of points, but without compromising the true location of roads by including too many outside points.
 
-New road centrelines are given on Figure \ref{fig:cent1_fig}, particular improvements are given where the road curves between two open fields, but the original centreline was given as a straight line, covering the hedgerow, and no road surface.
+New road centrelines are given on Figure \ref{fig:fig_noisecent}, particular improvements are given where the road curves between two open fields, but the original centreline was given as a straight line, covering the hedgerow, and no road surface.
 
 <<road_lines>>=
 cent1 <- st_read("../data/derived/roads/cent_iteration1.gpkg", quiet = TRUE)
@@ -439,11 +439,12 @@ cent1 <- cent1[cent1$road_id == "road_6", ] %>%
 cent0_las <- fread("../data/derived/model_data/linearmodels.csv") %>%
   as.data.frame() %>%
   st_as_sf(coords = c("X", "Y"), crs = 27700)
-cent1_las <- fread("../data/final_data/cent_lm.csv") %>%
+cent_las <- fread("../data/final_data/cent_lm.csv") %>%
   as.data.frame() %>%
   st_as_sf(coords = c("X", "Y"), crs = 27700)
 
-cent1_las <- cent1_las[cent1_las$road_id == "road_6" & cent1_las$lm1_dum == 1, ]
+cent1_las <- cent_las[cent_las$road_id == "road_6" & cent_las$lm1_dum == 1, ]
+centi_las <- cent_las[cent_las$road_id == "road_6" & cent_las$I_dum == 1, ]
 
 cent1_fil <- split(cent1_las, cent1_las$sample_id)
 cent1_fil <- cent1_fil %>% compact()
@@ -452,11 +453,15 @@ cent1_fil <- do.call(rbind, cent1_fil)
 
 cent0_las <- cent0_las[cent0_las$road_id == "road_6" & cent0_las$lm1_dum == 1, ]
 
-
 cent0_fil <- split(cent0_las, cent0_las$sample_id)
 cent0_fil <- cent0_fil %>% compact()
 cent0_fil <- lapply(cent0_fil, filter_samples)
 cent0_fil <- do.call(rbind, cent0_fil)
+
+centi_fil <- split(centi_las, centi_las$sample_id)
+centi_fil <- centi_fil %>% compact()
+centi_fil <- lapply(centi_fil, filter_samples)
+centi_fil <- do.call(rbind, centi_fil)
 
 
 gg_cent0 <- ggRGB(aerial) +
@@ -482,6 +487,18 @@ gg_cent1 <- ggRGB(aerial) +
   )) +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0))
+
+gg_centi <- ggRGB(aerial) +
+  geom_sf(data = centi_las, colour = "red") +
+  geom_sf(data = centi_fil, colour = "green") +
+  geom_sf(data = cent1, colour = "red") +
+  theme_map() +
+  theme(panel.border = element_rect(
+    colour = "black",
+    fill = NA, size = 1
+  )) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0))
 @
 
 <<fig_noisecent, fig.cap = "Comparison between Linear Probability models applied to; (A) OS Road Centrelines, and (B) Derived Centrelines. Green points give classified road locations, red show classified road locations removed through isolation based filtering">>=
@@ -489,13 +506,14 @@ plot_grid(
   ggcent,
   gg_cent0,
   gg_cent1,
+  gg_centi,
   labels = "AUTO",
   label_size = 20,
-  ncol = 3
+  ncol = 4
 )
 @
 
-Qualitative comparison between the Linear Probability Model based off the original centreline locations reveals an improvement in overall road detection, particularly towards the edge of roads, while additional samples are achieved in areas which previously had no coverage due to the incorrect centreline placement (Figure \ref{fig:fig_noisecent}). However, it appears that in areas where there are higher levels of linear predictive inaccuracy, the new centrelines are less accurate, thankfully, noise exclusion techniques employed have removed samples that fall within these areas, particularly noticeable at the northern end of Figure \ref{fig:fig_noisecent} \textbf{(B)}. Figure \ref{fig:fig_noisecent} also gives information regarding distance based noise exclusion technique, which has allowed for the exclusion of isolated points accurately on Figure \ref{fig:cent1_fig} \textbf{(A)}.
+Qualitative comparison between the Linear Probability Model based off the original centreline locations reveals an improvement in overall road detection, particularly towards the edge of roads, while additional samples are achieved in areas which previously had no coverage due to the incorrect centreline placement (Figure \ref{fig:fig_noisecent}). However, it appears that in areas where there are higher levels of linear predictive inaccuracy, the new centrelines are less accurate, thankfully, noise exclusion techniques employed have removed samples that fall within these areas, particularly noticeable at the northern end of Figure \ref{fig:fig_noisecent} \textbf{(C)}. Figure \ref{fig:fig_noisecent} also gives information regarding distance based noise exclusion technique, which has allowed for the exclusion of isolated points accurately on Figure \ref{fig:fig_noisecent} \textbf{(B)}. Improved centreline locations allowed for individual linear models (Figure \ref{fig:fig_noisecent} \textbf{(D)}), while it was assumed that individual linear models would potentially produce more accurate width estimations, it appears to give less accurate results compared with Figure \ref{fig:fig_noisecent} \textbf{(C)}.
 
 \section{Final Model Analysis}
 
@@ -506,13 +524,14 @@ For a more comprehensive analysis of the overall suitability of the road width l
 // Adjust equations to fit with linear probability models: https://www.econometrics-with-r.org/11-1-binary-dependent-variables-and-the-linear-probability-model.html
 
 
+
 <<coeftest>>=
 cent1_lm <- fread("../data/derived/model_data/cent1_lm.csv")
 f1 <- as.formula("road ~ Intensity + lum + dists + Z + NumberOfReturns")
 f2 <- as.formula("road ~ Intensity + dists + Z + NumberOfReturns")
 
 lm1 <- lm(data = cent1_lm, formula = f1)
-coeftest(lm1, vcov. = vcovHC, type = "HC1")
+coeftest(lm1)
 @
 
 
