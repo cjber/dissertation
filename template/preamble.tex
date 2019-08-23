@@ -114,6 +114,11 @@
 % Table of content settings
 \setcounter{tocdepth}{2}
 \setcounter{secnumdepth}{2}
+\usepackage{tocbasic}
+\addtotoclist[report.cls]{toc}
+\renewcommand*{\tableofcontents}{\listoftoc[{\contentsname}]{toc}}% ToC under control of tocbasic
+\AfterTOCHead[toc]{\thispagestyle{preamble}\pagestyle{ack}}
+\AfterStartingTOC[toc]{\clearpage}
 
 % Allowed percentages of page a float can use
 \renewcommand{\textfraction}{0.05}

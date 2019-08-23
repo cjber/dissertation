@@ -92,7 +92,6 @@ cat(paste0("\\nocite{", paste0(pkgs, collapse = ',', sep = ''),"}"))
 \thispagestyle{ack}
 
 \tableofcontents
-\thispagestyle{ack}
 
 \listoffigures
 

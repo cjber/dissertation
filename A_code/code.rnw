@@ -38,7 +38,6 @@ print(x, locale = F)
 <<lidr_clean, echo = TRUE, eval = FALSE>>=
 @
 
-
 \subsection{Extract Buffer} \label{code:extract_buff}
 <<extract_buff, echo = TRUE, eval = FALSE>>=
 @
@@ -71,34 +70,34 @@ print(x, locale = F)
 <<lm_compute, eval = FALSE, echo = TRUE>>=
 @
 
-\subsection{Filter Returns}
+\subsection{Filter Returns}\label{code:filter_returns}
 <<filter_returns, eval = FALSE, echo = TRUE>>=
 @
 
-\subsection{Filter Samples}
+\subsection{Filter Samples}\label{code:filter_samples}
 <<filter_samples, eval = FALSE, echo = TRUE>>=
 @
 
-\subsection{Max Dist}
+\subsection{Max Dist}\label{code:max_dist}
 <<max_dist, eval = FALSE, echo = TRUE>>=
 @
 
-\subsection{Max Lines}
+\subsection{Max Lines}\label{code:max_lines}
 <<max_lines, eval = FALSE, echo = TRUE>>=
 @
 
-\subsection{Model Comparison}
+\subsection{Model Comparison}\label{code:model_comparison}
 <<model_comparison, eval= FALSE, echo = TRUE>>=
 @
 
-\subsection{Opposite Length}
+\subsection{Opposite Length}\label{code:opposite_length}
 <<opposite_length, eval = FALSE, echo = TRUE>>=
 @
 
-\subsection{Road Angles}
+\subsection{Road Angles}\label{code:road_angles}
 <<road_angles, eval = FALSE, echo = TRUE>>=
 @
 
-\subsection{Height Change}
+\subsection{Height Change}\label{code:height_change}
 <<height_change, eval = FALSE, echo = TRUE>>=
 @

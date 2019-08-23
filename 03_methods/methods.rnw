@@ -211,27 +211,65 @@ To exclude as much noise as possible from both the LiDAR point cloud intensity i
 
 \subsection{Linear Probability Model}
 
-Individual linear probability models were constructed for each sample location for each road, giving results for a cluster of points across a perpendicular segment of each road every 20m. Road centrelines were selected as the outcome variable, provided by the OS road network line shapefiles, buffered to 1m to ensure a three dimensional cross section of points. Additionally, global linear probability models were constructed, and compared against the individual linear models.
+Individual linear probability models were constructed for each sample location for each road, giving results for a cluster of points across a perpendicular segment of each road every 10m. Road centrelines were selected as the outcome variable, provided by the OS road network line shapefiles, buffered to 2m to ensure a three dimensional cross section of points.
 
 Models were constructed using a maximal approach, selecting all appropriate predictor variables, iterating through models by removing variables that did not significantly influence the model outcome, or created noise.
 
 An additional variable $Dist$ was included, representing the shortest distance from a point to the centreline of the road it is associated with, considering that road points should be weighted more towards points that are closer to the centre-point of the road.
 
-Predictions for each point were then ran using each model, which gave the likelihood a point was either road or non road. As the likelihood values from the predictions gave a range of numerical values, points that fell below a certain threshold were removed, leaving only points that were most likely correctly identified as road points. This threshold was selected as the $95\%$ quantile for each sample point;
+Linear probability models essentially follow the same formula as a linear regression model:
 
 \[
 \begin{aligned}
-\mathbf{S} &= \Big(\mathbf{p}_i \in \Big[\frac{95}{100} \times \mathbf{p}_{i_{lm}}\Big]\Big) \\
+Y_{i}=\beta_{0}+\beta_{1}+X_{1 i}+\beta_{2} X_{2 i}+\cdots+\beta_{k} X_{k i}+u_{i}
+\end{aligned}
+\]
+
+but given a binary outcome variable $Y_i$, this is considered to be a linear probability model, taking the form;
+
+\[
+\begin{aligned}
+E\left(Y | X_{1}, X_{2}, \ldots, X_{k}\right)=P\left(Y=1 | X_{1}, X_{2}, \ldots, X_{3}\right)
+\end{aligned}
+\]
+
+Where;
+
+\[
+\begin{aligned}
+P\left(Y=1 | X_{1}, X_{2}, \ldots, X_{k}\right)=\beta_{0}+\beta_{1}+X_{1 i}+\beta_{2} X_{2 i}+\cdots+\beta_{k} X_{k i}
+\end{aligned}
+\]
+
+$\beta_j$ therefore may be interpreted as the change in the probability that $Y_i = 1$, with all other predictor variable constant. $\beta_j$ may be estimated using Ordinary Least Squares regression \citep{hanck2019}. 
+
+Likelihood values from the predictions gave a range of numerical values, points that fell below a certain threshold were removed, leaving only points that were most likely correctly identified as road points. This threshold was assess qualitatively through both observation of the distribution of probability ranges for each model, and results gained through different thresholds. Considering a threshold $x$, this may be expressed as;
+
+\[
+\begin{aligned}
+\mathbf{S} &= \Big(\mathbf{p}_i \in \Big[\frac{x}{100} \times \mathbf{p}_{i_{lm}}\Big]\Big) \\
 \end{aligned}
 \]
 
 Where $\mathbf{S}$ is the total point cloud.
 
-Some points considered to be noise were still present, but often isolated. To ensure no isolated points were present, the minimum distance between each point, and the nearest neighbouring point was checked, if a single point was considered isolated, with over 1m between it and any other point, it was removed.
+Further qualitative assessment of the results revealed that some points considered to be noise were still present, but often isolated. To ensure no isolated points were present, the minimum distance between each point, and the nearest neighbouring point was checked, if a single point was considered isolated, with over 1m between it and any other point, it was removed.
 
-$\mathbf{S}$ now gave of a collection of predicted road points for each sample line along a road segment, excluding points /// check this partially or fully obscured by tree canopy. To obtain road widths from these points, the maximum distance between two points in a particular sample was determined, these points were kept and all others removed. A linear section of road with two samples resembles Figure \ref{fig:sample_points};
+\[
+\begin{aligned}
+    \mathit{D} &= \sqrt{\delta xi^{2} + \delta y^{2}} \\
+    \mathbf{S} &= (\mathbf{p}_{i}\in [\mathit{D} \leq 1])
+\end{aligned}
+\]
+\begin{flushright}
+    \footnotesize{\ref{code:filter_samples}}
+\end{flushright}
 
-\begin{figure}[H]
+given $\mathit{D}$ is the minimum distance between a point and any other point.
+
+$\mathbf{S}$ now gave of a collection of predicted road points for each sample line along a road segment, with noise removed.  To obtain road widths from these points, the maximum distance between two points in a particular sample was determined, these points were kept and all others removed. A linear section of road with two samples resembles Figure \ref{fig:sample_points};
+
+\begin{figure}[htbp]
     \centering
 \begin{tikzpicture}[scale=2]
 
@@ -277,13 +315,15 @@ $$
 
 With the mid point of each classified road sample, these were than joined for form new centrelines, and a further linear probability model was ran and compared, to determine the effectiveness of this technique.
 
-\section{Road Angles}
+// Addition of individual linear prob model
+
+\subsection{Road Angles}
 
 The angle of bends in roads were identified through the nodes produced in the creation of the road shapefiles. First the road linestrings were split into points, with coordinates representing each node within a road, a point at which the orientation of the linestring is altered.
 
 The bend in a road was considered to be the \textit{bearing angle} $\theta$, from a point $A\left(a_{x}, a_{y}\right)$ to a point $B\left(b_{x}, b_{y}\right)$, with the angle measured in a clockwise direction from north. This can be represented as a figure;
 
-    \begin{figure}[H]
+    \begin{figure}[htbp]
         \centering
 \begin{tikzpicture}[scale=7]
 
@@ -331,12 +371,12 @@ Finally the bearing angle $\theta \in[0,2 \pi)$ is given as;
 \end{aligned}
 \]
 \begin{flushright}
-    \footnotesize{\ref{code:angles}}
+    \footnotesize{\ref{code:road_angles}}
 \end{flushright}
 
 With the bearing angle of the first line segment $AB$ for a particular road, the change in orientation of the second road segment $BC$ may be given as $\theta_{2} = \theta_{BC} - \theta_{AB}$, with additional nodes following the pattern $\theta_{k} = \theta_{N(N+1)} - \theta_{(N-1)N}$.
 
-    \begin{figure}[H]
+    \begin{figure}[htbp]
         \centering
 \begin{tikzpicture}[scale=7]
 

@@ -591,6 +591,8 @@ where $\mathbf{W}_{n}$ is the normalised width, $\mathbf{W}$ is the average widt
 
 given $\mathbf{W}_{n} > 100$. Table \ref{tab:est_widths} gives insight into the effectiveness of various linear probability models for each road, and road type. While average values all give relative accuracy in the region of 70\%, it appears likely that without adjusting the road centrelines, model probabilities are reduced given \textbf{LM 0} gives the lowest average accuracy in relation to the other three models using improved centrelines for outcome variable creation. Unexpectedly, the roads with the highest accuracy are Minor Roads, rather than B roads. For certain roads, the accuracy of the derived centrelines appear to vastly reduce model accuracy, (For example Road 36; Table \ref{tab:est_widths}).
 
+// Take examples from the table, roads with very different model results, see why.
+
 \section{Road Assessment}
 <<final_data, results = 'asis'>>=
 sf_est_width <- st_read("../data/osroads/roads_estwidth.gpkg", quiet = TRUE)
