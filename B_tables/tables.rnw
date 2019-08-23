@@ -21,8 +21,8 @@ make_table(rd_bends,
   col_names = c(
     "Road ID",
     "Number of Bends",
-    "Road Length",
-    "Bends per km"
+    "Road Length (km)",
+    "Bends per Kilometer"
   )
 )
 @
