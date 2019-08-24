@@ -60,7 +60,7 @@ f1 <- as.formula("road ~ Intensity + lum + dists + Z + NumberOfReturns")
 lm1 <- lm(data = cent1_las, formula = f1)
 lm1_pred <- predict(lm1, cent1_las, type = "response")
 
-f2 <- as.formula("road ~ Intensity + dists")
+f2 <- as.formula("road ~ Intensity + dists + Z + NumberOfReturns")
 lm2 <- lm(data = cent1_las, formula = f2)
 lm2_pred <- predict(lm2, cent1_las, type = "response")
 

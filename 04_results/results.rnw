@@ -21,7 +21,7 @@ clean_las <- fread("../data/point/points_clean.csv")
 
 hist_i <- ggplot(clean_las, aes(x = Intensity)) +
   geom_histogram(aes(y = ..density..), colour = "black", fill = "white", bins = 30) +
-  geom_density(aes(x = Intensity), fill = "#FF6666", alpha = .2) +
+  geom_density(aes(x = Intensity), fill = "#FF6666", alpha = .2, size = 1) +
   theme_classic() +
   theme(
     axis.ticks.y = element_blank(),
@@ -32,7 +32,7 @@ hist_i <- ggplot(clean_las, aes(x = Intensity)) +
     legend.title = element_blank(),
     legend.position = "bottom",
     strip.background = element_blank(),
-    panel.border = element_rect(colour = "black", fill = NA)
+    panel.border = element_rect(colour = "black", fill = NA, size = 1)
   ) +
   labs(x = "Intensity Values", y = "Distribution") +
   scale_x_continuous(expand = c(0, 0)) +
@@ -289,10 +289,10 @@ lm1_quant80 <- quantile(lm1$value, .8) %>%
 
 ggplot(lm_preds, aes(x = value)) +
   geom_histogram(aes(y = ..density..), colour = "black", fill = "white", bins = 30) +
-  geom_density(aes(x = value), fill = "#FF6666", alpha = .2) +
-  geom_vline(xintercept = lm1_quant, size = 1) +
-  geom_vline(xintercept = lm1_quant90, size = 1) +
-  geom_vline(xintercept = lm1_quant80, size = 1) +
+  geom_density(aes(x = value), fill = "#FF6666", alpha = .2, size = 1) +
+  geom_vline(xintercept = lm1_quant, size = 1, colour = "red") +
+  geom_vline(xintercept = lm1_quant90, size = 1, colour = "red") +
+  geom_vline(xintercept = lm1_quant80, size = 1, colour = "red") +
   theme_classic() +
   theme(
     axis.ticks.y = element_blank(),
@@ -302,7 +302,7 @@ ggplot(lm_preds, aes(x = value)) +
     legend.title = element_blank(),
     legend.position = "bottom",
     strip.background = element_blank(),
-    panel.border = element_rect(colour = "black", fill = NA)
+    panel.border = element_rect(colour = "black", fill = NA, size = 1)
   ) +
   labs(x = "Linear Model Probability", y = "Distribution") +
   scale_x_continuous(expand = c(0, 0)) +
@@ -541,15 +541,21 @@ cent1_lm <- fread("../data/derived/model_data/cent1_lm.csv") %>%
   select(c(road_id, Intensity, lum, dists, Z, NumberOfReturns, road))
 
 f1 <- as.formula("road ~ Intensity + lum + dists + Z + NumberOfReturns")
-f2 <- as.formula("road ~ Intensity + dists")
+f2 <- as.formula("road ~ Intensity + dists + Z + NumberOfReturns")
 
 lm1 <- lm(data = cent1_lm, formula = f1)
-lm1 <- lm_beta(lm1)
+lm1 <- lm1 %>%  
+    lm_beta() %>% 
+    as_tibble()
+
 lm2 <- lm(data = cent1_lm, formula = f2)
-lm2 <- lm_beta(lm2)
-summary(lm1)$coef[-1,1]
-sx <- sd((lm1$model[-1]))
-tidy(summary(lm1))
+lm2 <- lm2 %>% 
+    lm_beta() %>% 
+    as_tibble()
+lm2[nrow(lm2) + 1, ] <- NA
+
+coefs <- cbind(lm1, lm2)
+
 @
 
 
