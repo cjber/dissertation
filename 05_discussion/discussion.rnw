@@ -14,6 +14,7 @@ As outlined in subsection \ref{subsec:supervised}, few papers utilised a supervi
 - Compare supervised/non-supervised. Findings compared with other studies.
 NOTE: aerial data appears to provide little improvement over pure LiDAR. Appears in places to reduce accuracy due to the presence of shadows.
 - Past studies of UK rural roads.
+// optimisations, smooth edges from past studies etc.
 
 \section{Applications of this Methodology}
 
