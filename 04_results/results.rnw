@@ -46,8 +46,8 @@ roads_buff <- read_sf("/home/cjber/drive/uni/envs492/main/data/derived/roads/roa
 aerial <- raster("/home/cjber/drive/uni/envs492/main/data/derived/aerial/aerial_crop.tif")
 
 rd_f <- "road_6"
-las <- lasclip(las, extent(roads_buff[roads_buff$road_id == rd_f,]))
-aerial <- raster::crop(aerial, extent(roads_buff[roads_buff$road_id == rd_f,]))
+las <- lasclip(las, extent(roads_buff[roads_buff$road_id == rd_f, ]))
+aerial <- raster::crop(aerial, extent(roads_buff[roads_buff$road_id == rd_f, ]))
 aerial <- aggregate(aerial, fact = 8)
 
 aerial <- as(aerial, "SpatialPixelsDataFrame")
@@ -524,15 +524,36 @@ For a more comprehensive analysis of the overall suitability of the road width l
 // Adjust equations to fit with linear probability models: https://www.econometrics-with-r.org/11-1-binary-dependent-variables-and-the-linear-probability-model.html
 
 
+// Centering and scaling of predictor variables allow for easier interpretation of the results of the linear model without affecting statistical inferences, and retaining the same p values etc. See this: https://stats.stackexchange.com/questions/29781/when-conducting-multiple-regression-when-should-you-center-your-predictor-varia
+
+// Or standardised regression coefficients (beta)
 
 <<coeftest>>=
-cent1_lm <- fread("../data/derived/model_data/cent1_lm.csv")
+lm_beta <- function(model) {
+  b <- summary(model)$coef[-1, 1]
+  sx <- apply(model$model[-1], 2, sd)
+  sy <- apply(model$model[1], 2, sd)
+  beta <- b * sx / sy
+  return(beta)
+}
+
+cent1_lm <- fread("../data/derived/model_data/cent1_lm.csv") %>%
+  select(c(road_id, Intensity, lum, dists, Z, NumberOfReturns, road))
+
 f1 <- as.formula("road ~ Intensity + lum + dists + Z + NumberOfReturns")
-f2 <- as.formula("road ~ Intensity + dists + Z + NumberOfReturns")
+f2 <- as.formula("road ~ Intensity + dists")
 
 lm1 <- lm(data = cent1_lm, formula = f1)
-coeftest(lm1)
+lm1 <- lm_beta(lm1)
+lm2 <- lm(data = cent1_lm, formula = f2)
+lm2 <- lm_beta(lm2)
+summary(lm1)$coef[-1,1]
+sx <- sd((lm1$model[-1]))
+tidy(summary(lm1))
 @
+
+
+// Here note that I have removed variables from 2nd model due to these results, show incremental change from maximal to minimal. I think the minimal will create less false positives, due to the nature of this analysis it does seem to rely on a more qualitative approach
 
 
 <<>>=
@@ -556,15 +577,15 @@ widths <- fread("../data/final_data/final.csv") %>%
   na.omit()
 
 normalise_widths <- function(x, y) {
-    ifelse(x > y, 100 - ((x/y) * 100 - 100), x/y * 100) 
+  ifelse(x > y, 100 - ((x / y) * 100 - 100), x / y * 100)
 }
 
 norm_widths <- widths %>%
-    mutate_at(3:ncol(widths), ~normalise_widths(., estWidth)) %>% 
-    select(-estWidth)
+  mutate_at(3:ncol(widths), ~ normalise_widths(., estWidth)) %>%
+  select(-estWidth)
 
 norm_means <- widths %>%
-   mutate_at(3:ncol(widths), ~normalise_widths(., estWidth)) %>% 
+  mutate_at(3:ncol(widths), ~ normalise_widths(., estWidth)) %>%
   summarise_at(vars(1:length(widths)), funs(mean), na.rm = T) %>%
   select(-estWidth)
 
@@ -681,7 +702,7 @@ make_table(cor_tab, dig = 2, cap = "Correlation Matrix") %>%
 
 <<final>>=
 final_norm <- final_data %>%
-  select(-c(geom, len.x, len.y)) %>% 
+  select(-c(geom, len.x, len.y)) %>%
   na.omit()
 final_norm$reliability <- final_norm$tot_pts / final_norm$length
 
