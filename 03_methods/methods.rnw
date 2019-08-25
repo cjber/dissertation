@@ -173,6 +173,7 @@ make_table(tmp, cap = "OS Roads Data Summary",
 \subsection{Road Sampling}
 
 The LiDAR point cloud data was sampled at regular 10 meter intervals for each road, perpendicular to the road direction, ensuring that when road direction changed, the sampling locations remained perpendicular. Each road was first split into nodes at which road direction changes, and from this, points at 10 meter intervals between two connected nodes were calculated;
+
 $$
 p_k = p_1 + |p_2 - p_1| \times I_k
 $$
@@ -462,9 +463,9 @@ m \mapsto \frac{m-r_{\min }}{r_{\max }-r_{\min }}
 \end{aligned}
 \]
 
-where $r_{\text {min }}$ denotes the minimum of the range of a variable,  $r_{\text {max }}$ denotes the maximum of the range of a variable, and $m \in\left[r_{\text {min }}, r_{\text {max }}\right]$ denotes the variable to be scaled. As an increase in road width is associated with a higher quality road, as opposed to larger values of each other variable indicating a poorer quality road, the width values were first inversed before normalisation.
+Where $r_{\text {min }}$ denotes the minimum of the range of a variable,  $r_{\text {max }}$ denotes the maximum of the range of a variable, and $m \in\left[r_{\text {min }}, r_{\text {max }}\right]$ denotes the variable to be scaled. As an increase in road width is associated with a higher quality road, as opposed to larger values of each other variable indicating a poorer quality road, the width values were first inversed before normalisation.
 
-Following normalisation, the sum of all normalised variables for a particular road were taken, and subtracted from 1 to give positive values indicating better quality roads, and lower values indicating lower quality roads.
+Following normalisation, the sum of all normalised variables for a particular road were taken, and subtracted from 1 to give positive values indicating better quality roads, and lower values indicating lower quality roads. The value obtain from this was called the Road Quality Index.
 
 
 /add more to this tbh..
