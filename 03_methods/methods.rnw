@@ -165,9 +165,7 @@ tmp <- do.call(
 @
 
 <<roadstab, results='asis'>>=
-make_table(tmp, cap = "OS Roads Data Summary",
-           ) %>%
-  column_spec(2, width = "12em")
+make_table(tmp, cap = "OS Roads Data Summary")
 @
 
 The roads in this paper consist of these functions, \Sexpr{print(funcs)}, B roads considered classified, and other functions considered unclassified. All roads and single carriageway, and so for the purpose of this analysis it is assumed they likely have the default national speed limit of 60mph. Private roads were removed, as were roads below 50m, often those clipped by the extent of the LiDAR data. As many roads did not have a name to be identified by, a column called \texttt{road\_id} was produced, corresponding to a line segment between two junctions (not necessarily a full named road).
