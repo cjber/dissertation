@@ -4,7 +4,7 @@ The results of this paper can be considered to present the overall goal of autom
 
 \section{Road Classification and Width Extraction}
 
-// Mention logistic regression, considered but not used as results not better and requires a payoff.
+// Mention logistic regression, considered but not used as results not better and requires a payoff. See that link that talks about binary outcome variables
 
 Direct comparison between the computational efficiency of this method and past methods is not possible due to the unique data used in this study. However, \cite{zhang2016} outline some specifications of the dataset used in their supervised road centreline extraction using LiDAR and aerial imagery. With aerial imagery at a resolution of 15cm, and a total 5200 by 5000 pixels, the study area therefore covers \Sexpr{5200/(1/.15)}m by \Sexpr{5000/(1/.15)}m. Similar to the 1km$^2$ for this study. The total time taken for object extraction for this area in their method was \Sexpr{round(2272/60, 2)} minutes, compared with the \Sexpr{round(time_taken, 2)} minutes proposed in this paper. It is expected that the method proposed by \cite{zhang2016} should take far longer to compute due to being the inclusion of complex methodologies such as image segmentation through random forest classification. The methodology proposed by \cite{zhang2016} and other supervised road classification techniques rely on the existence of a training dataset, either derived through manual image segmentation, or the preexisting data itself.For this reason, I propose that practical applications of road classification should focus more on the inclusion of such data, including known road centreline geometries to provide a basis for techniques.
 
@@ -15,6 +15,8 @@ As outlined in subsection \ref{subsec:supervised}, few papers utilised a supervi
 NOTE: aerial data appears to provide little improvement over pure LiDAR. Appears in places to reduce accuracy due to the presence of shadows.
 - Past studies of UK rural roads.
 // optimisations, smooth edges from past studies etc.
+
+// RANSAC should be implemented to remove sharp edges / whatever
 
 \section{Applications of this Methodology}
 
@@ -110,6 +112,12 @@ Supply chains rely on a well maintained road infrastructure, and as such, many r
 
     - \citep{steyvers2000}: note that road delineation lines also affect quality of roads. Method proposed doesn't account for ease of road edge detection through painted lines, quality of road edges etc. see also \citep{dewaard2004,charlton2018,charlton2016}
     - Drivers beliefs of correct speed limits: \citep{charlton2017}.
+<<>>=
+roads <- st_read("../data/derived/roads/roads_line.gpkg")
+@
+
+
+    Assumption that roads are a constant width, but due to using road id, sections between junctions, means that average road length was \Sexpr{mean(roads$len)}, unlikely that width changes significantly over this generally. However, due to current inaccuracy, mean taken so cant identify particular sections of road.
 
 \section{Recommendations}
 

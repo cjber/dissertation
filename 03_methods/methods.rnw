@@ -149,12 +149,12 @@ This section combines data extracted through the OS road shapefiles preprocessed
     \item Surface Quality
 \end{itemize}
 
-// Class differences, all single carriageway roads, therefore likely 60mph. Removed private roads. A roads + B roads + unclassified. Many unnamed roads, only identification possible through \texttt{identifier}, which splits roads by junctions.
-// filtered out roads below 50m, (generally partial roads cutoff by selection of 1km area)
 
 <<>>=
 roads_info <- fread("/home/cjber/drive/uni/envs492/main/data/osroads/roads_info.csv") %>% 
 select(-c(geometry, length_uom, name1_lang, name2_lang))
+
+funcs <- unique(roads_info$roadFunction)
 
 tmp <- do.call(
   data.frame,
@@ -169,6 +169,8 @@ make_table(tmp, cap = "OS Roads Data Summary",
            ) %>%
   column_spec(2, width = "12em")
 @
+
+The roads in this paper consist of these functions, \Sexpr{print(funcs)}, B roads considered classified, and other functions considered unclassified. All roads and single carriageway, and so for the purpose of this analysis it is assumed they likely have the default national speed limit of 60mph. Private roads were removed, as were roads below 50m, often those clipped by the extent of the LiDAR data. As many roads did not have a name to be identified by, a column called \texttt{road\_id} was produced, corresponding to a line segment between two junctions (not necessarily a full named road).
 
 \subsection{Road Sampling}
 
@@ -349,7 +351,7 @@ With the mid point of each classified road sample, these were than joined for fo
     \footnotesize{\ref{code:true_cents}}
 \end{flushright}
 
-Given the improvement in road centreline locations, it was considered feasible to construct linear probability models individually for each sample location on each road. This technique would allow for per road variation in material type or quality, and potentially reduce the amount of noise brought in from inaccurate centrelines. Preliminary testing of this method revealed that it was essential to remove any sample containing tree canopy, as given the small number of points, the predictions were based off points that misrepresented true road points. Additionally, individual linear models allowed for some filtering through p values //// improve
+Given the improvement in road centreline locations, it was considered feasible to construct linear probability models individually for each sample location on each road. This technique would allow for per road variation in material type or quality, and potentially reduce the amount of noise brought in from inaccurate centrelines. Preliminary testing of this method revealed that it was essential to remove any sample containing tree canopy, as given the small number of points, the predictions were based off points that misrepresented true road points. Additionally, individual linear models allowed for some filtering through $p$ values, which was not achievable through global linear models, given the very large number of points. 
 
 \subsection{Road Angles}
 
@@ -465,7 +467,4 @@ m \mapsto \frac{m-r_{\min }}{r_{\max }-r_{\min }}
 
 Where $r_{\text {min }}$ denotes the minimum of the range of a variable,  $r_{\text {max }}$ denotes the maximum of the range of a variable, and $m \in\left[r_{\text {min }}, r_{\text {max }}\right]$ denotes the variable to be scaled. As an increase in road width is associated with a higher quality road, as opposed to larger values of each other variable indicating a poorer quality road, the width values were first inversed before normalisation.
 
-Following normalisation, the sum of all normalised variables for a particular road were taken, and subtracted from 1 to give positive values indicating better quality roads, and lower values indicating lower quality roads. The value obtain from this was called the Road Quality Index.
-
-
-/add more to this tbh..
+Following normalisation, the sum of all normalised variables for a particular road were taken, and subtracted from 1 to give positive values indicating better quality roads, and lower values indicating lower quality roads. The value obtained from this was called the Road Quality Index.

@@ -183,21 +183,23 @@ plot_grid(
 
 Following intensity noise filtering, the highest intensity value was now $\Sexpr{max(clean_las$Intensity)}$, with a mean of $\Sexpr{round(mean(clean_las$Intensity), 0)}$. Figure \ref{fig:hist_lidar} gives the distribution of Intensity values for all points within the study area, showing two clear spikes in intensity, at at value of around 50, with another around 350.
 
-Figure \ref{fig:fig_lp} gives the results of further LiDAR preprocessing, comparing \ref{fig:fig_lp} \textbf{(A)} and \ref{fig:fig_lp} \textbf{(B)}, shows how last pulse LiDAR filtering allows for the removal of the majority of tree canopies, leaving only ground points that are considered hard surfaces, and as such are the lowest point the laser pulse has penetrated. Additionally, \textbf{(B)} shows how a digital terrain model, created through interpolation techniques using only the base point cloud may be used to normalise the points, giving a digital surface model which only shows the true height of surface objects, without having to consider the variation in lie of the land. Figure \ref{fig:fig_lp} \textbf{(C)} shows that while filtering for last pulse returns may appear to remove much of the canopy, reflected in the $z$ values, the intensity values for points that have penetrated the canopy are lower than those that did not. This particularly creates issues in the distinction between road and non road in neighbouring areas where the intensity "shadow" created removes the distinct difference in intensity. This essentially suggests that for ground points with multiple returns, the intensity values are likely far less reliable for road classification. Further considering this limitation reveals that for ground classified points with a single return the average intensity value is $\Sexpr{one_return}$, while for ground classified points with multiple returns, the average intensity value is $\Sexpr{mult_return}$.
+Figure \ref{fig:fig_lp} gives the results of further LiDAR preprocessing, comparing Figure \ref{fig:fig_lp} \textbf{(A)} and Figure \ref{fig:fig_lp} \textbf{(B)}, shows how last pulse LiDAR filtering allows for the removal of the majority of tree canopies, leaving only ground points that are considered hard surfaces, and as such are the lowest point the laser pulse has penetrated. Additionally, Figure \ref{fig:fig_lp} \textbf{(B)} shows how a digital terrain model, created through interpolation techniques, using only the base point cloud may be used to normalise the points, giving a digital surface model which only shows the true height of surface objects, without having to consider the variation in lie of the land. Figure \ref{fig:fig_lp} \textbf{(C)} shows that while filtering for last pulse returns may appear to remove much of the canopy, reflected in the $z$ values, the intensity values for points that have penetrated the canopy are lower than those that did not (See the tree just below the centre of the road section). This particularly creates issues in the distinction between road and non road in neighbouring areas where the intensity "shadow" created removes the distinct difference in intensity. This suggests that for ground points with multiple returns, the intensity values are likely far less reliable for road classification. Quantitative analysis of this limitation reveals that for ground classified points with a single return the average intensity value is $\Sexpr{one_return}$, while for ground classified points with multiple returns, the average intensity value is $\Sexpr{mult_return}$.
 
 \section{Perpendicular Sampling}
 
 <<sample_lines>>=
 las <- catalog("../data/point/")
 pt_records <- las@data$Number.of.point.records
+
 sampled_las <- fread("../data/derived/model_data/sampled_las.csv")
 
 sample_lines <- st_read("../data/derived/roads/sample_lines.gpkg", quiet = TRUE)
 roads <- st_read("../data/derived/roads/roads_line.gpkg", quiet = TRUE)
+
+reduc <- 100 - (nrow(sampled_las) / pt_records * 100)
 @
 
-
-Unlike previous road classification methodologies, this paper aims to focus primarily on road feature extraction, and not the accurate extraction of road locations, as the full open resource provided by Ordnance Survey already exists. Due to this, a sampling methodology was considered for several reasons; sampling the LiDAR point cloud gives a significant reduction in the number of points that need to be processed. Using the 30m buffer from known road locations, and sample line extraction, the number of points from the original LiDAR point cloud for the 1km$^2$ area was reduced from $\Sexpr{pt_records}$ to $\Sexpr{nrow(sampled_las)}$ giving a reduction in number of points by $\Sexpr{100 - (nrow(sampled_las) / pt_records * 100)}$\%. Additionally, including sample lines allowed for filtering based on features of each sample, allowing for samples fully obscured by canopy to be identified through the number of returns, and excluded easily if required.
+Unlike previous road classification methodologies, this paper aims to focus primarily on road feature extraction, and not the accurate extraction of road locations, as road centerline locations provided by Ordnance Survey already exists. Due to this, a sampling methodology was considered for several reasons; sampling the LiDAR point cloud gives a significant reduction in the number of points that need to be processed. Using the 30m buffer from known road locations, and sample line extraction, the number of points from the original LiDAR point cloud for the 1km$^2$ area was reduced from $\Sexpr{pt_records %>% comma()}$ to $\Sexpr{nrow(sampled_las) %>% comma()}$ giving a reduction in number of points by $\Sexpr{round(reduc, 2)}$\%. Additionally, including sample lines allowed for filtering based on features of each sample, allowing for samples fully obscured by canopy to be identified through the number of returns, and excluded easily if required.
 
 <<sample_fig, fig.cap="Sample lines extracted based on known road locations">>=
 ggplot() +
@@ -243,8 +245,8 @@ names(corResults) <- c(
   "Upper CI †"
 )
 @
-<<corr_table, results = 'asis'>>=
 # Create Table 1
+<<corr_table, results = 'asis'>>=
 make_table(corResults, # align col 1 left, rest centred
   cap = "Spearman's rank correlation coefficients for all variables in relation to the road outcome variable"
 ) %>%
@@ -272,7 +274,7 @@ This first (maximal) model was constructed as;
 \end{aligned}
 \end{equation}
 
-As proposed in Chapter \ref{ch:methods}, the road outcome variable was given as points that fell within a 2m buffer of the known road centreline locations. As such, this meant that a fair number of false negative points are expected to have occured, where points outside 2m of a road centreline location and incorrectly classified as non-road. Due to this, the classification of non-road and road was not a simple selection of points that were above a 50\% threshold prediction as being road. To determine an appropriate cutoff for road predictions a histogram was produced which gave insight into the distribution of the linear prediction values (Figure \ref{fig:lmdistributions}).
+As proposed in Chapter \ref{ch:methods}, the road outcome variable was given as points that fell within a 2m buffer of the known road centreline locations. As such, this meant that a fair number of false negative points are expected to have occurred, where points outside 2m of a road centreline location and incorrectly classified as non-road. Due to this, the classification of non-road and road was not a simple selection of points that were above a 50\% threshold prediction as being road. To determine an appropriate cutoff for road predictions a histogram was produced which gave insight into the distribution of the linear prediction values (Figure \ref{fig:lmdistributions}).
 
 <<lmdistributions, fig.cap = "Linear Model Probability Distributions for the Maximal Model, showing vertical lines at the 95th, 90th, and 80th quantile of the distribution">>=
 lm_preds <- fread("../data/derived/model_data/linearmodels.csv") %>%
