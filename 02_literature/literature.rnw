@@ -49,7 +49,6 @@ Lowering the speed limit on roads has been shown to result in an overall reducti
 
 \cite{taylor2000}  demonstrated that traffic flow, link length, and the number of minor junctions all directly increased the number of accidents, while wider roads were associated with a reduction in the number of accidents. The \textit{MASTER: Speed-accident relationship on European roads} \citep{baruya1998}, assessed road geometry and other features of roads, however road data for the United Kingdom was limited to a small area in the South East, suggesting that a comprehensive methodology for the extraction of UK rural road geometry is required for a more comprehensive study.
 
-Developed speed tool:
 \citep{departmentfortransport2013a} Straightforward method for determining appropriate speed limits.Forcasting speed reduction and therefore accident reduction with revised speed limits. Does not take into account road geometry etc.
 
 \subsection{Accessibility}
