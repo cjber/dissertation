@@ -30,8 +30,6 @@ pkgs <- c(
   "parallel",
   "showtext",
   "data.table",
-  "dtplyr",
-  "dplyr",
   "lmtest"
 )
 

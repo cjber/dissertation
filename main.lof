@@ -1,0 +1,19 @@
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Study area highlighting road geometries outlined in a lighter 30m buffer}}{4}{figure.caption.4}% 
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Road LiDAR points at maximum distance apart for each sample location. Showing two example sample locations ($A$ and $B$), road centreline represented by the thick grey line. True road width is indicated by the dashed lines $O_A$ and $O_B$.\relax }}{20}{figure.caption.8}% 
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Bearing Angle Between Road Segments\relax }}{21}{figure.caption.9}% 
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Bearing Angle Between two Road Segments\relax }}{22}{figure.caption.10}% 
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces LiDAR Intensity distribution, post noise filtering}}{25}{figure.caption.11}% 
+\contentsline {figure}{\numberline {4.2}{\ignorespaces LiDAR point clouds for one selected road section aggregated into 1m$^2$ grids, \textbf {(A)} Base point cloud $Z$ values, \textbf {(B)} Normalised Point cloud $Z$ values for only last returns ($lpz$) \textbf {(C)} Normalised Point cloud $Intensity$ values for last return, \textbf {(D)} Aerial Data combined to 1 band}}{26}{figure.caption.12}% 
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Sample lines extracted based on known road locations}}{27}{figure.caption.13}% 
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Linear Model Probability Distributions for the Maximal Model, showing vertical lines at the 95th, 90th, and 80th quantile of the distribution}}{28}{figure.caption.15}% 
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Comparison between Linear Prediction Quantiles showing an example road segment}}{29}{figure.caption.16}% 
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Comparison between Linear Probability models applied to}}{30}{figure.caption.17}% 
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
