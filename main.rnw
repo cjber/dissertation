@@ -97,6 +97,11 @@ cat(paste0("\\nocite{", paste0(pkgs, collapse = ',', sep = ''),"}"))
 
 \listoftables
 
+\makeglossaries
+\newacronym{lidar}{LiDAR}{Light Detection and Ranging}
+\newacronym{dtm}{DTM}{Digital Terrain Model}
+\newacronym{dtm}{DTM}{Digital Terrain Model}
+
 % ===========================================================================================================
 % Main matter
 % ===========================================================================================================
