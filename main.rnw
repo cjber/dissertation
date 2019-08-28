@@ -102,6 +102,8 @@ cat(paste0("\\nocite{", paste0(pkgs, collapse = ',', sep = ''),"}"))
     \item \textbf{Light Detection and Ranging (LiDAR):} similar to radar, a laser pulse is sent out of a transmitter on an aircraft or ground vehicle and the light is reflected back to a receiver.
     \item \textbf{Digital Terrain Model (DTM):} digital representation of the land surface topography without surface objects.
     \item \textbf{Digital Surface Model (DSM):} digital representation of the land surface capturing all natural and built features.
+    \item \textbf{Social Mobility:} blah..
+    \item \textbf{Social Exclusion:} blah..
 \end{itemize}
 \end{multicols}
 
