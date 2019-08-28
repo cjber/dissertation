@@ -1,7 +1,3 @@
-c1p3: LiDAR (Light Detection and Radar or whatever it is)
-c1p3: pulses, repetition of laser pulse. also change z since not already defined.
-c1p3: often twice
-c1p3: reword 1.1.2 sentence.
 c1p3: reflectance, just say intensity tbh.
 c1p3: missing ref.
 c1p4: time consuming/lengthy or intensive etc.
