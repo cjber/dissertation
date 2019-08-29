@@ -13,7 +13,7 @@ As noted in Section \ref{sec:overview}, computation time is considered an import
 
 Table \ref{tab:lidartab} indicates that there are likely some points with noise, particularly reflected by the highest intensity value ($\Sexpr{max(lidar_tab$Intensity)}$) relative to the mean value ($\Sexpr{round(mean(lidar_tab$Intensity),0)}$). As noted in previous LiDAR classification methods, intensity is often subject to noise, therefore a simplistic noise exclusion technique was considered, as described in section \ref{subsec:noise}, presented by \cite{lidR}.
 
-<<hist_lidar, fig.cap="LiDAR point cloud intensity distribution, post noise filtering", fig.showtext=TRUE, fig.height = 4>>=
+<<hist_lidar, fig.cap="LiDAR point cloud intensity distribution, post noise filtering", fig.showtext=TRUE, fig.height = 5>>=
 font_add_google("Roboto", "roboto")
 font_add_google("Roboto Slab", "robotosl")
 
@@ -34,11 +34,27 @@ hist_i <- ggplot(clean_las, aes(x = Intensity)) +
     strip.background = element_blank(),
     panel.border = element_rect(colour = "black", fill = NA, size = 1)
   ) +
-  labs(x = "Intensity Values", y = "Distribution") +
+  labs(x = paste("Intensity", "Values"), y = "Distribution") +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0))
-
-hist_i
+hist_z <- ggplot(clean_las, aes(x = Z)) +
+  geom_histogram(aes(y = ..density..), colour = "black", fill = "white", bins = 30) +
+  geom_density(aes(x = Z), fill = "#FF6666", alpha = .2, size = 1) +
+  theme_classic() +
+  theme(
+    axis.ticks.y = element_blank(),
+    axis.line = element_blank(),
+    axis.text = element_text(size = 9, family = "roboto"),
+    axis.title = element_text(size = 10, family = "robotosl"),
+    axis.text.y = element_blank(),
+    legend.title = element_blank(),
+    legend.position = "bottom",
+    strip.background = element_blank(),
+    panel.border = element_rect(colour = "black", fill = NA, size = 1)
+  ) +
+  labs(x = paste("Z", "Values"), y = "Distribution") +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0))
 @
 <<fig.show = 'hide'>>=
 las <- catalog("/home/cjber/drive/uni/envs492/main/data/point")
@@ -206,7 +222,7 @@ Unlike previous road classification methodologies, this paper aims to focus prim
 Selected based on literature, and correlation analysis of the variables (Table \ref{tab:corr}), the first model was constructed to include all variables of importance from the LiDAR point cloud, $z$, Intensity, and Number of Returns. Additionally, luminescence from aerial imagery was included, and the minimum distance of a point from the known road centreline location.
 
 
-<<lmdistributions, fig.cap = "Linear Model Probability Distributions for the Maximal Model, showing vertical lines at the 95th, 90th, and 80th quantile of the distribution", fig.height = 4>>=
+<<lmdistributions, fig.cap = "Linear Model Probability Distributions for the Maximal Model, showing vertical lines at the 95th, 90th, and 80th quantile of the distribution", fig.height = 5>>=
 lm_preds <- fread("../data/derived/model_data/linearmodels.csv") %>%
   select(c(lm1_pred)) %>%
   melt() # longtable

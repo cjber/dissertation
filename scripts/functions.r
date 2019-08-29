@@ -51,12 +51,13 @@ make_table <- function(df, cap = "", dig = 2, col_names = NA, table_env = "table
     col.names = col_names,
     table.env = table_env # change to figure*
   ) %>%
-    kable_styling(font_size = 9, position = 'center') %>%
+    kable_styling(font_size = 9, position = "center") %>%
     row_spec(0, bold = TRUE)
 }
 
+cluster <- catalog("../data/point/SJ8068_P_10377_20160325_20160325.laz")
 ## ---- ctg_to_df
-ctg_to_df <- function(cluster) {
+ctg_to_df <- function(cluster, aerial = NULL) {
   # read cluster as LAS
   las <- readLAS(cluster)
   # dont read empty clusters
@@ -66,12 +67,17 @@ ctg_to_df <- function(cluster) {
   }
   # to sp then tibble
   las <- las %>%
-      as.spatial() %>%
-      as_tibble()
+    as.spatial()
+
+if (is.null(aerial) == FALSE){
+  las@data$lum <- as.numeric(raster::extract(aerial, las))
+}
   # sp to df
   las <- as.data.frame(las)
   return(las)
 }
+
+ctg_to_df(cluster)
 
 ## ---- clip_samples
 clip_samples <- function(cluster, x) {
@@ -92,21 +98,29 @@ clip_samples <- function(cluster, x) {
 }
 
 ## ---- las_filter_noise
-las_filter_noise <- function(cluster, sensitivity) {
+las_filter_noise <- function(cluster, sensitivity = 1) {
   las <- readLAS(cluster)
   if (is.empty(las)) {
     return(NULL)
   }
   # find 95th quantile intensity values per 10m^2
-  p95 <- grid_metrics(las, ~ quantile(Intensity, probs = 0.95), 10)
+  p95i <- grid_metrics(las, ~ quantile(Intensity, probs = 0.95), 10)
+  p95z <- grid_metrics(las, ~ quantile(Z, probs = 0.95), 10)
   # join by merging
-  las <- lasmergespatial(las, p95, "p95")
+  las <- lasmergespatial(las, p95i, "p95i")
   # remove above 95th quantile
-  las <- lasfilter(las, Intensity < p95 * sensitivity)
+  las <- lasfilter(las, Intensity < p95i * sensitivity)
+
+  las <- lasmergespatial(las, p95z, "p95z")
+  # remove above 95th quantile
+  las <- lasfilter(las, Z < p95z * sensitivity)
   # remove unneeded var
-  las$p95 <- NULL
+  las$p95i <- NULL
+  las$p95z <- NULL
   return(las)
 }
+
+las_filter_noise(cluster, 1.2)
 
 ## ---- lidr_clean
 lidr_clean <- function(cluster) {
@@ -141,9 +155,9 @@ extract_buff <- function(cluster, clip_input) {
   if (!is.null(clip_input)) {
     las <- lasclip(las, clip_input)
 
-  # bind clipped inputs together
-  # as gives list depending on number of
-  # sp objects
+    # bind clipped inputs together
+    # as gives list depending on number of
+    # sp objects
     if (length(las) > 1) {
       for (i in 1:length(las)) {
         if (!is.empty(las[[i]])) {
@@ -341,7 +355,7 @@ filter_samples <- function(s) {
 # convert to a linestring to assume max detected road points
 max_dist <- function(x) {
   tot_dists <- c()
-# gives largest distances for a collection of pts
+  # gives largest distances for a collection of pts
   distances <- x %>%
     st_distance(by_element = FALSE) %>%
     unclass() %>%
@@ -353,7 +367,7 @@ max_dist <- function(x) {
     ) %>%
     arrange(desc(distance))
 
-# use colid to find index of pts with largest distances
+  # use colid to find index of pts with largest distances
   if (nrow(distances) > 0) {
     distances$colid <- gsub("[^0-9.-]", "", distances$colid)
     tot_dists <- rbind(tot_dists, max(distances$distance))
@@ -362,7 +376,7 @@ max_dist <- function(x) {
       unlist() %>%
       as.numeric()
 
-  # convert two pts to linestring
+    # convert two pts to linestring
     x <- x[distances, ] %>%
       st_combine() %>%
       st_sf() %>%
@@ -604,16 +618,17 @@ printList <- function(x, out.format = knitr::opts_knit$get("out.format"),
       itemCommand <- if (missing(marker)) {
         "\\item"
       } else {
-          sprintf("\\item[%s]", marker)
+        sprintf("\\item[%s]", marker)
       }
       listEnv <- c(
         sprintf("\\begin{%s}\n", environment),
-        sprintf("\n\\end{%s}\n", environment))
+        sprintf("\n\\end{%s}\n", environment)
+      )
       out <- paste(itemCommand, x, collapse = "\n")
       out <- sprintf("%s%s%s", listEnv[1], out, listEnv[2])
     } else {
       stop("Output format not supported.")
     }
   }
-    return(knitr::asis_output(out))
+  return(knitr::asis_output(out))
 }

@@ -190,3 +190,18 @@ names(linear_widths) <- c(
 
 roads <- merge(roads, linear_widths, by = "road_id")
 fwrite(roads, "../data/final_data/final.csv")
+
+# aerial data
+
+# ctg to points csv
+ctg <- catalog("../data/derived/ctg/")
+las <- catalog_apply(ctg, ctg_to_df, aerial)
+las <- do.call(rbind, las)
+las <- las %>%
+    select(-c(
+        Synthetic_flag,
+        Keypoint_flag,
+        Withheld_flag
+    ))
+
+fwrite(las, "../data/point/points_clean.csv")

@@ -97,20 +97,6 @@ opt_chunk_size(ctg_notnorm) <- 500
 opt_chunk_buffer(ctg_notnorm) <- 20
 catalog_apply(ctg_notnorm, extract_buff, roads_buff)
 
-# ctg to points csv
-ctg <- catalog("../data/derived/ctg/")
-las <- catalog_apply(ctg, ctg_to_df)
-las <- do.call(rbind, las)
-las <- las %>%
-    select(-c(
-        Synthetic_flag,
-        Keypoint_flag,
-        Withheld_flag
-    ))
-
-fwrite(las, "../data/point/points_clean.csv")
-
-
 # read in written roads file
 roads <- read_sf("../data/derived/roads/roads.gpkg")
 
