@@ -36,7 +36,7 @@ The total number of LiDAR points used in this study is \Sexpr{number_points}. Al
     \item \textbf{Intensity:} The amplitude of the return pulse, reflected back by the surface terrain or objects.
 	\item \textbf{ReturnNumber:} A number of range 1-5, indicating for a point, the corresponding order of a reflected laser pulse. A ReturnNumber of 1 indicates the first return for a pulse (and highest $z$ value), a return number of 5 indicates the last return (and lowest $z$ value).
 	\item \textbf{NumberOfReturns:} The number of return pulses for a single laser pulse (maximum of 5).
-    \item \textbf{Classification:} A number given to a point indicating a specific numeric classification. Of interest in this study is a classification of 2, indicating a ground point. More information can be found \href{http://desktop.arcgis.com/en/arcmap/10.3/manage-data/las-dataset/lidar-point-classification.htm}{here}, which outlines numerical classifications for various vegetation types and man made structures.
+    \item \textbf{Classification:} A number given to a point indicating a specific numeric classification. Of interest in this study is a classification of 2, indicating a ground point. More information can be found \href{http://desktop.arcgis.com/en/arcmap/10.3/manage-data/las-dataset/lidar-point-classification.htm}{here} \citep{esri2019}, which outlines numerical classifications for various vegetation types and man made structures.
 \end{itemize}
 
 <<>>=
@@ -81,7 +81,7 @@ $$
     \footnotesize{\ref{code:lidr_clean}}
 \end{flushright}
 
-where $m$  is the mass of a single LiDAR point (set to 1), $\Delta t$ is the time step between points and $G$ represents the gravity constant.
+where $m$  is the mass of a single LiDAR point (set to 1), $\Delta t$ is the time step between points and $G$ represents the gravity constant. The implementation of this algorithm was given as part of the \texttt{lidR} package.
 
 With the classification of ground points, (given $Classification = 2$), a full DTM may be produced through spatial interpolation of the classified points. This process is called normalisation, and ensures that when extracting height information, any observed values are due to objects on the surface of the terrain, and not due to the lie of the terrain itself. Interpolation uses the inverse distance weighting and $k$ nearest neighbours algorithms to produce the DTM. Nearest neighbours were selected as $k = 10$, with $p = 2$ for the inverse weighting, and used to produce a DTM with a resolution of 1m. This particular technique was selected over more comprehensive methods such as kriging as the number of points is very high, and the small benefit was considered minimal compared with the increase in computational load. The $z$ values from the DTM were then subtracted from the LiDAR point cloud, leaving a normalised point cloud.
 
@@ -112,7 +112,7 @@ where $\mathbf{c_i}$ represents a 10m$^2$ selection of LiDAR points, where each 
 
 \subsection{LiDAR Catalog}
 
-As mentioned above, object of class LiDAR catalog enabled more efficient processing through allowing LiDAR point cloud to be processed in predefined batch sizes. Considering a collection of processed LiDAR points, with last pulse, normalised, clipped to 30m road extents, and intensity noise filtered, following noise filtering points were grouped into 500m$^2$ areas;
+As mentioned above, objects of class LiDAR catalog enabled more efficient processing through allowing the LiDAR point cloud to be processed in predefined batch sizes. Considering a collection of processed LiDAR points, with last pulse, normalised, clipped to 30m road extents, and intensity noise filtered, points were grouped into 500m$^2$ areas;
 
 \[
 \begin{aligned}
@@ -138,11 +138,10 @@ And each 500$m^2$ area collectively represents the overall processed point cloud
 \section{Road Analysis}
 \label{sec:road-extraction}
 
-This section combines data extracted through the OS road shapefiles preprocessed LiDAR data, and aerial imagery to obtain a set of criteria to assess the chosen road network. These criteria are;
+This section combines data extracted through the OS road shapefiles, preprocessed LiDAR data, and aerial imagery to obtain a set of criteria to assess the chosen road network. These criteria are;
 
 
 \begin{itemize}
-\itemsep0em
     \item Road Width
     \item Bend Sharpness
     \item Road Steepness
@@ -168,22 +167,30 @@ tmp <- do.call(
 make_table(tmp, cap = "OS Roads Data Summary")
 @
 
-The roads in this paper consist of these functions, \Sexpr{print(funcs)}, B roads considered classified, and other functions considered unclassified. All roads and single carriageway, and so for the purpose of this analysis it is assumed they likely have the default national speed limit of 60mph. Private roads were removed, as were roads below 50m, often those clipped by the extent of the LiDAR data. As many roads did not have a name to be identified by, a column called \texttt{road\_id} was produced, corresponding to a line segment between two junctions (not necessarily a full named road).
+The roads in this paper consist of these functions; 
+
+\begin{itemize}
+<<results = 'asis'>>=
+cat(paste("\\item", funcs), sep = "\n")
+@
+\end{itemize}
+
+with B roads considered classified roads, and other functions considered unclassified. All roads are single carriageway, and so for the purpose of this analysis it is assumed they likely have the default national speed limit of 60mph. Private roads were removed, as were roads below 50m, often those clipped by the extent of the LiDAR data. As many roads did not have a name to be identified by, a column called \texttt{road\_id} was produced, corresponding to a line segment between two junctions (not necessarily a full named road).
 
 \subsection{Road Sampling}
 
-The LiDAR point cloud data was sampled at regular 10 meter intervals for each road, perpendicular to the road direction, ensuring that when road direction changed, the sampling locations remained perpendicular. Each road was first split into nodes at which road direction changes, and from this, points at 10 meter intervals between two connected nodes were calculated;
+The LiDAR point cloud data was sampled at regular 10 meter intervals for each road, perpendicular to the road direction, ensuring that when road direction changed, the sampling locations remained perpendicular. Each road was first split into nodes at which road direction changed, and from this, points at 10 meter intervals between two connected nodes were calculated;
 
 $$
 p_k = p_1 + |p_2 - p_1| \times I_k
 $$
 
-where $I_k$ is the interval value which increases by 10 meters until the length of the total distance of the node, given $I_{1}, I_{2}, \dots, I_{k}>0$ and $k \geq 2$.
+where $p_k$ is a calculated point long a line, $I_k$ is the interval value which increases by 10 meters until the length of the total distance of the node, given $I_{1}, I_{2}, \dots, I_{k}>0$ and $k \geq 2$.
 
 \[
 \begin{aligned}
-    I_k &= (L_k + 20) - T_k \\
-    L_1 &= 20 \\
+    I_k &= (L_k + 10) - T_k \\
+    L_1 &= 10 \\
     T_k &= T_{k-1}  + E
 \end{aligned}
 \]
@@ -193,19 +200,19 @@ where $I_k$ is the interval value which increases by 10 meters until the length 
 
 where $L_k$ is the distance from the start of the node to the current sample line position, $T_k$ is total length of all nodes within a road from the start of the road and $E$ is the euclidean distance between two nodes.
 
-To calculate the sample locations, perpendicular to the roads, first the $x$ and $y$ euclidean distances from a reference point $p_k$ and the end of the current node $n_2$ were calculated;
+To calculate the sample locations, perpendicular to the roads, first the $x$ and $y$ euclidean distances from a reference point $p_k$ and the end of the current node $n_{k+1}$ were calculated;
 
 \[
 \begin{aligned}
     len &= \sqrt{(n_{k+1} - p_k)} \\
-    len_n &= (n / len) \times (n_{k+1} - p_k)
+    p_i &= (30 / len) \times (n_{k+1} - p_k)
 \end{aligned}
 \]
 \begin{flushright}
     \footnotesize{\ref{code:perp}}
 \end{flushright}
 
-from this, the lengths were inverted, giving two points of distance $n$ from $p_k$. Inversion was achieved by subtracting the given $len_n$ $x$ value from $p_k$, while adding the $len_n$ $y$ value, and vice versa. These perpendicular sample lines were buffered to a width of 1m, giving a total area of 20m$^2$ per sample and spatially joined to the existing LiDAR point cloud data, removing any points that fell outside the sample lines.
+from this, the lengths were inverted, giving two points ($p_i$) of distance $30$ from $p_k$. Inversion was achieved by subtracting the given $len_n$ $x$ value from $p_k$, while adding the $len_n$ $y$ value, and vice versa. These perpendicular sample lines were buffered to a width of 2m, giving a total area of 120m$^2$ per sample. These were spatially joined to the existing LiDAR point cloud data, removing any points that fell outside the sample lines.
 
 \begin{flushright}
     \footnotesize{\ref{code:compute_samples}}

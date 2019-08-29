@@ -108,6 +108,7 @@ cat(paste0("\\nocite{", paste0(pkgs, collapse = ',', sep = ''),"}"))
     \item \textbf{Social Mobility:} blah..
     \item \textbf{Social Exclusion:} blah..
     \item \textbf{Read-eval-print loop (REPL):} blah..
+    \item \textbf{Root Mean Square Error (RMSE):} blah..
 \end{itemize}
 \end{multicols}
 
