@@ -320,8 +320,7 @@ $\mathbf{S}$ now gave of a collection of predicted road points for each sample l
 \draw[-] (.6,3.2) arc (135:200:.2);
 \node[] at (.4,3.12)  {$\theta_B$};
 \end{tikzpicture}
-\caption{Road LiDAR points at maximum distance apart for each sample location. Showing two example sample locations ($A$ and $B$), road centreline represented by the thick grey line. True road width is indicated by the dashed lines $O_A$ and $O_B$.}
-\label{fig:sample_points}
+\caption{Road LiDAR points at maximum distance apart for each sample location. Showing two example sample locations ($A$ and $B$), road centreline represented by the thick grey line. True road width is indicated by the dashed lines $O_A$ and $O_B$.}\label{fig:sample_points}
 \end{figure}
 
 To determine the width of the road section, according to the final two selected points at every node, Pythagoras could be used to find the opposite line length ($O_K$), perpendicular to the road segment, considering the distance between the two points to be the hypotenuse ($|K_1K_2|$) of a right angled triangle (Figure \ref{fig:sample_points}). The average width for each road identifier was then found.
@@ -363,7 +362,6 @@ The bend in a road was considered to be the \textit{bearing angle} $\theta$, fro
     \begin{figure}[htbp]
         \centering
 \begin{tikzpicture}[scale=7]
-
 \filldraw (.2,.4) circle[radius=.3pt] node [below left] {$A$};
 
 \draw[-] (0.1,.4) -- (0.3, .4);
@@ -376,8 +374,7 @@ The bend in a road was considered to be the \textit{bearing angle} $\theta$, fro
     \draw[<-] (0.28,.44) arc (45:90:.111);
     \node[] at (.25,.5)  {$\theta$};
 \end{tikzpicture}
-\label{fig:bearingang1}
-\caption{Bearing Angle Between Road Segments}
+\caption{Bearing Angle Between Road Segments}\label{fig:bearingang1}
 \end{figure}
 
 To find the angle $\theta$, the point $B$ can be represented into relation to point $A$ as;
@@ -466,6 +463,6 @@ m \mapsto \frac{m-r_{\min }}{r_{\max }-r_{\min }}
 \end{aligned}
 \]
 
-Where $r_{\text {min }}$ denotes the minimum of the range of a variable,  $r_{\text {max }}$ denotes the maximum of the range of a variable, and $m \in\left[r_{\text {min }}, r_{\text {max }}\right]$ denotes the variable to be scaled. As an increase in road width is associated with a higher quality road, as opposed to larger values of each other variable indicating a poorer quality road, the width values were first inversed before normalisation.
+Where $r_{\text {min }}$ denotes the minimum of the range of a variable,  $r_{\text {max }}$ denotes the maximum of the range of a variable, and $m \in\left[r_{\text {min }}, r_{\text {max }}\right]$ denotes the variable to be scaled. As an increase in road width is associated with a higher quality road, as opposed to larger values of each other variable indicating a poorer quality road, the width values were first inversed before normalisation. An additional variable, relitability was presented in addition to the RQI, which gives a value for the number of points per road length, ($P_n/L$), allowing for some information regarding the density of sample points to be considered in analysis.
 
-Following normalisation, the sum of all normalised variables for a particular road were taken, and subtracted from 1 to give positive values indicating better quality roads, and lower values indicating lower quality roads. The value obtained from this was called the Road Quality Index, presented in full on Table \ref{}.
+Following normalisation, the sum of all normalised variables for a particular road were taken, and subtracted from 1 to give positive values indicating better quality roads, and lower values indicating lower quality roads. The value obtained from this was called the Road Quality Index, presented in full on Table \ref{tab:rqi}.

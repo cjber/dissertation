@@ -225,8 +225,8 @@
 \newlabel{fig:sample_points}{{3.1}{20}{Road LiDAR points at maximum distance apart for each sample location. Showing two example sample locations ($A$ and $B$), road centreline represented by the thick grey line. True road width is indicated by the dashed lines $O_A$ and $O_B$.\relax }{figure.caption.9}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.4.2}Improved Road Centrelines}{20}{subsection.3.4.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.4.3}Road Angles}{21}{subsection.3.4.3}\protected@file@percent }
-\newlabel{fig:bearingang1}{{\caption@xref {fig:bearingang1}{ on input line 802}}{21}{Road Angles}{figure.caption.10}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces Bearing Angle Between Road Segments\relax }}{21}{figure.caption.10}\protected@file@percent }
+\newlabel{fig:bearingang1}{{3.2}{21}{Bearing Angle Between Road Segments\relax }{figure.caption.10}{}}
 \citation{QGIS}
 \@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces Bearing Angle Between two Road Segments\relax }}{22}{figure.caption.11}\protected@file@percent }
 \newlabel{fig:bearingang2}{{3.3}{22}{Bearing Angle Between two Road Segments\relax }{figure.caption.11}{}}
@@ -240,77 +240,73 @@
 \@writefile{lot}{\addvspace {10\p@ }}
 \newlabel{ch:results}{{4}{24}{Results}{chapter.4}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {4.1}Data Preprocessing}{24}{section.4.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces LiDAR Intensity distribution, post noise filtering}}{25}{figure.caption.12}\protected@file@percent }
-\newlabel{fig:hist_lidar}{{4.1}{25}{LiDAR Intensity distribution, post noise filtering}{figure.caption.12}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces LiDAR point clouds for one selected road section aggregated into 1m$^2$ grids, \textbf  {(A)} Base point cloud $Z$ values, \textbf  {(B)} Normalised Point cloud $Z$ values for only last returns ($lpz$) \textbf  {(C)} Normalised Point cloud $Intensity$ values for last return, \textbf  {(D)} Aerial Data combined to 1 band}}{26}{figure.caption.13}\protected@file@percent }
-\newlabel{fig:fig_lp}{{4.2}{26}{LiDAR point clouds for one selected road section aggregated into 1m$^2$ grids, \textbf {(A)} Base point cloud $Z$ values, \textbf {(B)} Normalised Point cloud $Z$ values for only last returns ($lpz$) \textbf {(C)} Normalised Point cloud $Intensity$ values for last return, \textbf {(D)} Aerial Data combined to 1 band}{figure.caption.13}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces LiDAR point cloud intensity distribution, post noise filtering}}{25}{figure.caption.12}\protected@file@percent }
+\newlabel{fig:hist_lidar}{{4.1}{25}{LiDAR point cloud intensity distribution, post noise filtering}{figure.caption.12}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces LiDAR point clouds for one selected road section aggregated into 2m$^2$ grids, \textbf  {(A)} Base point cloud $z$ values, road location indicated with a 30m buffer \textbf  {(B)} Normalised Point cloud $z$ values for only last returns ($lpz$) \textbf  {(C)} Normalised Point cloud $Intensity$ values for last returns, \textbf  {(D)} Aerial Data combined to 1 band}}{25}{figure.caption.13}\protected@file@percent }
+\newlabel{fig:fig_lp}{{4.2}{25}{LiDAR point clouds for one selected road section aggregated into 2m$^2$ grids, \textbf {(A)} Base point cloud $z$ values, road location indicated with a 30m buffer \textbf {(B)} Normalised Point cloud $z$ values for only last returns ($lpz$) \textbf {(C)} Normalised Point cloud $Intensity$ values for last returns, \textbf {(D)} Aerial Data combined to 1 band}{figure.caption.13}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {4.2}Perpendicular Sampling}{26}{section.4.2}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {4.3}{\ignorespaces Sample lines extracted based on known road locations}}{27}{figure.caption.14}\protected@file@percent }
-\newlabel{fig:sample_fig}{{4.3}{27}{Sample lines extracted based on known road locations}{figure.caption.14}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.3}Linear Probability Models}{27}{section.4.3}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {4.1}{\ignorespaces Spearman's rank correlation coefficients for all variables in relation to the road outcome variable\relax }}{28}{table.caption.15}\protected@file@percent }
-\newlabel{tab:corr_table}{{4.1}{28}{Spearman's rank correlation coefficients for all variables in relation to the road outcome variable\relax }{table.caption.15}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.4}{\ignorespaces Linear Model Probability Distributions for the Maximal Model, showing vertical lines at the 95th, 90th, and 80th quantile of the distribution}}{28}{figure.caption.16}\protected@file@percent }
-\newlabel{fig:lmdistributions}{{4.4}{28}{Linear Model Probability Distributions for the Maximal Model, showing vertical lines at the 95th, 90th, and 80th quantile of the distribution}{figure.caption.16}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.5}{\ignorespaces Comparison between Linear Prediction Quantiles showing an example road segment}}{29}{figure.caption.17}\protected@file@percent }
-\newlabel{fig:quant_fig}{{4.5}{29}{Comparison between Linear Prediction Quantiles showing an example road segment}{figure.caption.17}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.4}Corrected Centreline Extraction}{29}{section.4.4}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {4.6}{\ignorespaces Comparison between Linear Probability models applied to}}{30}{figure.caption.18}\protected@file@percent }
-\newlabel{fig:fig_noisecent}{{4.6}{30}{Comparison between Linear Probability models applied to}{figure.caption.18}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.5}Final Model Analysis}{30}{section.4.5}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {4.2}{\ignorespaces Comparison between different linear probability models for each individual road, in relation to estimated true road width\relax }}{31}{table.caption.19}\protected@file@percent }
-\newlabel{tab:est_widths}{{4.2}{31}{Comparison between different linear probability models for each individual road, in relation to estimated true road width\relax }{table.caption.19}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.6}Road Assessment}{32}{section.4.6}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {4.3}{\ignorespaces Correlation Matrix\relax }}{33}{table.caption.20}\protected@file@percent }
-\newlabel{tab:cor_table}{{4.3}{33}{Correlation Matrix\relax }{table.caption.20}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.7}Analysis of Road Features}{33}{section.4.7}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.7.1}Further Analysis}{33}{subsection.4.7.1}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {4.4}{\ignorespaces Overall Features Extracted from Roads in the Study Area\relax }}{34}{table.caption.21}\protected@file@percent }
-\newlabel{tab:final_table}{{4.4}{34}{Overall Features Extracted from Roads in the Study Area\relax }{table.caption.21}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.3}Linear Probability Model Sensitivity Analysis}{26}{section.4.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4.3}{\ignorespaces Linear Model Probability Distributions for the Maximal Model, showing vertical lines at the 95th, 90th, and 80th quantile of the distribution}}{27}{figure.caption.14}\protected@file@percent }
+\newlabel{fig:lmdistributions}{{4.3}{27}{Linear Model Probability Distributions for the Maximal Model, showing vertical lines at the 95th, 90th, and 80th quantile of the distribution}{figure.caption.14}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.4}{\ignorespaces Comparison between Linear Prediction Quantiles showing an example road segment}}{27}{figure.caption.15}\protected@file@percent }
+\newlabel{fig:quant_fig}{{4.4}{27}{Comparison between Linear Prediction Quantiles showing an example road segment}{figure.caption.15}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.5}{\ignorespaces Comparison between Linear Probability models applied to}}{28}{figure.caption.16}\protected@file@percent }
+\newlabel{fig:fig_noisecent}{{4.5}{28}{Comparison between Linear Probability models applied to}{figure.caption.16}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.4}Corrected Centreline Extraction}{28}{section.4.4}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4.1}{\ignorespaces Comparison between different linear probability models for each individual road, in relation to estimated true road width\relax }}{29}{table.caption.17}\protected@file@percent }
+\newlabel{tab:estwidths}{{4.1}{29}{Comparison between different linear probability models for each individual road, in relation to estimated true road width\relax }{table.caption.17}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.5}Final Model Analysis}{29}{section.4.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.6}Road Assessment}{30}{section.4.6}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4.2}{\ignorespaces Correlation Matrix\relax }}{31}{table.caption.18}\protected@file@percent }
+\newlabel{tab:corrs}{{4.2}{31}{Correlation Matrix\relax }{table.caption.18}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.7}Analysis of Road Features}{31}{section.4.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.7.1}Further Analysis}{31}{subsection.4.7.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4.3}{\ignorespaces Overall Features Extracted from Roads in the Study Area\relax }}{32}{table.caption.19}\protected@file@percent }
+\newlabel{tab:rqi}{{4.3}{32}{Overall Features Extracted from Roads in the Study Area\relax }{table.caption.19}{}}
 \citation{zhang2016}
 \citation{zhang2016}
 \citation{zhang2016}
 \citation{ukgovernment1997}
 \citation{ukgovernment1981}
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}Discussion}{35}{chapter.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Discussion}{33}{chapter.5}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{ch:discussion}{{5}{35}{Discussion}{chapter.5}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.1}Road Classification and Width Extraction}{35}{section.5.1}\protected@file@percent }
+\newlabel{ch:discussion}{{5}{33}{Discussion}{chapter.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}Road Classification and Width Extraction}{33}{section.5.1}\protected@file@percent }
 \citation{layton2012}
 \citation{layton2012}
 \citation{layton2012}
 \citation{layton2012}
-\citation{guiterrez2009}
+\citation{gutierrez2009}
 \citation{smith2012}
 \citation{manthorpe2008}
 \citation{smith2012}
-\citation{currie2008}
+\citation{currie2010}
 \citation{solomon2009}
 \citation{mulley2009}
-\@writefile{lot}{\contentsline {table}{\numberline {5.1}{\ignorespaces Recommended minimum Stopping Sight Distances at certain speeds \citep  {layton2012}\relax }}{36}{table.caption.22}\protected@file@percent }
-\newlabel{tab:ssd}{{5.1}{36}{Recommended minimum Stopping Sight Distances at certain speeds \citep {layton2012}\relax }{table.caption.22}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.2}Applications of this Methodology}{36}{section.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.1}Stopping Sight Distance}{36}{subsection.5.2.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5.1}{\ignorespaces Recommended minimum Stopping Sight Distances at certain speeds \citep  {layton2012}\relax }}{34}{table.caption.20}\protected@file@percent }
+\newlabel{tab:ssd}{{5.1}{34}{Recommended minimum Stopping Sight Distances at certain speeds \citep {layton2012}\relax }{table.caption.20}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}Applications of this Methodology}{34}{section.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.1}Stopping Sight Distance}{34}{subsection.5.2.1}\protected@file@percent }
 \citation{departmentfortransport2016}
 \citation{departmentfortransport2018a}
 \citation{inrix2019}
 \citation{tracc2019}
 \citation{farmer2003}
 \citation{mungall2005}
-\citation{malechi2003}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.2}Rural Accessibility}{37}{subsection.5.2.2}\protected@file@percent }
+\citation{malecki2003}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.2}Rural Accessibility}{35}{subsection.5.2.2}\protected@file@percent }
 \citation{riva2011}
 \citation{palmer2004}
 \citation{mulley2009}
 \citation{departmentfortransport2016}
 \citation{mulley2009}
-\citation{deete2009}
+\citation{deeter2009}
 \citation{robinson2009}
 \citation{builton2010}
 \citation{velaga2012}
 \citation{boulton2010}
-\citation{digitalbritain2009,boulton2010}
+\citation{carter2009,boulton2010}
 \citation{riva2011}
 \citation{champion2004}
 \citation{riva2011}
@@ -324,15 +320,15 @@
 \citation{steyvers2000}
 \citation{dewaard2004,charlton2018,charlton2016}
 \citation{charlton2017}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.3}Other Applications}{39}{subsection.5.2.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5.3}Limitations}{39}{section.5.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5.4}Recommendations}{39}{section.5.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.3}Other Applications}{37}{subsection.5.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.3}Limitations}{37}{section.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.4}Recommendations}{37}{section.5.4}\protected@file@percent }
 \bibstyle{agsm}
 \bibdata{kbib,rbib}
-\@writefile{toc}{\contentsline {chapter}{\numberline {6}Conclusion}{40}{chapter.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {6}Conclusion}{38}{chapter.6}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{ch:conclusion}{{6}{40}{Conclusion}{chapter.6}{}}
+\newlabel{ch:conclusion}{{6}{38}{Conclusion}{chapter.6}{}}
 \bibcite{aarts2006}{{1}{2006}{{Aarts \&\ {van Schagen}}}{{}}}
 \bibcite{nvimcom}{{2}{2019}{{Aquino}}{{}}}
 \bibcite{ggthemes}{{3}{2019}{{Arnold}}{{}}}
@@ -344,185 +340,194 @@
 \bibcite{rgdal}{{9}{2019}{{Bivand et~al.}}{{Bivand, Keitt \&\ Rowlingson}}}
 \bibcite{bosona2011}{{10}{2011}{{Bosona \&\ Gebresenbet}}{{}}}
 \bibcite{bridson2005}{{11}{2005}{{Bridson et~al.}}{{Bridson, Marino \&\ Fedkiw}}}
-\bibcite{champion2004}{{12}{2004}{{Champion}}{{}}}
-\bibcite{charaniya2004}{{13}{2004}{{Charaniya et~al.}}{{Charaniya, Manduchi \&\ Lodha}}}
-\bibcite{charlton2016}{{14}{2016}{{Charlton \&\ Starkey}}{{}}}
-\bibcite{charlton2017}{{15}{2017}{{Charlton \&\ Starkey}}{{}}}
-\bibcite{charlton2018}{{16}{2018}{{Charlton et~al.}}{{Charlton, Starkey \&\ Malhotra}}}
-\bibcite{clode2004}{{17}{2004}{{Clode et~al.}}{{Clode, Kootsookos \&\ Rottensteiner}}}
-\bibcite{corben2005}{{18}{2005}{{Corben et~al.}}{{Corben, Oxley, Koppel \&\ Johnston}}}
-\bibcite{darmawati2008}{{19}{2008}{{Darmawati}}{{}}}
-\bibcite{dewaard2004}{{20}{2004}{{{de Waard} et~al.}}{{{de Waard}, Steyvers \&\ Brookhuis}}}
-\bibcite{departmentfortransport2006}{{21}{2006}{{Department for Transport}}{{}}}
-\bibcite{departmentfortransport2011}{{22}{2011}{{Department for Transport}}{{}}}
-\bibcite{departmentfortransport2012}{{23}{2012}{{Department for Transport}}{{}}}
-\bibcite{departmentfortransport2013b}{{24}{2013{\em  a}}{{Department for Transport}}{{}}}
-\bibcite{departmentfortransport2013a}{{25}{2013{\em  b}}{{Department for Transport}}{{}}}
-\bibcite{departmentfortransport2016}{{26}{2016}{{Department for Transport}}{{}}}
-\bibcite{departmentfortransport2018a}{{27}{2018{\em  a}}{{Department for Transport}}{{}}}
-\bibcite{departmentfortransport2018b}{{28}{2018{\em  b}}{{Department for Transport}}{{}}}
-\bibcite{departmentfortransport2018}{{29}{2018{\em  c}}{{Department for Transport}}{{}}}
-\bibcite{departmentfortransport2019}{{30}{2019}{{Department for Transport}}{{}}}
-\bibcite{data.table}{{31}{2019}{{Dowle \&\ Srinivasan}}{{}}}
-\bibcite{dubes1992}{{32}{1992}{{Dubes \&\ Ohanian}}{{}}}
-\bibcite{elberink2000}{{33}{2000}{{Elberink \&\ Maas}}{{}}}
-\bibcite{environmentagency2019}{{34}{2019}{{Environment Agency}}{{}}}
-\bibcite{esri2019}{{35}{2019}{{ESRI}}{{}}}
-\bibcite{farmer2003}{{36}{2003}{{Farmer et~al.}}{{Farmer, Lauder, Richards \&\ Sharkey}}}
-\bibcite{ferchichi2005}{{37}{2005}{{Ferchichi \&\ {Shengrui Wang}}}{{}}}
-\bibcite{ferraz2016}{{38}{2016}{{Ferraz et~al.}}{{Ferraz, Mallet \&\ Chehata}}}
-\bibcite{finch1994}{{39}{1994}{{Finch et~al.}}{{Finch, Kompfner, Lockwood \&\ Maycock}}}
-\bibcite{fleming2009}{{40}{2009}{{Fleming et~al.}}{{Fleming, Frost \&\ Lambert}}}
-\bibcite{bibtex}{{41}{2017}{{Francois}}{{}}}
-\bibcite{viridis}{{42}{2018{\em  a}}{{Garnier}}{{}}}
-\bibcite{viridisLite}{{43}{2018{\em  b}}{{Garnier}}{{}}}
-\bibcite{benchmarkme}{{44}{2019}{{Gillespie}}{{}}}
-\bibcite{gray2001}{{45}{2001}{{Gray et~al.}}{{Gray, Farrington, Shaw, Martin \&\ Roberts}}}
-\bibcite{guan2013}{{46}{2013}{{Guan et~al.}}{{Guan, Ji, Zhong, Li \&\ Ren}}}
-\bibcite{gutierrez2009}{{47}{2009}{{Guti{\'e}rrez}}{{}}}
-\bibcite{hanck2019}{{48}{2019}{{Hanck et~al.}}{{Hanck, Arnold, Gerber \&\ Schmelzer}}}
-\bibcite{Hmisc}{{49}{2019}{{{Harrell Jr} et~al.}}{{{Harrell Jr}, with contributions~from Charles~Dupont \&\ many others.}}}
-\bibcite{hatger2002}{{50}{2002}{{Hatger}}{{}}}
-\bibcite{hatger2005}{{51}{2005}{{Hatger}}{{}}}
-\bibcite{haynes2000}{{52}{2000}{{Haynes \&\ Gale}}{{}}}
-\bibcite{highwaysengland2019}{{53}{2019}{{Highways England}}{{}}}
-\bibcite{raster}{{54}{2019}{{Hijmans}}{{}}}
-\bibcite{hodge2004}{{55}{2004}{{Hodge \&\ Monk}}{{}}}
-\bibcite{hu2004}{{56}{2004}{{Hu et~al.}}{{Hu, Tao \&\ Hu}}}
-\bibcite{ihaka2011}{{57}{2011}{{Ihaka}}{{}}}
-\bibcite{ilbery2004}{{58}{2004}{{Ilbery et~al.}}{{Ilbery, Maye, Kneafsey, Jenkins \&\ Walkley}}}
-\bibcite{inrix2019}{{59}{2019}{{INRIX}}{{}}}
-\bibcite{jaakkola2008}{{60}{2008}{{Jaakkola et~al.}}{{Jaakkola, Hyypp{\"a}, Hyypp{\"a} \&\ Kukko}}}
-\bibcite{ggpubr}{{61}{2019}{{Kassambara}}{{}}}
-\bibcite{knuth1984}{{62}{1984}{{Knuth}}{{}}}
-\bibcite{kraus1998}{{63}{1998}{{Kraus \&\ Pfeifer}}{{}}}
-\bibcite{kumar2013}{{64}{2013}{{Kumar et~al.}}{{Kumar, McElhinney, Lewis \&\ McCarthy}}}
-\bibcite{layton2012}{{65}{2012}{{Layton \&\ Dixon}}{{}}}
-\bibcite{RStoolbox}{{66}{2019}{{Leutner et~al.}}{{Leutner, Horning \&\ Schwalb-Willmann}}}
-\bibcite{li2016}{{67}{2016}{{Li et~al.}}{{Li, Hu, Guan \&\ Liu}}}
-\bibcite{maas1999}{{68}{1999}{{Maas}}{{}}}
-\bibcite{varhandle}{{69}{2018}{{Mahmoudian}}{{}}}
-\bibcite{manthorpe2008}{{70}{2008}{{Manthorpe et~al.}}{{Manthorpe, Iliffe, Clough, Cornes, Bright, Moriarty \&\ {Older People Researching Social Issues}}}}
-\bibcite{matkan2014}{{71}{2014}{{Matkan et~al.}}{{Matkan, Hajeb \&\ Sadeghian}}}
-\bibcite{moore2006}{{72}{2006}{{Moore et~al.}}{{Moore, Carey, Mills, Martin, Irinder, Kerry, Leask, Simmons \&\ Ashaari}}}
-\bibcite{mulley2009}{{73}{2009}{{Mulley \&\ Nelson}}{{}}}
-\bibcite{mungall2005}{{74}{2005}{{Mungall}}{{}}}
-\bibcite{nicholl2007}{{75}{2007}{{Nicholl et~al.}}{{Nicholl, West, Goodacre \&\ Turner}}}
-\bibcite{noctor2004}{{76}{2004}{{Noctor}}{{}}}
-\bibcite{sf}{{77}{2018}{{Pebesma}}{{}}}
-\bibcite{PerformanceAnalytics}{{78}{2019}{{Peterson \&\ Carl}}{{}}}
-\bibcite{QGIS}{{79}{2019}{{QGIS Development Team}}{{}}}
-\bibcite{showtext}{{80}{2019}{{Qiu \&\ authors/contributors of the included software. See file AUTHORS~for details.}}{{}}}
-\bibcite{parallel}{{81}{2019}{{R Core Team}}{{}}}
-\bibcite{richards2009}{{82}{2009}{{Richards \&\ Cuerden}}{{}}}
-\bibcite{riva2011}{{83}{2011}{{Riva et~al.}}{{Riva, Curtis \&\ Norman}}}
-\bibcite{broom}{{84}{2019}{{Robinson \&\ Hayes}}{{}}}
-\bibcite{rottensteiner2003}{{85}{2003}{{Rottensteiner et~al.}}{{Rottensteiner, Trinder, Clode \&\ Kubik}}}
-\bibcite{lidR}{{86}{2019}{{Roussel \&\ Auty}}{{}}}
-\bibcite{saeedi2009}{{87}{2009}{{Saeedi et~al.}}{{Saeedi, Samadzadegan \&\ {El-Sheimy}}}}
-\bibcite{sampath2008}{{88}{2008}{{Sampath \&\ Shan}}{{}}}
-\bibcite{smadja2010}{{89}{2010}{{Smadja et~al.}}{{Smadja, Ninot \&\ Gavrilovic}}}
-\bibcite{smith2012}{{90}{2012}{{Smith et~al.}}{{Smith, Hirsch \&\ Davis}}}
-\bibcite{pbapply}{{91}{2019}{{Solymos \&\ Zawadzki}}{{}}}
-\bibcite{steyvers2000}{{92}{2000}{{Steyvers \&\ De~Waard}}{{}}}
-\bibcite{stradling2008}{{93}{2008}{{Stradling et~al.}}{{Stradling, {Great Britain} \&\ {Department for Transport}}}}
-\bibcite{taylor2002}{{94}{2002}{{Taylor et~al.}}{{Taylor, Baruya \&\ Kennedy}}}
-\bibcite{taylor2000}{{95}{2000}{{Taylor et~al.}}{{Taylor, Lynam \&\ Baruya}}}
-\bibcite{theuniversityofedinborough2019}{{96}{2019}{{The University of Edinborough}}{{}}}
-\bibcite{tracc2019}{{97}{2019}{{TRACC}}{{}}}
-\bibcite{transportandthedepartmentoftheenvironment2000}{{98}{2000}{{Transport and the Department of the Environment}}{{}}}
-\bibcite{ukgovernment1981}{{99}{1981}{{UK Government}}{{}}}
-\bibcite{ukgovernment1997}{{100}{1997}{{UK Government}}{{}}}
-\bibcite{ukgovernment2011}{{101}{2011}{{UK Government}}{{}}}
-\bibcite{ukgovernment2019}{{102}{2019{\em  a}}{{UK Government}}{{}}}
-\bibcite{ukgovernment2019a}{{103}{2019{\em  b}}{{UK Government}}{{}}}
-\bibcite{velaga2012}{{104}{2012}{{Velaga et~al.}}{{Velaga, Beecroft, Nelson, Corsar \&\ Edwards}}}
-\bibcite{viner2004}{{105}{2004}{{Viner et~al.}}{{Viner, Sinhal \&\ Parry}}}
-\bibcite{vosselman2000}{{106}{2000}{{Vosselman}}{{}}}
-\bibcite{vosselman2009}{{107}{2009}{{Vosselman}}{{}}}
-\bibcite{vosselman2004}{{108}{2004}{{Vosselman et~al.}}{{Vosselman, Gorte, Sithole \&\ Rabbani}}}
-\bibcite{vosselman2009a}{{109}{2009}{{Vosselman \&\ Zhou}}{{}}}
-\bibcite{wan2007}{{110}{2007}{{Wan et~al.}}{{Wan, Shen, Song \&\ Liu}}}
-\bibcite{wang2009}{{111}{2009}{{Wang \&\ Shan}}{{}}}
-\bibcite{wang2015}{{112}{2015}{{Wang et~al.}}{{Wang, Song, Chen \&\ Yang}}}
-\bibcite{wickham2014}{{113}{2014}{{Wickham}}{{}}}
-\bibcite{tidyverse}{{114}{2017}{{Wickham}}{{}}}
-\bibcite{scales}{{115}{2018}{{Wickham}}{{}}}
-\bibcite{devtools}{{116}{2019}{{Wickham et~al.}}{{Wickham, Hester \&\ Chang}}}
-\bibcite{cowplot}{{117}{2019}{{Wilke}}{{}}}
-\bibcite{ENVS450}{{118}{n.d.}{{Williamson}}{{}}}
-\bibcite{wu2013}{{119}{2013}{{Wu et~al.}}{{Wu, Donnell, Himes \&\ Sasidharan}}}
-\bibcite{yadav2018}{{120}{2018}{{Yadav et~al.}}{{Yadav, Lohani \&\ Singh}}}
-\bibcite{yoon2009}{{121}{2009}{{Yoon \&\ Crane}}{{}}}
-\bibcite{lmtest}{{122}{2002}{{Zeileis \&\ Hothorn}}{{}}}
-\bibcite{zhang2003}{{123}{2003}{{{Zhang} et~al.}}{{{Zhang}, {Shu-Ching Chen}, Whitman, {Mei-Ling Shyu}, {Jianhua Yan} \&\ {Chengcui Zhang}}}}
-\bibcite{zhang2016}{{124}{2016}{{Zhang et~al.}}{{Zhang, Qi, Wan, Wang, Xie, Wang \&\ Yan}}}
-\bibcite{kableExtra}{{125}{2019}{{Zhu}}{{}}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {A}Code Appendix}{45}{appendix.A}\protected@file@percent }
+\bibcite{carter2009}{{12}{2009}{{Carter}}{{}}}
+\bibcite{champion2004}{{13}{2004}{{Champion}}{{}}}
+\bibcite{charaniya2004}{{14}{2004}{{Charaniya et~al.}}{{Charaniya, Manduchi \&\ Lodha}}}
+\bibcite{charlton2016}{{15}{2016}{{Charlton \&\ Starkey}}{{}}}
+\bibcite{charlton2017}{{16}{2017}{{Charlton \&\ Starkey}}{{}}}
+\bibcite{charlton2018}{{17}{2018}{{Charlton et~al.}}{{Charlton, Starkey \&\ Malhotra}}}
+\bibcite{clode2004}{{18}{2004}{{Clode et~al.}}{{Clode, Kootsookos \&\ Rottensteiner}}}
+\bibcite{corben2005}{{19}{2005}{{Corben et~al.}}{{Corben, Oxley, Koppel \&\ Johnston}}}
+\bibcite{currie2010}{{20}{2010}{{Currie}}{{}}}
+\bibcite{darmawati2008}{{21}{2008}{{Darmawati}}{{}}}
+\bibcite{dewaard2004}{{22}{2004}{{{de Waard} et~al.}}{{{de Waard}, Steyvers \&\ Brookhuis}}}
+\bibcite{departmentfortransport2006}{{23}{2006}{{Department for Transport}}{{}}}
+\bibcite{departmentfortransport2011}{{24}{2011}{{Department for Transport}}{{}}}
+\bibcite{departmentfortransport2012}{{25}{2012}{{Department for Transport}}{{}}}
+\bibcite{departmentfortransport2013b}{{26}{2013{\em  a}}{{Department for Transport}}{{}}}
+\bibcite{departmentfortransport2013a}{{27}{2013{\em  b}}{{Department for Transport}}{{}}}
+\bibcite{departmentfortransport2016}{{28}{2016}{{Department for Transport}}{{}}}
+\bibcite{departmentfortransport2018a}{{29}{2018{\em  a}}{{Department for Transport}}{{}}}
+\bibcite{departmentfortransport2018b}{{30}{2018{\em  b}}{{Department for Transport}}{{}}}
+\bibcite{departmentfortransport2018}{{31}{2018{\em  c}}{{Department for Transport}}{{}}}
+\bibcite{departmentfortransport2019}{{32}{2019}{{Department for Transport}}{{}}}
+\bibcite{data.table}{{33}{2019}{{Dowle \&\ Srinivasan}}{{}}}
+\bibcite{dubes1992}{{34}{1992}{{Dubes \&\ Ohanian}}{{}}}
+\bibcite{elberink2000}{{35}{2000}{{Elberink \&\ Maas}}{{}}}
+\bibcite{environmentagency2019}{{36}{2019}{{Environment Agency}}{{}}}
+\bibcite{esri2019}{{37}{2019}{{ESRI}}{{}}}
+\bibcite{farmer2003}{{38}{2003}{{Farmer et~al.}}{{Farmer, Lauder, Richards \&\ Sharkey}}}
+\bibcite{ferchichi2005}{{39}{2005}{{Ferchichi \&\ {Shengrui Wang}}}{{}}}
+\bibcite{ferraz2016}{{40}{2016}{{Ferraz et~al.}}{{Ferraz, Mallet \&\ Chehata}}}
+\bibcite{finch1994}{{41}{1994}{{Finch et~al.}}{{Finch, Kompfner, Lockwood \&\ Maycock}}}
+\bibcite{fleming2009}{{42}{2009}{{Fleming et~al.}}{{Fleming, Frost \&\ Lambert}}}
+\bibcite{bibtex}{{43}{2017}{{Francois}}{{}}}
+\bibcite{viridis}{{44}{2018{\em  a}}{{Garnier}}{{}}}
+\bibcite{viridisLite}{{45}{2018{\em  b}}{{Garnier}}{{}}}
+\bibcite{benchmarkme}{{46}{2019}{{Gillespie}}{{}}}
+\bibcite{gray2001}{{47}{2001}{{Gray et~al.}}{{Gray, Farrington, Shaw, Martin \&\ Roberts}}}
+\bibcite{guan2013}{{48}{2013}{{Guan et~al.}}{{Guan, Ji, Zhong, Li \&\ Ren}}}
+\bibcite{gutierrez2009}{{49}{2009}{{Guti{\'e}rrez}}{{}}}
+\bibcite{hanck2019}{{50}{2019}{{Hanck et~al.}}{{Hanck, Arnold, Gerber \&\ Schmelzer}}}
+\bibcite{Hmisc}{{51}{2019}{{{Harrell Jr} et~al.}}{{{Harrell Jr}, with contributions~from Charles~Dupont \&\ many others.}}}
+\bibcite{hatger2002}{{52}{2002}{{Hatger}}{{}}}
+\bibcite{hatger2005}{{53}{2005}{{Hatger}}{{}}}
+\bibcite{haynes2000}{{54}{2000}{{Haynes \&\ Gale}}{{}}}
+\bibcite{highwaysengland2019}{{55}{2019}{{Highways England}}{{}}}
+\bibcite{raster}{{56}{2019}{{Hijmans}}{{}}}
+\bibcite{hodge2004}{{57}{2004}{{Hodge \&\ Monk}}{{}}}
+\bibcite{hu2004}{{58}{2004}{{Hu et~al.}}{{Hu, Tao \&\ Hu}}}
+\bibcite{ihaka2011}{{59}{2011}{{Ihaka}}{{}}}
+\bibcite{ilbery2004}{{60}{2004}{{Ilbery et~al.}}{{Ilbery, Maye, Kneafsey, Jenkins \&\ Walkley}}}
+\bibcite{inrix2019}{{61}{2019}{{INRIX}}{{}}}
+\bibcite{jaakkola2008}{{62}{2008}{{Jaakkola et~al.}}{{Jaakkola, Hyypp{\"a}, Hyypp{\"a} \&\ Kukko}}}
+\bibcite{ggpubr}{{63}{2019}{{Kassambara}}{{}}}
+\bibcite{knuth1984}{{64}{1984}{{Knuth}}{{}}}
+\bibcite{kraus1998}{{65}{1998}{{Kraus \&\ Pfeifer}}{{}}}
+\bibcite{kumar2013}{{66}{2013}{{Kumar et~al.}}{{Kumar, McElhinney, Lewis \&\ McCarthy}}}
+\bibcite{layton2012}{{67}{2012}{{Layton \&\ Dixon}}{{}}}
+\bibcite{RStoolbox}{{68}{2019}{{Leutner et~al.}}{{Leutner, Horning \&\ Schwalb-Willmann}}}
+\bibcite{li2016}{{69}{2016}{{Li et~al.}}{{Li, Hu, Guan \&\ Liu}}}
+\bibcite{maas1999}{{70}{1999}{{Maas}}{{}}}
+\bibcite{varhandle}{{71}{2018}{{Mahmoudian}}{{}}}
+\bibcite{malecki2003}{{72}{2003}{{Malecki}}{{}}}
+\bibcite{manthorpe2008}{{73}{2008}{{Manthorpe et~al.}}{{Manthorpe, Iliffe, Clough, Cornes, Bright, Moriarty \&\ {Older People Researching Social Issues}}}}
+\bibcite{matkan2014}{{74}{2014}{{Matkan et~al.}}{{Matkan, Hajeb \&\ Sadeghian}}}
+\bibcite{moore2006}{{75}{2006}{{Moore et~al.}}{{Moore, Carey, Mills, Martin, Irinder, Kerry, Leask, Simmons \&\ Ashaari}}}
+\bibcite{mulley2009}{{76}{2009}{{Mulley \&\ Nelson}}{{}}}
+\bibcite{mungall2005}{{77}{2005}{{Mungall}}{{}}}
+\bibcite{nicholl2007}{{78}{2007}{{Nicholl et~al.}}{{Nicholl, West, Goodacre \&\ Turner}}}
+\bibcite{noctor2004}{{79}{2004}{{Noctor}}{{}}}
+\bibcite{palmer2004}{{80}{2004}{{Palmer et~al.}}{{Palmer, Dessouky \&\ Abdelmaguid}}}
+\bibcite{sf}{{81}{2018}{{Pebesma}}{{}}}
+\bibcite{PerformanceAnalytics}{{82}{2019}{{Peterson \&\ Carl}}{{}}}
+\bibcite{QGIS}{{83}{2019}{{QGIS Development Team}}{{}}}
+\bibcite{showtext}{{84}{2019}{{Qiu \&\ authors/contributors of the included software. See file AUTHORS~for details.}}{{}}}
+\bibcite{parallel}{{85}{2019}{{R Core Team}}{{}}}
+\bibcite{richards2009}{{86}{2009}{{Richards \&\ Cuerden}}{{}}}
+\bibcite{riva2011}{{87}{2011}{{Riva et~al.}}{{Riva, Curtis \&\ Norman}}}
+\bibcite{broom}{{88}{2019}{{Robinson \&\ Hayes}}{{}}}
+\bibcite{rottensteiner2003}{{89}{2003}{{Rottensteiner et~al.}}{{Rottensteiner, Trinder, Clode \&\ Kubik}}}
+\bibcite{lidR}{{90}{2019}{{Roussel \&\ Auty}}{{}}}
+\bibcite{saeedi2009}{{91}{2009}{{Saeedi et~al.}}{{Saeedi, Samadzadegan \&\ {El-Sheimy}}}}
+\bibcite{sampath2008}{{92}{2008}{{Sampath \&\ Shan}}{{}}}
+\bibcite{smadja2010}{{93}{2010}{{Smadja et~al.}}{{Smadja, Ninot \&\ Gavrilovic}}}
+\bibcite{smith2012}{{94}{2012}{{Smith et~al.}}{{Smith, Hirsch \&\ Davis}}}
+\bibcite{solomon2009}{{95}{2009}{{Solomon \&\ Titheridge}}{{}}}
+\bibcite{pbapply}{{96}{2019}{{Solymos \&\ Zawadzki}}{{}}}
+\bibcite{steyvers2000}{{97}{2000}{{Steyvers \&\ De~Waard}}{{}}}
+\bibcite{stradling2008}{{98}{2008}{{Stradling et~al.}}{{Stradling, {Great Britain} \&\ {Department for Transport}}}}
+\bibcite{taylor2002}{{99}{2002}{{Taylor et~al.}}{{Taylor, Baruya \&\ Kennedy}}}
+\bibcite{taylor2000}{{100}{2000}{{Taylor et~al.}}{{Taylor, Lynam \&\ Baruya}}}
+\bibcite{theuniversityofedinborough2019}{{101}{2019}{{The University of Edinborough}}{{}}}
+\bibcite{tracc2019}{{102}{2019}{{TRACC}}{{}}}
+\bibcite{transportandthedepartmentoftheenvironment2000}{{103}{2000}{{Transport and the Department of the Environment}}{{}}}
+\bibcite{ukgovernment1981}{{104}{1981}{{UK Government}}{{}}}
+\bibcite{ukgovernment1997}{{105}{1997}{{UK Government}}{{}}}
+\bibcite{ukgovernment2011}{{106}{2011}{{UK Government}}{{}}}
+\bibcite{ukgovernment2019}{{107}{2019{\em  a}}{{UK Government}}{{}}}
+\bibcite{ukgovernment2019a}{{108}{2019{\em  b}}{{UK Government}}{{}}}
+\bibcite{velaga2012}{{109}{2012}{{Velaga et~al.}}{{Velaga, Beecroft, Nelson, Corsar \&\ Edwards}}}
+\bibcite{viner2004}{{110}{2004}{{Viner et~al.}}{{Viner, Sinhal \&\ Parry}}}
+\bibcite{vosselman2000}{{111}{2000}{{Vosselman}}{{}}}
+\bibcite{vosselman2009}{{112}{2009}{{Vosselman}}{{}}}
+\bibcite{vosselman2004}{{113}{2004}{{Vosselman et~al.}}{{Vosselman, Gorte, Sithole \&\ Rabbani}}}
+\bibcite{vosselman2009a}{{114}{2009}{{Vosselman \&\ Zhou}}{{}}}
+\bibcite{wan2007}{{115}{2007}{{Wan et~al.}}{{Wan, Shen, Song \&\ Liu}}}
+\bibcite{wang2009}{{116}{2009}{{Wang \&\ Shan}}{{}}}
+\bibcite{wang2015}{{117}{2015}{{Wang et~al.}}{{Wang, Song, Chen \&\ Yang}}}
+\bibcite{wickham2014}{{118}{2014}{{Wickham}}{{}}}
+\bibcite{tidyverse}{{119}{2017}{{Wickham}}{{}}}
+\bibcite{scales}{{120}{2018}{{Wickham}}{{}}}
+\bibcite{devtools}{{121}{2019}{{Wickham et~al.}}{{Wickham, Hester \&\ Chang}}}
+\bibcite{cowplot}{{122}{2019}{{Wilke}}{{}}}
+\bibcite{ENVS450}{{123}{n.d.}{{Williamson}}{{}}}
+\bibcite{wu2013}{{124}{2013}{{Wu et~al.}}{{Wu, Donnell, Himes \&\ Sasidharan}}}
+\bibcite{yadav2018}{{125}{2018}{{Yadav et~al.}}{{Yadav, Lohani \&\ Singh}}}
+\bibcite{yoon2009}{{126}{2009}{{Yoon \&\ Crane}}{{}}}
+\bibcite{lmtest}{{127}{2002}{{Zeileis \&\ Hothorn}}{{}}}
+\bibcite{zhang2003}{{128}{2003}{{{Zhang} et~al.}}{{{Zhang}, {Shu-Ching Chen}, Whitman, {Mei-Ling Shyu}, {Jianhua Yan} \&\ {Chengcui Zhang}}}}
+\bibcite{zhang2016}{{129}{2016}{{Zhang et~al.}}{{Zhang, Qi, Wan, Wang, Xie, Wang \&\ Yan}}}
+\bibcite{kableExtra}{{130}{2019}{{Zhu}}{{}}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {A}Code Appendix}{43}{appendix.A}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{a:code}{{A}{45}{Code Appendix}{appendix.A}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {A.1}Session Information}{45}{section.A.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {A.2}Functions}{46}{section.A.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.1}Formatting}{46}{subsection.A.2.1}\protected@file@percent }
-\newlabel{code:make_table}{{A.2.1}{46}{Formatting}{subsection.A.2.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.2}Catalog to Dataframe}{46}{subsection.A.2.2}\protected@file@percent }
-\newlabel{code:ctg_to_df}{{A.2.2}{46}{Catalog to Dataframe}{subsection.A.2.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.3}Clip Samples}{46}{subsection.A.2.3}\protected@file@percent }
-\newlabel{code:clip_samples}{{A.2.3}{46}{Clip Samples}{subsection.A.2.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.4}Filter LAS Noise}{46}{subsection.A.2.4}\protected@file@percent }
-\newlabel{code:las_filter_noise}{{A.2.4}{46}{Filter LAS Noise}{subsection.A.2.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.5}LiDAR Clean}{47}{subsection.A.2.5}\protected@file@percent }
-\newlabel{code:lidr_clean}{{A.2.5}{47}{LiDAR Clean}{subsection.A.2.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.6}Extract Buffer}{47}{subsection.A.2.6}\protected@file@percent }
-\newlabel{code:extract_buff}{{A.2.6}{47}{Extract Buffer}{subsection.A.2.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.7}Find Distances}{47}{subsection.A.2.7}\protected@file@percent }
-\newlabel{code:find_dists}{{A.2.7}{47}{Find Distances}{subsection.A.2.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.8}Euclidean Distance}{47}{subsection.A.2.8}\protected@file@percent }
-\newlabel{code:euc}{{A.2.8}{47}{Euclidean Distance}{subsection.A.2.8}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.9}Perpendicular Sampling}{48}{subsection.A.2.9}\protected@file@percent }
-\newlabel{code:perp}{{A.2.9}{48}{Perpendicular Sampling}{subsection.A.2.9}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.10}Combine Catalog}{48}{subsection.A.2.10}\protected@file@percent }
-\newlabel{code:comb_ctg}{{A.2.10}{48}{Combine Catalog}{subsection.A.2.10}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.11}Compute Samples}{48}{subsection.A.2.11}\protected@file@percent }
-\newlabel{code:compute_samples}{{A.2.11}{48}{Compute Samples}{subsection.A.2.11}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.12}Greyscale}{49}{subsection.A.2.12}\protected@file@percent }
-\newlabel{code:greyscale}{{A.2.12}{49}{Greyscale}{subsection.A.2.12}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.13}Compute Individual Linear Model}{49}{subsection.A.2.13}\protected@file@percent }
-\newlabel{code:lm_compute}{{A.2.13}{49}{Compute Individual Linear Model}{subsection.A.2.13}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.14}Filter Returns}{50}{subsection.A.2.14}\protected@file@percent }
-\newlabel{code:filter_returns}{{A.2.14}{50}{Filter Returns}{subsection.A.2.14}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.15}Filter Samples}{50}{subsection.A.2.15}\protected@file@percent }
-\newlabel{code:filter_samples}{{A.2.15}{50}{Filter Samples}{subsection.A.2.15}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.16}Max Dist}{50}{subsection.A.2.16}\protected@file@percent }
-\newlabel{code:max_dist}{{A.2.16}{50}{Max Dist}{subsection.A.2.16}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.17}Max Lines}{51}{subsection.A.2.17}\protected@file@percent }
-\newlabel{code:max_lines}{{A.2.17}{51}{Max Lines}{subsection.A.2.17}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.18}Mid Points}{51}{subsection.A.2.18}\protected@file@percent }
-\newlabel{code:mid_pts}{{A.2.18}{51}{Mid Points}{subsection.A.2.18}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.19}True Centrelines}{51}{subsection.A.2.19}\protected@file@percent }
-\newlabel{code:true_cents}{{A.2.19}{51}{True Centrelines}{subsection.A.2.19}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.20}Opposite Length}{52}{subsection.A.2.20}\protected@file@percent }
-\newlabel{code:opposite_length}{{A.2.20}{52}{Opposite Length}{subsection.A.2.20}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.21}Model Comparison}{53}{subsection.A.2.21}\protected@file@percent }
-\newlabel{code:model_comparison}{{A.2.21}{53}{Model Comparison}{subsection.A.2.21}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.22}Road Angles}{53}{subsection.A.2.22}\protected@file@percent }
-\newlabel{code:road_angles}{{A.2.22}{53}{Road Angles}{subsection.A.2.22}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.23}Height Change}{53}{subsection.A.2.23}\protected@file@percent }
-\newlabel{code:height_change}{{A.2.23}{53}{Height Change}{subsection.A.2.23}{}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {B}Additional Tables}{55}{appendix.B}\protected@file@percent }
+\newlabel{a:code}{{A}{43}{Code Appendix}{appendix.A}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {A.1}Session Information}{43}{section.A.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {A.2}Functions}{44}{section.A.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.1}Formatting}{44}{subsection.A.2.1}\protected@file@percent }
+\newlabel{code:make_table}{{A.2.1}{44}{Formatting}{subsection.A.2.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.2}Catalog to Dataframe}{44}{subsection.A.2.2}\protected@file@percent }
+\newlabel{code:ctg_to_df}{{A.2.2}{44}{Catalog to Dataframe}{subsection.A.2.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.3}Clip Samples}{44}{subsection.A.2.3}\protected@file@percent }
+\newlabel{code:clip_samples}{{A.2.3}{44}{Clip Samples}{subsection.A.2.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.4}Filter LAS Noise}{44}{subsection.A.2.4}\protected@file@percent }
+\newlabel{code:las_filter_noise}{{A.2.4}{44}{Filter LAS Noise}{subsection.A.2.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.5}LiDAR Clean}{45}{subsection.A.2.5}\protected@file@percent }
+\newlabel{code:lidr_clean}{{A.2.5}{45}{LiDAR Clean}{subsection.A.2.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.6}Extract Buffer}{45}{subsection.A.2.6}\protected@file@percent }
+\newlabel{code:extract_buff}{{A.2.6}{45}{Extract Buffer}{subsection.A.2.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.7}Find Distances}{45}{subsection.A.2.7}\protected@file@percent }
+\newlabel{code:find_dists}{{A.2.7}{45}{Find Distances}{subsection.A.2.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.8}Euclidean Distance}{45}{subsection.A.2.8}\protected@file@percent }
+\newlabel{code:euc}{{A.2.8}{45}{Euclidean Distance}{subsection.A.2.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.9}Perpendicular Sampling}{46}{subsection.A.2.9}\protected@file@percent }
+\newlabel{code:perp}{{A.2.9}{46}{Perpendicular Sampling}{subsection.A.2.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.10}Combine Catalog}{46}{subsection.A.2.10}\protected@file@percent }
+\newlabel{code:comb_ctg}{{A.2.10}{46}{Combine Catalog}{subsection.A.2.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.11}Compute Samples}{46}{subsection.A.2.11}\protected@file@percent }
+\newlabel{code:compute_samples}{{A.2.11}{46}{Compute Samples}{subsection.A.2.11}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.12}Greyscale}{47}{subsection.A.2.12}\protected@file@percent }
+\newlabel{code:greyscale}{{A.2.12}{47}{Greyscale}{subsection.A.2.12}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.13}Compute Individual Linear Model}{47}{subsection.A.2.13}\protected@file@percent }
+\newlabel{code:lm_compute}{{A.2.13}{47}{Compute Individual Linear Model}{subsection.A.2.13}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.14}Filter Returns}{48}{subsection.A.2.14}\protected@file@percent }
+\newlabel{code:filter_returns}{{A.2.14}{48}{Filter Returns}{subsection.A.2.14}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.15}Filter Samples}{48}{subsection.A.2.15}\protected@file@percent }
+\newlabel{code:filter_samples}{{A.2.15}{48}{Filter Samples}{subsection.A.2.15}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.16}Max Dist}{48}{subsection.A.2.16}\protected@file@percent }
+\newlabel{code:max_dist}{{A.2.16}{48}{Max Dist}{subsection.A.2.16}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.17}Max Lines}{49}{subsection.A.2.17}\protected@file@percent }
+\newlabel{code:max_lines}{{A.2.17}{49}{Max Lines}{subsection.A.2.17}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.18}Mid Points}{49}{subsection.A.2.18}\protected@file@percent }
+\newlabel{code:mid_pts}{{A.2.18}{49}{Mid Points}{subsection.A.2.18}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.19}True Centrelines}{49}{subsection.A.2.19}\protected@file@percent }
+\newlabel{code:true_cents}{{A.2.19}{49}{True Centrelines}{subsection.A.2.19}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.20}Opposite Length}{50}{subsection.A.2.20}\protected@file@percent }
+\newlabel{code:opposite_length}{{A.2.20}{50}{Opposite Length}{subsection.A.2.20}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.21}Model Comparison}{51}{subsection.A.2.21}\protected@file@percent }
+\newlabel{code:model_comparison}{{A.2.21}{51}{Model Comparison}{subsection.A.2.21}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.22}Road Angles}{51}{subsection.A.2.22}\protected@file@percent }
+\newlabel{code:road_angles}{{A.2.22}{51}{Road Angles}{subsection.A.2.22}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2.23}Height Change}{51}{subsection.A.2.23}\protected@file@percent }
+\newlabel{code:height_change}{{A.2.23}{51}{Height Change}{subsection.A.2.23}{}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {B}Additional Tables}{53}{appendix.B}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{lot}{\contentsline {table}{\numberline {B.1}{\ignorespaces Bends for each road\relax }}{56}{table.caption.24}\protected@file@percent }
-\newlabel{tab:rd_bends}{{B.1}{56}{Bends for each road\relax }{table.caption.24}{}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {C}Scripts}{57}{appendix.C}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {B.1}{\ignorespaces Bends for each road\relax }}{54}{table.caption.22}\protected@file@percent }
+\newlabel{tab:rd_bends}{{B.1}{54}{Bends for each road\relax }{table.caption.22}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {B.2}{\ignorespaces Spearman's rank correlation coefficients for all variables in relation to the road outcome variable\relax }}{54}{table.caption.24}\protected@file@percent }
+\newlabel{tab:corr}{{B.2}{54}{Spearman's rank correlation coefficients for all variables in relation to the road outcome variable\relax }{table.caption.24}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {B.1}{\ignorespaces Sample lines extracted based on known road locations}}{55}{figure.caption.23}\protected@file@percent }
+\newlabel{fig:sample_fig}{{B.1}{55}{Sample lines extracted based on known road locations}{figure.caption.23}{}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {C}Scripts}{56}{appendix.C}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {C.1}Clean Data}{57}{section.C.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {C.2}Create Sample lines}{58}{section.C.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {C.3}Linear Models and Improve Centrelines}{60}{section.C.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {C.4}Road Widths}{60}{section.C.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {C.5}Improved Centreline Models}{62}{section.C.5}\protected@file@percent }
-\newlabel{LastPage}{{}{65}{}{page.65}{}}
-\xdef\lastpage@lastpage{65}
-\xdef\lastpage@lastpageHy{65}
+\@writefile{toc}{\contentsline {section}{\numberline {C.1}Clean Data}{56}{section.C.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {C.2}Create Sample lines}{57}{section.C.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {C.3}Linear Models and Improve Centrelines}{59}{section.C.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {C.4}Road Widths}{59}{section.C.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {C.5}Improved Centreline Models}{61}{section.C.5}\protected@file@percent }
+\newlabel{LastPage}{{}{64}{}{page.64}{}}
+\xdef\lastpage@lastpage{64}
+\xdef\lastpage@lastpageHy{64}
