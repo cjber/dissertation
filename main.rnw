@@ -36,6 +36,17 @@ source("./scripts/functions.r")
 write.bib(pkgs, "rbib.bib")
 r <- citation()
 write.bib(r, "rbib.bib", append = TRUE)
+
+# add qgis citation
+qgis <- 
+  "@Manual{QGIS,
+    title = {QGIS Geographic Information System},
+    author = {{QGIS Development Team}},
+    organization = {Open Source Geospatial Foundation},
+    year = {2019},
+    url = {http://qgis.org},
+  }"
+write(qgis, "rbib.bib", append = TRUE)
 # no cite all loaded packages from external bib
 cat(paste0("\\nocite{", paste0(pkgs, collapse = ',', sep = ''),"}"))
 @

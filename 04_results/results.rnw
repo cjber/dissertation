@@ -246,7 +246,7 @@ names(corResults) <- c(
 )
 @
 
-<<corr_table, results = 'asis'>>=
+<<corr, results = 'asis'>>=
 make_table(corResults, # align col 1 left, rest centred
   cap = "Spearman's rank correlation coefficients for all variables in relation to the road outcome variable"
 ) %>%
@@ -605,7 +605,7 @@ norm_widths <- norm_widths %>%
 
 norm_widths$road_id <- gsub("road_", "", norm_widths$road_id)
 @
-<<est_widths, fig.cap = "Comparison between different Linear Probability Models and the estimated road width">>=
+<<estwidths, fig.cap = "Comparison between different Linear Probability Models and the estimated road width", results = 'asis'>>=
 make_table(norm_widths,
   cap = "Comparison between different linear probability models for each individual road, in relation to estimated true road width",
   col_names = c(
@@ -621,7 +621,7 @@ make_table(norm_widths,
   row_spec(nrow(norm_widths) - 1, hline_after = T)
 @
 
-Table \ref{tab:est_widths} gives a normalised comparison between each linear model, and its associated estimated road width. Normalisation was achieved through finding the relative difference in width as a percentage;
+Table \ref{tab:estwidths} gives a normalised comparison between each linear model, and its associated estimated road width. Normalisation was achieved through finding the relative difference in width as a percentage;
 
 \[
 \begin{aligned}
@@ -637,7 +637,7 @@ where $\mathbf{W}_{n}$ is the normalised width, $\mathbf{W}$ is the average widt
 \end{aligned}
 \]
 
-given $\mathbf{W}_{n} > 100$. Table \ref{tab:est_widths} gives insight into the effectiveness of various linear probability models for each road, and road type. While average values all give relative accuracy in the region of 70\%, it appears likely that without adjusting the road centrelines, model probabilities are reduced given \textbf{LM 0} gives the lowest average accuracy in relation to the other three models using improved centrelines for outcome variable creation. Unexpectedly, the roads with the highest accuracy are Minor Roads, rather than B roads. For certain roads, the accuracy of the derived centrelines appear to vastly reduce model accuracy, (For example Road 36; Table \ref{tab:est_widths}).
+given $\mathbf{W}_{n} > 100$. Table \ref{tab:estwidths} gives insight into the effectiveness of various linear probability models for each road, and road type. While average values all give relative accuracy in the region of 70\%, it appears likely that without adjusting the road centrelines, model probabilities are reduced given \textbf{LM 0} gives the lowest average accuracy in relation to the other three models using improved centrelines for outcome variable creation. Unexpectedly, the roads with the highest accuracy are Minor Roads, rather than B roads. For certain roads, the accuracy of the derived centrelines appear to vastly reduce model accuracy, (For example Road 36; Table \ref{tab:estwidths}).
 
 // Take examples from the table, roads with very different model results, see why.
 
@@ -738,7 +738,7 @@ summary_data <- merge(summary_data, qual_index, by = "road_id") %>%
   arrange(desc(qual_index))
 @
 
-<<final_table>>=
+<<rqi, results = 'asis'>>=
 make_table(summary_data,
   cap = "Overall Features Extracted from Roads in the Study Area",
   col_names = c(

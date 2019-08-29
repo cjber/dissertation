@@ -229,8 +229,6 @@ $$
     \footnotesize{\ref{code:lm_compute}}
 \end{flushright}
 
-To exclude as much noise as possible from both the LiDAR point cloud intensity information, and aerial luminescence, only points with the ground classification ($Classification = 2$), and points with only a single laser return pulse were included in the models.
-
 \subsection{Linear Probability Models}
 
 To classify road and non-road, linear models were constructed and compared to assess effectiveness. A maximal approach was chosen, selecting all appropriate predictor variables, iterating through models by removing variables that did not significantly influence the model outcome, or created noise.
@@ -287,7 +285,7 @@ Further qualitative assessment of the results revealed that some points consider
 
 given $\mathit{D}$ is the minimum distance between a point and any other point.
 
-$\mathbf{S}$ now gave of a collection of predicted road points for each sample line along a road segment, with noise removed.  To obtain road widths from these points, the maximum distance between two points in a particular sample was determined, these points were kept and all others removed. A linear section of road with two samples resembles Figure \ref{fig:sample_points};
+$\mathbf{S}$ now gave of a collection of predicted road points for each sample line along a road segment, with noise removed.  To obtain road widths from these points, the maximum distance between two points in a particular sample was determined, these points were kept and all others removed. A linear section of road with two samples resembles Figure \ref{fig:sample_points}.
 
 \begin{flushright}
     \footnotesize{\ref{code:max_dist}}
@@ -326,12 +324,10 @@ $\mathbf{S}$ now gave of a collection of predicted road points for each sample l
 \label{fig:sample_points}
 \end{figure}
 
-To determine the width of the road section, according to the final two selected points at every node, Pythagoras could be used to find the opposite line length, perpendicular to the road segment, considering the distance between the two points to be the hypotenuse of a right angled triangle (Figure \ref{fig:sample_points}). The average width for each road identifier was then found.
+To determine the width of the road section, according to the final two selected points at every node, Pythagoras could be used to find the opposite line length ($O_K$), perpendicular to the road segment, considering the distance between the two points to be the hypotenuse ($|K_1K_2|$) of a right angled triangle (Figure \ref{fig:sample_points}). The average width for each road identifier was then found.
 
 \[
 \begin{aligned}
-|K_1K_2| =& Hypotenuse \\
-O_K =& Opposite \\
 O_K =& |K_1K_2| \times cos(\theta_K)
 \end{aligned}
 \]
@@ -341,7 +337,7 @@ O_K =& |K_1K_2| \times cos(\theta_K)
 
 \subsection{Improved Road Centrelines}
 
-During the analysis of the linear models, it was noted that road centrelines were often inaccurate, giving road outcome values that were not representative of the road surface. In an attempt to adjust for this, road centrelines were adjusted based on the centre location of road points in each sample classified through an initial linear probability model. To find the mid point between two points $\left(x_{1}, y_{1}\right)$ and $\left(x_{2}, y_{2}\right)$ can be expressed as;
+During the analysis of the linear models, it was noted that road centrelines were often inaccurate, giving road outcome values that were not representative of the road surface. In an attempt to adjust for this, road centrelines were adjusted based on the centre location of road points in each sample, classified through an initial linear probability model. The mid point between two points $\left(x_{1}, y_{1}\right)$ and $\left(x_{2}, y_{2}\right)$ can be expressed as;
 
 $$
 \left(\frac{x_{1}+x_{2}}{2}, \frac{y_{1}+y_{2}}{2}\right)
@@ -362,7 +358,7 @@ Given the improvement in road centreline locations, it was considered feasible t
 
 The angle of bends in roads were identified through the nodes produced in the creation of the road shapefiles. First the road linestrings were split into points, with coordinates representing each node within a road, a point at which the orientation of the linestring is altered.
 
-The bend in a road was considered to be the \textit{bearing angle} $\theta$, from a point $A\left(a_{x}, a_{y}\right)$ to a point $B\left(b_{x}, b_{y}\right)$, with the angle measured in a clockwise direction from north. This can be represented as a figure;
+The bend in a road was considered to be the \textit{bearing angle} $\theta$, from a point $A\left(a_{x}, a_{y}\right)$ to a point $B\left(b_{x}, b_{y}\right)$, with the angle measured in a clockwise direction from north. This is represented on Figure \ref{fig:bearingang1}.
 
     \begin{figure}[htbp]
         \centering
@@ -387,23 +383,23 @@ The bend in a road was considered to be the \textit{bearing angle} $\theta$, fro
 To find the angle $\theta$, the point $B$ can be represented into relation to point $A$ as;
 
 $$
-\left(b_{1}, b_{2}\right)=\left(a_{1}+r \sin \theta, a_{2}+r \cos \theta\right)
+\left(b_{x}, b_{y}\right)=\left(a_{x}+r \sin \theta, a_{y}+r \cos \theta\right)
 $$
 
 Where $r$ is the length of the line segment $AB$. Rearranging the equation for $\theta$ gives;
 
 $$
-    \tan \theta=\frac{b_{1}-a_{1}}{b_{2}-a_{2}}
+    \tan \theta=\frac{b_{x}-a_{x}}{b_{y}-a_{y}}
 $$
 
 This equation can be rewritten to calculate the value of $\theta$ using the $\mathit{atan2}$ function;
 
 $$
-\hat{\theta}=\mathrm{atan} 2\left(b_{1}-a_{1}, b_{2}-a_{2}\right) \in(-\pi, \pi]
+\hat{\theta}=\mathrm{atan} 2\left(b_{1}-a_{1}, b_{2}-a_{2}\right) \in[-\pi, \pi]
 $$
 
 
-Finally the bearing angle $\theta \in[0,2 \pi)$ is given as;
+Finally the bearing angle $\theta \in[0,2 \pi]$ is given as;
 
 \[
     \begin{aligned}
@@ -415,7 +411,7 @@ Finally the bearing angle $\theta \in[0,2 \pi)$ is given as;
     \footnotesize{\ref{code:road_angles}}
 \end{flushright}
 
-With the bearing angle of the first line segment $AB$ for a particular road, the change in orientation of the second road segment $BC$ may be given as $\theta_{2} = \theta_{BC} - \theta_{AB}$, with additional nodes following the pattern $\theta_{k} = \theta_{N(N+1)} - \theta_{(N-1)N}$.
+With the bearing angle of the first line segment $AB$ for a particular road, the change in orientation of the second road segment $BC$ may be given as $\theta_{2} = \theta_{1} - \theta_{0}$, with additional nodes following the pattern $\theta_{k} = \theta_{N(N+1)} - \theta_{(N-1)N}$.
 
     \begin{figure}[htbp]
         \centering
@@ -444,11 +440,11 @@ With the bearing angle of the first line segment $AB$ for a particular road, the
 \label{fig:bearingang2}
 \end{figure}
 
-For each road the maximum bearing angle between two nodes was selected, as well as the average bearing angle for a certain road.
+For each road the, maximum bearing angle between two nodes was selected, as well as the average bearing angle for a certain road.
 
 \subsection{Road Node Elevation Change}
 
-The elevation change between two road node points was calculated by first selecting non-normalised LiDAR points at a geometric node within a 1m$^2$ area. Nodes were obtained from the OS road data, as point coordinates obtained when the linestrings were split into points. LiDAR points were then filtered by those only classified as ground, and with only a single return, to reduce the likelihood of inaccurate $z$ values from canopy or other vegetation and vehicles. The mean $z$ value of points were found for each node, and elevation change between each node was calculated. For each road the maximum elevation change was calculated, alongside the mean elevation change.
+The elevation change between two road node points was calculated by first selecting non-normalised LiDAR points at a geometric node within a 1m$^2$ area. Nodes were obtained from the OS road data, as point coordinates obtained when the linestrings were split. LiDAR points were then filtered by those only classified as ground, and with only a single return, to reduce the likelihood of inaccurate $z$ values from canopy or other vegetation and vehicles. The mean $z$ value of points were found for each node, and elevation change between each node was calculated. For each road, the total elevation change per kilometer was calculated.
 
 \subsection{Surface Quality}
 
@@ -456,11 +452,11 @@ Surface quality was assessed roughly through the range in intensity values found
 
 \subsection{Estimate of True Widths}
 
-QGIS used to measure roughly the width at various points along each road using 25cm resolution aerial imagery.
+QGIS \citep{QGIS} used to measure roughly the width at various points along each road using 25cm resolution aerial imagery.
 
 \section{Road Quality Assessment}
 
-To provide a method for direct comparison between each road the extracted features are normalised and combined as one to produce the Road Quality Index (RQI). 
+To provide a method for direct comparison between each road, the extracted features are normalised and combined as one to produce the Road Quality Index (RQI).
 
 Normalisation of each road feature was achieved through a simple range normalisation;
 
@@ -472,4 +468,4 @@ m \mapsto \frac{m-r_{\min }}{r_{\max }-r_{\min }}
 
 Where $r_{\text {min }}$ denotes the minimum of the range of a variable,  $r_{\text {max }}$ denotes the maximum of the range of a variable, and $m \in\left[r_{\text {min }}, r_{\text {max }}\right]$ denotes the variable to be scaled. As an increase in road width is associated with a higher quality road, as opposed to larger values of each other variable indicating a poorer quality road, the width values were first inversed before normalisation.
 
-Following normalisation, the sum of all normalised variables for a particular road were taken, and subtracted from 1 to give positive values indicating better quality roads, and lower values indicating lower quality roads. The value obtained from this was called the Road Quality Index.
+Following normalisation, the sum of all normalised variables for a particular road were taken, and subtracted from 1 to give positive values indicating better quality roads, and lower values indicating lower quality roads. The value obtained from this was called the Road Quality Index, presented in full on Table \ref{}.
