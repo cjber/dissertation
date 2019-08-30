@@ -2,11 +2,19 @@ The proposed methodology provides a road classification method which considers t
 
 The results of this paper can be considered to present the overall goal of automated road feature extraction, split into two main sections, the first being automated road width extraction, and second, the automated extraction of other road features.
 
-\section{Road Classification and Width Extraction}
+\section{Discussion of the Method}
 
-// Mention logistic regression, considered but not used as results not better and requires a payoff. See that link that talks about binary outcome variables
+As results have revealed, it is relatively hard to quantify the results of this particular linear probability analysis, and often the accuracy of results has been assessed qualitatively. The ultimate goal with this method would be to produce a model which may be assessed quantitatively, allowing for a more conclusive and full automation.
+
+\subsection{Alternatives to Linear Probability}
+
+Alternatives to Linear Probability models do exist when considering binary outcome variables, one being probabalistic regression, which takes the cumulative standard normal distribution function ($\Phi$) to model the regression. This could aid with interpretability of results and includes consideration of the quantiles associated with a unit change in outcome variables. Additionally logistic regression, unlike simple linear regression does not take the assumption that there is a linear distribution in the outcome, weighting values more towards 1 or 0, as is expected with a binary outcome variable \cite{hanck2019}. However, preliminary analysis of the methodology performed in this study did consider a logistic regression, but found that interpretability of the quantiles and results was difficult, and qualitative observation of the results did not appear to provide much benefit over linear regression.
+
+\subsection{Computational Efficiency}
 
 Direct comparison between the computational efficiency of this method and past methods is not possible due to the unique data used in this study. However, \cite{zhang2016} outline some specifications of the dataset used in their supervised road centreline extraction using LiDAR and aerial imagery. With aerial imagery at a resolution of 15cm, and a total 5200 by 5000 pixels, the study area therefore covers \Sexpr{5200/(1/.15)}m by \Sexpr{5000/(1/.15)}m. Similar to the 1km$^2$ for this study. The total time taken for object extraction for this area in their method was \Sexpr{round(2272/60, 2)} minutes, compared with the \Sexpr{round(time_taken, 2)} minutes proposed in this paper. It is expected that the method proposed by \cite{zhang2016} should take far longer to compute due to being the inclusion of complex methodologies such as image segmentation through random forest classification. The methodology proposed by \cite{zhang2016} and other supervised road classification techniques rely on the existence of a training dataset, either derived through manual image segmentation, or the preexisting data itself.For this reason, I propose that practical applications of road classification should focus more on the inclusion of such data, including known road centreline geometries to provide a basis for techniques.
+
+\subsection{Comparison between other road width extraction methods}
 
 As outlined in subsection \ref{subsec:supervised}, few papers utilised a supervised methodology for road classification, 
 

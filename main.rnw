@@ -184,14 +184,13 @@ python wclatex.py main.tex
 % Appendices
 % ===========================================================================================================
 \appendix
-\chapter{Code Appendix}
+\chapter{Environment and Functions}
 \label{a:code}
 <<code_appendix, child = "A_code/code.rnw">>=
 @
-\chapter{Additional Tables}
+\chapter{Additional Tables and Figures}
 <<tables, child = "B_tables/tables.rnw">>=
 @
-
 \chapter{Scripts}
 <<scripts, child = "C_scripts/scripts.rnw">>=
 @

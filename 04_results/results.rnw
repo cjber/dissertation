@@ -594,7 +594,7 @@ Table \ref{tab:estwidths} gives a normalised comparison between each linear mode
 
 \section{Road Assessment}
 
-Given Linear Model 2 with corrected road centrelines appears to produce the most accurate estimates for road widths, this was used in the final road assessment. Table \ref{tab:rqi} gives the full results of the road geometric extraction, along with an estimate of overall road quality given the Road Quality Index (RQI). Qualitative assessment of the RQI may be achieved through observation of the highest and lowest values (Figure \ref{fig:rqi_compare}).
+Given Linear Model 2 with corrected road centrelines appears to produce the most accurate estimates for road widths, this was used in the final road assessment. Table \ref{tab:rqi} gives the full results of the road geometric extraction, along with an estimate of overall road quality given by the Road Quality Index (RQI). Qualitative assessment of the RQI may be achieved through observation of the highest and lowest values (Figure \ref{fig:rqi_compare}). It appears to produce reliable results, as the road with the highest RQI is straight, wider than the road with the lowest RQI, and is likely flat given it is neighboured by two agricultural fields.
 
 
 
@@ -619,50 +619,7 @@ final_data <- final_data %>%
 
 final_data$road_id <- gsub("road_", "", final_data$road_id)
 
-summary_data <- final_data %>%
-  select(-c(geom, length, tot_pts, len.x, len.y))
 @
-<<>>=
-cor_tab <- rcorr(as.matrix(summary_data[, 3:length(summary_data)]), type = "spearman")
-
-p_val <- function(x) {
-  symnum(x, corr = FALSE, na = FALSE, cutpoints = c(
-    0, 0.001, 0.01, 0.05, 1
-  ), symbols = c("***", "**", "*", " "))
-}
-
-# keep all zeros for 3 sig figs
-cor_tab$r <- as.character(sprintf("%.2f", cor_tab[[1]]))
-cor_tab$P <- p_val(cor_tab$P) %>% na.omit()
-cor_tab$r[cor_tab$r == "1.00"] <- "" # change diags to blank
-
-# paste p asterisks to values
-cor_tab <- paste(cor_tab$r, cor_tab$P)
-
-cor_tab <- cor_tab %>%
-  matrix(ncol = 4) %>%
-  as.data.frame()
-
-colnames(cor_tab) <- c("Angle", "$z$", "Range", "Width")
-Variable <- colnames(cor_tab)
-cor_tab <- cbind(Variable, cor_tab)
-@
-
-<<corrs, results = 'asis'>>=
-# function to convert significance figures into p asterisks
-make_table(cor_tab, dig = 2, cap = "Correlation Matrix") %>%
-  # footnote for significance
-  footnote(
-    general_title = " ",
-    general = c(
-      "*** Significant at the 0.001 level",
-      "** Significant at the 0.005 level",
-      "* Significant as the 0.01 level"
-    ),
-  )
-@
-
-\section{Analysis of Road Features}
 
 <<final>>=
 final_norm <- final_data %>%
@@ -690,13 +647,16 @@ final_norm <- final_norm %>%
 qual_index <- final_norm %>%
   select(road_id, reliability, qual_index)
 
+summary_data <- final_data %>%
+  select(-c(geom, length, tot_pts, len.x, len.y))
+
 summary_data <- merge(summary_data, qual_index, by = "road_id") %>%
   arrange(desc(qual_index))
 @
 
 <<rqi, results = 'asis'>>=
 make_table(summary_data,
-  cap = "Overall Features Extracted from Roads in the Study Area",
+  cap = "Overall Features Extracted from Roads in the Study Area, in descending order by RQI value",
   col_names = c(
     "Road ID",
     "Road Function",
@@ -711,11 +671,51 @@ make_table(summary_data,
 @
 
 <<>>=
-aerial <- raster("../data/derived/aerial/aerial_crop.tif")
-roads <- st_read("../data/derived/roads/roads_line.gpkg")
+jpgs <- Sys.glob("../data/aerial/*.jpg")
+jpgs <- lapply(jpgs, brick)
+roads <- st_read("../data/derived/roads/roads_line.gpkg", quiet = TRUE)
 
-rd_t <- roads[roads$road_id == summary_data$road_id[summary_data$qual_index == max(summary_data$qual_index)]]
-rd_b <- roads[roads$road_id == summary_data$road_id[summary_data$qual_index == min(summary_data$qual_index)]
+rd_t <- roads[roads$road_id == "road_34", ]
+rd_b <- roads[roads$road_id == "road_14", ]
 
+ta <- lapply(jpgs, function(x) {
+  return(tryCatch(crop(x, rd_t), error = function(e) NULL))
+})
+ta <- ta %>%
+  compact() %>%
+  brick()
+ba <- lapply(jpgs, function(x) {
+  return(tryCatch(crop(x, rd_b), error = function(e) NULL))
+})
+ba <- ba %>%
+  compact() %>%
+  brick()
 
+gg_ta <- ggRGB(ta) +
+    geom_sf(data = rd_t) +
+  theme_map() +
+  theme(panel.border = element_rect(
+    colour = "black",
+    fill = NA, size = 1
+  )) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0))
+gg_ba <- ggRGB(ba) +
+    geom_sf(data = rd_b) +
+  theme_map() +
+  theme(panel.border = element_rect(
+    colour = "black",
+    fill = NA, size = 1
+  )) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0))
+@
+<<rqi_compare, fig.cap = "Visual comparison between road with the highest RQI \\textbf{(A)}, and lowest RQI \\textbf{(B)}">>=
+plot_grid(
+          gg_ta,
+          gg_ba,
+  labels = "AUTO",
+  label_size = 20,
+  ncol = 2
+)
 @

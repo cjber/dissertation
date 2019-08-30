@@ -27,7 +27,7 @@ make_table(rd_bends,
 )
 @
 
-<<sample_fig, fig.cap="Sample lines extracted based on known road locations">>=
+<<sample_fig, fig.cap="Sample lines extracted based on known road locations", fig.pos = "t">>=
 las <- catalog("../data/point/")
 pt_records <- las@data$Number.of.point.records
 
