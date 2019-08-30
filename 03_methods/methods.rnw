@@ -455,7 +455,7 @@ Surface quality was assessed roughly through the range in intensity values found
 
 \subsection{Estimate of True Widths}
 
-QGIS \citep{QGIS} used to measure roughly the width at various points along each road using 25cm resolution aerial imagery. With the widths, the results of each model was compared to assess model accuracy.Normalisation was achieved through finding the relative difference in width as a percentage;
+QGIS \citep{QGIS} used to measure roughly the width at various points along each road using 25cm resolution aerial imagery. With the widths, the results of each model was compared to assess model accuracy. Each width was normalised to allow comparison between each road, and to give a final average accuracy value. Normalisation was achieved through finding the relative difference in width as a percentage;
 
 \[
 \begin{aligned}
@@ -463,7 +463,7 @@ QGIS \citep{QGIS} used to measure roughly the width at various points along each
 \end{aligned}
 \]
 
-where $\mathbf{W}_{n}$ is the normalised width, $\mathbf{W}$ is the average width per road derived from the linear model, and $\mathbf{W_{e}}$ is the qualitatively estimated width. Given some widths occasionally were overestimated, to ensure the outcome of this calculation gave a more relative value, any normalised width given a value above 100 was reassigned;
+where $\mathbf{W}_{n}$ is the normalised width, $\mathbf{W}$ is the average width per road derived from the linear model, and $\mathbf{W_{e}}$ is the qualitatively estimated width. Given some widths occasionally were overestimated, to ensure the outcome of this calculation gave a relative value, any normalised width given a value above 100 was reassigned;
 
 \[
 \begin{aligned}
