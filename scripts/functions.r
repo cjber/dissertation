@@ -29,12 +29,10 @@ pkgs <- c(
   "benchmarkme",
   "parallel",
   "showtext",
-  "data.table",
-  "lmtest"
+  "data.table"
 )
 
 pacman::p_load(pkgs, character.only = T)
-dir <- "/home/cjber/drive/uni/envs492/main/"
 
 ## ---- make_table
 make_table <- function(df, cap = "", dig = 2, col_names = NA, table_env = "table", ...) {
@@ -55,7 +53,6 @@ make_table <- function(df, cap = "", dig = 2, col_names = NA, table_env = "table
     row_spec(0, bold = TRUE)
 }
 
-cluster <- catalog("../data/point/SJ8068_P_10377_20160325_20160325.laz")
 ## ---- ctg_to_df
 ctg_to_df <- function(cluster, aerial = NULL) {
   # read cluster as LAS
@@ -76,8 +73,6 @@ if (is.null(aerial) == FALSE){
   las <- as.data.frame(las)
   return(las)
 }
-
-ctg_to_df(cluster)
 
 ## ---- clip_samples
 clip_samples <- function(cluster, x) {
@@ -119,8 +114,6 @@ las_filter_noise <- function(cluster, sensitivity = 1) {
   las$p95z <- NULL
   return(las)
 }
-
-las_filter_noise(cluster, 1.2)
 
 ## ---- lidr_clean
 lidr_clean <- function(cluster) {

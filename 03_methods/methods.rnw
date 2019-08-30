@@ -218,7 +218,7 @@ from this, the lengths were inverted, giving two points ($p_i$) of distance $30$
     \footnotesize{\ref{code:compute_samples}}
 \end{flushright}
 
-\section{Aerial Imagery}
+\subsection{Aerial Imagery}
 
 With the perpendicular sample lines extracted for the length of every road, to assist with the prediction of correct road locations, true colour aerial imagery was included. This imagery was first converted from three band RGB raster images, to a single-band grey-scale raster brick with values ranging 0 to 255, considered to be luminescence information.
 
@@ -229,7 +229,7 @@ $$
     \footnotesize{\ref{code:lm_compute}}
 \end{flushright}
 
-\subsection{Linear Probability Models}
+\section{Linear Probability Models}
 
 To classify road and non-road, linear models were constructed and compared to assess effectiveness. A maximal approach was chosen, selecting all appropriate predictor variables, iterating through models by removing variables that did not significantly influence the model outcome, or created noise.
 
@@ -353,6 +353,12 @@ With the mid point of each classified road sample, these were than joined for fo
 
 Given the improvement in road centreline locations, it was considered feasible to construct linear probability models individually for each sample location on each road. This technique would allow for per road variation in material type or quality, and potentially reduce the amount of noise brought in from inaccurate centrelines. Preliminary testing of this method revealed that it was essential to remove any sample containing tree canopy, as given the small number of points, the predictions were based off points that misrepresented true road points. Additionally, individual linear models allowed for some filtering through $p$ values, which was not achievable through global linear models, given the very large number of points. 
 
+\subsection{Final Model Analysis}
+
+// talk about lm beta coefficients here, limitations of p valeus nmaybe
+
+cite{peterson2005}
+
 \subsection{Road Angles}
 
 The angle of bends in roads were identified through the nodes produced in the creation of the road shapefiles. First the road linestrings were split into points, with coordinates representing each node within a road, a point at which the orientation of the linestring is altered.
@@ -449,7 +455,23 @@ Surface quality was assessed roughly through the range in intensity values found
 
 \subsection{Estimate of True Widths}
 
-QGIS \citep{QGIS} used to measure roughly the width at various points along each road using 25cm resolution aerial imagery.
+QGIS \citep{QGIS} used to measure roughly the width at various points along each road using 25cm resolution aerial imagery. With the widths, the results of each model was compared to assess model accuracy.Normalisation was achieved through finding the relative difference in width as a percentage;
+
+\[
+\begin{aligned}
+    \mathbf{W}_{n} = \frac{\mathbf{W}}{W_{e} \times 100}
+\end{aligned}
+\]
+
+where $\mathbf{W}_{n}$ is the normalised width, $\mathbf{W}$ is the average width per road derived from the linear model, and $\mathbf{W_{e}}$ is the qualitatively estimated width. Given some widths occasionally were overestimated, to ensure the outcome of this calculation gave a more relative value, any normalised width given a value above 100 was reassigned;
+
+\[
+\begin{aligned}
+    \mathbf{W}_{n} = 100 - \mathbf{W}_{n}
+\end{aligned}
+\]
+
+given $\mathbf{W}_{n} > 100$. 
 
 \section{Road Quality Assessment}
 

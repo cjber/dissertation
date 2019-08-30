@@ -15,7 +15,7 @@ opts_knit$set(self.contained = TRUE)
 
 # Defaults
 opts_chunk$set(
-  fig.align = "center", fig.pos = "t",
+  fig.align = "center", fig.pos = "tb",
   cache = TRUE, echo = FALSE,
   cache.path = "data/cache/",
   message = FALSE, size = "footnotesize",

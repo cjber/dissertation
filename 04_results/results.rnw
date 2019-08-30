@@ -13,7 +13,7 @@ As noted in Section \ref{sec:overview}, computation time is considered an import
 
 Table \ref{tab:lidartab} indicates that there are likely some points with noise, particularly reflected by the highest intensity value ($\Sexpr{max(lidar_tab$Intensity)}$) relative to the mean value ($\Sexpr{round(mean(lidar_tab$Intensity),0)}$). As noted in previous LiDAR classification methods, intensity is often subject to noise, therefore a simplistic noise exclusion technique was considered, as described in section \ref{subsec:noise}, presented by \cite{lidR}.
 
-<<hist_lidar, fig.cap="LiDAR point cloud intensity distribution, post noise filtering", fig.showtext=TRUE, fig.height = 5>>=
+<<hist_lidar, fig.cap="LiDAR point cloud intensity distribution, post noise filtering", fig.showtext=TRUE, fig.height = 3>>=
 font_add_google("Roboto", "roboto")
 font_add_google("Roboto Slab", "robotosl")
 
@@ -37,9 +37,9 @@ hist_i <- ggplot(clean_las, aes(x = Intensity)) +
   labs(x = paste("Intensity", "Values"), y = "Distribution") +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0))
-hist_z <- ggplot(clean_las, aes(x = Z)) +
+hist_lum <- ggplot(clean_las, aes(x = lum)) +
   geom_histogram(aes(y = ..density..), colour = "black", fill = "white", bins = 30) +
-  geom_density(aes(x = Z), fill = "#FF6666", alpha = .2, size = 1) +
+  geom_density(aes(x = lum), fill = "#FF6666", alpha = .2, size = 1) +
   theme_classic() +
   theme(
     axis.ticks.y = element_blank(),
@@ -52,9 +52,17 @@ hist_z <- ggplot(clean_las, aes(x = Z)) +
     strip.background = element_blank(),
     panel.border = element_rect(colour = "black", fill = NA, size = 1)
   ) +
-  labs(x = paste("Z", "Values"), y = "Distribution") +
+  labs(x = paste("Luminescence", "Values"), y = "Distribution") +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0))
+
+plot_grid(
+  hist_i,
+  hist_lum,
+  labels = "AUTO",
+  label_size = 20,
+  ncol = 2
+)
 @
 <<fig.show = 'hide'>>=
 las <- catalog("/home/cjber/drive/uni/envs492/main/data/point")
@@ -197,7 +205,7 @@ plot_grid(
 )
 @
 
-Following intensity noise filtering, the highest intensity value was now $\Sexpr{max(clean_las$Intensity)}$, with a mean of $\Sexpr{round(mean(clean_las$Intensity), 0)}$. Figure \ref{fig:hist_lidar} gives the distribution of Intensity values for all points within the study area, showing two clear spikes in intensity, at at value of around 50, with another around 350.
+Following intensity noise filtering, the highest intensity value was now $\Sexpr{max(clean_las$Intensity)}$, with a mean of $\Sexpr{round(mean(clean_las$Intensity), 0)}$. Figure \ref{fig:hist_lidar} \textbf{(A)} gives the distribution of Intensity values for all points within the study area, showing two clear spikes in intensity, at at value of around 50, with another around 350. This is reflected similarlty in the Luminescence values, with two peaks at around 50 and 120 (Figure \ref{fig:hist_lidar} \textbf{(B)}).
 
 Figure \ref{fig:fig_lp} gives the results of further LiDAR preprocessing, comparing Figure \ref{fig:fig_lp} \textbf{(A)} and Figure \ref{fig:fig_lp} \textbf{(B)}, shows how last pulse LiDAR filtering allows for the removal of the majority of tree canopies, leaving only ground points that are considered hard surfaces, and as such are the lowest point the laser pulse has penetrated. Additionally, Figure \ref{fig:fig_lp} \textbf{(B)} shows how a digital terrain model, created through interpolation techniques, using only the base point cloud may be used to normalise the points, giving a digital surface model which only shows the true height of surface objects, without having to consider the variation in lie of the land. However, Figure \ref{fig:fig_lp} \textbf{(C)} indicates that while filtering for last pulse returns may appear to remove much of the canopy, reflected in the $z$ values, the intensity values for points that have penetrated the canopy are lower than those that did not (See the tree just below the centre of the road section). This particularly creates issues in the distinction between road and non road in neighbouring areas where the intensity "shadow" created removes the distinct difference in intensity. This suggests that for ground points with multiple returns, the intensity values are likely far less reliable for road classification. Quantitative analysis of this limitation reveals that for ground classified points with a single return the average intensity value is $\Sexpr{round(one_return,2)}$, while for ground classified points with multiple returns, the average intensity value is $\Sexpr{round(mult_return,2)}$.
 
@@ -267,11 +275,12 @@ This first (maximal) model was constructed as;
     &+ \beta_{1}  \mathrm{Intensity}_{t} \\
     &+ \beta_{2}  \mathrm{Luminescence}_{t}    \\
     &+ \beta_{3}  \mathrm{Z}_{t} \\
-    &+ \beta_{4}  \mathrm{Dist}_{t} + \epsilon
+    &+ \beta_{4}  \mathrm{NumberOfReturns}_{t} \\
+    &+ \beta_{5}  \mathrm{Dist}_{t} + \epsilon
 \end{aligned}
 \end{equation}
 
-As proposed in Chapter \ref{ch:methods}, the road outcome variable was given as points that fell within a 2m buffer of the known road centreline locations. As such, this meant that a fair number of false negative points are expected to have occurred, where points outside 2m of a road centreline location and incorrectly classified as non-road. Due to this, the classification of non-road and road was not a simple selection of points that were above a 50\% threshold prediction as being road. To determine an appropriate cutoff for road predictions a histogram was produced which gave insight into the distribution of the linear prediction values (Figure \ref{fig:lmdistributions}).
+As proposed in Chapter \ref{ch:methods}, the road outcome variable was given as points that fell within a 2m buffer of the known road centreline locations. As such, this meant that a fair number of false negative points are expected to have occurred, where points outside 2m of a road centreline location would be incorrectly classified as non-road. Due to this, the classification of non-road and road was not a simple selection of points that were above a 50\% threshold prediction as being road. To determine an appropriate cutoff for road predictions a histogram was produced which gave insight into the distribution of the linear prediction values (Figure \ref{fig:lmdistributions}).
 
 
 Figure \ref{fig:lmdistributions} shows that there is a clear separation between the majority of points, and higher probability values. This therefore gives insight into the true divide between true road and non-road points, allowing for a qualitative analysis to select the most appropriate quantile of probability values. Three quantiles were chosen, the 95th, 90th and 80th, as indicated on Figure \ref{fig:lmdistributions}. 
@@ -363,7 +372,8 @@ Figure \ref{fig:quant_fig} reveals that qualitatively, the optimal choice for a 
 \begin{aligned}
 \mathrm{Road}_{t} = \alpha 
     &+ \beta_{1}  \mathrm{Intensity}_{t} \\
-    &+ \beta_{3}  \mathrm{Z}_{t} \\
+    &+ \beta_{2}  \mathrm{Z}_{t} \\
+    &+ \beta_{3}  \mathrm{NumberOfReturns}_{t} \\
     &+ \beta_{4}  \mathrm{Dist}_{t} + \epsilon
 \end{aligned}
 \end{equation}
@@ -372,7 +382,7 @@ Figure \ref{fig:quant_fig} reveals that qualitatively, the optimal choice for a 
 
 To improve road centreline location accuracy, the 90th quantile results from the first linear probability analysis were used, due to there being a more complete selection of points, but without compromising the true location of roads by including too many outside points.
 
-New road centrelines are given on Figure \ref{fig:fig_noisecent}, particular improvements are given where the road curves between two open fields, but the original centreline was given as a straight line, covering the hedgerow, and no road surface.
+New road centrelines are given on Figure \ref{fig:fig_noisecent} \textbf{(A)}, particular improvements are given where the road curves between two open fields, but the original centreline was given as a straight line, covering the hedgerow, and no road surface.
 
 <<road_lines>>=
 cent1 <- st_read("../data/derived/roads/cent_iteration1.gpkg", quiet = TRUE)
@@ -477,22 +487,15 @@ plot_grid(
 )
 @
 
-Qualitative comparison between the Linear Probability Model based off the original centreline locations reveals an improvement in overall road detection, particularly towards the edge of roads, while additional samples are achieved in areas which previously had no coverage due to the incorrect centreline placement (Figure \ref{fig:fig_noisecent}). However, it appears that in areas where there are higher levels of linear predictive inaccuracy, the new centrelines are less accurate, thankfully, noise exclusion techniques employed have removed samples that fall within these areas, particularly noticeable at the northern end of Figure \ref{fig:fig_noisecent} \textbf{(C)}. Figure \ref{fig:fig_noisecent} also gives information regarding distance based noise exclusion technique, which has allowed for the exclusion of isolated points accurately on Figure \ref{fig:fig_noisecent} \textbf{(B)}. Improved centreline locations allowed for individual linear models (Figure \ref{fig:fig_noisecent} \textbf{(D)}), while it was assumed that individual linear models would potentially produce more accurate width estimations, it appears to give less accurate results compared with Figure \ref{fig:fig_noisecent} \textbf{(C)}.
+Qualitative comparison between the Linear Probability Model based off the original centreline locations reveals an improvement in overall road detection, particularly towards the edge of roads, while additional samples are achieved in areas which previously had no coverage due to the incorrect centreline placement (Figure \ref{fig:fig_noisecent} \textbf{(A)}). However, it appears that in areas where there are higher levels of linear predictive inaccuracy, the new centrelines are less accurate, thankfully, noise exclusion techniques employed have removed samples that fall within these areas, particularly noticeable at the northern end of Figure \ref{fig:fig_noisecent} \textbf{(C)}. Figure \ref{fig:fig_noisecent} also gives information regarding distance based noise exclusion technique, which has allowed for the exclusion of isolated points accurately on Figure \ref{fig:fig_noisecent} \textbf{(B)}. Improved centreline locations allowed for individual linear models (Figure \ref{fig:fig_noisecent} \textbf{(D)}), while it was assumed that individual linear models would potentially produce more accurate width estimations, it is hard to differentiate between the global and individual linear models (Figure \ref{fig:fig_noisecent} \textbf{(C)} and \textbf{(D)}).
 
 \section{Final Model Analysis}
 
-For a more comprehensive analysis of the overall suitability of the road width linear probability models, and a comparison between them, a quantitative assessment must be undertaken, to ensure all roads covered in this analysis are considered. For this purpose, the calculated widths were compared with rough width estimates for each road.
+For a more comprehensive analysis of the overall suitability of the road width linear probability models, and a comparison between them, a quantitative assessment must be undertaken, this allows for the inclusion of all roads in the study.
 
-// Look at http://r-statistics.co/Linear-Regression.html add a more detailed analysis and comparison between the lms.
+For direct comparison between the two selected global linear probability models, centering and scaling of the predictor variables allowed for an easier interpretation of results, without affecting any statistical inferences. This was considered necessary as both p values and standard errors produced by global models offered little in terms of interpretability due to the very large number of points involved in this study. Centering and scaling was obtained through the production of beta coefficients (Table \ref{tab:coeftest}).
 
-// Adjust equations to fit with linear probability models: https://www.econometrics-with-r.org/11-1-binary-dependent-variables-and-the-linear-probability-model.html
-
-
-// Centering and scaling of predictor variables allow for easier interpretation of the results of the linear model without affecting statistical inferences, and retaining the same p values etc. See this: https://stats.stackexchange.com/questions/29781/when-conducting-multiple-regression-when-should-you-center-your-predictor-varia
-
-// Or standardised regression coefficients (beta)
-
-<<coeftest>>=
+<<coeftest, results = 'asis'>>=
 lm_beta <- function(model) {
   b <- summary(model)$coef[-1, 1]
   sx <- apply(model$model[-1], 2, sd)
@@ -504,27 +507,28 @@ lm_beta <- function(model) {
 cent1_lm <- fread("../data/derived/model_data/cent1_lm.csv") %>%
   select(c(road_id, Intensity, lum, dists, Z, NumberOfReturns, road))
 
-f1 <- as.formula("road ~ Intensity + lum + dists + Z + NumberOfReturns")
+f1 <- as.formula("road ~ Intensity + dists + Z + NumberOfReturns + lum ")
 f2 <- as.formula("road ~ Intensity + dists + Z + NumberOfReturns")
 
 lm1 <- lm(data = cent1_lm, formula = f1)
-lm1 <- lm1 %>%  
-    lm_beta() %>% 
-    as_tibble()
+lm1 <- lm1 %>%
+  lm_beta() %>%
+  as_tibble()
 
 lm2 <- lm(data = cent1_lm, formula = f2)
-lm2 <- lm2 %>% 
-    lm_beta() %>% 
-    as_tibble()
+lm2 <- lm2 %>%
+  lm_beta() %>%
+  as_tibble()
 lm2[nrow(lm2) + 1, ] <- NA
 
-coefs <- cbind(lm1, lm2)
+names <- c("Intensity", "dists", "Z", "NumberOfReturns", "lum")
 
+coefs <- cbind(names, lm1, lm2)
+names(coefs) <- c("Variable", "LM 1", "LM 2")
+
+make_table(coefs,
+  cap = "Model Coefficients, Comparison between Linear Probability Model 1 & 2")
 @
-
-
-// Here note that I have removed variables from 2nd model due to these results, show incremental change from maximal to minimal. I think the minimal will create less false positives, due to the nature of this analysis it does seem to rely on a more qualitative approach
-
 
 <<>>=
 road_est <- st_read("../data/osroads/roads_estwidth.gpkg", quiet = TRUE) %>%
@@ -583,23 +587,7 @@ make_table(norm_widths,
   row_spec(nrow(norm_widths) - 1, hline_after = T)
 @
 
-Table \ref{tab:estwidths} gives a normalised comparison between each linear model, and its associated estimated road width. Normalisation was achieved through finding the relative difference in width as a percentage;
-
-\[
-\begin{aligned}
-    \mathbf{W}_{n} = \frac{\mathbf{W}}{W_{e} \times 100}
-\end{aligned}
-\]
-
-where $\mathbf{W}_{n}$ is the normalised width, $\mathbf{W}$ is the average width per road derived from the linear model, and $\mathbf{W_{e}}$ is the qualitatively estimated width. Given some widths occasionally were overestimated, to ensure the outcome of this calculation gave a more relative value, any normalised width given a value above 100 was reassigned;
-
-\[
-\begin{aligned}
-    \mathbf{W}_{n} = 100 - \mathbf{W}_{n}
-\end{aligned}
-\]
-
-given $\mathbf{W}_{n} > 100$. Table \ref{tab:estwidths} gives insight into the effectiveness of various linear probability models for each road, and road type. While average values all give relative accuracy in the region of 70\%, it appears likely that without adjusting the road centrelines, model probabilities are reduced given \textbf{LM 0} gives the lowest average accuracy in relation to the other three models using improved centrelines for outcome variable creation. Unexpectedly, the roads with the highest accuracy are Minor Roads, rather than B roads. For certain roads, the accuracy of the derived centrelines appear to vastly reduce model accuracy, (For example Road 36; Table \ref{tab:estwidths}).
+Table \ref{tab:estwidths} gives a normalised comparison between each linear model, and its associated estimated road width. Table \ref{tab:estwidths} gives insight into the effectiveness of various linear probability models for each road, and road type. While average values all give relative accuracy in the region of 70\%, it appears likely that without adjusting the road centrelines, model probabilities are reduced given \textbf{LM 0} gives the lowest average accuracy in relation to the other three models using improved centrelines for outcome variable creation. Unexpectedly, the roads with the highest accuracy are Minor Roads, rather than B roads. For certain roads, the accuracy of the derived centrelines appear to vastly reduce model accuracy, (For example Road 36; Table \ref{tab:estwidths}).
 
 // Take examples from the table, roads with very different model results, see why.
 

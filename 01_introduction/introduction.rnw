@@ -67,7 +67,7 @@ Often road classification methodologies use LiDAR height data to identify kerbs 
 
 LiDAR data often requires a large amount of processing due to the irregular distribution of points, presence of noise and the number of variables that have to be considered, \cite{yadav2018} note that often papers do not include information regarding the computational time for processing this data which may cause practical limitations at larger scales.
 
-<<area_map, fig.cap="Study area highlighting road geometries outlined in a lighter 30m buffer">>=
+<<area_map, fig.cap="Study area highlighting road geometries outlined in a lighter 30m buffer", fig.pos = "t">>=
 source("../scripts/functions.r")
 
 rd <- st_read("../data/derived/roads/roads_buff_diss.gpkg", quiet = T) %>%
