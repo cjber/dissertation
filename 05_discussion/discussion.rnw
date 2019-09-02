@@ -8,7 +8,7 @@ As results have revealed, it is relatively hard to quantify the results of this 
 
 \subsection{Alternatives to Linear Probability}
 
-Alternatives to Linear Probability models do exist when considering binary outcome variables, one being probabilistic regression, which takes the cumulative standard normal distribution function ($\Phi$) to model the regression. Interpretability of results may be aided through this method as it includes consideration of the quantiles associated with a unit change in outcome variables. Additionally logistic (and probabilistic regression) regression, unlike simple linear regression do not take the assumption that there is a linear distribution in the outcome, weighting values more towards 1 or 0, conforming more with the distribution of a binary outcome variable \citep[See Figure \ref{fig:csnd};][]{hanck2019}. However, preliminary analysis of the methodology performed in this study did consider a logistic regression, but found that interpretability of the quantiles and results was difficult, and qualitative observation of the results did not appear to provide much benefit over linear regression.
+Alternatives to Linear Probability models do exist when considering binary outcome variables, one being probabilistic regression, which takes the cumulative standard normal distribution function ($\Phi$) to model the regression. Interpretability of results may be aided through this method as it includes consideration of the quantiles associated with a unit change in outcome variables. Additionally logistic (and probabilistic) regression, unlike simple linear regression do not take the assumption that there is a linear distribution in the outcome, weighting values more towards 1 or 0, conforming more with the distribution of a binary outcome variable \citep[See Figure \ref{fig:csnd};][]{hanck2019}. However, preliminary analysis of the methodology performed in this study did consider a logistic regression, but found that interpretability of the quantiles and results was difficult, and qualitative observation of the results did not appear to provide much benefit over linear regression.
 
 \begin{figure}[htbp]
     \centering
@@ -29,19 +29,13 @@ Alternatives to Linear Probability models do exist when considering binary outco
 
 \subsection{Computational Efficiency}
 
-Direct comparison between the computational efficiency of this method and past methods is not possible due to the unique data used in this study. However, \cite{zhang2016} outline some specifications of the dataset used in their supervised road centreline extraction using LiDAR and aerial imagery. With aerial imagery at a resolution of 15cm, and a total 5200 by 5000 pixels, the study area therefore covers \Sexpr{5200/(1/.15)}m by \Sexpr{5000/(1/.15)}m. Similar to the 1km$^2$ for this study. The total time taken for object extraction for this area in their method was \Sexpr{round(2272/60, 2)} minutes, compared with the \Sexpr{round(time_taken, 2)} minutes proposed in this paper. It is expected that the method proposed by \cite{zhang2016} should take far longer to compute due to being the inclusion of complex methodologies such as image segmentation through random forest classification. The methodology proposed by \cite{zhang2016} and other supervised road classification techniques rely on the existence of a training dataset, either derived through manual image segmentation, or the preexisting data itself.For this reason, I propose that practical applications of road classification should focus more on the inclusion of such data, including known road centreline geometries to provide a basis for techniques.
+Direct comparison between the computational efficiency of this method and past methods is not possible due to the unique data used in this study. However, \cite{zhang2016} outline some specifications of the dataset used in their supervised road centreline extraction using LiDAR and aerial imagery. With aerial imagery at a resolution of 15cm, and a total 5200 by 5000 pixels, the study area therefore covers \Sexpr{5200/(1/.15)}m by \Sexpr{5000/(1/.15)}m. Similar to the 1km$^2$ for this study. The total time taken for object extraction for this area in their method was \Sexpr{round(2272/60, 2)} minutes, compared with the \Sexpr{round(time_taken, 2)} minutes proposed in this paper. It is expected that the method proposed by \cite{zhang2016} should take far longer to compute due to being the inclusion of complex methodologies such as image segmentation through random forest classification. Additionally the methodology proposed by \cite{zhang2016} and other supervised road classification techniques rely on the existence of a training dataset, either derived through manual image segmentation, or the preexisting full road location data itself. While many past studies have focused on unsupervised methods \citep[e.g.][]{clode2004,vosselman2009,jaakkola2008,darmawati2008}, with the exclusion of any training data. The method proposed here suggests an intermediate between the two, given road centreline locations are freely obtainable, I propose that practical applications of road classification should focus more on the inclusion of such data, allowing for the increased accuracy and lower complexity that supervised road classification techniques provide, without the reliance on a full training dataset, with a similar (but different) application coined \textit{Partially} Supervised Classification by \cite{guan2013}.
 
-\subsection{Comparison between other road width extraction methods}
+\subsection{Comparison with Similar Studies}
 
-As outlined in subsection \ref{subsec:supervised}, few papers utilised a supervised methodology for road classification, 
+Despite several road classification methodologies proposing the inclusion of aerial imagery to assist with accuracy \citep[e.g.][]{charaniya2004,hui2008,guan2013}, this study reveals that for roads overlooked by tall features such as hedgerows, the shadow created reduces the overall classification accuracy. Additionally, the inclusion of aerial data provided little benefit in areas without shadows, likely due to the more distinct separation in intensity values from road surface and surrounding vegetation, unlike that found in a more urban setting. 
 
-- Comparison between other techniques, automated/non-automated.
-- Compare supervised/non-supervised. Findings compared with other studies.
-NOTE: aerial data appears to provide little improvement over pure LiDAR. Appears in places to reduce accuracy due to the presence of shadows.
-- Past studies of UK rural roads.
-// optimisations, smooth edges from past studies etc.
-
-// RANSAC should be implemented to remove sharp edges / whatever
+The study of the speed accident relationship on rural British roads by \cite{taylor2002} outlined some techniques for the extraction of geometric road features, and as such was able to begin an assessment for the classification of rural road hierarchies. However, the techniques employed did not allow for a scalable approach, using drive through video recordings, and often lacked in accuracy, taking the road height variation from OS 10m contour lines. The method proposed here aims to alleviate these problems.
 
 \section{Applications of this Methodology}
 
@@ -132,8 +126,17 @@ The methodology I have presented would allow for an accurate journey time predic
 
 Supply chains rely on a well maintained road infrastructure, and as such, many rural areas are considered to be "Lagging Rural Regions", due to their geographical remoteness, poor infrastructures, low population density and limited employment opportunities, often supported economically by an agricultural backbone \citep{ilbery2004}. Improving the economy of such areas therefore relies primarily on the effectiveness of the supply chains, often limited due to the poor infrastructures \citep{mardsen2002}, and recent demand for large scale supply chains is limited in these areas due to the overall quality of the road network. To further understand the limitations of rural supply chains inherently relies on a full understanding of the road network, whether to acknowledge where limitations exist, or to develop opportunities for optimisation of the supply chains. \cite{bosona2011} call for location analysis of supply chains through quantifiable data, to better optimise supply routes.
 
-\section{Limitations}
-    Limitations: what can not the results tell us?
+\section{Limitations and Improvements}
+
+\subsection{Classification optimisation}
+
+At present the removal of noise at the final stage of the road classification comes from both identifying isolated points \ref{code:max_lines}, and the removal of calculated widths that are above 8m and below 2m \ref{c:script}. While logically it makes sense to include limitations for widths, given a road below 2m would not support even single way traffic, and a 8m road is unexpected for any rural single carriageway, these limitations are still arbitrary, and for all unclassified roads in England, there is no minimum width required \citep{highwaysengland2016}.
+
+Alternative methods to reduce the noise produced by this method may include the identifications of straight line road edges, a distinguishing feature of man made structures \cite{guan2013}. This could enable point exclusion if outside of a particular threshold in relation to other points. LiDAR classification techniques often make use of segmentation algorithms to identify objects from geometric features such as planes, and straight edges \citep{wang2009}. These include Hough transforms \citep{vosselman2004,clough2004}, RANSAC \citep{smadja2010,sampath2008}, and least square fitting \citep{matkan2014}.
+
+\subsection{Limitation of this Method}
+
+Driving behaviour is affected by particular features that are not covered in this methodology, namely the delineation of road centrelines and edges \citep{steyvers2000}. The detection of these features is influenced by both the quality of the road, if a road edge is easily detectable, or if a road has painted markings to indicate a centreline, both of which are not observable through this methodology, and would likely rely on mobile LiDAR data collection.
 
     - \citep{steyvers2000}: note that road delineation lines also affect quality of roads. Method proposed doesn't account for ease of road edge detection through painted lines, quality of road edges etc. see also \citep{dewaard2004,charlton2018,charlton2016}
     - Drivers beliefs of correct speed limits: \citep{charlton2017}.
@@ -143,10 +146,3 @@ roads <- st_read("../data/derived/roads/roads_line.gpkg", quiet = T)
 
 
     Assumption that roads are a constant width, but due to using road id, sections between junctions, means that average road length was \Sexpr{mean(roads$len)}, unlikely that width changes significantly over this generally. However, due to current inaccuracy, mean taken so cant identify particular sections of road.
-
-\section{Recommendations}
-
-    Recommendations: what practical actions or scientific studies should follow?
-
-- Improvements to road centreline extraction: see other studies.
-

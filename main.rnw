@@ -193,7 +193,7 @@ python wclatex.py main.tex
 \chapter{Additional Tables and Figures}
 <<tables, child = "B_tables/tables.rnw">>=
 @
-\chapter{Scripts}
+\chapter{Scripts}\label{c:script}
 <<scripts, child = "C_scripts/scripts.rnw">>=
 @
 \end{document}
