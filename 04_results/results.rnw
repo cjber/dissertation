@@ -14,8 +14,9 @@ As noted in Section \ref{sec:overview}, computation time is considered an import
 Table \ref{tab:lidartab} indicates that there are likely some points with noise, particularly reflected by the highest intensity value ($\Sexpr{max(lidar_tab$Intensity)}$) relative to the mean value ($\Sexpr{round(mean(lidar_tab$Intensity),0)}$). As noted in previous LiDAR classification methods, intensity is often subject to noise, therefore a simplistic noise exclusion technique was considered, as described in section \ref{subsec:noise}, presented by \cite{lidR}.
 
 <<hist_lidar, fig.cap="Post noise filtering LiDAR point cloud distribution of; \\textbf{(A)} Intensity, and \\textbf{(B)} Luminescence", fig.showtext=TRUE, fig.height = 3>>=
-font_add_google("Roboto", "roboto")
-font_add_google("Roboto Slab", "robotosl")
+showtext_auto()
+font_add_google("Roboto", "Roboto")
+font_add_google("Roboto Slab", "Roboto Slab")
 
 clean_las <- fread("../data/point/points_clean.csv")
 
@@ -26,8 +27,8 @@ hist_i <- ggplot(clean_las, aes(x = Intensity)) +
   theme(
     axis.ticks.y = element_blank(),
     axis.line = element_blank(),
-    axis.text = element_text(size = 9, family = "roboto"),
-    axis.title = element_text(size = 10, family = "robotosl"),
+    axis.text = element_text(size = 9, family = "Roboto"),
+    axis.title = element_text(size = 10, family = "Roboto Slab"),
     axis.text.y = element_blank(),
     legend.title = element_blank(),
     legend.position = "bottom",
@@ -44,8 +45,8 @@ hist_lum <- ggplot(clean_las, aes(x = lum)) +
   theme(
     axis.ticks.y = element_blank(),
     axis.line = element_blank(),
-    axis.text = element_text(size = 9, family = "roboto"),
-    axis.title = element_text(size = 10, family = "robotosl"),
+    axis.text = element_text(size = 9, family = "Roboto"),
+    axis.title = element_text(size = 10, family = "Roboto Slab"),
     axis.text.y = element_blank(),
     legend.title = element_blank(),
     legend.position = "bottom",
@@ -63,7 +64,7 @@ plot_grid(
   label_size = 20,
   ncol = 2,
   hjust = -1,
-  label_fontfamily = "robotosl"
+  label_fontfamily = "Roboto Slab"
 )
 @
 <<fig.show = 'hide'>>=
@@ -195,7 +196,7 @@ mult_return <- clean_las %>%
   mean()
 @
 
-<<fig_lp, fig.cap = "LiDAR point clouds for one selected road section aggregated into 2m$^2$ grids, \\textbf{(A)} Base point cloud $z$ values, road location indicated with a 30m buffer \\textbf{(B)} Normalised Point cloud $z$ values for only last returns ($lpz$) \\textbf{(C)} Normalised Point cloud $Intensity$ values for last returns, \\textbf{(D)} Aerial Data combined to 1 band", showtext=TRUE>>=
+<<fig_lp, fig.cap = "LiDAR point clouds for one selected road section aggregated into 2m$^2$ grids, \\textbf{(A)} Base point cloud $z$ values, road location indicated with a 30m buffer \\textbf{(B)} Normalised Point cloud $z$ values for only last returns ($lpz$) \\textbf{(C)} Normalised Point cloud $Intensity$ values for last returns, \\textbf{(D)} Aerial Data combined to 1 band", fig.showtext=TRUE>>=
 plot_grid(
   chm_gg,
   dsm_lp_gg,
@@ -204,7 +205,7 @@ plot_grid(
   labels = "AUTO",
   label_size = 20,
   ncol = 4,
-  label_fontfamily = "robotosl"
+  label_fontfamily = "Roboto Slab"
 )
 @
 
@@ -358,7 +359,7 @@ q80 <- ggRGB(aerial) +
   scale_y_continuous(expand = c(0, 0))
 @
 
-<<quant_fig, fig.cap = "Comparison between Linear Prediction Quantiles showing an example road segment", showtext=TRUE>>=
+<<quant_fig, fig.cap = "Comparison between Linear Prediction Quantiles showing an example road segment", fig.showtext=TRUE>>=
 plot_grid(
   q95,
   q90,
@@ -366,7 +367,7 @@ plot_grid(
   labels = "AUTO",
   label_size = 20,
   ncol = 3,
-  label_fontfamily = "robotosl",
+  label_fontfamily = "Roboto Slab",
   label_colour = "white",
   hjust = 0
 )
@@ -481,7 +482,7 @@ gg_centi <- ggRGB(aerial) +
   scale_y_continuous(expand = c(0, 0))
 @
 
-<<fig_noisecent, fig.cap = "Comparison between Linear Probability models applied to; (A) OS Road Centrelines, and (B) Derived Centrelines. Green points give classified road locations, red show classified road locations removed through isolation based filtering", showtext=TRUE>>=
+<<fig_noisecent, fig.cap = "Comparison between Linear Probability models applied to; (A) OS Road Centrelines, and (B) Derived Centrelines. Green points give classified road locations, red show classified road locations removed through isolation based filtering", fig.showtext=TRUE>>=
 plot_grid(
   ggcent,
   gg_cent0,
@@ -490,7 +491,7 @@ plot_grid(
   labels = "AUTO",
   label_size = 20,
   ncol = 4,
-  label_fontfamily = "robotosl"
+  label_fontfamily = "Roboto Slab"
 )
 @
 
@@ -717,13 +718,13 @@ gg_ba <- ggRGB(ba) +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0))
 @
-<<rqi_compare, fig.cap = "Visual comparison between road with the highest RQI \\textbf{(A)}, and lowest RQI \\textbf{(B)}", showtext=TRUE>>=
+<<rqi_compare, fig.cap = "Visual comparison between road with the highest RQI \\textbf{(A)}, and lowest RQI \\textbf{(B)}", fig.showtext=TRUE>>=
 plot_grid(
           gg_ta,
           gg_ba,
   labels = "AUTO",
   label_size = 20,
   ncol = 2,
-  label_fontfamily = "robotosl"
+  label_fontfamily = "Roboto Slab"
 )
 @

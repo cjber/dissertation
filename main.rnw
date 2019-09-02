@@ -37,6 +37,7 @@ write.bib(pkgs, "rbib.bib")
 r <- citation()
 write.bib(r, "rbib.bib", append = TRUE)
 
+
 # add qgis citation
 qgis <- 
   "@Manual{QGIS,
