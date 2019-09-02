@@ -103,7 +103,10 @@ Key Aims:
 \begin{itemize}
     \item Produce and assess an automated method using LiDAR, aerial imagery and OS road geometry to determine the true width of roads within the chosen study area.
 
-    \item Using OS Road and LiDAR Data produce an automated method for determining the characteristics of roads that relate to overall road quality.
+    \item Using OS Road and LiDAR Data produce an automated method for determining the characteristics of roads that relate to overall road quality. These are;
+        \subitem Bend sharpness
+        \subitem Road steepness
+        \subitem Surface quality
 
     \item Using extracted road features, assess the potential for speed reduction on rural roads, with the assumption that at present the roads chosen are all given the standard national speed limit of 60mph.
 \end{itemize}
@@ -111,3 +114,4 @@ Key Aims:
 The site selected in this study was chosen to include a selection of B, and Unclassified local roads within a rural setting. Particularly the roads chosen are often partially obscured by tree canopies and do not have visible kerbs, both key features in rural British roads.
 
 This paper is organised into chapters, first a literature review, outlining the broad implications of speed limits, rural road networks, and object extraction particularly in relation to LiDAR aerial point clouds. Second, a detailed description of the methodology involved in this paper will outline the techniques used to classify road widths, in addition to the other road geometric information. A results section will primarily assess the method for road extraction, through sensitivity analysis and some qualitative observations, a short section will then explore the findings. Finally a discussion will detail the implications of the findings, and suggest areas for methodological improvement. 
+

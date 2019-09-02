@@ -357,7 +357,14 @@ Given the improvement in road centreline locations, it was considered feasible t
 
 // talk about lm beta coefficients here, limitations of p valeus nmaybe
 
-cite{peterson2005}
+To aid with model interpretability, the direct comparison between each variable in the analysis was enabled through centering and scaling through the use of beta coefficients \cite{peterson2005};
+
+$$
+\beta_{p}=\frac{\operatorname{Cov}\left(r_{p}, r_{b}\right)}{\operatorname{Var}\left(r_{b}\right)}
+$$
+
+
+
 
 \subsection{Road Angles}
 

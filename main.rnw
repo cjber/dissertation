@@ -68,7 +68,7 @@ cat(paste0("\\nocite{", paste0(pkgs, collapse = ',', sep = ''),"}"))
 \centering\begin{minipage}{\dimexpr\paperwidth-10cm}
     \hrule
     \vskip 5pt
- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla consectetur turpis ut libero efficitur, ullamcorper ultrices nulla elementum. Proin enim lorem, tempus sed tempus eget, fermentum vitae odio. Aenean congue urna id metus tincidunt efficitur. Donec finibus nec elit vitae tempor. Nullam eget vestibulum arcu. Nullam pulvinar sed quam nec ullamcorper. Curabitur at faucibus augue. Nulla scelerisque pretium sodales. Nulla facilisi. In id ipsum orci. Donec ex magna, sodales quis tempus a, sollicitudin sit amet odio. Proin nec molestie ante. Fusce ut hendrerit risus. Nunc eleifend magna dui, sit amet tempus velit tincidunt et. Duis iaculis convallis mi sed scelerisque.
+An automated method for the identification of rural road geometric features is presented for use in a national rural road assessment in England. This method includes the use of LiDAR for height and road surface intensity information, as well as aerial imagery, and road centrelines enabling automated classification of road surfaces prior to road width extraction. The method presented ensures scalability, allowing for an extension beyond the 1km$^2$ area proposed, given existing data and suitable computational power. A unique classification method is proposed, utilising a linear probability model given points determined to be road surface, derived from the road centreline information. Results were broadly assessed qualitatively and quantitatively giving around a 70\% accuracy in road width measurements. Additional geometric features include the change in road elevation and road surface quality, derived through LiDAR data, and road bend sharpness, derived through the OS Road Centrelines data.
     \vskip 5pt
     \hrule
     \vskip 10pt
@@ -95,7 +95,7 @@ cat(paste0("\\nocite{", paste0(pkgs, collapse = ',', sep = ''),"}"))
 \centering\begin{minipage}{\dimexpr\paperwidth-10cm}
     \hrule
     \vskip 5pt
- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla consectetur turpis ut libero efficitur, ullamcorper ultrices nulla elementum. Proin enim lorem, tempus sed tempus eget, fermentum vitae odio. Aenean congue urna id metus tincidunt efficitur. Donec finibus nec elit vitae tempor. Nullam eget vestibulum arcu. Nullam pulvinar sed quam nec ullamcorper. Curabitur at faucibus augue. Nulla scelerisque pretium sodales. Nulla facilisi. In id ipsum orci. Donec ex magna, sodales quis tempus a, sollicitudin sit amet odio. Proin nec molestie ante. Fusce ut hendrerit risus. Nunc eleifend magna dui, sit amet tempus velit tincidunt et. Duis iaculis convallis mi sed scelerisque. \citep{wang2015}
+    I would like to thank my supervisor Paul Williamson for his continued support through the writing of this dissertation. Thank you to John Murray for his help with the various mathematical problems and solutions presented through the methodology, and for providing some of the core functions essential for the road width and angle extraction. I would also like to thank Jean Romain (and package contributors) for his excellent work producing the lidR R package, without which the manipulation of LiDAR data in this paper would have been far more limited.
     \vskip 5pt
     \hrule
     \vskip 10pt
