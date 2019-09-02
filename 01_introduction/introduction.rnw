@@ -1,4 +1,4 @@
-       \lettrine{R}{oad} usage in the United Kingdom has been steadily increasing by year with the highest ever billion vehicle miles (bvm) travelled in 2018  \citep[255 million;][]{departmentfortransport2019}. Characterised by tall hedgerows and winding turns, rural roads in the UK are often unsuitable for higher traffic flow due to the obstruction of view from protected hedgerows, narrow lanes and often poor condition \citep{departmentfortransport2018b}. Due to the abundance of these roads, with "Unclassified" local network roads making up 60\% of all roads in the UK \citep{departmentfortransport2012}, and their varying nature, the national assessment of these roads into appropriate speed limits on an individual basis has been considered impractical \citep{taylor2002}. Due to this, there have been no individual assessments for the majority of rural roads, and given their nature, are classified as unlit, single carriageway roads and thus assigned a default speed of 60mph \citep{ukgovernment2019a}. Highways England manages the motorways and trunk roads within the UK, but local road networks are maintained by Local Authorities, and as such have no comprehensive information regarding these smaller road networks \citep{highwaysengland2019}. Rural roads in the UK are often cited as by far the most dangerous road type with studies suggesting that up to two thirds of vehicle accidents occur on rural roads \citep{corben2005}.
+       \lettrine{R}{oad} usage in the United Kingdom has been steadily increasing by year with the highest ever billion vehicle miles (bvm) travelled in 2018  \citep[318.1;][]{departmentfortransport2019}. Characterised by tall hedgerows and winding turns, rural roads in the UK are often unsuitable for higher traffic flow due to the obstruction of view from protected hedgerows, narrow lanes and often poor condition \citep{departmentfortransport2018b}. Due to the abundance of these roads, with "Unclassified" local network roads making up 60\% of all roads in the UK \citep{departmentfortransport2012}, and their varying nature, the national assessment of these roads into appropriate speed limits on an individual basis has been considered impractical \citep{taylor2002}. Due to this, there have been no individual assessments for the majority of rural roads, and given their nature, are classified as unlit, single carriageway roads and thus assigned a default speed of 60mph \citep{ukgovernment2019a}. Highways England manages the motorways and trunk roads within the UK, but local road networks are maintained by Local Authorities, and as such have no comprehensive information regarding these smaller road networks \citep{highwaysengland2019}. Rural roads in the UK are often cited as by far the most dangerous road type with studies suggesting that up to two thirds of vehicle accidents occur on rural roads \citep{corben2005}.
 
 The Rural Urban Classification defines a rural area as one outside of a settlement with more than a 10,000 resident population \citep{ukgovernment2011}, therefore a road could be considered rural, if either connecting or present within small settlements in the UK. This study will focus particularly on rural connecting roads, outside of rural towns.
 
@@ -67,16 +67,19 @@ Often road classification methodologies use LiDAR height data to identify kerbs 
 
 LiDAR data often requires a large amount of processing due to the irregular distribution of points, presence of noise and the number of variables that have to be considered, \cite{yadav2018} note that often papers do not include information regarding the computational time for processing this data which may cause practical limitations at larger scales.
 
-<<area_map, fig.cap="Study area highlighting road geometries outlined in a lighter 30m buffer", fig.pos = "t">>=
+<<area_map, fig.cap="Study area highlighting road centrelines outlined in a lighter 30m buffer", fig.pos = "t">>=
 source("../scripts/functions.r")
 
 rd <- st_read("../data/derived/roads/roads_buff_diss.gpkg", quiet = T) %>%
   st_set_crs(27700)
+rd_l <- st_read("../data/derived/roads/roads.gpkg", quiet = T) %>%
+  st_set_crs(27700)
+
 jpgs <- Sys.glob("../data/aerial/*.jpg")
 jpgs <- lapply(jpgs, brick)
 jpgs <- lapply(jpgs, aggregate, fact = 8)
 jpgs <- do.call(merge, jpgs)
-aerial <- crop(jpgs, rd)
+aerial <- crop(jpgs, rd_l)
 
 aerial_bbox <- bbox(aerial)
 
@@ -88,7 +91,7 @@ bg <- data.frame(
 )
 
 ggRGB(aerial) +
-  geom_sf(data = rd, fill = "white", colour = NA, alpha = 0.2) +
+  geom_sf(data = rd, fill = "white", colour = "white", alpha = 0.2) +
   geom_rect(data = bg, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = NA, colour = "black") +
   theme_map() +
   theme(legend.position = "none")
@@ -108,7 +111,7 @@ Key Aims:
         \subitem Road steepness
         \subitem Surface quality
 
-    \item Using extracted road features, assess the potential for speed reduction on rural roads, with the assumption that at present the roads chosen are all given the standard national speed limit of 60mph.
+    \item Using extracted road features, outline the overall quality of the road network, allow for direct comparison between each road.
 \end{itemize}
 
 The site selected in this study was chosen to include a selection of B, and Unclassified local roads within a rural setting. Particularly the roads chosen are often partially obscured by tree canopies and do not have visible kerbs, both key features in rural British roads.

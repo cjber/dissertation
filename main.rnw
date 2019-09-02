@@ -95,7 +95,7 @@ An automated method for the identification of rural road geometric features is p
 \centering\begin{minipage}{\dimexpr\paperwidth-10cm}
     \hrule
     \vskip 5pt
-    I would like to thank my supervisor Paul Williamson for his continued support through the writing of this dissertation. Thank you to John Murray for his help with the various mathematical problems and solutions presented through the methodology, and for providing some of the core functions essential for the road width and angle extraction. I would also like to thank Jean Romain (and package contributors) for his excellent work producing the lidR R package, without which the manipulation of LiDAR data in this paper would have been far more limited.
+    I would like to thank my supervisor Paul Williamson for his continued support through the writing of this dissertation. Thank you to John Murray for his help with the various mathematical problems and solutions presented through the methodology, particularly for providing some of the core functions essential for the road width and angle extraction. I would also like to thank Jean Romain (and package contributors) for his excellent work producing the lidR R package, without which the manipulation of LiDAR data in this paper would have been far more limited.
     \vskip 5pt
     \hrule
     \vskip 10pt
@@ -114,14 +114,14 @@ An automated method for the identification of rural road geometric features is p
 \begin{multicols}{2}
 \begin{itemize}
     \item \textbf{Light Detection and Ranging (LiDAR):} similar to radar, a laser pulse is sent out of a transmitter on an aircraft or ground vehicle and the light is reflected back to a receiver.
-    \item \textbf{Billion Vehicle Miles (BVM):} blah...
+    \item \textbf{Billion Vehicle Miles (BVM):} the total number of miles travelled by all vehicles divided by 1 billion. Typically all traffic is measured in vehicles miles.
     \item \textbf{Digital Terrain Model (DTM):} digital representation of the land surface topography without surface objects.
     \item \textbf{Digital Surface Model (DSM):} digital representation of the land surface capturing all natural and built features.
-    \item \textbf{Social Mobility:} blah..
-    \item \textbf{Social Exclusion:} blah..
-    \item \textbf{Read-eval-print loop (REPL):} blah..
-    \item \textbf{Root Mean Square Error (RMSE):} blah..
-    \item \textbf{Scalability:} blah..
+    \item \textbf{Social Mobility:} the movement of individuals, families, households, or other categories of people within or between social strata in a society.
+    \item \textbf{Social Exclusion:} exclusion from the prevailing social system and its rights and privileges, typically as a results of poverty or the fact of belonging to a minority social group.
+    \item \textbf{Read-eval-print loop (REPL):} a simple interactive computer programming environment that takes single user inputs, evaluates them, and returns the results to the user.
+    \item \textbf{Root Mean Square Error (RMSE):} the square root of the second sample moment of the differences between predicted values and observed values. Commonly used to measure the difference between sample or population values.
+    \item \textbf{Scalability:} the property of a system to handle an increasing amount of work. In this context, a methodology that may handle an increasing area of interest.
 \end{itemize}
 \end{multicols}
 
