@@ -63,7 +63,7 @@ plot_grid(
   labels = "AUTO",
   label_size = 20,
   ncol = 2,
-  hjust = -1,
+  hjust = -1.4,
   label_fontfamily = "Roboto Slab"
 )
 @
@@ -359,7 +359,7 @@ q80 <- ggRGB(aerial) +
   scale_y_continuous(expand = c(0, 0))
 @
 
-<<quant_fig, fig.cap = "Comparison between Linear Prediction Quantiles showing an example road segment", fig.showtext=TRUE>>=
+<<quant_fig, fig.cap = "Comparison between Linear Prediction Quantiles; \\textbf{(A)} 95th Quantile, \\textbf{(B)} 90th Quantile, \\textbf{(C)} 80th Qunatile", fig.showtext=TRUE>>=
 plot_grid(
   q95,
   q90,

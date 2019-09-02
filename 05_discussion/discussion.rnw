@@ -1,4 +1,4 @@
-The proposed methodology provides a road classification method which considers the need for an optimised and efficient extraction of road widths to combine with other road features and geometry for use in an automated national road assessment. This method builds upon past classification methodologies with the inclusion of Ordinance Survey road centreline geometries allowing for a supervised classification, without the need for the manual, time consuming creation of a training dataset. The primary goal is primarily to provide a fully scalable classification, for a national rural assessment for all roads in England, given access to Ordinance Survey centrelines, and LiDAR point cloud data.
+\lettrine{T}{he} proposed methodology provides a road classification method which considers the need for an optimised and efficient extraction of road widths to combine with other road features and geometry for use in an automated national road assessment. This method builds upon past classification methodologies with the inclusion of Ordinance Survey road centreline geometries allowing for a supervised classification, without the need for the manual and time consuming creation of a training dataset. The primary goal is primarily to provide a fully scalable classification, for a national rural assessment for all roads in England, given access to Ordinance Survey centrelines, and LiDAR point cloud data.
 
 The results of this paper can be considered to present the overall goal of automated road feature extraction, split into two main sections, the first being automated road width extraction, and second, the automated extraction of other road features.
 
@@ -8,7 +8,24 @@ As results have revealed, it is relatively hard to quantify the results of this 
 
 \subsection{Alternatives to Linear Probability}
 
-Alternatives to Linear Probability models do exist when considering binary outcome variables, one being probabalistic regression, which takes the cumulative standard normal distribution function ($\Phi$) to model the regression. This could aid with interpretability of results and includes consideration of the quantiles associated with a unit change in outcome variables. Additionally logistic regression, unlike simple linear regression does not take the assumption that there is a linear distribution in the outcome, weighting values more towards 1 or 0, as is expected with a binary outcome variable \cite{hanck2019}. However, preliminary analysis of the methodology performed in this study did consider a logistic regression, but found that interpretability of the quantiles and results was difficult, and qualitative observation of the results did not appear to provide much benefit over linear regression.
+Alternatives to Linear Probability models do exist when considering binary outcome variables, one being probabilistic regression, which takes the cumulative standard normal distribution function ($\Phi$) to model the regression. Interpretability of results may be aided through this method as it includes consideration of the quantiles associated with a unit change in outcome variables. Additionally logistic (and probabilistic regression) regression, unlike simple linear regression do not take the assumption that there is a linear distribution in the outcome, weighting values more towards 1 or 0, conforming more with the distribution of a binary outcome variable \citep[See Figure \ref{fig:csnd};][]{hanck2019}. However, preliminary analysis of the methodology performed in this study did consider a logistic regression, but found that interpretability of the quantiles and results was difficult, and qualitative observation of the results did not appear to provide much benefit over linear regression.
+
+\begin{figure}[htbp]
+    \centering
+\begin{tikzpicture}[scale=1]
+\tikzset{
+    declare function={
+        normcdf(\x,\m,\s)=1/(1 + exp(-0.07056*((\x-\m)/\s)^3 - 1.5976*(\x-\m)/\s));
+    }
+}
+\begin{axis}[%
+  grid=major]
+  \addplot[mark=none, red!50] coordinates {(-6,0) (6,1)};
+  \addplot [smooth, black] {normcdf(x,0,2)};
+\end{axis}
+\end{tikzpicture}
+\caption{Comparison between a Linear Probability Model Distribution (Red) and Probit/Logit Cumulative Standard Normal Distribution (Black) \citep[Approximation credit][]{bowling2009})}\label{fig:csnd}
+\end{figure}
 
 \subsection{Computational Efficiency}
 
