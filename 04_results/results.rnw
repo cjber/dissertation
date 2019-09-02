@@ -368,7 +368,6 @@ plot_grid(
   label_size = 20,
   ncol = 3,
   label_fontfamily = "Roboto Slab",
-  label_colour = "white",
   hjust = 0
 )
 @
