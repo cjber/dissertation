@@ -91,7 +91,7 @@ bg <- data.frame(
 )
 
 ggRGB(aerial) +
-  geom_sf(data = rd, fill = "white", colour = "white", alpha = 0.2) +
+  geom_sf(data = rd, fill = NA, colour = "white", alpha = 0.2) +
   geom_rect(data = bg, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), fill = NA, colour = "black") +
   theme_map() +
   theme(legend.position = "none")
