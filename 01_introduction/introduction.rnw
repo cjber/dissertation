@@ -98,12 +98,12 @@ ggRGB(aerial) +
 
 \section{Objective of this paper}
 
-This paper will present a method for rural road classification and width extraction for a 1km$^2$ region in the North West of England. The methodology is produced in order to ensure scalability and automation, allowing for replication for any area where data is available. Data used will include road centreline geometries, LiDAR point cloud, and aerial imagery to extract road widths through linear probability models. Additionally, this paper aims to extract other features of roads such as elevation changes, surface quality, and the sharpness of bends. These key features aim to provide information that may inform the selection of appropriate speed limits on rural roads, where the 60mph national speed limit is inappropriate.
+This paper will present a method for rural road classification and width extraction for a 1km$^2$ region in the North West of England. The methodology is produced in order to ensure scalability and automation, allowing for replication for any area where data is available. Data used will include road centreline geometries, LiDAR point cloud, and aerial imagery to extract road widths through linear probability models. Additionally, this paper aims to extract other features of roads such as elevation changes, surface quality, and the sharpness of bends. The extraction of such features aim to build upon past road classification studies, combined with a more refined methodology that aims to ensure a higher accuracy for rural British roads.
 
 Key Aims:
 
 \begin{itemize}
-    \item Produce and assess an automated method using LiDAR, aerial imagery and OS road geometry to determine the true width of roads within the chosen study area.
+    \item Produce and assess an automated method using LiDAR, aerial imagery and OS road geometry to determine the true width of roads within the chosen study area, outlining the particular limitations and solutions when considering the rural British road network.
 
     \item Using OS Road and LiDAR Data produce an automated method for determining the characteristics of roads that relate to overall road quality. These are;
         \subitem Bend sharpness
