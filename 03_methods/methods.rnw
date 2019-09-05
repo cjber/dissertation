@@ -229,7 +229,7 @@ $$
     \footnotesize{\ref{code:lm_compute}}
 \end{flushright}
 
-\section{Linear Probability Models}
+\section{Linear Probability Models and Road Width}
 
 To classify road and non-road, linear models were constructed and compared to assess effectiveness. A maximal approach was chosen, selecting all appropriate predictor variables, iterating through models by removing variables that did not significantly influence the model outcome, or created noise.
 
@@ -366,7 +366,7 @@ $$
 
 
 
-\subsection{Road Angles}
+\section{Road Angles}
 
 The angle of bends in roads were identified through the nodes produced in the creation of the road shapefiles. First the road linestrings were split into points, with coordinates representing each node within a road, a point at which the orientation of the linestring is altered.
 
@@ -452,15 +452,15 @@ With the bearing angle of the first line segment $AB$ for a particular road, the
 
 For each road the, maximum bearing angle between two nodes was selected, as well as the average bearing angle for a certain road.
 
-\subsection{Road Node Elevation Change}
+\section{Road Node Elevation Change}
 
 The elevation change between two road node points was calculated by first selecting non-normalised LiDAR points at a geometric node within a 1m$^2$ area. Nodes were obtained from the OS road data, as point coordinates obtained when the linestrings were split. LiDAR points were then filtered by those only classified as ground, and with only a single return, to reduce the likelihood of inaccurate $z$ values from canopy or other vegetation and vehicles. The mean $z$ value of points were found for each node, and elevation change between each node was calculated. For each road, the total elevation change per kilometer was calculated.
 
-\subsection{Surface Quality}
+\section{Surface Quality}
 
 Surface quality was assessed roughly through the range in intensity values found in each known road point, and the average number of returns for a road for sample lines not obstructed by canopy, indicated by single returns.
 
-\subsection{Estimate of True Widths}
+\section{Estimate of True Widths}
 
 QGIS \citep{QGIS} used to measure roughly the width at various points along each road using 25cm resolution aerial imagery. With the widths, the results of each model was compared to assess model accuracy. Each width was normalised to allow comparison between each road, and to give a final average accuracy value. Normalisation was achieved through finding the relative difference in width as a percentage;
 

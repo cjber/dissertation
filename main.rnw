@@ -68,11 +68,11 @@ cat(paste0("\\nocite{", paste0(pkgs, collapse = ',', sep = ''),"}"))
 \centering\begin{minipage}{\dimexpr\paperwidth-10cm}
     \hrule
     \vskip 5pt
-An automated method for the identification of rural road geometric features is presented for use in a national rural road assessment in England. This method includes the use of LiDAR for height and road surface intensity information, as well as aerial imagery, and road centrelines enabling automated classification of road surfaces prior to road width extraction. The method presented ensures scalability, allowing for an extension beyond the 1km$^2$ area proposed, given existing data and suitable computational power. A unique classification method is proposed, utilising a linear probability model given points determined to be road surface, derived from the road centreline information. Results were broadly assessed qualitatively and quantitatively giving around a 70\% accuracy in road width measurements. Additional geometric features include the change in road elevation and road surface quality, derived through LiDAR data, and road bend sharpness, derived through the OS Road Centrelines data.
+An automated method for the identification of rural road geometric features is presented for use in a national rural road assessment in England. This method includes the use of LiDAR for height and road surface intensity information, as well as aerial imagery, and road centrelines enabling automated classification of road surfaces prior to road width extraction. The method presented ensures scalability, allowing for an extension beyond the 1km$^2$ area proposed, given existing data and suitable computational power. A unique classification method is proposed, utilising a linear probability model given points determined to be road surface, derived from the road centreline information, while implementing a sampling methodology which primarily reduces the computational overhead. Results were broadly assessed qualitatively and quantitatively giving around a 70\% accuracy in road width measurements. Additional geometric features extracted from roads include the change in road elevation and road surface quality, derived through LiDAR data, and road bend sharpness, derived through the OS Road Centrelines data.
     \vskip 5pt
     \hrule
     \vskip 10pt
-\keywords{LiDAR; Aerial Imagery; Linear Probability Classification; Road Quality}
+\keywords{LiDAR; Aerial Imagery; Linear Probability Classification; Rural Road Quality}
 \end{minipage}
 \end{abstract}
 
@@ -95,7 +95,7 @@ An automated method for the identification of rural road geometric features is p
 \centering\begin{minipage}{\dimexpr\paperwidth-10cm}
     \hrule
     \vskip 5pt
-    I would like to thank my supervisor Paul Williamson for his continued support through the writing of this dissertation. Thank you to John Murray for his help with the various mathematical problems and solutions presented through the methodology, particularly for providing some of the core functions essential for the road width and angle extraction. I would also like to thank Jean Romain (and package contributors) for his excellent work producing the lidR R package, without which the manipulation of LiDAR data in this paper would have been far more limited.
+    I would like to thank my supervisor Paul Williamson for his continued support through the writing of this dissertation. Thank you to John Murray for his help with the various mathematical problems and solutions presented through the methodology, particularly for providing some of the core functions essential for the road width and angle extraction. I would also like to thank Jean Romain (and package contributors) for his excellent work producing the lidR R package, without which the manipulation of LiDAR data in this paper would have been far more limited. Finally, thank you to Jenny Gibson, who always provides love and support throughout my studies.
     \vskip 5pt
     \hrule
     \vskip 10pt
@@ -118,7 +118,7 @@ An automated method for the identification of rural road geometric features is p
     \item \textbf{Digital Terrain Model (DTM):} digital representation of the land surface topography without surface objects.
     \item \textbf{Digital Surface Model (DSM):} digital representation of the land surface capturing all natural and built features.
     \item \textbf{Social Mobility:} the movement of individuals, families, households, or other categories of people within or between social strata in a society.
-    \item \textbf{Social Exclusion:} exclusion from the prevailing social system and its rights and privileges, typically as a results of poverty or the fact of belonging to a minority social group.
+    \item \textbf{Social Exclusion:} exclusion from the prevailing social system and its rights and privileges, typically as a result of poverty or the fact of belonging to a minority social group.
     \item \textbf{Read-eval-print loop (REPL):} a simple interactive computer programming environment that takes single user inputs, evaluates them, and returns the results to the user.
     \item \textbf{Root Mean Square Error (RMSE):} the square root of the second sample moment of the differences between predicted values and observed values. Commonly used to measure the difference between sample or population values.
     \item \textbf{Scalability:} the property of a system to handle an increasing amount of work. In this context, a methodology that may handle an increasing area of interest.

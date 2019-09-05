@@ -8,6 +8,7 @@
 \usepackage{lettrine}
 \usepackage{natbib}
 \usepackage{pgfplots}
+\pgfplotsset{compat=1.16}
 
 % captions
 \usepackage[font=footnotesize,
@@ -204,3 +205,9 @@
   {}
   {}
 \appto{\endthebibliography}{\end{multicols}}
+
+\appto\appendix{\addtocontents{toc}{\protect\setcounter{tocdepth}{1}}}
+
+% reinstate the correct level for list of tables and figures
+\appto\listoffigures{\addtocontents{lof}{\protect\setcounter{tocdepth}{1}}}
+\appto\listoftables{\addtocontents{lot}{\protect\setcounter{tocdepth}{1}}}

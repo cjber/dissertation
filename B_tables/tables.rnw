@@ -1,3 +1,19 @@
+<<corr, results = 'asis'>>=
+make_table(corResults, # align col 1 left, rest centred
+  cap = "Spearman's rank correlation coefficients for all variables in relation to the road outcome variable"
+) %>%
+  footnote(
+    general_title = " ",
+    general = c(
+      "* Significant at the 0.05 level;",
+      "** Significant at the 0.01 level;",
+      "*** Significant at the 0.001 level;",
+      "† 95% Confidence Interval"
+    )
+  ) %>%
+  row_spec(c(1, 2, 4, 6, 7), bold = T)
+@
+
 <<rd_bends>>=
 roads <- st_read("../data/derived/roads/roads_line.gpkg", quiet = TRUE) %>%
   mutate(len = as.numeric(st_length(geom))) %>%
@@ -17,7 +33,7 @@ rd_bends <- roads %>%
 
 rd_bends$road_id <- gsub("road_", "", rd_bends$road_id)
 make_table(rd_bends,
-  cap = "Bends for each road",
+  cap = "Estimated number of bends per road",
   col_names = c(
     "Road ID",
     "Number of Bends",
@@ -76,18 +92,3 @@ names(corResults) <- c(
 )
 @
 
-<<corr, results = 'asis'>>=
-make_table(corResults, # align col 1 left, rest centred
-  cap = "Spearman's rank correlation coefficients for all variables in relation to the road outcome variable"
-) %>%
-  footnote(
-    general_title = " ",
-    general = c(
-      "* Significant at the 0.05 level;",
-      "** Significant at the 0.01 level;",
-      "*** Significant at the 0.001 level;",
-      "† 95% Confidence Interval"
-    )
-  ) %>%
-  row_spec(c(1, 2, 4, 6, 7), bold = T)
-@
