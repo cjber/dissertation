@@ -24,24 +24,29 @@ las <- las %>%
 
 fwrite(las, "../data/point/points.csv")
 
+# filter using sql expressions why not
 # very very slow to read in full gpkg, don't run unless new data added
 #roads <- st_read("../data/osroads/oproad_gpkg_gb/data/oproad_gb.gpkg",
-#   layer = "RoadLink",
-#   query =
+#    layer = "RoadLink", query =
 #        "SELECT * FROM RoadLink WHERE
 #         formOfWay = \"Single Carriageway\" AND
 #         roadFunction <> \"Restricted Local Access Road\" "
 #) %>%
-#st_zm() # remove z axis
+#    st_zm() # remove z axis
+#
+#roads <- as_Spatial(roads)
+#roads <- raster::crop(roads, as.matrix(extent(ctg))) %>%
+#    st_as_sf()
 
-#roads <- st_crop(roads, st_bbox(extent(ctg)))
-#st_write(roads, "../data/osroads/oproad_crop.gpkg", layer_options = "OVERWRITE=yes")
+#st_write(roads, "../data/osroads/oproad_crop.gpkg")
 
-roads <- st_read("../data/osroads/oproad_crop.gpkg") %>% 
-    mutate(road_id = row_number(), len = geom %>% st_length() %>% as.numeric())
-
-roads <- roads %>% 
-    select(road_id, roadNameTOID, len, geom)
+roads <- st_read("../data/osroads/oproad_crop.gpkg") %>%
+    mutate(
+        len = as.numeric(st_length(geom)),
+        road_id = paste0("road_", row_number())
+    ) %>%
+    select(c(road_id, roadFunction, roadNameTOID, len, geom)) %>%
+    subset(len > 50)
 
 # keep line polys
 roads_line <- roads

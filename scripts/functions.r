@@ -271,8 +271,8 @@ compute_samples <- function(x, increment = 10, width = 30) {
       }
       tot_len <- tot_len + len_seg
     }
-  return(sample_lines)
   }
+  return(sample_lines)
 }
 ## ---- greyscale
 # combine three band rgb

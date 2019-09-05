@@ -34,7 +34,6 @@ mid_rds <- Filter(function(x) dim(x)[1] > 0, mid_rds)
 cents <- lapply(mid_rds, true_cents)
 cents <- compact(cents)
 cents <- do.call(rbind, cents)
-plot(cents)
 
 st_write(cents, "../data/derived/roads/cent_iteration1.gpkg",
     layer_options = "OVERWRITE=yes"
@@ -45,7 +44,7 @@ roads_split <- st_read("../data/derived/roads/roads_line.gpkg") %>%
     st_cast("POINT") %>%
     st_set_crs(27700)
 
-roads_split <- split(roads_split, roads_split$roadNameTOID)
+roads_split <- split(roads_split, roads_split$road_id)
 
 angles <- lapply(roads_split, road_angles)
 angles <- do.call(rbind, angles)
@@ -84,9 +83,9 @@ las_rds <- las_rds[las_rds$NumberOfReturns == 1 &
 rds <- st_read("../data/derived/roads/roads.gpkg") %>%
     st_transform(27700)
 
-rd_line <- st_read("../data/derived/roads/roads_line.gpkg", quiet = TRUE) %>% 
-    mutate(len = as.numeric(st_length(geom))) %>% 
-    select(c(road_id, len)) %>% 
+rd_line <- st_read("../data/derived/roads/roads_line.gpkg", quiet = TRUE) %>%
+    mutate(len = as.numeric(st_length(geom))) %>%
+    select(c(road_id, len)) %>%
     st_drop_geometry()
 
 roads_df <- rds %>% st_drop_geometry()
@@ -125,13 +124,13 @@ las_height <- do.call(rbind, las_height)
 las_height <- as.data.frame(las_height)
 
 names(las_height) <- c("road_id", "Z")
-las_height <- las_height %>% 
+las_height <- las_height %>%
     merge(rd_line, by = "road_id")
 
 las_height <- las_height %>%
     group_by(road_id) %>%
     summarise(
-        tot_z = sum(as.numeric(unfactor(Z))) / (mean(len)/1000),
+        tot_z = sum(as.numeric(unfactor(Z))) / (mean(len) / 1000),
     ) %>%
     drop_na()
 
