@@ -72,16 +72,10 @@ plot_grid(
 las <- catalog("/home/cjber/drive/uni/envs492/main/data/point")
 roads_buff <- read_sf("/home/cjber/drive/uni/envs492/main/data/derived/roads/roads_buff.gpkg", quiet = TRUE)
 aerial <- raster("/home/cjber/drive/uni/envs492/main/data/derived/aerial/aerial_crop.tif")
-centrelines <- read_sf("/home/cjber/drive/uni/envs492/main/data/derived/roads/roads_line.gpkg", quiet = TRUE)
 
 rd_f <- "road_6"
-centrelines <- centrelines[centrelines$road_id == rd_f, ] %>% 
-    st_cast("LINESTRING")
-centrelines <- centrelines[4, ]
-centrelines_buff <- centrelines %>% st_buffer(30)
-
-las <- lasclip(las, extent(centrelines_buff))
-aerial <- raster::crop(aerial, extent(centrelines_buff))
+las <- lasclip(las, extent(roads_buff[roads_buff$road_id == rd_f, ]))
+aerial <- raster::crop(aerial, extent(roads_buff[roads_buff$road_id == rd_f, ]))
 aerial <- aggregate(aerial, fact = 8)
 
 aerial <- as(aerial, "SpatialPixelsDataFrame")
@@ -135,11 +129,11 @@ metrics <- grid_metrics(norm_lp, ~ myMetrics(Z, Intensity), res = 2)
 metrics <- as(metrics, "SpatialPixelsDataFrame")
 metrics <- as.data.frame(metrics)
 colnames(metrics) <- c("zmean", "imean", "x", "y")
-roads <- st_crop(centrelines_buff, centrelines)
+roads <- roads_buff[roads_buff$road_id == "road_6", ]
 
 chm_gg <- ggplot() +
   geom_raster(data = chm, aes(x = x, y = y, fill = value), alpha = 1) +
-  geom_sf(data = centrelines_buff, colour = alpha("red", .3), fill = "black", alpha = 0.1) +
+  geom_sf(data = roads, colour = alpha("red", .3), fill = "black", alpha = 0.1) +
   scale_fill_viridis() +
   coord_sf() +
   theme_map() +
@@ -216,7 +210,7 @@ plot_grid(
 )
 @
 
-Following intensity noise filtering, the highest intensity value was now $\Sexpr{max(clean_las$Intensity)}$, with a mean of $\Sexpr{round(mean(clean_las$Intensity), 0)}$. Figure \ref{fig:hist_lidar} \textbf{(A)} gives the distribution of Intensity values for all points within the study area, showing two clear spikes in intensity, at at value of around 50, with another around 350. This is reflected similarity in the Luminescence values, with two peaks at around 50 and 120 (Figure \ref{fig:hist_lidar} \textbf{(B)}).
+Following intensity noise filtering, the highest intensity value was now $\Sexpr{max(clean_las$Intensity)}$, with a mean of $\Sexpr{round(mean(clean_las$Intensity), 0)}$. Figure \ref{fig:hist_lidar} \textbf{(A)} gives the distribution of Intensity values for all points within the study area, showing two clear spikes in intensity, at at value of around 50, with another around 350. This is reflected similarlty in the Luminescence values, with two peaks at around 50 and 120 (Figure \ref{fig:hist_lidar} \textbf{(B)}).
 
 Figure \ref{fig:fig_lp} gives the results of further LiDAR preprocessing, comparing Figure \ref{fig:fig_lp} \textbf{(A)} and Figure \ref{fig:fig_lp} \textbf{(B)}, shows how last pulse LiDAR filtering allows for the removal of the majority of tree canopies, leaving only ground points that are considered hard surfaces, and as such are the lowest point the laser pulse has penetrated. Additionally, Figure \ref{fig:fig_lp} \textbf{(B)} shows how a digital terrain model, created through interpolation techniques, using only the base point cloud may be used to normalise the points, giving a digital surface model which only shows the true height of surface objects, without having to consider the variation in lie of the land. However, Figure \ref{fig:fig_lp} \textbf{(C)} indicates that while filtering for last pulse returns may appear to remove much of the canopy, reflected in the $z$ values, the intensity values for points that have penetrated the canopy are lower than those that did not (See the tree just below the centre of the road section). This particularly creates issues in the distinction between road and non road in neighbouring areas where the intensity "shadow" created removes the distinct difference in intensity. This suggests that for ground points with multiple returns, the intensity values are likely far less reliable for road classification. Quantitative analysis of this limitation reveals that for ground classified points with a single return the average intensity value is $\Sexpr{round(one_return,2)}$, while for ground classified points with multiple returns, the average intensity value is $\Sexpr{round(mult_return,2)}$.
 
@@ -305,17 +299,13 @@ roads <- st_read("../data/derived/roads/roads_line.gpkg", quiet = TRUE)
 centrelines <- st_read("../data/derived/roads/roads_line.gpkg", quiet = TRUE) %>%
   st_set_crs(27700)
 sample_lines <- st_read("../data/derived/roads/sample_lines.gpkg", quiet = TRUE)
+
+# example road section
+
+road_lm <- road_lm[road_lm$road_id == rd_f, ]
 sample_lines <- sample_lines[sample_lines$road_id == rd_f, ]
-
-# example road (partial section of road 6)
-centrelines <- centrelines[centrelines$road_id == rd_f, ]
-centrelines <- centrelines %>% st_cast("LINESTRING")
-centrelines <- centrelines[4, ]
-
-sample_index <- st_intersects(sample_lines, centrelines, sparse = F)
-sample_lines <- sample_lines[sample_index, ]
-
-road_lm <- st_crop(road_lm, st_bbox(sample_lines))
+centrelines <- centrelines[centrelines$road_id == rd_f, ] %>%
+  st_crop(sample_lines)
 
 jpgs <- Sys.glob("../data/aerial/*.jpg")
 jpgs <- lapply(jpgs, brick)
@@ -324,16 +314,21 @@ aerial <- lapply(jpgs, function(x) {
 })
 
 aerial <- aerial %>%
-  compact()
-aerial <- do.call(unlist, aerial)
+  compact() %>%
+  brick()
+road_lm <- fread("../data/derived/model_data/linearmodels.csv") %>%
+  as.data.frame() %>%
+  st_as_sf(coords = c("X", "Y"), crs = 27700)
+sample_lines <- st_read("../data/derived/roads/sample_lines.gpkg", quiet = TRUE)
 
-road_lm1 <- road_lm[road_lm$lm1_dum == 1, ] %>% distinct(.keep_all = T)
-road_lm90 <- road_lm[road_lm$lm1_dum90 == 1, ] %>% distinct(.keep_all = T)
-road_lm80 <- road_lm[road_lm$lm1_dum80 == 1, ] %>% distinct(.keep_all = T)
+road_lm1 <- road_lm[road_lm$lm1_dum == 1, ]
+road_lm90 <- road_lm[road_lm$lm1_dum90 == 1, ]
+road_lm80 <- road_lm[road_lm$lm1_dum80 == 1, ]
+
 
 q95 <- ggRGB(aerial) +
-  geom_sf(data = road_lm1, colour = "green") +
-  geom_sf(data = centrelines, colour = "red") +
+  geom_sf(data = road_lm1[road_lm1$road_id == rd_f, ], colour = "green") +
+  geom_sf(data = centrelines, colour = "red", alpha = 1) +
   theme_map() +
   theme(panel.border = element_rect(
     colour = "black",
@@ -344,6 +339,7 @@ q95 <- ggRGB(aerial) +
 
 q90 <- ggRGB(aerial) +
   geom_sf(data = road_lm90[road_lm90$road_id == rd_f, ], colour = "green") +
+  geom_sf(data = centrelines, colour = "red", alpha = 1) +
   theme_map() +
   theme(panel.border = element_rect(
     colour = "black",
@@ -354,6 +350,7 @@ q90 <- ggRGB(aerial) +
 
 q80 <- ggRGB(aerial) +
   geom_sf(data = road_lm80[road_lm80$road_id == rd_f, ], colour = "green") +
+  geom_sf(data = centrelines, colour = "red", alpha = 1) +
   theme_map() +
   theme(panel.border = element_rect(
     colour = "black",
@@ -363,7 +360,7 @@ q80 <- ggRGB(aerial) +
   scale_y_continuous(expand = c(0, 0))
 @
 
-<<quant_fig, fig.cap = "Comparison between Linear Prediction Quantiles; \\textbf{(A)} 95th Quantile, \\textbf{(B)} 90th Quantile, \\textbf{(C)} 80th Quantile", fig.showtext=TRUE>>=
+<<quant_fig, fig.cap = "Comparison between Linear Prediction Quantiles; \\textbf{(A)} 95th Quantile, \\textbf{(B)} 90th Quantile, \\textbf{(C)} 80th Qunatile", fig.showtext=TRUE>>=
 plot_grid(
   q95,
   q90,

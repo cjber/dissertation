@@ -87,14 +87,6 @@ aerial_bbox <- bbox(aerial)
 ggRGB(aerial) +
   geom_sf(data = rd, fill = "white", colour = NA, alpha = 0.2) +
   geom_sf(data = rd_l, colour = rd_l$road_id) +
-  ggrepel::geom_text_repel(
-    data = rd_l,
-    aes(label = road_id, geometry = geom),
-    stat = "sf_coordinates",
-    min.segment.length = 0,
-    colour = "white",
-    segment.colour = "white"
-  ) +
   theme_map() +
   theme(panel.border = element_rect(
     colour = "black",
@@ -102,7 +94,7 @@ ggRGB(aerial) +
   ), legend.position = "none") +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0)) +
-  theme(legend.position = "none")
+  theme(legend.position = "right")
 @
 
 \section{Objective of this paper}
