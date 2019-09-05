@@ -72,10 +72,16 @@ plot_grid(
 las <- catalog("/home/cjber/drive/uni/envs492/main/data/point")
 roads_buff <- read_sf("/home/cjber/drive/uni/envs492/main/data/derived/roads/roads_buff.gpkg", quiet = TRUE)
 aerial <- raster("/home/cjber/drive/uni/envs492/main/data/derived/aerial/aerial_crop.tif")
+centrelines <- read_sf("/home/cjber/drive/uni/envs492/main/data/derived/roads/roads_line.gpkg", quiet = TRUE)
 
 rd_f <- "road_6"
-las <- lasclip(las, extent(roads_buff[roads_buff$road_id == rd_f, ]))
-aerial <- raster::crop(aerial, extent(roads_buff[roads_buff$road_id == rd_f, ]))
+centrelines <- centrelines[centrelines$road_id == rd_f, ] %>% 
+    st_cast("LINESTRING")
+centrelines <- centrelines[4, ] %>% 
+    st_buffer(30)
+
+las <- lasclip(las, extent(centrelines))
+aerial <- raster::crop(aerial, extent(centrelines))
 aerial <- aggregate(aerial, fact = 8)
 
 aerial <- as(aerial, "SpatialPixelsDataFrame")
