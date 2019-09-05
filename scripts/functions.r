@@ -266,8 +266,7 @@ compute_samples <- function(x, increment = 10, width = 30) {
         linestring <- st_cast(pair, "LINESTRING") %>%
           st_buffer(2) %>%
           st_sf() %>%
-          mutate(node_id = as.character(unique(x$node_id)),
-          road_id = as.character(unique(x$road_id)))
+          mutate(node_id = as.character(unique(x$node_id)))
         sample_lines <- rbind(sample_lines, linestring)
       }
       tot_len <- tot_len + len_seg

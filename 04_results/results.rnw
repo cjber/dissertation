@@ -1,7 +1,7 @@
 <<>>=
 source("../scripts/functions.r")
 lidar_tab <- fread("../data/point/points.csv")
-opts_chunk$set(cache = TRUE, autodep = TRUE)
+knitr::opts_chunk$set(cache = TRUE, autodep = TRUE)
 time_taken <- read.csv("../scripts/time_taken.csv")
 time_taken <- time_taken$x
 @
@@ -129,7 +129,9 @@ metrics <- grid_metrics(norm_lp, ~ myMetrics(Z, Intensity), res = 2)
 metrics <- as(metrics, "SpatialPixelsDataFrame")
 metrics <- as.data.frame(metrics)
 colnames(metrics) <- c("zmean", "imean", "x", "y")
-roads <- roads_buff[roads_buff$road_id == "road_6", ]
+roads <- read_sf("/home/cjber/drive/uni/envs492/main/data/derived/roads/roads_line.gpkg", quiet = TRUE)
+roads_buff <- roads_buff[roads_buff$road_id == "road_6", ]
+roads <- st_crop(roads_buff, roads)
 
 chm_gg <- ggplot() +
   geom_raster(data = chm, aes(x = x, y = y, fill = value), alpha = 1) +

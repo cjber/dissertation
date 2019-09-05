@@ -86,7 +86,7 @@ aerial_bbox <- bbox(aerial)
 
 ggRGB(aerial) +
   geom_sf(data = rd, fill = "white", colour = NA, alpha = 0.2) +
-  geom_sf(data = rd_l, colour = "red") +
+  geom_sf(data = rd_l, colour = rd_l$road_id) +
   ggrepel::geom_text_repel(
     data = rd_l,
     aes(label = road_id, geometry = geom),

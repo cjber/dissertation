@@ -38,7 +38,7 @@ fwrite(las, "../data/point/points.csv")
 #st_write(roads, "../data/osroads/oproad_crop.gpkg", layer_options = "OVERWRITE=yes")
 
 roads <- st_read("../data/osroads/oproad_crop.gpkg") %>% 
-    mutate_if(is.factor, fct_explicit_na) %>% 
+    drop_na(roadNameTOID) %>% 
     group_by(roadNameTOID) %>%
     summarise(len = sum(length)) %>% 
     filter_at(.vars = vars(roadNameTOID), .vars_predicate = any_vars(!is.na(.))) %>% 
@@ -47,9 +47,7 @@ roads <- st_read("../data/osroads/oproad_crop.gpkg") %>%
 roads$road_id <- paste0("road_", seq.int(nrow(roads)))
 roads <- roads %>% 
     ungroup() %>% 
-    select(road_id, len, geom)
-
-plot(roads)
+    select(road_id, len, geom, roadNameTOID)
 
 # keep line polys
 roads_line <- roads
