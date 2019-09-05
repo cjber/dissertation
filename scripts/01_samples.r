@@ -1,29 +1,17 @@
 source("./functions.r")
 
-centrelines <- read_sf("../data/osroads/oproad_crop.gpkg") %>%
-    st_set_crs(27700) %>% 
-    mutate(node_id = row_number()) %>% 
-    st_cast("POINT") %>% 
-    select(roadNameTOID, node_id)
+centrelines <- read_sf("../data/derived/roads/roads_line.gpkg") %>%
+    st_set_crs(27700)
 
-rds <- st_read("../data/derived/roads/roads_line.gpkg") %>% 
-    st_drop_geometry()
+roads_split <- centrelines %>% st_cast("POINT")
 
-nodes_roads <- merge(centrelines, rds, by = "roadNameTOID") %>% 
-    st_drop_geometry() %>% 
-    select(road_id, node_id)
+roads_split <- split(roads_split, f = roads_split$road_id)
 
-centrelines_split <- split(centrelines, centrelines$node_id)
-
-sample_lines <- lapply(centrelines_split, compute_samples)
+sample_lines <- lapply(roads_split, compute_samples)
 sample_lines <- do.call(rbind, sample_lines)
 
 sample_lines <- sample_lines %>%
     st_set_crs(27700)
-
-sample_lines <- merge(sample_lines, nodes_roads, by = "node_id") %>% 
-    select(road_id, geometry) %>% 
-    unique()
 # label each sample
 sample_lines$sample_id <- seq.int(nrow(sample_lines))
 
@@ -75,8 +63,6 @@ joined_output$lum <- as.numeric(lum)
 
 # find dists from centrelines
 joined_output <- split(joined_output, f = joined_output$road_id)
-
-centrelines <- st_read("../data/derived/roads/roads_line.gpkg")
 centrelines <- split(centrelines, centrelines$road_id)
 
 centrelines <- centrelines[names(joined_output)]

@@ -189,6 +189,18 @@ names(linear_widths) <- c(
 )
 
 roads <- merge(roads, linear_widths, by = "road_id")
+
+roads_true <- st_read("../data/osroads/oproad_crop.gpkg") %>% 
+    drop_na(roadNameTOID) %>% 
+    group_by(roadNameTOID) %>%
+    summarise(len = sum(length)) %>% 
+    filter_at(.vars = vars(roadNameTOID), .vars_predicate = any_vars(!is.na(.))) %>% 
+    distinct(roadNameTOID, .keep_all = TRUE)
+
+roads_true$road_list <- paste0("road_", seq.int(nrow(roads)))
+
+roads_true <- merge(roads_true, roads, by = "roadNameTOID")
+
 fwrite(roads, "../data/final_data/final.csv")
 
 # aerial data
@@ -205,3 +217,4 @@ las <- las %>%
     ))
 
 fwrite(las, "../data/point/points_clean.csv")
+

@@ -38,16 +38,10 @@ fwrite(las, "../data/point/points.csv")
 #st_write(roads, "../data/osroads/oproad_crop.gpkg", layer_options = "OVERWRITE=yes")
 
 roads <- st_read("../data/osroads/oproad_crop.gpkg") %>% 
-    drop_na(roadNameTOID) %>% 
-    group_by(roadNameTOID) %>%
-    summarise(len = sum(length)) %>% 
-    filter_at(.vars = vars(roadNameTOID), .vars_predicate = any_vars(!is.na(.))) %>% 
-    distinct(roadNameTOID, .keep_all = TRUE)
+    mutate(road_id = row_number(), len = geom %>% st_length() %>% as.numeric())
 
-roads$road_id <- paste0("road_", seq.int(nrow(roads)))
 roads <- roads %>% 
-    ungroup() %>% 
-    select(road_id, len, geom, roadNameTOID)
+    select(road_id, roadNameTOID, len, geom)
 
 # keep line polys
 roads_line <- roads
@@ -74,7 +68,6 @@ st_write(roads_buff_union, "../data/derived/roads/roads_buff_diss.gpkg",
 
 roads_buff <- st_read("../data/derived/roads/roads_buff.gpkg") %>%
     as_Spatial()
-plot(roads_buff)
 
 ctg <- catalog("../data/point/")
 opt_output_files(ctg) <- "../data/derived/ctg_clean/{ID}_clean"

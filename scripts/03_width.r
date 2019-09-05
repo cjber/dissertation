@@ -34,6 +34,7 @@ mid_rds <- Filter(function(x) dim(x)[1] > 0, mid_rds)
 cents <- lapply(mid_rds, true_cents)
 cents <- compact(cents)
 cents <- do.call(rbind, cents)
+plot(cents)
 
 st_write(cents, "../data/derived/roads/cent_iteration1.gpkg",
     layer_options = "OVERWRITE=yes"
@@ -44,7 +45,7 @@ roads_split <- st_read("../data/derived/roads/roads_line.gpkg") %>%
     st_cast("POINT") %>%
     st_set_crs(27700)
 
-roads_split <- split(roads_split, roads_split$road_id)
+roads_split <- split(roads_split, roads_split$roadNameTOID)
 
 angles <- lapply(roads_split, road_angles)
 angles <- do.call(rbind, angles)
