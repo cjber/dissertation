@@ -301,13 +301,17 @@ roads <- st_read("../data/derived/roads/roads_line.gpkg", quiet = TRUE)
 centrelines <- st_read("../data/derived/roads/roads_line.gpkg", quiet = TRUE) %>%
   st_set_crs(27700)
 sample_lines <- st_read("../data/derived/roads/sample_lines.gpkg", quiet = TRUE)
-
-# example road section
-
-road_lm <- road_lm[road_lm$road_id == rd_f, ]
 sample_lines <- sample_lines[sample_lines$road_id == rd_f, ]
-centrelines <- centrelines[centrelines$road_id == rd_f, ] %>%
-  st_crop(sample_lines)
+
+# example road (partial section of road 6)
+centrelines <- centrelines[centrelines$road_id == rd_f, ]
+centrelines <- centrelines %>% st_cast("LINESTRING")
+centrelines <- centrelines[4, ]
+
+sample_index <- st_intersects(sample_lines, centrelines, sparse = F)
+sample_lines <- sample_lines[sample_index, ]
+
+road_lm <- st_crop(road_lm, st_bbox(sample_lines))
 
 jpgs <- Sys.glob("../data/aerial/*.jpg")
 jpgs <- lapply(jpgs, brick)
@@ -316,21 +320,16 @@ aerial <- lapply(jpgs, function(x) {
 })
 
 aerial <- aerial %>%
-  compact() %>%
-  brick()
-road_lm <- fread("../data/derived/model_data/linearmodels.csv") %>%
-  as.data.frame() %>%
-  st_as_sf(coords = c("X", "Y"), crs = 27700)
-sample_lines <- st_read("../data/derived/roads/sample_lines.gpkg", quiet = TRUE)
+  compact()
+aerial <- do.call(unlist, aerial)
 
-road_lm1 <- road_lm[road_lm$lm1_dum == 1, ]
-road_lm90 <- road_lm[road_lm$lm1_dum90 == 1, ]
-road_lm80 <- road_lm[road_lm$lm1_dum80 == 1, ]
-
+road_lm1 <- road_lm[road_lm$lm1_dum == 1, ] %>% distinct(.keep_all = T)
+road_lm90 <- road_lm[road_lm$lm1_dum90 == 1, ] %>% distinct(.keep_all = T)
+road_lm80 <- road_lm[road_lm$lm1_dum80 == 1, ] %>% distinct(.keep_all = T)
 
 q95 <- ggRGB(aerial) +
-  geom_sf(data = road_lm1[road_lm1$road_id == rd_f, ], colour = "green") +
-  geom_sf(data = centrelines, colour = "red", alpha = 1) +
+  geom_sf(data = road_lm1, colour = "green") +
+  geom_sf(data = centrelines, colour = "red") +
   theme_map() +
   theme(panel.border = element_rect(
     colour = "black",
@@ -340,8 +339,7 @@ q95 <- ggRGB(aerial) +
   scale_y_continuous(expand = c(0, 0))
 
 q90 <- ggRGB(aerial) +
-  geom_sf(data = road_lm90[road_lm90$road_id == rd_f, ], colour = "green") +
-  geom_sf(data = centrelines, colour = "red", alpha = 1) +
+  geom_sf(data = road_lm90[road_lm90$road_id == rd_f, ], colour = "green", size = 0.1, alpha = 0.1) +
   theme_map() +
   theme(panel.border = element_rect(
     colour = "black",
@@ -351,8 +349,7 @@ q90 <- ggRGB(aerial) +
   scale_y_continuous(expand = c(0, 0))
 
 q80 <- ggRGB(aerial) +
-  geom_sf(data = road_lm80[road_lm80$road_id == rd_f, ], colour = "green") +
-  geom_sf(data = centrelines, colour = "red", alpha = 1) +
+  geom_sf(data = road_lm80[road_lm80$road_id == rd_f, ], colour = "green", size = 0.1, alpha = 0.1) +
   theme_map() +
   theme(panel.border = element_rect(
     colour = "black",
@@ -362,7 +359,7 @@ q80 <- ggRGB(aerial) +
   scale_y_continuous(expand = c(0, 0))
 @
 
-<<quant_fig, fig.cap = "Comparison between Linear Prediction Quantiles; \\textbf{(A)} 95th Quantile, \\textbf{(B)} 90th Quantile, \\textbf{(C)} 80th Qunatile", fig.showtext=TRUE>>=
+<<quant_fig, fig.cap = "Comparison between Linear Prediction Quantiles; \\textbf{(A)} 95th Quantile, \\textbf{(B)} 90th Quantile, \\textbf{(C)} 80th Quantile", fig.showtext=TRUE>>=
 plot_grid(
   q95,
   q90,
