@@ -39,15 +39,17 @@ fwrite(las, "../data/point/points.csv")
 
 roads <- st_read("../data/osroads/oproad_crop.gpkg") %>% 
     mutate_if(is.factor, fct_explicit_na) %>% 
-    group_by(roadNameTOID, roadNumberTOID) %>%
+    group_by(roadNameTOID) %>%
     summarise(len = sum(length)) %>% 
-    filter_at(.vars = vars(roadNameTOID, roadNumberTOID), .vars_predicate = any_vars(!is.na(.))) %>% 
-    distinct(roadNameTOID, roadNumberTOID, .keep_all = TRUE)
+    filter_at(.vars = vars(roadNameTOID), .vars_predicate = any_vars(!is.na(.))) %>% 
+    distinct(roadNameTOID, .keep_all = TRUE)
 
 roads$road_id <- paste0("road_", seq.int(nrow(roads)))
 roads <- roads %>% 
     ungroup() %>% 
     select(road_id, len, geom)
+
+plot(roads)
 
 # keep line polys
 roads_line <- roads

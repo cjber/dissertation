@@ -175,7 +175,7 @@ cat(paste("\\item", funcs), sep = "\n")
 @
 \end{itemize}
 
-with B roads considered classified roads, and other functions considered unclassified. All roads are single carriageway, and so for the purpose of this analysis it is assumed they likely have the default national speed limit of 60mph. Individual road identification was difficult, as most roads were not given a name or identifier, in an attempt to solve this issue, roads were grouped by the variables \texttt{roadNameTOID} and \texttt{roadNumberTOID}, with the results of this given on \ref{fig:area_map}. From this point forward, this definition is used when referring to a road, with uniques roads referred by their \texttt{road\_id}. Additionally, private roads were removed, as were roads below 50m, often those clipped by the extent of the LiDAR data.
+with B roads considered classified roads, and other functions considered unclassified. All roads are single carriageway, and so for the purpose of this analysis it is assumed they likely have the default national speed limit of 60mph. Individual road identification was difficult, as most roads were not given a name or identifier, in an attempt to solve this issue, roads were grouped by the variable \texttt{roadNameTOID}, with the results of this given on \ref{fig:area_map}. From this point forward, this grouping is used when referring to a road, with uniques roads referred by their \texttt{road\_id}. Additionally, private roads were removed, as were roads below 50m, often those clipped by the extent of the LiDAR data.
 
 \subsection{Road Sampling}
 

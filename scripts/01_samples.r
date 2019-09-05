@@ -1,13 +1,17 @@
 source("./functions.r")
 
-centrelines <- read_sf("../data/derived/roads/roads_line.gpkg") %>%
-    st_set_crs(27700)
+centrelines <- read_sf("../data/osroads/oproad_crop.gpkg") %>%
+    st_set_crs(27700) %>% 
+    mutate(node_id = row_number()) %>% 
+    st_cast("POINT")
 
-roads_split <- centrelines %>% st_cast("POINT")
+rds <- st_read("../data/derived/roads/roads_line.gpkg")
 
-roads_split <- split(roads_split, f = roads_split$road_id)
+centrelines <- st_join(centrelines, rds, by = "roadNameTOID")
 
-sample_lines <- lapply(roads_split, compute_samples)
+centrelines_split <- split(centrelines, centrelines$node_id)
+
+sample_lines <- lapply(centrelines_split, compute_samples)
 sample_lines <- do.call(rbind, sample_lines)
 plot(sample_lines)
 
