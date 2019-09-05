@@ -25,24 +25,29 @@ las <- las %>%
 fwrite(las, "../data/point/points.csv")
 
 # very very slow to read in full gpkg, don't run unless new data added
-roads <- st_read("../data/osroads/oproad_gpkg_gb/data/oproad_gb.gpkg",
-   layer = "RoadLink",
-   query =
-        "SELECT * FROM RoadLink WHERE
-         formOfWay = \"Single Carriageway\" AND
-         roadFunction <> \"Restricted Local Access Road\" "
-) %>%
-st_zm() # remove z axis
+#roads <- st_read("../data/osroads/oproad_gpkg_gb/data/oproad_gb.gpkg",
+#   layer = "RoadLink",
+#   query =
+#        "SELECT * FROM RoadLink WHERE
+#         formOfWay = \"Single Carriageway\" AND
+#         roadFunction <> \"Restricted Local Access Road\" "
+#) %>%
+#st_zm() # remove z axis
 
-roads <- st_crop(roads, st_bbox(st_sf(extent(ctg))))
-st_write(roads, "../data/osroads/oproad_crop.gpkg")
+#roads <- st_crop(roads, st_bbox(extent(ctg)))
+#st_write(roads, "../data/osroads/oproad_crop.gpkg", layer_options = "OVERWRITE=yes")
+
 roads <- st_read("../data/osroads/oproad_crop.gpkg") %>% 
-    st_union("id") %>% 
-    mutate(len = as.numeric(st_length(geom)),
-           road_id = as.character(road_id)) %>% 
-    subset(len > 50) %>%
-    mutate(road_id = paste0("road_", row_number()))
+    mutate_if(is.factor, fct_explicit_na) %>% 
+    group_by(roadNameTOID, roadNumberTOID) %>%
+    summarise(len = sum(length)) %>% 
+    filter_at(.vars = vars(roadNameTOID, roadNumberTOID), .vars_predicate = any_vars(!is.na(.))) %>% 
+    distinct(roadNameTOID, roadNumberTOID, .keep_all = TRUE)
 
+roads$road_id <- paste0("road_", seq.int(nrow(roads)))
+roads <- roads %>% 
+    ungroup() %>% 
+    select(road_id, len, geom)
 
 # keep line polys
 roads_line <- roads
@@ -69,6 +74,7 @@ st_write(roads_buff_union, "../data/derived/roads/roads_buff_diss.gpkg",
 
 roads_buff <- st_read("../data/derived/roads/roads_buff.gpkg") %>%
     as_Spatial()
+plot(roads_buff)
 
 ctg <- catalog("../data/point/")
 opt_output_files(ctg) <- "../data/derived/ctg_clean/{ID}_clean"

@@ -9,6 +9,7 @@ roads_split <- split(roads_split, f = roads_split$road_id)
 
 sample_lines <- lapply(roads_split, compute_samples)
 sample_lines <- do.call(rbind, sample_lines)
+plot(sample_lines)
 
 sample_lines <- sample_lines %>%
     st_set_crs(27700)
