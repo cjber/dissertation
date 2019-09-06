@@ -67,11 +67,8 @@ Often road classification methodologies use LiDAR height data to identify kerbs 
 
 LiDAR data often requires a large amount of processing due to the irregular distribution of points, presence of noise and the number of variables that have to be considered, \cite{yadav2018} note that often papers do not include information regarding the computational time for processing this data which may cause practical limitations at larger scales.
 
-<<area_map, fig.cap="Study area highlighting road centrelines outlined in a lighter 30m buffer", fig.pos = "t", cache = T, autodep = T>>=
+<<area_map, fig.cap="Study area highlighting road centrelines, each colour represents a seperate 'road' as defined by the OS Data provided. Thicker roads are B roads, while thinner are Unclassified", fig.pos = "t", cache = T, autodep = T>>=
 source("../scripts/functions.r")
-
-rd <- st_read("../data/derived/roads/roads_buff_diss.gpkg", quiet = T) %>%
-  st_set_crs(27700)
 rd_l <- st_read("../data/derived/roads/roads.gpkg", quiet = T) %>%
   st_set_crs(27700)
 
@@ -80,21 +77,39 @@ jpgs <- lapply(jpgs, brick)
 jpgs <- lapply(jpgs, aggregate, fact = 8)
 jpgs <- do.call(merge, jpgs)
 aerial <- crop(jpgs, rd_l)
-rd <- st_crop(rd, st_bbox(rd_l))
 
+rd_l$roadFunction <- ifelse(rd_l$roadFunction == "B Road", 2, 1)
 aerial_bbox <- bbox(aerial)
 
-ggRGB(aerial) +
-  geom_sf(data = rd, fill = "white", colour = NA, alpha = 0.2) +
-  geom_sf(data = rd_l, colour = rd_l$road_id) +
+rd_inset <- rd_l[rd_l$road_id == "road_9", ]
+jpgs <- Sys.glob("../data/aerial/*.jpg")
+jpgs <- lapply(jpgs, brick)
+aerial_inset <- lapply(jpgs, function(x) {
+  return(tryCatch(crop(x, inset_rd), error = function(e) NULL))
+})
+
+aerial_inset <- aerial_inset %>%
+  compact() %>%
+  brick()
+
+cols <- rep(wes_palette(name = "Zissou1"), 6)
+inset <- ggRGB(aerial_inset) +
+  geom_sf(data = rd_inset, colour = "white")
+
+main <- ggRGB(aerial) +
+  geom_sf(data = rd_l, colour = cols, size = roadFunction) +
+  geom_sf(data = rd_inset %>% st_bbox() %>% st_sf(), colour = cols, size = roadFunction) +
   theme_map() +
   theme(panel.border = element_rect(
     colour = "black",
     fill = NA, size = 1
   ), legend.position = "none") +
   scale_x_continuous(expand = c(0, 0)) +
-  scale_y_continuous(expand = c(0, 0)) +
-  theme(legend.position = "right")
+  scale_y_continuous(expand = c(0, 0))
+
+  ggdraw() +
+      draw_plot(main) +
+      draw_plot(inset, x = 0.07, y = .7, width = .3, height = .3)
 @
 
 \section{Objective of this paper}

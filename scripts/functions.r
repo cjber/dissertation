@@ -29,7 +29,8 @@ pkgs <- c(
   "benchmarkme",
   "parallel",
   "showtext",
-  "data.table"
+  "data.table",
+  "wesanderson"
 )
 
 pacman::p_load(pkgs, character.only = T)
