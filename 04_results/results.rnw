@@ -555,8 +555,9 @@ widths <- fread("../data/final_data/final.csv") %>%
     range_int,
     tot_pts
   )) %>%
-  merge(road_est, by = c("road_id", "roadFunction")) %>%
-  na.omit()
+  merge(road_est, by = c("road_id")) %>%
+  na.omit() %>% 
+  select(-roadFunction.y)
 
 normalise_widths <- function(x, y) {
   ifelse(x > y, 100 - ((x / y) * 100 - 100), x / y * 100)
