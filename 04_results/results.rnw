@@ -119,7 +119,7 @@ colnames(las_lp) <- c("value", "x", "y")
 # Define your own new metrics
 myMetrics <- function(z, i) {
   metrics <- list(
-    zmean = mean(z), # Mean products of z by intensity
+    zmean = mean(z),
     imean = mean(i)
   )
 }
@@ -607,7 +607,6 @@ Given Linear Model 2 with corrected road centrelines appears to produce the most
 
 
 <<final_data, results = 'asis'>>=
-sf_est_width <- st_read("../data/osroads/roads_estwidth.gpkg", quiet = TRUE)
 road <- st_read("../data/derived/roads/roads_line.gpkg", quiet = TRUE)
 final_data <- fread("../data/final_data/final.csv") %>%
   select(-c(

@@ -45,7 +45,7 @@ roads <- st_read("../data/osroads/oproad_crop.gpkg") %>%
         len = as.numeric(st_length(geom)),
         road_id = paste0("road_", row_number())
     ) %>%
-    select(c(road_id, roadFunction, roadNameTOID, len, geom)) %>%
+    select(c(road_id, roadFunction, len, geom)) %>%
     subset(len > 50)
 
 # keep line polys

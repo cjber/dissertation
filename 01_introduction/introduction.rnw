@@ -67,7 +67,7 @@ Often road classification methodologies use LiDAR height data to identify kerbs 
 
 LiDAR data often requires a large amount of processing due to the irregular distribution of points, presence of noise and the number of variables that have to be considered, \cite{yadav2018} note that often papers do not include information regarding the computational time for processing this data which may cause practical limitations at larger scales.
 
-<<area_map, fig.cap="Study area highlighting road centrelines, each colour represents a seperate 'road' as defined by the OS Data provided. Thicker roads are B roads, while thinner are Unclassified", fig.pos = "t", cache = T, autodep = T>>=
+<<area_map, fig.cap="Study area highlighting road centrelines, each colour represents a seperate 'road' as defined by the OS Data provided. Thicker roads are B roads, while thinner are Unclassified. The inset map gives shows an example road, with features typical of roads within this study area.", fig.pos = "t", cache = T, autodep = T>>=
 source("../scripts/functions.r")
 rd_l <- st_read("../data/derived/roads/roads.gpkg", quiet = T) %>%
   st_set_crs(27700)
@@ -94,11 +94,17 @@ aerial_inset <- aerial_inset %>%
 
 cols <- rep(wes_palette(name = "Zissou1"), 6)
 inset <- ggRGB(aerial_inset) +
-  geom_sf(data = rd_inset, colour = "white")
+  theme_map() +
+  theme(panel.border = element_rect(
+    colour = "red",
+    fill = NA, size = 2
+  ), legend.position = "none") +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0))
 
 main <- ggRGB(aerial) +
-  geom_sf(data = rd_l, colour = cols, size = roadFunction) +
-  geom_sf(data = rd_inset %>% st_bbox() %>% st_sf(), colour = cols, size = roadFunction) +
+  geom_sf(data = rd_l, colour = cols, size = rd_l$roadFunction) +
+  geom_sf(data = rd_inset %>% st_bbox() %>% st_as_sfc(), colour = "red", fill = NA, size = 1) +
   theme_map() +
   theme(panel.border = element_rect(
     colour = "black",
@@ -109,7 +115,7 @@ main <- ggRGB(aerial) +
 
   ggdraw() +
       draw_plot(main) +
-      draw_plot(inset, x = 0.07, y = .7, width = .3, height = .3)
+      draw_plot(inset, x = 0, y = .35, width = .6, height = .6)
 @
 
 \section{Objective of this paper}
