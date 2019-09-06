@@ -1,4 +1,39 @@
+<<sampledlas>>=
+sampled_las <- fread("../data/derived/model_data/sampled_las.csv")
+
+corr <- sampled_las %>%
+  select(c(
+    Z, gpstime, Intensity, ReturnNumber, NumberOfReturns,
+    ScanDirectionFlag, EdgeOfFlightline, ScanAngleRank,
+    road, lum, dists
+  ))
+
+# Create a matrix of all correlations between continuous variables
+correlation.matrix <- cor(corr, method = "spearman")
+
+# Sort by highest correlations in relation to Unemployed
+corResults <- cor.results(correlation.matrix,
+  sort.by = "abs.r", data = corr,
+  var.name = "road"
+)
+# Show only two numbers after the decimal
+corResults <- format(corResults, digits = 2)
+
+# Combine significance column with r values (asterisks)
+corResults$r <- paste(corResults$r, corResults$sig.)
+
+# Drop the columns of the dataframe
+corResults <- select(corResults, -c("x", "p.value", "sig."))
+
+# Rename all columns
+names(corResults) <- c(
+  "Variable", "Rho", "Lower CI †",
+  "Upper CI †"
+)
+@
+
 <<corr, results = 'asis'>>=
+
 make_table(corResults, # align col 1 left, rest centred
   cap = "Spearman's rank correlation coefficients for all variables in relation to the road outcome variable"
 ) %>%
@@ -56,39 +91,5 @@ ggplot() +
   geom_sf(data = sample_lines) +
   geom_sf(data = roads) +
   theme_map()
-@
-
-<<sampledlas>>=
-sampled_las <- fread("../data/derived/model_data/sampled_las.csv")
-
-corr <- sampled_las %>%
-  select(c(
-    Z, gpstime, Intensity, ReturnNumber, NumberOfReturns,
-    ScanDirectionFlag, EdgeOfFlightline, ScanAngleRank,
-    road, lum, dists
-  ))
-
-# Create a matrix of all correlations between continuous variables
-correlation.matrix <- cor(corr, method = "spearman")
-
-# Sort by highest correlations in relation to Unemployed
-corResults <- cor.results(correlation.matrix,
-  sort.by = "abs.r", data = corr,
-  var.name = "road"
-)
-# Show only two numbers after the decimal
-corResults <- format(corResults, digits = 2)
-
-# Combine significance column with r values (asterisks)
-corResults$r <- paste(corResults$r, corResults$sig.)
-
-# Drop the columns of the dataframe
-corResults <- select(corResults, -c("x", "p.value", "sig."))
-
-# Rename all columns
-names(corResults) <- c(
-  "Variable", "Rho", "Lower CI †",
-  "Upper CI †"
-)
 @
 
