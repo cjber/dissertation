@@ -21,8 +21,8 @@ print(x, locale = F)
 
 \section{Functions}
 
-\subsection{Formatting} \label{code:make_table}
-<<make_table, echo = TRUE, eval = FALSE>>=
+\subsection{LiDAR Clean} \label{code:lidr_clean}
+<<lidr_clean, echo = TRUE, eval = FALSE>>=
 @
 \subsection{Catalog to Dataframe} \label{code:ctg_to_df}
 <<ctg_to_df, echo = TRUE, eval = FALSE>>=
@@ -33,9 +33,6 @@ print(x, locale = F)
 @
 \subsection{Filter LAS Noise} \label{code:las_filter_noise}
 <<las_filter_noise, echo = TRUE, eval = FALSE>>=
-@
-\subsection{LiDAR Clean} \label{code:lidr_clean}
-<<lidr_clean, echo = TRUE, eval = FALSE>>=
 @
 
 \subsection{Extract Buffer} \label{code:extract_buff}
@@ -108,4 +105,7 @@ print(x, locale = F)
 
 \subsection{Height Change}\label{code:height_change}
 <<height_change, eval = FALSE, echo = TRUE>>=
+@
+\subsection{Formatting} \label{code:make_table}
+<<make_table, echo = TRUE, eval = FALSE>>=
 @

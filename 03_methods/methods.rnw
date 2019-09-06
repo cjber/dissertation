@@ -1,6 +1,6 @@
     \lettrine{T}{his} paper primarily makes use of the free open source statistical language \R{} \citep{parallel}. Managing the large LiDAR datasets from my personal computer was mode possible through the \texttt{lidR} \R{} package \citep{lidR}. Further details regarding the \R{} environment and computer setup used for this paper is given in \textbf{Appendix \ref{a:code}}. All content was written using \LaTeX{} combined with the \texttt{rnoweb} file type \citep{ihaka2011}, for \textit{Literate Programming}\footnote{See \cite{knuth1984}; \textit{“Let us change our traditional attitude to the construction of programs: Instead of imagining that our main task is to instruct a computer what to do, let us concentrate rather on explaining to human beings what we want a computer to do.”}}. The template is built from scratch but takes much inspiration (and code) from the \href{https://github.com/asardaes/R-LaTeX-Template}{R-LaTeX-Template}.
 
-    All code is hosted on my personal \href{https://github.com/cjber/}{GitHub account}, along with mye my complete dotfiles, used in conjunction with the Linux distribution Manjaro, and the i3 window manager. All writing and code was produced using \href{https://neovim.io}{Neovim} with my personal configuration to implement integrated development environment (IDE) style features for writing R code, while also providing essential features for writing in \LaTeX{}. Neovim has the benefit of being both highly customisable, and lightweight, which allows for much lower system utilisation compared with R Studio when working with large datasets. One essential Vim plugin to mention is \href{https://github.com/jalvesaq/Nvim-R}{Nvim-R}, providing an \R{} REPL connection to vim, and other useful functions. 
+    All code is hosted on my personal \href{https://github.com/cjber/}{GitHub account}, along with my my complete dotfiles, used in conjunction with the Linux distribution Manjaro, and the i3 window manager. All writing and code was produced using \href{https://neovim.io}{Neovim} with my personal configuration to implement integrated development environment (IDE) style features for writing R code, while also providing essential features for writing in \LaTeX{}. Neovim has the benefit of being both highly customisable, and lightweight, which allows for much lower system utilisation compared with R Studio when working with large datasets. One essential Vim plugin to mention is \href{https://github.com/jalvesaq/Nvim-R}{Nvim-R}, providing an \R{} REPL connection to vim, and other useful functions. 
 
     Given in Appendix \ref{a:code} are the code snippets utilised in this methodology, for many equations, the relevant code is given as a reference to the appendix location, in the form \textbf{A.x.x}.
 
@@ -36,7 +36,7 @@ The total number of LiDAR points used in this study is \Sexpr{number_points}. Al
     \item \textbf{Intensity:} The amplitude of the return pulse, reflected back by the surface terrain or objects.
 	\item \textbf{ReturnNumber:} A number of range 1-5, indicating for a point, the corresponding order of a reflected laser pulse. A ReturnNumber of 1 indicates the first return for a pulse (and highest $z$ value), a return number of 5 indicates the last return (and lowest $z$ value).
 	\item \textbf{NumberOfReturns:} The number of return pulses for a single laser pulse (maximum of 5).
-    \item \textbf{Classification:} A number given to a point indicating a specific numeric classification. Of interest in this study is a classification of 2, indicating a ground point. More information can be found \href{http://desktop.arcgis.com/en/arcmap/10.3/manage-data/las-dataset/lidar-point-classification.htm}{here} \citep{esri2019}, which outlines numerical classifications for various vegetation types and man made structures.
+    \item \textbf{Classification:} A number given to a point indicating a specific numeric classification. Of interest in this study is a classification of 2, indicating a ground point. More information can be found \href{http://desktop.arcgis.com/en/arcmap/10.3/manage-data/las-dataset/lidar-point-classification.htm}{\cite{esri2019}}, which outlines numerical classifications for various vegetation types and man made structures.
 \end{itemize}
 
 <<>>=
@@ -68,7 +68,7 @@ $$
     \footnotesize{\ref{code:lidr_clean}}
 \end{flushright}
 
-where $\mathbf{p_i}$ is a single instance of a LiDAR point within the chosen point cloud, $lpx$ is the last pulse $x$ coordinate, $lpy$ the last pulse $y$ coordinate, $lpz$ the last pulse $z$ coordinate, and $lpi$ the last pulse intensity value.
+\noindent where $\mathbf{p_i}$ is a single instance of a LiDAR point within the chosen point cloud, $lpx$ is the last pulse $x$ coordinate, $lpy$ the last pulse $y$ coordinate, $lpz$ the last pulse $z$ coordinate, and $lpi$ the last pulse intensity value.
 
 \subsection{Normalisation}
 
@@ -83,7 +83,17 @@ $$
 
 where $m$  is the mass of a single LiDAR point (set to 1), $\Delta t$ is the time step between points and $G$ represents the gravity constant. The implementation of this algorithm was given as part of the \texttt{lidR} package.
 
-With the classification of ground points, (given $Classification = 2$), a full DTM may be produced through spatial interpolation of the classified points. This process is called normalisation, and ensures that when extracting height information, any observed values are due to objects on the surface of the terrain, and not due to the lie of the terrain itself. Interpolation uses the inverse distance weighting and $k$ nearest neighbours algorithms to produce the DTM. Nearest neighbours were selected as $k = 10$, with $q = 2$ for the inverse weighting, and used to produce a DTM with a resolution of 1m. This particular technique was selected over more comprehensive methods such as kriging as the number of points is very high, and the small benefit was considered minimal compared with the increase in computational load. The $z$ values from the DTM were then subtracted from the LiDAR point cloud, leaving a normalised point cloud.
+<<>>=
+pts <- fread("../data/point/points.csv")
+pts_clean <- fread("../data/point/points_clean.csv")
+
+matches_pts <- merge(pts, pts_clean, by = c("X", "Y")) %>% 
+    na.omit()
+
+cchange <- sum(matches_pts$Classification.y == 2) / sum(matches_pts$Classification.x == 2)
+@
+
+With the classification of ground points, (given $Classification = 2$), a full DTM may be produced through spatial interpolation of the classified points. This process is called normalisation, and ensures that when extracting height information, any observed values are due to objects on the surface of the terrain, and not due to the lie of the terrain itself. Interpolation uses the inverse distance weighting and $k$ nearest neighbours algorithms to produce the DTM. Nearest neighbours were selected as $k = 10$, with $q = 2$ for the inverse weighting, and used to produce a DTM with a resolution of 1m. This particular technique was selected over more comprehensive methods such as kriging as the number of points is very high, and the small benefit of kriging was considered minimal compared with the increase in computational load. The $z$ values from the DTM were then subtracted from the LiDAR point cloud, leaving a normalised point cloud. Reclassification resulted in an increase in the number of classified ground points by around \Sexpr{round((cchange - 1) * 100, 2)}\%. Reflecting primarily the removal of preexisting classification of other ground objects such as vegetation.
 
 \subsection{Points Extent}
 
@@ -96,7 +106,7 @@ With the normalised last pulse point cloud, the point cloud was clipped to withi
 
 \subsection{Noise Filtering}\label{subsec:noise}
 
-Intensity noise was filtered through area based outlier detection, measuring the 95th percentile values within a 10m by 10m area, removing all points above the 95\% percentile. Expressed;
+Intensity noise was filtered through area based outlier detection, measuring the 95th percentile values within a 10m by 10m area, removing all points above the 95\% percentile. This can be expressed as;
 
 \[
     \begin{aligned}
@@ -108,7 +118,7 @@ A\left(\mathbf{c}_{\mathbf{i}}\right)=10 m^{2}
     \footnotesize{\ref{code:las_filter_noise}}
 \end{flushright}
 
-where $\mathbf{c_i}$ represents a 10m$^2$ selection of LiDAR points, where each point $(\mathbf{p_i})$ has an intensity value within the 95\% percentile intensity for all points $(\mathbf{p}_{i_{lpi}})$ within $\mathbf{c_i}$.
+\noindent where $\mathbf{c_i}$ represents a 10m$^2$ selection of LiDAR points, where each point $(\mathbf{p_i})$ has an intensity value within the 95\% percentile intensity for all points $(\mathbf{p}_{i_{lpi}})$ within $\mathbf{c_i}$.
 
 \subsection{LiDAR Catalog}
 
@@ -138,7 +148,7 @@ And each 500$m^2$ area collectively represents the overall processed point cloud
 \section{Road Analysis}
 \label{sec:road-extraction}
 
-This section combines data extracted through the OS road shapefiles, preprocessed LiDAR data, and aerial imagery to obtain a set of criteria to assess the chosen road network. These criteria are;
+The next step is to combine the preprocessed LiDAR data with OS road shapefiles, preprocessed LiDAR data, and aerial imagery to obtain a set of criteria to assess the chosen road network. A summary of the information provided alongside OS road shapefiles is tiven on Table \ref{tab:roadstab}. While both \texttt{roadNumberTOID} and \texttt{roadNameTOID} do provide true road identification for many roads, this was not true for each road in this dissertation. Due to this, it was impossible to identify what could be considered an individual road, meaning a "road" will now be defined as indicated on \ref{fig:areamap}, selected based on the shapefile geometry provided. Criteria to be assessed for each road are;
 
 
 \begin{itemize}
@@ -147,7 +157,6 @@ This section combines data extracted through the OS road shapefiles, preprocesse
     \item Road Steepness
     \item Surface Quality
 \end{itemize}
-
 
 <<>>=
 roads_info <- fread("/home/cjber/drive/uni/envs492/main/data/osroads/roads_info.csv") %>% 
@@ -175,7 +184,7 @@ cat(paste("\\item", funcs), sep = "\n")
 @
 \end{itemize}
 
-with B roads considered classified roads, and other functions considered unclassified. All roads are single carriageway, and so for the purpose of this analysis it is assumed they likely have the default national speed limit of 60mph. Individual road identification was difficult, as most roads were not given a name or identifier, in an attempt to solve this issue, each invidivual linestring as provided by the OS road centreline data was considered to be a road, with each given a unique road identifier (Road ID). Figure \ref{fig:area_map} outlines what is considered to be a road in this analysis. All private roads were removed, as were roads below 50m, often those clipped by the extent of the LiDAR data. As many roads did not have a name to be identified by, a column called \texttt{road\_id} was produced, corresponding to a line segment between two junctions (not necessarily a full named road).
+\noident with B roads considered classified roads, and other functions considered unclassified. All roads are single carriageway, and so for the purpose of this analysis it is assumed they likely have the default national speed limit of 60mph. Individual road identification was difficult, as most roads were not given a name or identifier, in an attempt to solve this issue, each individual linestring as provided by the OS road centreline data was considered to be a road, with each given a unique road identifier (Road ID). Figure \ref{fig:area_map} outlines what is considered to be a road in this analysis. All private roads were removed, as were roads with a length of less than 50m, often those clipped by the extent of the LiDAR data. As many roads did not have a name to be identified by, a column called \texttt{road\_id} was produced, corresponding to a line segment between two junctions (not necessarily a full named road).
 
 \subsection{Road Sampling}
 
@@ -323,7 +332,7 @@ $\mathbf{S}$ now gave of a collection of predicted road points for each sample l
 \caption{Road LiDAR points at maximum distance apart for each sample location. Showing two example sample locations ($A$ and $B$), road centreline represented by the thick grey line. True road width is indicated by the dashed lines $O_A$ and $O_B$.}\label{fig:sample_points}
 \end{figure}
 
-To determine the width of the road section, according to the final two selected points at every node, Pythagoras could be used to find the opposite line length ($O_K$), perpendicular to the road segment, considering the distance between the two points to be the hypotenuse ($|K_1K_2|$) of a right angled triangle (Figure \ref{fig:sample_points}). The average width for each road identifier was then found.
+To determine the width of the road, according to the final two selected points at every node, Pythagoras could be used to find the opposite line length ($O_K$), perpendicular to the road segment, considering the distance between the two points to be the hypotenuse ($|K_1K_2|$) of a right angled triangle (Figure \ref{fig:sample_points}). The average width for each road identifier was then found.
 
 \[
 \begin{aligned}

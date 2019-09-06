@@ -97,6 +97,8 @@ Accessibility to destinations is often defined through journey times for populat
 
 Rural healthcare accessibility is becoming more of an issue given fewer healthcare professionals now live in rural communities, \citep{farmer2003}, and the urban centralisation of hospital services \citep{mungall2005}, means that understanding the level of access that each rural community has to these services is more important than ever. Additionally, improving the understanding of rural road networks will enable improved emergency response times.
 
+// Mention here about vehicle sizes: Emergency vehicles are often larger than personal vehicles and as such it can be assumed that accessibility for these types of services is often more limited depending on the quality of rural roads.
+
 There is a strong urban bias for the development of new transport technologies \citep{malecki2003}, explained through key issues particular to rural transport systems;
 
 \begin{itemize}

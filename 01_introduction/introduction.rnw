@@ -92,22 +92,15 @@ cols <- rep(wes_palette(name = "Zissou1"), 6)
 inset <- ggRGB(aerial_inset) +
   theme_map() +
   theme(panel.border = element_rect(
-    colour = "red",
+    colour = "white",
     fill = NA, size = 2
   ), legend.position = "none") +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0))
 
-ext <- extent(aerial_inset)
-inset_shadow <- ggplot() +
-  geom_rect(aes(xmin = ext[1] - 1, xmax = ext[2] + 1, ymin = ext[3] - 1, ymax = ext[4] + 1), fill = "black", alpha = .4) +
-  theme_map() +
-  scale_x_continuous(expand = c(0, 0)) +
-  scale_y_continuous(expand = c(0, 0))
-
 main <- ggRGB(aerial) +
   geom_sf(data = rd_l, colour = cols, size = rd_l$roadFunction) +
-  geom_sf(data = rd_inset %>% st_bbox() %>% st_as_sfc(), colour = "red", fill = NA, size = 1) +
+  geom_sf(data = rd_inset %>% st_bbox() %>% st_as_sfc(), colour = "white", fill = NA, size = 1) +
   theme_map() +
   theme(panel.border = element_rect(
     colour = "black",
@@ -118,7 +111,6 @@ main <- ggRGB(aerial) +
 
 ggdraw() +
   draw_plot(main) +
-  draw_plot(inset_shadow, x = -.1, y = .35, width = .6, height = .6) +
   draw_plot(inset, x = -.1, y = .35, width = .6, height = .6)
 @
 
