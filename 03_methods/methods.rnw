@@ -68,7 +68,8 @@ $$
     \footnotesize{\ref{code:lidr_clean}}
 \end{flushright}
 
-\noindent where $\mathbf{p_i}$ is a single instance of a LiDAR point within the chosen point cloud, $lpx$ is the last pulse $x$ coordinate, $lpy$ the last pulse $y$ coordinate, $lpz$ the last pulse $z$ coordinate, and $lpi$ the last pulse intensity value.
+\noindent
+where $\mathbf{p_i}$ is a single instance of a LiDAR point within the chosen point cloud, $lpx$ is the last pulse $x$ coordinate, $lpy$ the last pulse $y$ coordinate, $lpz$ the last pulse $z$ coordinate, and $lpi$ the last pulse intensity value.
 
 \subsection{Normalisation}
 
@@ -118,7 +119,8 @@ A\left(\mathbf{c}_{\mathbf{i}}\right)=10 m^{2}
     \footnotesize{\ref{code:las_filter_noise}}
 \end{flushright}
 
-\noindent where $\mathbf{c_i}$ represents a 10m$^2$ selection of LiDAR points, where each point $(\mathbf{p_i})$ has an intensity value within the 95\% percentile intensity for all points $(\mathbf{p}_{i_{lpi}})$ within $\mathbf{c_i}$.
+\noindent
+where $\mathbf{c_i}$ represents a 10m$^2$ selection of LiDAR points, where each point $(\mathbf{p_i})$ has an intensity value within the 95\% percentile intensity for all points $(\mathbf{p}_{i_{lpi}})$ within $\mathbf{c_i}$.
 
 \subsection{LiDAR Catalog}
 
@@ -148,7 +150,7 @@ And each 500$m^2$ area collectively represents the overall processed point cloud
 \section{Road Analysis}
 \label{sec:road-extraction}
 
-The next step is to combine the preprocessed LiDAR data with OS road shapefiles, preprocessed LiDAR data, and aerial imagery to obtain a set of criteria to assess the chosen road network. A summary of the information provided alongside OS road shapefiles is tiven on Table \ref{tab:roadstab}. While both \texttt{roadNumberTOID} and \texttt{roadNameTOID} do provide true road identification for many roads, this was not true for each road in this dissertation. Due to this, it was impossible to identify what could be considered an individual road, meaning a "road" will now be defined as indicated on \ref{fig:areamap}, selected based on the shapefile geometry provided. Criteria to be assessed for each road are;
+The next step is to combine the preprocessed LiDAR data with OS road shapefiles, preprocessed LiDAR data, and aerial imagery to obtain a set of criteria to assess the chosen road network. A summary of the information provided alongside OS road shapefiles is given on Table \ref{tab:roadstab}. While both \texttt{roadNumberTOID} and \texttt{roadNameTOID} do provide true road identification for many roads, this was not true for each road in the area chosen. Due to this, it was impossible to identify what could be considered an individual road, meaning a "road" will now be defined as indicated on \ref{fig:area_map}, selected based on the shapefile geometry provided. Criteria to be assessed for each road are;
 
 
 \begin{itemize}
@@ -184,17 +186,66 @@ cat(paste("\\item", funcs), sep = "\n")
 @
 \end{itemize}
 
-\noident with B roads considered classified roads, and other functions considered unclassified. All roads are single carriageway, and so for the purpose of this analysis it is assumed they likely have the default national speed limit of 60mph. Individual road identification was difficult, as most roads were not given a name or identifier, in an attempt to solve this issue, each individual linestring as provided by the OS road centreline data was considered to be a road, with each given a unique road identifier (Road ID). Figure \ref{fig:area_map} outlines what is considered to be a road in this analysis. All private roads were removed, as were roads with a length of less than 50m, often those clipped by the extent of the LiDAR data. As many roads did not have a name to be identified by, a column called \texttt{road\_id} was produced, corresponding to a line segment between two junctions (not necessarily a full named road).
+\noindent
+
+with B roads considered classified roads, and other functions considered unclassified. All roads are single carriageway, and so for the purpose of this analysis it is assumed they likely have the default national speed limit of 60mph. All private roads were removed, as were roads with a length of less than 50m, often those clipped by the extent of the LiDAR data.
 
 \subsection{Road Sampling}
 
-The LiDAR point cloud data was sampled at regular 10 meter intervals for each road, perpendicular to the road direction, ensuring that when road direction changed, the sampling locations remained perpendicular. Each road was first split into nodes at which road direction changed, and from this, points at 10 meter intervals between two connected nodes were calculated;
+The LiDAR point cloud data was sampled at regular 10 meter intervals for each road, perpendicular to the road direction, ensuring that when road direction changed, the sampling locations remained perpendicular. Each road was first split into nodes at which road direction changed, with a single road consisting of multiple nodes with coordinates $xy$, indicating a point along a road where the road direction changed. From this, points at 10 meter intervals beginning at the start of a road, (considered Node 1; $N_1$), until the next node along the road ($N_2$). Each 10 meter interval was assigned a point with $xy$ coordinates, this may be expressed for a point $p_k$ as;
 
-$$
-p_k = p_1 + |p_2 - p_1| \times I_k
-$$
+X Y distances from one node to next node
 
-where $p_k$ is a calculated point long a line, $I_k$ is the interval value which increases by 10 meters until the length of the total distance of the node, given $I_{1}, I_{2}, \dots, I_{k}>0$ and $k \geq 2$.
+\[
+\begin{aligned}
+x_{len} = Nx2 - Nx1 \\
+y_{len} = Ny2 - Ny1
+\end{aligned}
+\]
+
+Total length between nodes calculated with euclidean distance:
+
+\[
+\begin{aligned}
+tot_{len} = \sqrt{(Nx2 - nx1)^2 + (Ny2 - Ny1)^2}
+\end{aligned}
+\]
+
+Find point given position along the line between nodes
+
+\[
+\begin{aligned}
+px = Nx1 + x_{len} / tot_{len} \times I \\
+py = Ny1 + y_{len} / tot_{len} \times I \\
+p_i = (px, py)
+\end{aligned}
+\]
+
+where $I$ is the increment, selected as 10m which increases by $I$ given $I < tot_{len}$
+
+
+From a point $p_i$ at position $I$ between two nodes $n1n2$, to create a perpendicular sample, first points at a distance $\delta$ were created, with $\delta$ selected as 30m.
+
+\[
+\begin{aligned}
+ref_{len} = \sqrt{(nx2 - pxi)^2 + (ny2 - pyi)^2} \\
+xn_{len} = (\delta / ref_{len}) * (px2 - pxi) \\
+yn_{len} = (\delta / ref_{len}) * (py2 - pyi)
+\end{aligned}
+\]
+
+then to create perpendicular points at length $\delta$ from the point $p_i$ between the nodes.
+
+\[
+\begin{aligned}
+    P_{perp}=\left\{\begin{array}{ll} pxi + yn_{len}, pyi - xn_{len} \\
+        pxi - yn_{len}, pyi + xn_{len}
+\end{array}\right.
+\end{aligned}
+\]
+
+\noindent
+where $I_k$ is the interval value which increases by 10 meters until the length of the total distance of the node, given $I_{1}, I_{2}, \dots, I_{k}>0$ and $k \geq 2$. Additionally 
 
 \[
 \begin{aligned}

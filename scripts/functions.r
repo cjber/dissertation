@@ -235,6 +235,7 @@ compute_samples <- function(x, increment = 10, width = 30) {
     tot_len <- 0
     len_inc <- increment
     len_ofs <- len_inc
+
     # for each linestring "node"
     # find dist between them
     for (i in 2:nrow(road_node) - 1) {
