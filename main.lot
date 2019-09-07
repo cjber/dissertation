@@ -6,14 +6,14 @@
 \contentsline {table}{\numberline {3.1}{\ignorespaces LiDAR Point Cloud Summary Data\relax }}{16}{table.caption.7}% 
 \contentsline {table}{\numberline {3.2}{\ignorespaces OS Roads Data Summary\relax }}{18}{table.caption.8}% 
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {4.1}{\ignorespaces Model Coefficients, Comparison between Linear Probability Model 1 and 2\relax }}{30}{table.caption.17}% 
-\contentsline {table}{\numberline {4.2}{\ignorespaces Comparison between different linear probability models for each individual road, in relation to estimated true road width\relax }}{30}{table.caption.18}% 
-\contentsline {table}{\numberline {4.3}{\ignorespaces Overall Features Extracted from Roads in the Study Area, in descending order by RQI value\relax }}{32}{table.caption.19}% 
+\contentsline {table}{\numberline {4.1}{\ignorespaces Model Coefficients, Comparison between Linear Probability Model 1 and 2\relax }}{31}{table.caption.17}% 
+\contentsline {table}{\numberline {4.2}{\ignorespaces Comparison between different linear probability models for each individual road, in relation to estimated true road width\relax }}{31}{table.caption.18}% 
+\contentsline {table}{\numberline {4.3}{\ignorespaces Overall Features Extracted from Roads in the Study Area, in descending order by RQI value\relax }}{33}{table.caption.19}% 
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {5.1}{\ignorespaces Recommended minimum Stopping Sight Distances at certain speeds \citep {layton2012}\relax }}{36}{table.caption.22}% 
+\contentsline {table}{\numberline {5.1}{\ignorespaces Recommended minimum Stopping Sight Distances at certain speeds \citep {layton2012}\relax }}{37}{table.caption.22}% 
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {B.1}{\ignorespaces Spearman's rank correlation coefficients for all variables in relation to the road outcome variable\relax }}{56}{table.caption.24}% 
-\contentsline {table}{\numberline {B.2}{\ignorespaces Estimated number of bends per road\relax }}{56}{table.caption.25}% 
+\contentsline {table}{\numberline {B.1}{\ignorespaces Spearman's rank correlation coefficients for all variables in relation to the road outcome variable\relax }}{57}{table.caption.24}% 
+\contentsline {table}{\numberline {B.2}{\ignorespaces Estimated number of bends per road\relax }}{57}{table.caption.25}% 
 \addvspace {10\p@ }

@@ -7,16 +7,16 @@
 \contentsline {figure}{\numberline {3.2}{\ignorespaces Bearing Angle Between Road Segments\relax }}{22}{figure.caption.10}% 
 \contentsline {figure}{\numberline {3.3}{\ignorespaces Bearing Angle Between two Road Segments\relax }}{23}{figure.caption.11}% 
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Post noise filtering LiDAR point cloud distribution of}}{25}{figure.caption.12}% 
-\contentsline {figure}{\numberline {4.2}{\ignorespaces LiDAR point clouds for one selected road section aggregated into 2m$^2$ grids, \textbf {(A)} Base point cloud $z$ values, road location indicated with a 30m buffer \textbf {(B)} Normalised Point cloud $z$ values for only last returns ($lpz$) \textbf {(C)} Normalised Point cloud $Intensity$ values for last returns, \textbf {(D)} Aerial Data combined to 1 band}}{26}{figure.caption.13}% 
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Linear Model Probability Distributions for the Maximal Model, showing vertical lines at the 95th, 90th, and 80th quantile of the distribution}}{27}{figure.caption.14}% 
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Comparison between Linear Prediction Quantiles}}{28}{figure.caption.15}% 
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Comparison between Linear Probability models applied to}}{29}{figure.caption.16}% 
-\contentsline {figure}{\numberline {4.6}{\ignorespaces Visual comparison between road with the highest RQI \textbf {(A)}, and lowest RQI \textbf {(B)}}}{31}{figure.caption.20}% 
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Post noise filtering LiDAR point cloud distribution of}}{26}{figure.caption.12}% 
+\contentsline {figure}{\numberline {4.2}{\ignorespaces LiDAR point clouds for one selected road section aggregated into 2m$^2$ grids, \textbf {(A)} Base point cloud $z$ values, road location indicated with a 30m buffer \textbf {(B)} Normalised Point cloud $z$ values for only last returns ($lpz$) \textbf {(C)} Normalised Point cloud $Intensity$ values for last returns, \textbf {(D)} Aerial Data combined to 1 band}}{27}{figure.caption.13}% 
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Linear Model Probability Distributions for the Maximal Model, showing vertical lines at the 95th, 90th, and 80th quantile of the distribution}}{28}{figure.caption.14}% 
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Comparison between Linear Prediction Quantiles}}{29}{figure.caption.15}% 
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Comparison between Linear Probability models applied to}}{30}{figure.caption.16}% 
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Visual comparison between road with the highest RQI \textbf {(A)}, and lowest RQI \textbf {(B)}}}{32}{figure.caption.20}% 
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Comparison between a Linear Probability Model Distribution (Red) and Probit/Logit Cumulative Standard Normal Distribution (Black) \citep [Approximation credit][]{bowling2009})\relax }}{34}{figure.caption.21}% 
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Comparison between a Linear Probability Model Distribution (Red) and Probit/Logit Cumulative Standard Normal Distribution (Black) \citep [Approximation credit][]{bowling2009})\relax }}{35}{figure.caption.21}% 
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {B.1}{\ignorespaces Sample lines extracted based on known road locations}}{57}{figure.caption.26}% 
+\contentsline {figure}{\numberline {B.1}{\ignorespaces Sample lines extracted based on known road locations}}{58}{figure.caption.26}% 
 \addvspace {10\p@ }

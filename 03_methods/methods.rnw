@@ -266,7 +266,7 @@ Where $P_{perp}$ is a collection of two points at distance $\delta$ from the poi
 
 \[
 \begin{aligned}
-    \textbf{S} = \textbf{p}_i \in s_i
+    \textbf{S} = \textbf{p}_i \in A(s_i)
 \end{aligned}
 \]
 \begin{flushright}
@@ -414,7 +414,7 @@ With the mid point of each classified road sample, these were than joined for fo
 Given the improvement in road centreline locations, it was considered feasible to construct linear probability models individually for each sample location on each road. This technique would allow for per road variation in material type or quality, and potentially reduce the amount of noise brought in from inaccurate centrelines. Preliminary testing of this method revealed that it was essential to remove any sample containing tree canopy, as given the small number of points, the predictions were based off points that misrepresented true road points. While points are generally able to penetrate the canopy, the intensity values produces by these points was reduced, and removed the distinction between road intensity values, and vegetation. This analysis of the LiDAR data is described in more detail in chapter \ref{ch:results}. Additionally, due to the reduced number of points, it was considered feasible to filter out points that gave model $p$ values below 0.05. For each individual model, if the $p$ value of any predictor or the outcome variable road was above 0.05, the sample location it was associated with was removed. This may be expressed as;
 
 $$
-\mathbf{S}_i = \Big(s_i \in \Big[p_s < 0.05 \Big]\Big).
+\mathbf{S} = \Big(s_i \in \Big[p_s < 0.05 \Big]\Big).
 $$
 \begin{flushright}
     \footnotesize{\ref{code:lm_compute}}
@@ -520,15 +520,15 @@ For each road the maximum bearing angle between two nodes was selected, as well 
 
 \section{Road Node Elevation Change}
 
-The elevation change between two road node points was calculated by first selecting non-normalised LiDAR points at a geometric node within a 1m$^2$ area. Nodes were obtained from the OS road data, as point coordinates obtained when the linestrings were split. LiDAR points were then filtered by those only classified as ground, and with only a single return, to reduce the likelihood of inaccurate $z$ values from canopy or other vegetation and vehicles. The mean $z$ value of points were found for each node, and elevation change between each node was calculated. For each road, the total elevation change per kilometer was calculated.
+The elevation change between two road node points was calculated by first selecting non-normalised LiDAR points at a geometric node within a 1m$^2$ area. LiDAR points were then filtered by those only classified as ground, and with only a single return, to reduce the likelihood of inaccurate $z$ values from canopy or other vegetation and vehicles. The mean $z$ value of points were found for each node, and elevation change between each node was calculated. For each road, the total elevation change per kilometer was calculated.
 
 \section{Surface Quality}
 
-Surface quality was assessed roughly through the range in intensity values found in each known road point, and the average number of returns for a road for sample lines not obstructed by canopy, indicated by single returns.
+Surface quality was assessed roughly through the range in intensity values found in each known road point, and the average number of returns for a road for sample lines not obstructed by canopy. To ensure there was no inaccuracy in intensity values caused by later returns passing through a canopy, only points that had a single return pulse were used in this analysis.
 
 \section{Estimate of True Widths}
 
-QGIS \citep{QGIS} used to measure roughly the width at various points along each road using 25cm resolution aerial imagery. With the widths, the results of each model was compared to assess model accuracy. Each width was normalised to allow comparison between each road, and to give a final average accuracy value. Normalisation was achieved through finding the relative difference in width as a percentage;
+QGIS \citep{QGIS} was used to measure the width at various points along each road using 25cm resolution aerial imagery, avoiding stretches of road with canopy cover that obscured the true road width. With the widths, the results of each model was compared to assess model accuracy. Each width was normalised to allow comparison between each road, and to give a final average accuracy value. Normalisation was achieved through finding the relative difference in width as a percentage;
 
 \[
 \begin{aligned}
@@ -560,4 +560,16 @@ m \mapsto \frac{m-r_{\min }}{r_{\max }-r_{\min }}
 
 Where $r_{\text {min }}$ denotes the minimum of the range of a variable,  $r_{\text {max }}$ denotes the maximum of the range of a variable, and $m \in\left[r_{\text {min }}, r_{\text {max }}\right]$ denotes the variable to be scaled. As an increase in road width is associated with a higher quality road, as opposed to larger values of each other variable indicating a poorer quality road, the width values were first inversed before normalisation. An additional variable, relitability was presented in addition to the RQI, which gives a value for the number of points per road length, ($P_n/L$), allowing for some information regarding the density of sample points to be considered in analysis.
 
-Following normalisation, the sum of all normalised variables for a particular road were taken, and subtracted from 1 to give positive values indicating better quality roads, and lower values indicating lower quality roads. The value obtained from this was called the Road Quality Index, presented in full on Table \ref{tab:rqi}.
+Following normalisation, the sum of all normalised variables for a particular road were taken, and subtracted from 1 to give positive values indicating better quality roads, and lower values indicating lower quality roads. These variables involved in the creation of this index are;
+
+\begin{itemize}
+\item \textbf{Road Width:} 
+\item \textbf{Road Angles:}
+\item \textbf{Road Elevation Change:}
+\item \textbf{Road Surface Quality:}
+\end{itemize}
+
+
+// describe here how each are defined...
+
+The value obtained from this was called the Road Quality Index, presented in full on Table \ref{tab:rqi}.
