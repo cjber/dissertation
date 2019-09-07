@@ -190,7 +190,7 @@ cat(paste("\\item", funcs), sep = "\n")
 
 \subsection{Road Sampling}
 
-The LiDAR point cloud data was sampled at regular 10 meter intervals for each road, perpendicular to the road direction, ensuring that when road direction changed, the sampling locations remained perpendicular. Each road was first split into nodes at which road direction changed, with a single road consisting of multiple nodes with coordinates $xy$, indicating a point along a road where the road direction changed. From this, points at 10 meter intervals beginning at the start of a road, (considered Node 1; $\mathbf{N}_1$), until the next node along the road ($\mathbf{N}_2$). Each 10 meter interval was assigned a point with $xy$ coordinates, to calculate these points along each line between two nodes ($\mathbf{N}_{i} = (x_i, y_i)$ and $\mathbf{N}_{i+1} = (x_{i+1},y_{i+1})$), first the total $xy$ distances between the two nodes was calculated;
+The LiDAR point cloud data was sampled at regular 10 meter intervals for each road, perpendicular to the road direction, ensuring that when road direction changed, the sampling locations remained perpendicular. Each road was first split into nodes at which road direction changed, with a single road consisting of multiple nodes with coordinates $xy$, indicating a point along a road where the road direction changed. From this, points with $xy$ coordinates were created at 10 meter intervals beginning at the start of a road, (considered Node 1; $\mathbf{N}_1$), until the next node along the road ($\mathbf{N}_2$). To calculate these points along each line between two nodes ($\mathbf{N}_{i} = (x_i, y_i)$ and $\mathbf{N}_{i+1} = (x_{i+1},y_{i+1})$), first the individual change in $x$ and $y$ values was calculated, expressed as;
 
 \[
 \begin{aligned}
@@ -204,17 +204,16 @@ The LiDAR point cloud data was sampled at regular 10 meter intervals for each ro
 
 \noindent along with the euclidean distance between these nodes;
 
-
 \[
 \begin{aligned}
     d(\mathbf{N}_{i},\mathbf{N}_{i+1}) = \sqrt{(x_{i+1} - x_{i})^2 + (y_{i+1} - y_{i})^2}.
 \end{aligned}
 \]
 \begin{flushright}
-    \footnotesize{\ref{code:compute_samples}}
+    \footnotesize{\ref{code:euc}}
 \end{flushright}
 
-To find a point ($\mathbf{p}_i$) along these two nodes, at an interval distance $I_k$, can be calculated; 
+Then, to find a point ($p_i$) along these two nodes, at an interval distance $I_k$, with $I_1 = 10$ increasing incrementally by 10m, was achieved through this equation;
 
 \[
 \begin{aligned}
@@ -226,16 +225,15 @@ To find a point ($\mathbf{p}_i$) along these two nodes, at an interval distance 
     \footnotesize{\ref{code:compute_samples}}
 \end{flushright}
 
-where $I_k$ is the interval value which increases by 10 meters until the length of the total distance of the node, given . Additionally 
-\noindent giving a point $p_i = (px,py)$ at a distance $I$ from $N_i$ in the direction of $N_{i+1}$. Where $I_k$ is the increment, which increases by 10m given $I_{1} = 10, I_{2} = 20, \dots, I_{k}>0$ and $i \geq 2$. From a point $p_i$ at position $I_k$ between two nodes $N_i$ and $N_{i+1}$, to create a perpendicular sample, first two points at a perpendicular distance $\delta$ from the bearing angle of the two nodes, at a point $p_i$ were created, with $\delta$ selected as 30m. First the euclidean distance from $N_{i+1}$ to the point $p_i$ was calculated;
+\noindent giving a point $p_k = (px,py)$ at a distance $I_k$ from $N_i$ in the direction of $N_{i+1}$. Where $I_k$ is the increment, which increases by 10m given $I_{1} = 10, I_{2} = 20, \dots, I_{k}>0$ and $k \geq 2$. To create a perpendicular sample from a point $p_k$ at position $I_k$ between two nodes $N_i$ and $N_{i+1}$, first two points at a perpendicular distance $\delta$ from the bearing angle of the two nodes, at a point $p_k$ were created, with $\delta$ selected as 30m. First the euclidean distance from $N_{i+1}$ to the point $p_i$ was calculated;
 
 \[
 \begin{aligned}
-    d(N_{i+1},p_i) = \sqrt{(x_{i+1} - px)^2 + (y_{i+1} - py)^2}
+    d(N_{i+1},p_i) = \sqrt{(x_{i+1} - px)^2 + (y_{i+1} - py)^2},
 \end{aligned}
 \]
 \begin{flushright}
-    \footnotesize{\ref{code:compute_samples}}
+    \footnotesize{\ref{code:euc}}
 \end{flushright}
 
 \noindent with this perpendicular distance, the value required for each $xy$ coordinate to achieve a distance of $\delta$ from a point $p_i$ may be calculated by;
@@ -243,63 +241,45 @@ where $I_k$ is the interval value which increases by 10 meters until the length 
 \[
 \begin{aligned}
     \delta_x = \frac{\delta}{d(N_{i+1},p_i)} \times (x_{i+1} - px_i) \\
-    \delta_y = \frac{\delta}{d(N_{i+1},p_i)} \times (y_{i+1} - py_i)
+    \delta_y = \frac{\delta}{d(N_{i+1},p_i)} \times (y_{i+1} - py_i),
 \end{aligned}
 \]
 \begin{flushright}
     \footnotesize{\ref{code:compute_samples}}
 \end{flushright}
 
-then to create perpendicular points at length $\delta$ from the point $p_i$ between the nodes.
+then to create perpendicular points at length $\delta$ from the point $p_i$ between the nodes the value $\delta_y$ was added to the $x$ value of the point $p_i$, while the value $\delta_y$ was subtracted from the $y$ value of the point $p_i$. This was then inverted to produce a second point. This may be expressed as;
 
 \[
 \begin{aligned}
     P_{perp}=\left\{\begin{array}{ll}
             px_i + \delta_y, & py_i - \delta_x \\
         px_i - \delta_y, & py_i + \delta_x
-\end{array}\right.
-\end{aligned}
-\]
-\begin{flushright}
-    \footnotesize{\ref{code:compute_samples}}
-\end{flushright}
-
-\noindent
-
-\[
-\begin{aligned}
-    I_k &= (L_k + 10) - T_k \\
-    L_1 &= 10 \\
-    T_k &= T_{k-1}  + E
-\end{aligned}
-\]
-
-where $L_k$ is the distance from the start of the node to the current sample line position, $T_k$ is total length of all nodes within a road from the start of the road and $E$ is the euclidean distance between two nodes.
-
-To calculate the sample locations, perpendicular to the roads, first the $x$ and $y$ euclidean distances from a reference point $p_k$ and the end of the current node $n_{k+1}$ were calculated;
-
-\[
-\begin{aligned}
-    len &= \sqrt{(n_{k+1} - p_k)} \\
-    p_i &= (30 / len) \times (n_{k+1} - p_k)
+\end{array}\right.,
 \end{aligned}
 \]
 \begin{flushright}
     \footnotesize{\ref{code:perp}}
 \end{flushright}
 
-from this, the lengths were inverted, giving two points ($p_i$) of distance $30$ from $p_k$. Inversion was achieved by subtracting the given $len_n$ $x$ value from $p_k$, while adding the $len_n$ $y$ value, and vice versa. These perpendicular sample lines were buffered to a width of 2m, giving a total area of 120m$^2$ per sample. These were spatially joined to the existing LiDAR point cloud data, removing any points that fell outside the sample lines.
+Where $P_{perp}$ is a collection of two points at distance $\delta$ from the point $p_i$. From these two points, a linestring was created between them, which was then buffered to 2m. This gave sample lines, with an area of 2m by 60m, at 10m intervals along each road. The total point cloud was then clipped to only include points with fell inside these sample lines:
 
+\[
+\begin{aligned}
+    \textbf{S} = \textbf{p}_i \in s_i
+\end{aligned}
+\]
 \begin{flushright}
-    \footnotesize{\ref{code:compute_samples}}
+    \footnotesize{\ref{code:clip_samples}}
 \end{flushright}
+
 
 \subsection{Aerial Imagery}
 
-With the perpendicular sample lines extracted for the length of every road, to assist with the prediction of correct road locations, true colour aerial imagery was included. This imagery was first converted from three band RGB raster images, to a single-band grey-scale raster brick with values ranging 0 to 255, considered to be luminescence information.
+With the perpendicular sample lines extracted for the length of every road, to assist with the prediction of correct road locations, true colour aerial imagery was included. This imagery was first converted from three band RGB raster images, to a single-band grey-scale raster brick with values ranging 0 to 255. Combining the three bands into a single band produces a grey scale image, that more accurately portrays luminescence information from the aerial image, which has been included in past road classification methodologies.
 
 $$
-luminescence = \frac{Band_1 + Band_2 + Band_3}{3}
+lum = \frac{Band_1 + Band_2 + Band_3}{3}
 $$
 \begin{flushright}
     \footnotesize{\ref{code:lm_compute}}
@@ -337,13 +317,16 @@ P\left(Y=1 | X_{1}, X_{2}, \ldots, X_{k}\right)=\beta_{0}+\beta_{1}+X_{1 i}+\bet
 
 \noindent $\beta_j$ therefore may be interpreted as the change in the probability that $Y_i = 1$, with all other predictor variable constant. $\beta_j$ may be estimated using Ordinary Least Squares regression \citep{hanck2019}. 
 
-Likelihood values from the predictions gave a range of numerical values, points that fell below a certain threshold were removed, leaving only points that were most likely correctly identified as road points. This threshold was assess qualitatively through both observation of the distribution of probability ranges for each model, and results gained through different thresholds. Considering a threshold $x$, this may be expressed as;
+Likelihood values from the predictions gave a range of numerical values. Points that fell below a certain threshold were removed, leaving only points that were most likely correctly identified as road points. This threshold was assessed qualitatively through both observation of the distribution of probability ranges for each model, and results gained through different thresholds. Considering a threshold $x$, this may be expressed as;
 
 \[
 \begin{aligned}
 \mathbf{S} &= \Big(\mathbf{p}_i \in \Big[\frac{x}{100} \times \mathbf{p}_{i_{lm}}\Big]\Big), \\
 \end{aligned}
 \]
+\begin{flushright}
+    \footnotesize{\ref{code:lm_compute}}
+\end{flushright}
 
 \noindent where $\mathbf{S}$ is the total point cloud.
 
@@ -399,7 +382,7 @@ $\mathbf{S}$ now gave of a collection of predicted road points for each sample l
 \caption{Road LiDAR points at maximum distance apart for each sample location. Showing two example sample locations ($\mathbf{A}$ and $\mathbf{B}$), road centreline represented by the thick grey line. True road width is indicated by the dashed lines $b_\mathbf{A}$ and $b_\mathbf{B}$, considered to be the adjacent side of a triangle in relation to be bearing angles between the first and second point of each sample, $\theta_\mathbf{A}$ and $\theta_\mathbf{B}$. The distance between the two points per sample are considered to give the hypotenuse length of a triangle ($h_\mathbf{A}$ and $h_\mathbf{B}$).}\label{fig:sample_points}
 \end{figure}
 
-To determine the width of the road, given the two selected points at every node with a maximum distance between them, trigonometry could be used to find the adjacent line length ($a_\mathbf{K}$; where $\mathbf{K}$ is a single sample location), perpendicular to the road segment. considering the distance between the two points to be the hypotenuse ($|\mathbf{K}_1\mathbf{K}_2|$) of a right angled triangle (Figure \ref{fig:sample_points}). The average width for each road identifier was then found, for a sample location $\mathbf{K}$, this may be expressed using trigonometry as;
+To determine the width of the road, given the two selected points at every node with a maximum distance between them, trigonometry could be used to find the adjacent line length ($b_\mathbf{K}$; where $\mathbf{K}$ is a single sample location), perpendicular to the road segment, considering the distance between the two points to be the hypotenuse ($|\mathbf{K}_1\mathbf{K}_2|,h_\mathbf{K}$) of a right angled triangle (Figure \ref{fig:sample_points}). The average width for each road identifier was then found, for a sample location $\mathbf{K}$, this may be expressed using trigonometry as;
 
 \[
 \begin{aligned}
@@ -426,18 +409,21 @@ $$
 \end{flushright}
 
 
-With the mid point of each classified road sample, these were than joined for form new centrelines, and a further linear probability model was ran and compared, to determine the effectiveness of this technique.
+With the mid point of each classified road sample, these were than joined for form new centrelines, and a further linear probability model was ran and compared.
+
+Given the improvement in road centreline locations, it was considered feasible to construct linear probability models individually for each sample location on each road. This technique would allow for per road variation in material type or quality, and potentially reduce the amount of noise brought in from inaccurate centrelines. Preliminary testing of this method revealed that it was essential to remove any sample containing tree canopy, as given the small number of points, the predictions were based off points that misrepresented true road points. While points are generally able to penetrate the canopy, the intensity values produces by these points was reduced, and removed the distinction between road intensity values, and vegetation. This analysis of the LiDAR data is described in more detail in chapter \ref{ch:results}. Additionally, due to the reduced number of points, it was considered feasible to filter out points that gave model $p$ values below 0.05. For each individual model, if the $p$ value of any predictor or the outcome variable road was above 0.05, the sample location it was associated with was removed. This may be expressed as;
+
+$$
+\mathbf{S}_i = \Big(s_i \in \Big[p_s < 0.05 \Big]\Big).
+$$
 \begin{flushright}
-    \footnotesize{\ref{code:true_cents}}
+    \footnotesize{\ref{code:lm_compute}}
 \end{flushright}
 
-Given the improvement in road centreline locations, it was considered feasible to construct linear probability models individually for each sample location on each road. This technique would allow for per road variation in material type or quality, and potentially reduce the amount of noise brought in from inaccurate centrelines. Preliminary testing of this method revealed that it was essential to remove any sample containing tree canopy, as given the small number of points, the predictions were based off points that misrepresented true road points. Additionally, individual linear models allowed for some filtering through $p$ values, which was not achievable through global linear models, given the very large number of points. 
 
 \subsection{Final Model Analysis}
 
-// talk about lm beta coefficients here, limitations of p valeus nmaybe
-
-To aid with model interpretability, the direct comparison between each variable in the analysis was enabled through centering and scaling through the use of beta coefficients \cite{peterson2005};
+To aid with model interpretability, the direct comparison between each variable in the analysis was enabled through centering and scaling through the use of beta coefficients \citep{peterson2005};
 
 $$
 \beta_{p}=\frac{\operatorname{Cov}\left(r_{p}, r_{b}\right)}{\operatorname{Var}\left(r_{b}\right)}
@@ -530,7 +516,7 @@ With the bearing angle of the first line segment $AB$ for a particular road, the
 \label{fig:bearingang2}
 \end{figure}
 
-For each road the, maximum bearing angle between two nodes was selected, as well as the average bearing angle for a certain road.
+For each road the maximum bearing angle between two nodes was selected, as well as the average bearing angle between two nodes.
 
 \section{Road Node Elevation Change}
 

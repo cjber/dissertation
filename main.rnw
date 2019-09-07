@@ -113,6 +113,11 @@ An automated method for the identification of rural road geometric features is p
 \chapter*{Definitions}
 \begin{multicols}{2}
 \begin{itemize}
+    \section*{Local Definitions}
+\item \textbf{Road:} a section of a full named road that is extracted from Ordinance Survey road centrelines. Often (but not always), a section of road that is in-between two junctions. Due to the nature of roads, it is essential to define a start and end point to ensure no ambiguity. Figure \ref{fig:area_map} gives and overview of what is considered to be a road in this analysis.
+\item \textbf{Node:} each road may be split into nodes, defined by the point at which a road changes direction, as indicated on the Ordinance Survey road centrelines, a node may also be the start and end of a road. In computational geometries, nodes are the start and end point of a \texttt{LINESTRING}, which may be part of a \texttt{MULTILINESTRING}.
+
+\section*{Broad Definitions}
     \item \textbf{Light Detection and Ranging (LiDAR):} similar to radar, a laser pulse is sent out of a transmitter on an aircraft or ground vehicle and the light is reflected back to a receiver.
     \item \textbf{Billion Vehicle Miles (BVM):} the total number of miles travelled by all vehicles divided by 1 billion. Typically all traffic is measured in vehicles miles.
     \item \textbf{Digital Terrain Model (DTM):} digital representation of the land surface topography without surface objects.

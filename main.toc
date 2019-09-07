@@ -28,8 +28,8 @@
 \contentsline {section}{\numberline {3.3}Road Analysis}{17}{section.3.3}% 
 \contentsline {subsection}{\numberline {3.3.1}Road Sampling}{18}{subsection.3.3.1}% 
 \contentsline {subsection}{\numberline {3.3.2}Aerial Imagery}{19}{subsection.3.3.2}% 
-\contentsline {section}{\numberline {3.4}Linear Probability Models and Road Width}{20}{section.3.4}% 
-\contentsline {subsection}{\numberline {3.4.1}Improved Road Centrelines}{22}{subsection.3.4.1}% 
+\contentsline {section}{\numberline {3.4}Linear Probability Models and Road Width}{19}{section.3.4}% 
+\contentsline {subsection}{\numberline {3.4.1}Improved Road Centrelines}{21}{subsection.3.4.1}% 
 \contentsline {subsection}{\numberline {3.4.2}Final Model Analysis}{22}{subsection.3.4.2}% 
 \contentsline {section}{\numberline {3.5}Road Angles}{22}{section.3.5}% 
 \contentsline {section}{\numberline {3.6}Road Node Elevation Change}{23}{section.3.6}% 
