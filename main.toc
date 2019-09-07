@@ -29,12 +29,12 @@
 \contentsline {subsection}{\numberline {3.3.1}Road Sampling}{18}{subsection.3.3.1}% 
 \contentsline {subsection}{\numberline {3.3.2}Aerial Imagery}{19}{subsection.3.3.2}% 
 \contentsline {section}{\numberline {3.4}Linear Probability Models and Road Width}{20}{section.3.4}% 
-\contentsline {subsection}{\numberline {3.4.1}Improved Road Centrelines}{21}{subsection.3.4.1}% 
+\contentsline {subsection}{\numberline {3.4.1}Improved Road Centrelines}{22}{subsection.3.4.1}% 
 \contentsline {subsection}{\numberline {3.4.2}Final Model Analysis}{22}{subsection.3.4.2}% 
 \contentsline {section}{\numberline {3.5}Road Angles}{22}{section.3.5}% 
 \contentsline {section}{\numberline {3.6}Road Node Elevation Change}{23}{section.3.6}% 
-\contentsline {section}{\numberline {3.7}Surface Quality}{23}{section.3.7}% 
-\contentsline {section}{\numberline {3.8}Estimate of True Widths}{23}{section.3.8}% 
+\contentsline {section}{\numberline {3.7}Surface Quality}{24}{section.3.7}% 
+\contentsline {section}{\numberline {3.8}Estimate of True Widths}{24}{section.3.8}% 
 \contentsline {section}{\numberline {3.9}Road Quality Assessment}{24}{section.3.9}% 
 \contentsline {chapter}{\numberline {4}Results}{25}{chapter.4}% 
 \contentsline {section}{\numberline {4.1}Data Preprocessing}{25}{section.4.1}% 

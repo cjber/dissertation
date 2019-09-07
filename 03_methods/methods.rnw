@@ -2,7 +2,7 @@
 
     All code is hosted on my personal \href{https://github.com/cjber/}{GitHub account}, along with my my complete dotfiles, used in conjunction with the Linux distribution Manjaro, and the i3 window manager. All writing and code was produced using \href{https://neovim.io}{Neovim} with my personal configuration to implement integrated development environment (IDE) style features for writing R code, while also providing essential features for writing in \LaTeX{}. Neovim has the benefit of being both highly customisable, and lightweight, which allows for much lower system utilisation compared with R Studio when working with large datasets. One essential Vim plugin to mention is \href{https://github.com/jalvesaq/Nvim-R}{Nvim-R}, providing an \R{} REPL connection to vim, and other useful functions. 
 
-    Given in Appendix \ref{a:code} are the code snippets utilised in this methodology, for many equations, the relevant code is given as a reference to the appendix location, in the form \textbf{A.x.x}.
+    Given in Appendix \ref{a:code} are the code snippets utilised in this methodology, for many equations, the relevant code is given as a reference to the appendix location, in the form \textbf{A.x.x}. Due to the nature of the functions used in this analysis, a single function often contains multiple equations, and so a reference to a particular appendix number may be repeated. Additionally, not all functions are referenced in text, so there are gaps in references to functions, and they do not necessarily appear sequentially.
 
 \section{Data}
 \label{sec:data}
@@ -190,61 +190,81 @@ cat(paste("\\item", funcs), sep = "\n")
 
 \subsection{Road Sampling}
 
-The LiDAR point cloud data was sampled at regular 10 meter intervals for each road, perpendicular to the road direction, ensuring that when road direction changed, the sampling locations remained perpendicular. Each road was first split into nodes at which road direction changed, with a single road consisting of multiple nodes with coordinates $xy$, indicating a point along a road where the road direction changed. From this, points at 10 meter intervals beginning at the start of a road, (considered Node 1; $N_1$), until the next node along the road ($N_2$). Each 10 meter interval was assigned a point with $xy$ coordinates, this may be expressed for a point $p_k$ as;
-
-X Y distances from one node to next node
+The LiDAR point cloud data was sampled at regular 10 meter intervals for each road, perpendicular to the road direction, ensuring that when road direction changed, the sampling locations remained perpendicular. Each road was first split into nodes at which road direction changed, with a single road consisting of multiple nodes with coordinates $xy$, indicating a point along a road where the road direction changed. From this, points at 10 meter intervals beginning at the start of a road, (considered Node 1; $\mathbf{N}_1$), until the next node along the road ($\mathbf{N}_2$). Each 10 meter interval was assigned a point with $xy$ coordinates, to calculate these points along each line between two nodes ($\mathbf{N}_{i} = (x_i, y_i)$ and $\mathbf{N}_{i+1} = (x_{i+1},y_{i+1})$), first the total $xy$ distances between the two nodes was calculated;
 
 \[
 \begin{aligned}
-x_{len} = Nx2 - Nx1 \\
-y_{len} = Ny2 - Ny1
+    |x| =& x_{i+1} - x_i \\
+    |y| =& y_{i+1} - y_i,
 \end{aligned}
 \]
+\begin{flushright}
+    \footnotesize{\ref{code:compute_samples}}
+\end{flushright}
 
-Total length between nodes calculated with euclidean distance:
+\noindent along with the euclidean distance between these nodes;
+
 
 \[
 \begin{aligned}
-tot_{len} = \sqrt{(Nx2 - nx1)^2 + (Ny2 - Ny1)^2}
+    d(\mathbf{N}_{i},\mathbf{N}_{i+1}) = \sqrt{(x_{i+1} - x_{i})^2 + (y_{i+1} - y_{i})^2}.
 \end{aligned}
 \]
+\begin{flushright}
+    \footnotesize{\ref{code:compute_samples}}
+\end{flushright}
 
-Find point given position along the line between nodes
+To find a point ($\mathbf{p}_i$) along these two nodes, at an interval distance $I_k$, can be calculated; 
 
 \[
 \begin{aligned}
-px = Nx1 + x_{len} / tot_{len} \times I \\
-py = Ny1 + y_{len} / tot_{len} \times I \\
-p_i = (px, py)
+    px =& \frac{x_{i} + |x|}{d(\mathbf{N}_{i},\mathbf{N}_{i+1})} \times I_k \\
+    py =& \frac{y_{i} + |y|}{d(\mathbf{N}_{i},\mathbf{N}_{i+1})} \times I_k,
 \end{aligned}
 \]
+\begin{flushright}
+    \footnotesize{\ref{code:compute_samples}}
+\end{flushright}
 
-where $I$ is the increment, selected as 10m which increases by $I$ given $I < tot_{len}$
-
-
-From a point $p_i$ at position $I$ between two nodes $n1n2$, to create a perpendicular sample, first points at a distance $\delta$ were created, with $\delta$ selected as 30m.
+where $I_k$ is the interval value which increases by 10 meters until the length of the total distance of the node, given . Additionally 
+\noindent giving a point $p_i = (px,py)$ at a distance $I$ from $N_i$ in the direction of $N_{i+1}$. Where $I_k$ is the increment, which increases by 10m given $I_{1} = 10, I_{2} = 20, \dots, I_{k}>0$ and $i \geq 2$. From a point $p_i$ at position $I_k$ between two nodes $N_i$ and $N_{i+1}$, to create a perpendicular sample, first two points at a perpendicular distance $\delta$ from the bearing angle of the two nodes, at a point $p_i$ were created, with $\delta$ selected as 30m. First the euclidean distance from $N_{i+1}$ to the point $p_i$ was calculated;
 
 \[
 \begin{aligned}
-ref_{len} = \sqrt{(nx2 - pxi)^2 + (ny2 - pyi)^2} \\
-xn_{len} = (\delta / ref_{len}) * (px2 - pxi) \\
-yn_{len} = (\delta / ref_{len}) * (py2 - pyi)
+    d(N_{i+1},p_i) = \sqrt{(x_{i+1} - px)^2 + (y_{i+1} - py)^2}
 \end{aligned}
 \]
+\begin{flushright}
+    \footnotesize{\ref{code:compute_samples}}
+\end{flushright}
+
+\noindent with this perpendicular distance, the value required for each $xy$ coordinate to achieve a distance of $\delta$ from a point $p_i$ may be calculated by;
+
+\[
+\begin{aligned}
+    \delta_x = \frac{\delta}{d(N_{i+1},p_i)} \times (x_{i+1} - px_i) \\
+    \delta_y = \frac{\delta}{d(N_{i+1},p_i)} \times (y_{i+1} - py_i)
+\end{aligned}
+\]
+\begin{flushright}
+    \footnotesize{\ref{code:compute_samples}}
+\end{flushright}
 
 then to create perpendicular points at length $\delta$ from the point $p_i$ between the nodes.
 
 \[
 \begin{aligned}
     P_{perp}=\left\{\begin{array}{ll}
-            pxi + yn_{len}, & pyi - xn_{len} \\
-        pxi - yn_{len}, & pyi + xn_{len}
+            px_i + \delta_y, & py_i - \delta_x \\
+        px_i - \delta_y, & py_i + \delta_x
 \end{array}\right.
 \end{aligned}
 \]
+\begin{flushright}
+    \footnotesize{\ref{code:compute_samples}}
+\end{flushright}
 
 \noindent
-where $I_k$ is the interval value which increases by 10 meters until the length of the total distance of the node, given $I_{1}, I_{2}, \dots, I_{k}>0$ and $k \geq 2$. Additionally 
 
 \[
 \begin{aligned}
@@ -253,9 +273,6 @@ where $I_k$ is the interval value which increases by 10 meters until the length 
     T_k &= T_{k-1}  + E
 \end{aligned}
 \]
-\begin{flushright}
-    \footnotesize{\ref{code:compute_samples}}
-\end{flushright}
 
 where $L_k$ is the distance from the start of the node to the current sample line position, $T_k$ is total length of all nodes within a road from the start of the road and $E$ is the euclidean distance between two nodes.
 
@@ -393,7 +410,9 @@ To determine the width of the road, given the two selected points at every node 
     \footnotesize{\ref{code:opposite_length}}
 \end{flushright}
 
-There is the possibility that the maximum distance between two points does not provide the maximum perpendicular distance across a road section. Such a situation would arise given a triangle formed that is has an opposite length ($a_\mathbf{K}$) above the adjacent length ($a_\mathbf{K}$). However, given the maximum opposite line length between two points in a sample line is 2m, (each sample is 2m by 60m), for any line where the opposite length is greater than the adjacent length, the adjacent length must therefore be below 2m and thus, the road width calculated from this sample is removed during the filtering process. Such a situation would require a larger opposite length than adjacent length to produce a hypotenuse length in excess of an alternative hypotenuse between two points, given it would have to be taller than it is wide.
+\noindent where $b_\mathbf{K}$ gives the true predicted of a road for the sample $\mathbf{K}$. With a complete set of calculated road widths for each sample, any width above 8m was removed, in addition to any width below 2m, under the assumption that a width calculated outside these limits would be caused due to noise or inaccuracy.
+
+There is the possibility that the maximum distance between two points does not provide the maximum perpendicular distance across a road section. Such a situation would arise given a triangle formed that is has an opposite length ($a_\mathbf{K}$) above the adjacent length ($b_\mathbf{K}$). However, given the maximum opposite line length between two points in a sample line is 2m, (each sample is 2m by 60m), for any line where the opposite length is greater than the adjacent length, the adjacent length must therefore be below 2m and thus, the road width calculated from this sample is removed during the filtering process. Such a situation would require a larger opposite length than adjacent length to produce a hypotenuse length in excess of an alternative hypotenuse between two points, given it would have to be taller than it is wide.
 
 \subsection{Improved Road Centrelines}
 
