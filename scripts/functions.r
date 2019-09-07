@@ -448,10 +448,10 @@ true_cents <- function(x) {
   }
 }
 
-## ---- opposite_length
+## ---- adjacent_length
 # use atan2 to find true width of roads given
 # a non perpendicular line, convert to perpendicular to find width
-opposite_length <- function(samp, cent) {
+adjacent_length <- function(samp, cent) {
   tot_width <- c()
   cent <- cent %>% st_cast("POINT")
   n <- nrow(cent) - 1
@@ -500,13 +500,13 @@ opposite_length <- function(samp, cent) {
         theta <- theta - 45 # position relative to perp line
 
         c1_len <- st_length(s)
-        # pythagoras to find opposite line length
-        opposite <- abs(as.numeric(c1_len) * cos(as.numeric(theta)))
-        opposite <- cbind(
-          opposite, as.character(unique(cent$road_id)),
+        # pythagoras to find adjacent line length
+        adjacent <- abs(as.numeric(c1_len) * cos(as.numeric(theta)))
+        adjacent <- cbind(
+          adjacent, as.character(unique(cent$road_id)),
           as.character(unique(cent$sample_id))
         )
-        tot_width <- rbind(tot_width, opposite)
+        tot_width <- rbind(tot_width, adjacent)
       }
     }
   }
@@ -526,19 +526,19 @@ model_comparison <- function(model) {
   cent <- split(cent, f = cent$road_id)
   cent <- Filter(function(x) dim(x)[1] > 0, cent)
 
-  widths <- mapply(opposite_length, samp, cent)
+  widths <- mapply(adjacent_length, samp, cent)
   widths <- do.call(rbind, widths)
   widths <- as.data.frame(widths)
 
-  widths$opposite <- as.numeric(unfactor(widths$opposite))
+  widths$adjacent <- as.numeric(unfactor(widths$adjacent))
 
-  widths <- widths[widths$opposite > 2 & widths$opposite < 8, ]
+  widths <- widths[widths$adjacent > 2 & widths$adjacent < 8, ]
 
   widths <- widths %>%
     group_by(V2) %>%
-    select(road_id = V2, opposite) %>%
+    select(road_id = V2, adjacent) %>%
     summarise(
-      mean_width = mean(opposite)
+      mean_width = mean(adjacent)
     )
 
   return(widths)

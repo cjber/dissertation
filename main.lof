@@ -1,0 +1,22 @@
+\setcounter {tocdepth}{1}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Study area highlighting road centrelines, each colour represents a seperate 'road' as defined by the OS Data provided}}{4}{figure.caption.5}% 
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Road LiDAR points at maximum distance apart for each sample location. Showing two example sample locations ($\mathbf {A}$ and $\mathbf {B}$), road centreline represented by the thick grey line. True road width is indicated by the dashed lines $b_\mathbf {A}$ and $b_\mathbf {B}$, considered to be the adjacent side of a triangle in relation to be bearing angles between the first and second point of each sample, $\theta _\mathbf {A}$ and $\theta _\mathbf {B}$. The distance between the two points per sample are considered to give the hypotenuse length of a triangle ($h_\mathbf {A}$ and $h_\mathbf {B}$).\relax }}{21}{figure.caption.9}% 
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Bearing Angle Between Road Segments\relax }}{22}{figure.caption.10}% 
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Bearing Angle Between two Road Segments\relax }}{23}{figure.caption.11}% 
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Post noise filtering LiDAR point cloud distribution of}}{25}{figure.caption.12}% 
+\contentsline {figure}{\numberline {4.2}{\ignorespaces LiDAR point clouds for one selected road section aggregated into 2m$^2$ grids, \textbf {(A)} Base point cloud $z$ values, road location indicated with a 30m buffer \textbf {(B)} Normalised Point cloud $z$ values for only last returns ($lpz$) \textbf {(C)} Normalised Point cloud $Intensity$ values for last returns, \textbf {(D)} Aerial Data combined to 1 band}}{26}{figure.caption.13}% 
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Linear Model Probability Distributions for the Maximal Model, showing vertical lines at the 95th, 90th, and 80th quantile of the distribution}}{27}{figure.caption.14}% 
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Comparison between Linear Prediction Quantiles}}{28}{figure.caption.15}% 
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Comparison between Linear Probability models applied to}}{29}{figure.caption.16}% 
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Visual comparison between road with the highest RQI \textbf {(A)}, and lowest RQI \textbf {(B)}}}{31}{figure.caption.20}% 
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Comparison between a Linear Probability Model Distribution (Red) and Probit/Logit Cumulative Standard Normal Distribution (Black) \citep [Approximation credit][]{bowling2009})\relax }}{34}{figure.caption.21}% 
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {B.1}{\ignorespaces Sample lines extracted based on known road locations}}{57}{figure.caption.26}% 
+\addvspace {10\p@ }

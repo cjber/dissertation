@@ -1,0 +1,52 @@
+This is BibTeX, Version 0.99d (TeX Live 2019/Arch Linux)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: main.aux
+The style file: agsm.bst
+Database file #1: kbib.bib
+Database file #2: rbib.bib
+Warning--I didn't find a database entry for "roadsafetyandenvironment2000"
+Warning--I didn't find a database entry for "transportandthedepartmentoftheenvironment2000"
+Warning--I didn't find a database entry for "depertmentfortransport2013b"
+Warning--empty booktitle in darmawati2008
+You've used 137 entries,
+            2909 wiz_defined-function locations,
+            1365 strings with 26416 characters,
+and the built_in function-call counts, 553051 in all, are:
+= -- 90250
+> -- 6980
+< -- 2
++ -- 42862
+- -- 2107
+* -- 47238
+:= -- 111582
+add.period$ -- 257
+call.type$ -- 137
+change.case$ -- 1887
+chr.to.int$ -- 132
+cite$ -- 138
+duplicate$ -- 2141
+empty$ -- 4137
+format.name$ -- 2541
+if$ -- 99298
+int.to.chr$ -- 10
+int.to.str$ -- 0
+missing$ -- 91
+newline$ -- 563
+num.names$ -- 1418
+pop$ -- 638
+preamble$ -- 1
+purify$ -- 2055
+quote$ -- 0
+skip$ -- 1784
+stack$ -- 0
+substring$ -- 127008
+swap$ -- 371
+text.length$ -- 1920
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 544
+warning$ -- 1
+while$ -- 2962
+width$ -- 0
+write$ -- 1996
+(There were 4 warnings)
