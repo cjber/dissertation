@@ -368,11 +368,11 @@ $\mathbf{S}$ now gave of a collection of predicted road points for each sample l
 \draw[-] (-.6,1) arc (0:55:.2);
 \node[] at (-.5,1.12)  {$\theta_A$};
 
-\filldraw (-1,4) circle[radius=1pt] node [below left] {$B_1$};
+\filldraw (-1,4) circle[radius=1pt] node [below left] {$B_2$};
 \draw[-] (-1,4) -- (1,3);
 \draw[dashed] (-1,3) -- node[fill=white,inner ysep=3pt, inner xsep = 3pt]{$O_B$} (1,3);
 \draw[dotted] (-1,3) -- (-1,4);
-\filldraw (1,3) circle[radius=1pt] node [above right] {$B_2$};
+\filldraw (1,3) circle[radius=1pt] node [above right] {$B_1$};
 
 \draw(-.85,3)--(-.85,3.15)--(-1,3.15); % right angle
 
@@ -392,6 +392,8 @@ O_K =& |K_1K_2| \times cos(\theta_K)
 \begin{flushright}
     \footnotesize{\ref{code:opposite_length}}
 \end{flushright}
+
+There is the possibility that the maximum distance between two points does not provide the maximum perpendicular distance across a road section, considering Pythagoras' theorem $A^2 + B^2 = C^2$, width filtering can provide a solution to this problem. Given the maximum opposite ($B$) line length between two points in a sample line is 2m, (each sample is 2m by 60m), for any line where $B$ is greater than $A$, $A$ must be below 2m and thus is removed during linestring filtering. 
 
 \subsection{Improved Road Centrelines}
 
