@@ -186,9 +186,7 @@ cat(paste("\\item", funcs), sep = "\n")
 @
 \end{itemize}
 
-\noindent
-
-with B roads considered classified roads, and other functions considered unclassified. All roads are single carriageway, and so for the purpose of this analysis it is assumed they likely have the default national speed limit of 60mph. All private roads were removed, as were roads with a length of less than 50m, often those clipped by the extent of the LiDAR data.
+\noindent with B roads considered classified roads, and other functions considered unclassified. All roads are single carriageway, and so for the purpose of this analysis it is assumed they likely have the default national speed limit of 60mph. All private roads were removed, as were roads with a length of less than 50m, often those clipped by the extent of the LiDAR data.
 
 \subsection{Road Sampling}
 
@@ -238,8 +236,9 @@ then to create perpendicular points at length $\delta$ from the point $p_i$ betw
 
 \[
 \begin{aligned}
-    P_{perp}=\left\{\begin{array}{ll} pxi + yn_{len}, pyi - xn_{len} \\
-        pxi - yn_{len}, pyi + xn_{len}
+    P_{perp}=\left\{\begin{array}{ll}
+            pxi + yn_{len}, & pyi - xn_{len} \\
+        pxi - yn_{len}, & pyi + xn_{len}
 \end{array}\right.
 \end{aligned}
 \]
@@ -303,7 +302,7 @@ Y_{i}=\beta_{0}+\beta_{1}+X_{1 i}+\beta_{2} X_{2 i}+\cdots+\beta_{k} X_{k i}+u_{
 \end{aligned}
 \]
 
-but given a binary outcome variable $Y_i$, this is considered to be a linear probability model, taking the form;
+\noindent but given a binary outcome variable $Y_i$, this is considered to be a linear probability model, taking the form;
 
 \[
 \begin{aligned}
@@ -311,7 +310,7 @@ E\left(Y | X_{1}, X_{2}, \ldots, X_{k}\right)=P\left(Y=1 | X_{1}, X_{2}, \ldots,
 \end{aligned}
 \]
 
-Where;
+\noindent where;
 
 \[
 \begin{aligned}
@@ -319,31 +318,31 @@ P\left(Y=1 | X_{1}, X_{2}, \ldots, X_{k}\right)=\beta_{0}+\beta_{1}+X_{1 i}+\bet
 \end{aligned}
 \]
 
-$\beta_j$ therefore may be interpreted as the change in the probability that $Y_i = 1$, with all other predictor variable constant. $\beta_j$ may be estimated using Ordinary Least Squares regression \citep{hanck2019}. 
+\noindent $\beta_j$ therefore may be interpreted as the change in the probability that $Y_i = 1$, with all other predictor variable constant. $\beta_j$ may be estimated using Ordinary Least Squares regression \citep{hanck2019}. 
 
 Likelihood values from the predictions gave a range of numerical values, points that fell below a certain threshold were removed, leaving only points that were most likely correctly identified as road points. This threshold was assess qualitatively through both observation of the distribution of probability ranges for each model, and results gained through different thresholds. Considering a threshold $x$, this may be expressed as;
 
 \[
 \begin{aligned}
-\mathbf{S} &= \Big(\mathbf{p}_i \in \Big[\frac{x}{100} \times \mathbf{p}_{i_{lm}}\Big]\Big) \\
+\mathbf{S} &= \Big(\mathbf{p}_i \in \Big[\frac{x}{100} \times \mathbf{p}_{i_{lm}}\Big]\Big), \\
 \end{aligned}
 \]
 
-Where $\mathbf{S}$ is the total point cloud.
+\noindent where $\mathbf{S}$ is the total point cloud.
 
-Further qualitative assessment of the results revealed that some points considered to be noise were still present, but often isolated. To ensure no isolated points were present, the minimum distance between each point, and the nearest neighbouring point was checked, if a single point was considered isolated, with over 1m between it and any other point, it was removed.
+Further qualitative assessment of the results revealed that some points considered to be noise were still present, but often isolated. To ensure no isolated points were present, the minimum distance between each point, and the nearest neighbouring point was checked, if a single point was considered isolated, with over 1m between it and any other point, it was removed. This may be expressed as;
 
 \[
 \begin{aligned}
     \mathit{D} &= \sqrt{\delta xi^{2} + \delta y^{2}} \\
-    \mathbf{S} &= (\mathbf{p}_{i}\in [\mathit{D} \leq 1])
+    \mathbf{S} &= (\mathbf{p}_{i}\in [\mathit{D} \leq 1]),
 \end{aligned}
 \]
 \begin{flushright}
     \footnotesize{\ref{code:filter_samples}}
 \end{flushright}
 
-given $\mathit{D}$ is the minimum distance between a point and any other point.
+\noindent given $\mathit{D}$ is the minimum distance between a point and any other point.
 
 $\mathbf{S}$ now gave of a collection of predicted road points for each sample line along a road segment, with noise removed.  To obtain road widths from these points, the maximum distance between two points in a particular sample was determined, these points were kept and all others removed. A linear section of road with two samples resembles Figure \ref{fig:sample_points}.
 
