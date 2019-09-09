@@ -499,9 +499,9 @@ Qualitative comparison between the Linear Probability Model based off the origin
 
 \section{Final Model Analysis}
 
-For a more comprehensive analysis of the overall suitability of the road width linear probability models, and a comparison between them, a quantitative assessment must be undertaken, this allows for the inclusion of all roads in the study.
-
 For direct comparison between the two selected global linear probability models, centering and scaling of the predictor variables allowed for an easier interpretation of results, without affecting any statistical inferences. This was considered necessary as both P values and standard errors produced by global models offered little in terms of interpretability due to the very large number of points involved in this study. Centering and scaling was obtained through the production of beta coefficients with results given on Table \ref{tab:coeftest}. While the removal of $luminescence$ has had little effect on the other predictor coefficients, due to the very small influence of this coefficient, reflected by the normalised value (0.01), and the qualitative analysis of the issues due to shadows, is was considered an unnecessary addition. The other coefficients all give insight into their influence of the road outcome, for example for every 1 increase in the standard deviation in $dist$, the likelihood a point is to be a road point decreases by a standard deviation of 0.33. This therefore suggests that the inclusion of the $dist$ coefficient is important, despite not considered in other supervised road detection techniques.
+
+Table \ref{tab:estwidths} gives a normalised comparison between each linear model, and its associated estimated road width. This gives insight into the effectiveness of various linear probability models for each road, and road type. While average values all give relative accuracy in the region of 70\%, it appears likely that without adjusting the road centrelines, model probabilities are reduced given \textbf{LM 0} gives the lowest average accuracy in relation to the other three models using improved centrelines for outcome variable creation. Unexpectedly, the roads with the highest accuracy are Local and Minor Roads, rather than B roads. For certain roads, the accuracy of the derived centrelines appear to vastly reduce model accuracy, (For example Road 14; Table \ref{tab:estwidths}; see Figure \ref{fig:rqi_compare}).
 
 <<coeftest, results = 'asis'>>=
 lm_beta <- function(model) {
@@ -533,10 +533,6 @@ names <- c("Intensity", "dists", "Z", "NumberOfReturns", "lum")
 
 coefs <- cbind(names, lm1, lm2)
 names(coefs) <- c("Variable", "LM 1", "LM 2")
-
-t2 <- make_table(coefs,
-  cap = "Model Coefficients, Comparison between Linear Probability Model 1 and 2", table.env = "wraptable", valign='r') %>% 
-kable_styling(position = "float_right", full_width = F)
 @
 
 
@@ -577,48 +573,48 @@ norm_means <- widths %>%
 
 norm_means$road_id <- "Means:"
 
+norm_widths$road_id <- gsub("road_", "", norm_widths$road_id)
+
 norm_widths <- norm_widths %>%
-  arrange(desc(lmi_mean), desc(lm2_mean), desc(lm1_mean), desc(lm0_mean)) %>%
+  arrange(as.numeric(road_id)) %>%
   rbind(norm_means)
 
-norm_widths$road_id <- gsub("road_", "", norm_widths$road_id)
 @
-<<estwidths, results = 'asis', >>=
-t1 <- make_table(norm_widths,
-  cap = "Comparison between different linear probability models for each individual road, in relation to estimated true road width",
-  col_names = c(
+
+
+
+<<estwidths, results = 'asis'>>=
+t1 <- kable(coefs, format = "latex", booktabs = TRUE, digits = 2, linesep = "") %>% kable_styling(font_size = 9)
+t2 <- kable(norm_widths, format = "latex", booktabs = TRUE, digits = 2, col.names = c(
     "ID",
     "Class",
     "LM $i$",
     "LM 1",
     "LM 2",
     "LM 0"
-  )
-) %>%
+  ), escape = F, linesep = ""
+) %>% kable_styling(font_size = 9) %>% 
   row_spec(nrow(norm_widths), bold = T) %>%
   row_spec(nrow(norm_widths) - 1, hline_after = T) %>% 
   add_footnote(
            label = c("\\textbf{LM $i$:} Individual Linear Models", "\\textbf{LM 1:} Linear Model inc. lum", "\\textbf{LM 2:} Linear Model ex. lum", "\\textbf{LM 0:} Linear Model 1 with original road centrelines"), 
   escape = FALSE, notation = "none")
-@
+  
 
-<<results="asis", echo=F>>=
-cat(c("\\begin{table}[b]
-    \\begin{minipage}{.5\\linewidth}
-      \\caption{}
+cat(c("\\begin{table}[!b]
+    \\begin{minipage}{.45\\linewidth}
+    \\caption{Model Coefficients, Comparison between Linear Probability Model 1 and 2}\\label{tab:coeftest}
       \\centering",
         t1,
     "\\end{minipage}%
     \\begin{minipage}{.5\\linewidth}
       \\centering
-        \\caption{}",
+    \\caption{Comparison between different linear probability models for each individual road, in relation to estimated true road width}\\label{tab:estwidths}",
         t2,
     "\\end{minipage} 
 \\end{table}"
 ))  
 @
-
-Table \ref{tab:estwidths} gives a normalised comparison between each linear model, and its associated estimated road width. This gives insight into the effectiveness of various linear probability models for each road, and road type. While average values all give relative accuracy in the region of 70\%, it appears likely that without adjusting the road centrelines, model probabilities are reduced given \textbf{LM 0} gives the lowest average accuracy in relation to the other three models using improved centrelines for outcome variable creation. Unexpectedly, the roads with the highest accuracy are Local and Minor Roads, rather than B roads. For certain roads, the accuracy of the derived centrelines appear to vastly reduce model accuracy, (For example Road 14; Table \ref{tab:estwidths}).
 
 \section{Road Assessment}
 
@@ -702,9 +698,14 @@ kable_styling(latex_options = "hold_position")
 jpgs <- Sys.glob("../data/aerial/*.jpg")
 jpgs <- lapply(jpgs, brick)
 roads <- st_read("../data/derived/roads/roads_line.gpkg", quiet = TRUE)
+cents <- st_read("../data/derived/roads/cent_iteration1.gpkg", quiet = TRUE)
 
 rd_t <- roads[roads$road_id == "road_34", ]
+rd_tc <- cents[cents$road_id == "road_34", ] %>% 
+    st_crop(rd_t)
 rd_b <- roads[roads$road_id == "road_14", ]
+rd_bc <- cents[cents$road_id == "road_14", ] %>% 
+    st_crop(rd_b)
 
 ta <- lapply(jpgs, function(x) {
   return(tryCatch(crop(x, rd_t), error = function(e) NULL))
@@ -720,7 +721,8 @@ ba <- ba %>%
   brick()
 
 gg_ta <- ggRGB(ta) +
-    geom_sf(data = rd_t) +
+    geom_sf(data = rd_t, colour = "red") +
+    geom_sf(data = rd_tc, colour = "green") +
   theme_map() +
   theme(panel.border = element_rect(
     colour = "black",
@@ -729,7 +731,8 @@ gg_ta <- ggRGB(ta) +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0))
 gg_ba <- ggRGB(ba) +
-    geom_sf(data = rd_b) +
+    geom_sf(data = rd_b, colour = "red") +
+    geom_sf(data = rd_bc, colour = "green") +
   theme_map() +
   theme(panel.border = element_rect(
     colour = "black",
@@ -738,7 +741,7 @@ gg_ba <- ggRGB(ba) +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0))
 @
-<<rqi_compare, fig.cap = "Visual comparison between road with the highest RQI \\textbf{(A)}, and lowest RQI \\textbf{(B)}", fig.showtext=TRUE>>=
+<<rqi_compare, fig.cap = "Visual comparison between road with the highest RQI \\textbf{(A)}, and lowest RQI \\textbf{(B)}, original centrelines are given in red, with derived centrelines given in green", fig.showtext=TRUE>>=
 plot_grid(
           gg_ta,
           gg_ba,

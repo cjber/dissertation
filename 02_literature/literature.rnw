@@ -2,9 +2,9 @@
 
 \section{British Rural Road Network}
 
-\cite{taylor2002} conducted a study outlining the key features of British rural roads, in an effort to improve the understanding of the characteristics associated with accident rates, beyond the past \textit{Speed-accident relationship on European Roads} (MASTER) study which primarily consisted of European road data, with limited data for England \citep{baruya1998}. \cite{taylor2002} identify key features of 174 selected rural British roads across England which they use to classify roads into certain categories. This data was obtained through-drive through video recordings.
+\cite{taylor2002} conducted a study outlining the key features of British rural roads, in an effort to improve the understanding of the characteristics associated with accident rates, beyond the past \textit{Speed-accident relationship on European Roads} (MASTER) study which primarily consisted of European road data, with limited data for England \citep{baruya1998}. \cite{taylor2002} identify key features of 174 selected rural British roads across England which they use to classify roads into certain categories. This data was obtained through drive-through video recordings.
 
-Notably, the features unique to rural roads were observed to be the land use either side of a road, consisting mainly of residential, farming, wooded, open or industrial. Verges varied from grass verges, pavement, low banks, ditches or none. The most dominant vertical feature closest to roads was recorded, which included trees (some overhanging), hedges, banks, fences and so on. This study also manually measured the road width for each site, and to determine the "hilliness" of roads, the number of 10m contour lines crossed were counted to give the total change in height.
+Notably, the features unique to rural roads were observed to be the land use either side of a road, consisting mainly of residential, farming, wooded, open or industrial. Verges varied from grass verges, pavement, low banks, ditches or none. The most dominant vertical feature closest to roads was recorded, which included trees (some overhanging), hedges, banks, fences and so on. This study also manually measured the road width for each site, and to determine the "hilliness" of roads, the number of 10m contour lines crossed were counted to give the total change in height. Additional key features of British rural roads are given on Table \ref{tab:roadfeatures}.
 
 \begin{table}[htbp]
     \centering
@@ -21,9 +21,7 @@ Continuous data & \begin{tabular}[c]{@{}l@{}}Visibility \\ Verge width and type 
 \end{tabular}
 \end{table}
 
-\cite{taylor2002} found that the average width of British rural roads varied from 2m to 10.2m with a mean width of 6.5m. Most were two lane roads, however a small number were single track. The mean length of roads was 3km, around half the sites had more than 3 bends per km with 1 third showing 1 severe bend per km. Most roads were flat, showing less than a 10m rise per km. Key features of British rural roads are listed in Table \ref{tab:roadfeatures}.
-
-Road quality in this assessment was determined through categorising roads into four key groups:
+Additionally \cite{taylor2002} categorised these roads into four key groups:
 
 \begin{itemize}
     \item \textbf{Group 1:} Roads which are very hilly, with a high bend density and low traffic speed. \textit{These are low quality roads.}
@@ -60,7 +58,7 @@ Transport accessibility for rural communities is far more limited than for urban
 
 Despite this, there has been little focus on the improvement of transport technologies in rural areas, with the potential for new technologies already implemented into urban areas to improve rural accessibility \citep{velaga2012}. A key area to address is the level of accessibility towards hospital services for rural communities, where recent centralisation of these services has negatively impacted the level of access for rural communities \citep{mungall2005}. This also impacts the level of access for hospital services to reach rural areas, where distance and time taken to a hospital directly correlates with a patients mortality \citep{nicholl2007}. Emergency vehicles are often larger than personal vehicles and as such it can be assumed that accessibility for these types of services is often more limited depending on the quality of rural roads.
 
-\cite{velaga2012} conducted a study outlining the key transport and technological challenges that limit accessibility within rural areas, demonstrating that the quality of rural infrastructure, and access to services are key factors driving social exclusion and limited access to goods and services. \cite{velaga2012} suggest that technological innovations targeting rural areas may alleviate this problem through the production of user generated data. They note that certain challenges will come with this technology, notably their first point;
+\cite{velaga2012} suggest that technological innovations targeting rural areas may alleviate this problem through the production of user generated data. They note that certain challenges will come with this technology, notably their first point;
 
 \begin{quote}
     \textit{"Understanding basic technological infrastructure requirements in rural areas."}
@@ -76,8 +74,6 @@ Aerial LiDAR classification typically follows two objectives, the classification
 \label{subs:dtm}
 
 Early LiDAR classification primarily focused on the production of digital terrain models (DTM). \cite{kraus1998} used an iterative linear prediction algorithm which used residuals to compute weights for each LiDAR point. Ground points produced residuals with negative weighting, and vegetation was more likely to produce residuals with higher weighting. From this 47.8\% of points were classified as vegetation. \cite{kraus1998} note that advances in the technology, such as the inclusion of multiple laser pulses would enable for a higher quality DTM.
-
-\cite{vosselman2000}, proposed a laser pulse filtering technique for distinguishing laser points that were reflected from buildings and vegetation, than those reflected from the ground. Weights were assigned to points, determined by an assigned acceptable height difference between two neighbouring points. Limitations at the time of this study meant that processing required points to be aggregated into a grid for processing, resulting in significant information loss. Results were generally good for the simplicity of the method, giving a RMS error of 20-30cm, however \cite{vosselman2000} note that this error likely does not reflect the true precision of the DEM, which may be slightly worse.
 
 The observation of height textures are another method for DEM extraction enabled through the use of LiDAR data. \cite{maas1999} used height variation between neighbouring LiDAR points to classify buildings, trees, and flat terrain, with enough detail to determine whether a building had a flat or sloped roof. Similarly \cite{elberink2000} noted that man made structures often have smooth, regular height textures, with small variations in height, while trees and other vegetation give an irregular height pattern, and used this to separate man made structures from vegetation. Empirical assessment of the accuracy of their technique resulted in a 98\% accuracy for buildings, and 97\% for trees, however ground based objects such as roads could only be detected with an accuracy of below 70\% and \cite{elberink2000} suggest that multi-spectral data should be included to achieve better results.
 
