@@ -355,11 +355,6 @@ Hijmans, R.~J.  \harvardyearleft 2019\harvardyearright , {\em raster:
 \newblock R package version 3.0-2.
 \newline\harvardurl{https://CRAN.R-project.org/package=raster}
 
-\harvarditem{Hodge \harvardand\ Monk}{2004}{hodge2004}
-Hodge, I. \harvardand\ Monk, S.  \harvardyearleft 2004\harvardyearright , `The
-  economic diversity of rural {{England}}: Stylised fallacies and uncertain
-  evidence', {\em Journal of Rural Studies} {\bf 20}(3),~263--272.
-
 \harvarditem[Hu et~al.]{Hu, Tao \harvardand\ Hu}{2004}{hu2004}
 Hu, X., Tao, C.~V. \harvardand\ Hu, Y.  \harvardyearleft 2004\harvardyearright
   , `Automatic {{Road Extraction}} from {{Dense Urban Area}} by {{Integrated
@@ -532,6 +527,10 @@ Noctor, I.  \harvardyearleft 2004\harvardyearright , `Change to kph limit to
   cost \texteuro{}30m',
   https://www.irishtimes.com/life-and-style/motors/change-to-kph-limit-to-cost-30m-1.1133469.
 \newblock ZSCC: NoCitationData[s0].
+
+\harvarditem{{Ordnance Survey}}{2019}{ordnancesurvey2019a}
+{Ordnance Survey}  \harvardyearleft 2019\harvardyearright , `{{OS Open
+  Roads}}',  p.~28.
 
 \harvarditem[Palmer et~al.]{Palmer, Dessouky \harvardand\
   Abdelmaguid}{2004}{palmer2004}

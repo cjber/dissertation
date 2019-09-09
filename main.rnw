@@ -122,7 +122,7 @@ An automated method for the identification of rural road geometric features is p
     \item \textbf{Billion Vehicle Miles (BVM):} the total number of miles travelled by all vehicles divided by 1 billion. Typically all traffic is measured in vehicles miles.
     \item \textbf{Digital Terrain Model (DTM):} digital representation of the land surface topography without surface objects.
     \item \textbf{Digital Surface Model (DSM):} digital representation of the land surface capturing all natural and built features.
-    \item \textbf{Social Mobility:} the movement of individuals, families, households, or other categories of people within or between social strata in a society.
+    \item \textbf{Transport Accessibility:} blah...
     \item \textbf{Social Exclusion:} exclusion from the prevailing social system and its rights and privileges, typically as a result of poverty or the fact of belonging to a minority social group.
     \item \textbf{Read-eval-print loop (REPL):} a simple interactive computer programming environment that takes single user inputs, evaluates them, and returns the results to the user.
     \item \textbf{Root Mean Square Error (RMSE):} the square root of the second sample moment of the differences between predicted values and observed values. Commonly used to measure the difference between sample or population values.
