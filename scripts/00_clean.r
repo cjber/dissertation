@@ -80,18 +80,6 @@ opt_chunk_size(ctg) <- 500
 opt_chunk_buffer(ctg) <- 20
 catalog_apply(ctg, lidr_clean)
 
-# ctg to points csv
-las <- catalog_apply(ctg, ctg_to_df)
-las <- do.call(rbind, las)
-las <- las %>%
-    select(-c(
-        Synthetic_flag,
-        Keypoint_flag,
-        Withheld_flag
-    ))
-
-fwrite(las, "../data/point/points.csv")
-
 ctg <- catalog("../data/derived/ctg_clean/")
 opt_output_files(ctg) <- "../data/derived/ctg_buff/{ID}_tile"
 opt_chunk_size(ctg) <- 500
