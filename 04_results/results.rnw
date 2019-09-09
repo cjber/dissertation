@@ -1,7 +1,7 @@
 <<>>=
 source("../scripts/functions.r")
 lidar_tab <- fread("../data/point/points.csv")
-knitr::opts_chunk$set(cache = TRUE, autodep = TRUE)
+knitr::opts_chunk$set(cache = FALSE, autodep = FALSE)
 time_taken <- read.csv("../scripts/time_taken.csv")
 time_taken <- time_taken$x
 @
@@ -501,7 +501,7 @@ Qualitative comparison between the Linear Probability Model based off the origin
 
 For direct comparison between the two selected global linear probability models, centering and scaling of the predictor variables allowed for an easier interpretation of results, without affecting any statistical inferences. This was considered necessary as both P values and standard errors produced by global models offered little in terms of interpretability due to the very large number of points involved in this study. Centering and scaling was obtained through the production of beta coefficients with results given on Table \ref{tab:coeftest}. While the removal of $luminescence$ has had little effect on the other predictor coefficients, due to the very small influence of this coefficient, reflected by the normalised value (0.01), and the qualitative analysis of the issues due to shadows, is was considered an unnecessary addition. The other coefficients all give insight into their influence of the road outcome, for example for every 1 increase in the standard deviation in $dist$, the likelihood a point is to be a road point decreases by a standard deviation of 0.33. This therefore suggests that the inclusion of the $dist$ coefficient is important, despite not considered in other supervised road detection techniques.
 
-Table \ref{tab:estwidths} gives a normalised comparison between each linear model, and its associated estimated road width. This gives insight into the effectiveness of various linear probability models for each road, and road type. While average values all give relative accuracy in the region of 70\%, it appears likely that without adjusting the road centrelines, model probabilities are reduced given \textbf{LM 0} gives the lowest average accuracy in relation to the other three models using improved centrelines for outcome variable creation. Unexpectedly, the roads with the highest accuracy are Local and Minor Roads, rather than B roads. For certain roads, the accuracy of the derived centrelines appear to vastly reduce model accuracy, (For example Road 14; Table \ref{tab:estwidths}; see Figure \ref{fig:rqi_compare}).
+Table \ref{tab:estwidths} gives a normalised comparison between each linear model, and its associated estimated road width. This gives insight into the effectiveness of various linear probability models for each road, and road type. While average values all give relative accuracy in the region of 70\%, it appears likely that without adjusting the road centrelines, model probabilities are reduced given \textbf{LM 0} gives the lowest average accuracy in relation to the other three models using improved centrelines for outcome variable creation. Unexpectedly, the roads with the highest accuracy are Local and Minor Roads, rather than B roads. For certain roads, the accuracy of the derived centrelines appear to vastly reduce model accuracy, (For example Road 14; Table \ref{tab:estwidths} and Figure \ref{fig:rqi_compare}).
 
 <<coeftest, results = 'asis'>>=
 
@@ -613,6 +613,7 @@ cat(c("\\begin{table}[!b]
 \section{Road Assessment}
 
 Given Linear Model 2 with corrected road centrelines appears to produce the most accurate estimates for road widths, this was used in the final road assessment. Table \ref{tab:rqi} gives the full results of the road geometric extraction, along with an estimate of overall road quality given by the Road Quality Index (RQI). Qualitative assessment of the RQI may be achieved through observation of the highest and lowest values (Figure \ref{fig:rqi_compare}). It appears to produce reliable results, as the road with the highest RQI is straight, wider than the road with the lowest RQI, and is likely flat given it is neighboured by two agricultural fields.
+
 
 
 

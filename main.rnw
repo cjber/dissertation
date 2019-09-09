@@ -155,7 +155,7 @@ An automated method for the identification of rural road geometric features is p
 
 \chapter{Results}
 \label{ch:results}
-<<results, child = "04_results/results.rnw", cache= F>>=
+<<results, child = "04_results/results.rnw">>=
 @
 
 \chapter{Discussion}

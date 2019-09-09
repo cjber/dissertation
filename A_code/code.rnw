@@ -108,7 +108,9 @@ print(x, locale = F)
 @
 \subsection{Formatting} \label{code:make_table}
 <<make_table, echo = TRUE, eval = FALSE>>=
+@
 
 \subsection{Beta Coefficients} \label{code:lm_beta}
 <<lm_beta, echo = TRUE, eval = FALSE>>=
 @
+
