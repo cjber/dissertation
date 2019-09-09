@@ -434,7 +434,7 @@ $$
 
 
 
-\section{Road Angles}
+\section{Road Angles}\label{sec:angles}
 
 The angle of bends in roads were identified through the nodes produced in the creation of the road shapefiles. First the road linestrings were split into points, with coordinates representing each node within a road, a point at which the orientation of the linestring is altered.
 
@@ -565,13 +565,10 @@ Where $r_{\text {min }}$ denotes the minimum of the range of a variable,  $r_{\t
 Following normalisation, the sum of all normalised variables for a particular road were taken, and subtracted from 1 to give positive values indicating better quality roads, and lower values indicating lower quality roads. These variables involved in the creation of this index are;
 
 \begin{itemize}
-\item \textbf{Road Width:} 
-\item \textbf{Road Angles:}
+    \item \textbf{Road Width:} Extracted through linear probability classification of the road surface using LiDAR data (Section \ref{sec:lpm}).
+    \item \textbf{Road Angles:} The bearing angle change in road direction, considering the initial road direction a 0$^o$ (Section \ref{sec:angles})
 \item \textbf{Road Elevation Change:}
 \item \textbf{Road Surface Quality:}
 \end{itemize}
-
-
-// describe here how each are defined...
 
 The value obtained from this was called the Road Quality Index, presented in full on Table \ref{tab:rqi}.

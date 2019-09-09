@@ -131,7 +131,7 @@ Many recent road extraction techniques have relied on kerb extraction or the det
 
 \section{Overview of this Paper}\label{sec:overview}
 
-Finally, outlining the key features that may be considered when determining road quality will help to inform the methodology for road feature extraction in this study. These are:
+This dissertation aims to extract key features of a selection of rural roads in England through a combination of LiDAR point clouds, OS open road geometries, and aerial imagery, selecting road features considered to be important in past literature and government reviews. The key features that may be considered when determining road quality will help to inform the methodology for road feature extraction in this study are;
 
 \begin{itemize}
     \item \textbf{Width:} Narrower roads are associated with an increased number of accidents in many studies of rural roads \citep{taylor2002,aarts2006,taylor2000}
@@ -140,7 +140,5 @@ Finally, outlining the key features that may be considered when determining road
     \item \textbf{Road Steepness:} Steeper roads have an increased skid risk, and their quality is more likely to deteriorate \citep{moore2006,viner2004}
 \end{itemize}
 
-Computation time is considered in this study to be a core concept for consideration, noted in \citep{zhang2016} as a key limitation of particular classification techniques, and is often not specified. The data processing and analysis throughout this paper considers optimisation of code to be of particular interest, and aims to produce results that match more complex methods, but taking a more simplistic, and less computationally intensive methodology. While the focus of this study is primarily on the methodology, the discussion will outline in particular the applications of this approach to road feature extraction, addressing the broad issues that are inherent due to the lack of quantitative information regarding the majority of the road network in the UK.
 
-
-// Be clearer in the overall objective of this dissertation
+While the focus of past road classification methods typically aim to classify the entire road surface, this isn't necessary for the feature extraction of roads as proposed in this dissertation. To extract roads widths, only LiDAR points at each edge of the road surface are required, and points along the road surface may be sampled at regular intervals, removing the majority of unnecessary LiDAR points and improving computation time, often a key limitation when working with LiDAR data \citep{zhang2018}. Additionally, this paper aims to concentrate on a supervised classification of roads, by taking known centreline locations, many LiDAR points may be excluded, and remaining points concentrated towards the centre of the centrelines may be used as a training data set. Unlike road widths, other road features do not require classification with the inclusion of known road geometries. Road bends may be determined through the existing road linestrings, while surface quality and road steepness may be extracted at known road locations in the LiDAR point cloud. The method as presented aims to allow for the potential expansion beyond the dataset considered in this analysis, providing the requisite data is available.
