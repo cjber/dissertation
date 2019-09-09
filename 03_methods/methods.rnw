@@ -81,8 +81,6 @@ $$
     \footnotesize{\ref{code:lidr_clean}}
 \end{flushright}
 
-\noindent where $m$  is the mass of a single LiDAR point (set to 1), $\Delta t$ is the time step between points and $G$ represents the gravity constant. The implementation of this algorithm was given as part of the \texttt{lidR} package. Reclassification resulted in an increase in the number of classified ground points by \Sexpr{round((cchange - 1) * 100, 2)}\%. Reflecting primarily the simplification of classifications into ground and non-ground.
-
 <<>>=
 pts <- fread("../data/point/points.csv")
 pts_clean <- fread("../data/point/points_clean.csv")
@@ -92,6 +90,9 @@ matches_pts <- merge(pts, pts_clean, by = c("X", "Y")) %>%
 
 cchange <- sum(matches_pts$Classification.y == 2) / sum(matches_pts$Classification.x == 2)
 @
+
+\noindent where $m$  is the mass of a single LiDAR point (set to 1), $\Delta t$ is the time step between points and $G$ represents the gravity constant. The implementation of this algorithm was given as part of the \texttt{lidR} package. Reclassification resulted in an increase in the number of classified ground points by \Sexpr{round((cchange - 1) * 100, 2)}\%. Reflecting primarily the simplification of classifications into ground and non-ground.
+
 
 With the classification of ground points, (given $Classification = 2$), a full DTM may be produced through spatial interpolation of the classified points. This process is called normalisation, and ensures that when extracting height information, any observed values are due to objects on the surface of the terrain, and not due to the lie of the terrain itself. Interpolation uses the inverse distance weighting and $k$ nearest neighbours algorithms to produce the DTM. Nearest neighbours were selected as $k = 10$, with $q = 2$ for the inverse weighting, and used to produce a DTM with a resolution of 1m. This particular technique was selected over more comprehensive methods such as kriging as the number of points is very high, and the small benefit of kriging was considered minimal compared with the increase in computational load. The $z$ values from the DTM were then subtracted from the LiDAR point cloud, leaving a normalised point cloud. 
 
@@ -425,6 +426,10 @@ To aid with model interpretability, the direct comparison between each variable 
 $$
 \beta_{p}=\frac{\operatorname{Cov}\left(r_{p}, r_{b}\right)}{\operatorname{Var}\left(r_{b}\right)}
 $$
+\begin{flushright}
+    \footnotesize{\ref{code:lm_beta}}
+\end{flushright}
+
 
 
 

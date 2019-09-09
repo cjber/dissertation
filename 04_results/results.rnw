@@ -504,13 +504,6 @@ For direct comparison between the two selected global linear probability models,
 Table \ref{tab:estwidths} gives a normalised comparison between each linear model, and its associated estimated road width. This gives insight into the effectiveness of various linear probability models for each road, and road type. While average values all give relative accuracy in the region of 70\%, it appears likely that without adjusting the road centrelines, model probabilities are reduced given \textbf{LM 0} gives the lowest average accuracy in relation to the other three models using improved centrelines for outcome variable creation. Unexpectedly, the roads with the highest accuracy are Local and Minor Roads, rather than B roads. For certain roads, the accuracy of the derived centrelines appear to vastly reduce model accuracy, (For example Road 14; Table \ref{tab:estwidths}; see Figure \ref{fig:rqi_compare}).
 
 <<coeftest, results = 'asis'>>=
-lm_beta <- function(model) {
-  b <- summary(model)$coef[-1, 1]
-  sx <- apply(model$model[-1], 2, sd)
-  sy <- apply(model$model[1], 2, sd)
-  beta <- b * sx / sy
-  return(beta)
-}
 
 cent1_lm <- fread("../data/derived/model_data/cent1_lm.csv") %>%
   select(c(road_id, Intensity, lum, dists, Z, NumberOfReturns, road))
@@ -527,6 +520,7 @@ lm2 <- lm(data = cent1_lm, formula = f2)
 lm2 <- lm2 %>%
   lm_beta() %>%
   as_tibble()
+
 lm2[nrow(lm2) + 1, ] <- NA
 
 names <- c("Intensity", "dists", "Z", "NumberOfReturns", "lum")

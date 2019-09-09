@@ -627,3 +627,12 @@ printList <- function(x, out.format = knitr::opts_knit$get("out.format"),
   }
   return(knitr::asis_output(out))
 }
+
+## ---- lm_beta
+lm_beta <- function(model) {
+  b <- summary(model)$coef[-1, 1]
+  sx <- apply(model$model[-1], 2, sd)
+  sy <- apply(model$model[1], 2, sd)
+  beta <- b * sx / sy
+  return(beta)
+}
