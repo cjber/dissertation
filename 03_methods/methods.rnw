@@ -520,13 +520,25 @@ With the bearing angle of the first line segment $AB$ for a particular road, the
 
 For each road the maximum bearing angle between two nodes was selected, as well as the average bearing angle between two nodes.
 
-\section{Road Node Elevation Change}
+\section{Road Node Elevation Change}\label{sec:elev}
 
 The elevation change between two road node points was calculated by first selecting non-normalised LiDAR points at a geometric node within a 1m$^2$ area. LiDAR points were then filtered by those only classified as ground, and with only a single return, to reduce the likelihood of inaccurate $z$ values from canopy or other vegetation and vehicles. The mean $z$ value of points were found for each node, and elevation change between each node was calculated. For each road, the total elevation change per kilometer was calculated.
 
-\section{Surface Quality}
+\[
+\begin{aligned}
+    \mathbf{W}_{n} = \frac{\mathbf{W}}{W_{e} \times 100}
+\end{aligned}
+\]
+
+\section{Surface Quality}\label{sec:qual}
 
 Surface quality was assessed roughly through the range in intensity values found in each known road point, and the average number of returns for a road for sample lines not obstructed by canopy. To ensure there was no inaccuracy in intensity values caused by later returns passing through a canopy, only points that had a single return pulse were used in this analysis.
+
+\[
+\begin{aligned}
+    \mathbf{W}_{n} = \frac{\mathbf{W}}{W_{e} \times 100}
+\end{aligned}
+\]
 
 \section{Estimate of True Widths}
 
@@ -565,10 +577,10 @@ Where $r_{\text {min }}$ denotes the minimum of the range of a variable,  $r_{\t
 Following normalisation, the sum of all normalised variables for a particular road were taken, and subtracted from 1 to give positive values indicating better quality roads, and lower values indicating lower quality roads. These variables involved in the creation of this index are;
 
 \begin{itemize}
-    \item \textbf{Road Width:} Extracted through linear probability classification of the road surface using LiDAR data (Section \ref{sec:lpm}).
-    \item \textbf{Road Angles:} The bearing angle change in road direction, considering the initial road direction a 0$^o$ (Section \ref{sec:angles})
-\item \textbf{Road Elevation Change:}
-\item \textbf{Road Surface Quality:}
+    \item \textbf{Road Width:} Extracted through linear probability classification of the road surface using LiDAR data (Section \ref{sec:lpm})
+    \item \textbf{Road Angles:} The bearing angle change in road direction, considering the initial road direction as a bearing angle of 0$^{\circ}$ (Section \ref{sec:angles})
+    \item \textbf{Road Elevation Change:} The change in elevation for each node in a road, extracted from LiDAR data, giving a total elevation change for a full road (Section \ref{sec:elev})
+    \item \textbf{Road Surface Quality:} The total range of intensity values for each node in a road, extracted from the LiDAR point cloud for points that did not return more than a single pulse (Section \ref{sec:qual})
 \end{itemize}
 
-The value obtained from this was called the Road Quality Index, presented in full on Table \ref{tab:rqi}.
+The value obtained from this is referred to as the Road Quality Index, presented in full on Table \ref{tab:rqi}.

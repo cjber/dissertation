@@ -578,6 +578,7 @@ norm_widths <- norm_widths %>%
 
 
 <<estwidths, results = 'asis'>>=
+options(knitr.kable.NA = "")
 t1 <- kable(coefs, format = "latex", booktabs = TRUE, digits = 2, linesep = "") %>% kable_styling(font_size = 9)
 t2 <- kable(norm_widths, format = "latex", booktabs = TRUE, digits = 2, col.names = c(
     "ID",
