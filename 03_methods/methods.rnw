@@ -285,11 +285,11 @@ $$
     \footnotesize{\ref{code:lm_compute}}
 \end{flushright}
 
-\section{Linear Probability Models and Road Width}
+\section{Linear Probability Models and Road Width}\label{sec:lpm}
 
-To classify road and non-road, linear models were constructed and compared to assess effectiveness. A maximal approach was chosen, selecting all appropriate predictor variables, iterating through models by removing variables that did not significantly influence the model outcome, or created noise.
+For a supervised classification of roads, first the outcome variable "road" was estimated by classifying all points within a 2m buffer of the known road centrelines as road, and all points outside this as non-road. To classify road and non-road, linear models were constructed in relation to this outcome variable, and compared to assess effectiveness. A maximal approach was chosen, selecting all appropriate predictor variables, iterating through models by removing variables that did not significantly influence the model outcome, or created noise.
 
-An additional variable $Dist$ was created and included, representing the shortest distance from a point to the centreline of the road it is associated with, considering that road points should be weighted more towards points that are closer to the centre-point of the road.
+In addition to the variables provided by the LiDAR and aerial data, the variable $Dist$ was created and included, representing the shortest distance from a point to the centreline of the road it is associated with, considering that road points should be weighted more towards points that are closer to the centre-point of the road.
 
 Linear probability models essentially follow the same formula as a linear regression model:
 
