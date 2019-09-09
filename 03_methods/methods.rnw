@@ -1,8 +1,8 @@
-    \lettrine{T}{his} paper primarily makes use of the free open source statistical language \R{} \citep{parallel}. Managing the large LiDAR datasets from my personal computer was mode possible through the \texttt{lidR} \R{} package \citep{lidR}. Further details regarding the \R{} environment and computer setup used for this paper is given in \textbf{Appendix \ref{a:code}}. All content was written using \LaTeX{} combined with the \texttt{rnoweb} file type \citep{ihaka2011}, for \textit{Literate Programming}\footnote{See \cite{knuth1984}; \textit{“Let us change our traditional attitude to the construction of programs: Instead of imagining that our main task is to instruct a computer what to do, let us concentrate rather on explaining to human beings what we want a computer to do.”}}. The template is built from scratch but takes much inspiration (and code) from the \href{https://github.com/asardaes/R-LaTeX-Template}{R-LaTeX-Template}.
+    \lettrine{T}{his} dissertation primarily makes use of the free open source statistical language \R{} \citep{parallel}. Managing the large LiDAR datasets from my personal computer was mode possible through the \texttt{lidR} \R{} package \citep{lidR}. Further details regarding the \R{} environment and computer setup used for this dissertation is given in \textbf{Appendix \ref{a:code}}. All content was written using \LaTeX{} combined with the \texttt{rnoweb} file type \citep{ihaka2011}, for \textit{Literate Programming}\footnote{See \cite{knuth1984}; \textit{“Let us change our traditional attitude to the construction of programs: Instead of imagining that our main task is to instruct a computer what to do, let us concentrate rather on explaining to human beings what we want a computer to do.”}}. The template is built from scratch but takes much inspiration (and code) from the \href{https://github.com/asardaes/R-LaTeX-Template}{R-LaTeX-Template}.
 
     All code is hosted on my personal \href{https://github.com/cjber/}{GitHub account}, along with my my complete dotfiles, used in conjunction with the Linux distribution Manjaro, and the i3 window manager. All writing and code was produced using \href{https://neovim.io}{Neovim} with my personal configuration to implement integrated development environment (IDE) style features for writing R code, while also providing essential features for writing in \LaTeX{}. Neovim has the benefit of being both highly customisable, and lightweight, which allows for much lower system utilisation compared with R Studio when working with large datasets. One essential Vim plugin to mention is \href{https://github.com/jalvesaq/Nvim-R}{Nvim-R}, providing an \R{} REPL connection to vim, and other useful functions. 
 
-    Given in Appendix \ref{a:code} are the code snippets utilised in this methodology, for many equations, the relevant code is given as a reference to the appendix location, in the form \textbf{A.x.x}. Due to the nature of the functions used in this analysis, a single function often contains multiple equations, and so a reference to a particular appendix number may be repeated. Additionally, not all functions are referenced in text, so there are gaps in references to functions, and they do not necessarily appear sequentially.
+    Given in \textbf{Appendix \ref{a:code}} are the code snippets utilised in this methodology, for many equations, the relevant code is given as a reference to the appendix location, in the form \textbf{A.x.x}. Due to the nature of the functions used in this analysis, a single function often contains multiple equations, and so a reference to a particular appendix number may be repeated. Additionally, not all functions are referenced in text, so there are gaps in references to functions, and they do not necessarily appear sequentially.
 
 \section{Data}
 \label{sec:data}
@@ -36,7 +36,7 @@ The total number of LiDAR points used in this study is \Sexpr{number_points}. Al
     \item \textbf{Intensity:} The amplitude of the return pulse, reflected back by the surface terrain or objects.
 	\item \textbf{ReturnNumber:} A number of range 1-5, indicating for a point, the corresponding order of a reflected laser pulse. A ReturnNumber of 1 indicates the first return for a pulse (and highest $z$ value), a return number of 5 indicates the last return (and lowest $z$ value).
 	\item \textbf{NumberOfReturns:} The number of return pulses for a single laser pulse (maximum of 5).
-    \item \textbf{Classification:} A number given to a point indicating a specific numeric classification. Of interest in this study is a classification of 2, indicating a ground point. More information can be found \href{http://desktop.arcgis.com/en/arcmap/10.3/manage-data/las-dataset/lidar-point-classification.htm}{\cite{esri2019}}, which outlines numerical classifications for various vegetation types and man made structures.
+    \item \textbf{Classification:} A number given to a point indicating a specific numeric classification. Of interest in this study is a classification of 2, indicating a ground point. More information is given by \href{http://desktop.arcgis.com/en/arcmap/10.3/manage-data/las-dataset/lidar-point-classification.htm}{\cite{esri2019}}, which outlines numerical classifications for various vegetation types and man made structures.
 \end{itemize}
 
 <<>>=
@@ -68,8 +68,7 @@ $$
     \footnotesize{\ref{code:lidr_clean}}
 \end{flushright}
 
-\noindent
-where $\mathbf{p_i}$ is a single instance of a LiDAR point within the chosen point cloud, $lpx$ is the last pulse $x$ coordinate, $lpy$ the last pulse $y$ coordinate, $lpz$ the last pulse $z$ coordinate, and $lpi$ the last pulse intensity value.
+\noindent where $\mathbf{p_i}$ is a single instance of a LiDAR point within the chosen point cloud, $lpx$ is the last pulse $x$ coordinate, $lpy$ the last pulse $y$ coordinate, $lpz$ the last pulse $z$ coordinate, and $lpi$ the last pulse intensity value.
 
 \subsection{Normalisation}
 
@@ -82,7 +81,7 @@ $$
     \footnotesize{\ref{code:lidr_clean}}
 \end{flushright}
 
-where $m$  is the mass of a single LiDAR point (set to 1), $\Delta t$ is the time step between points and $G$ represents the gravity constant. The implementation of this algorithm was given as part of the \texttt{lidR} package.
+\noindent where $m$  is the mass of a single LiDAR point (set to 1), $\Delta t$ is the time step between points and $G$ represents the gravity constant. The implementation of this algorithm was given as part of the \texttt{lidR} package. Reclassification resulted in an increase in the number of classified ground points by \Sexpr{round((cchange - 1) * 100, 2)}\%. Reflecting primarily the simplification of classifications into ground and non-ground.
 
 <<>>=
 pts <- fread("../data/point/points.csv")
@@ -94,15 +93,21 @@ matches_pts <- merge(pts, pts_clean, by = c("X", "Y")) %>%
 cchange <- sum(matches_pts$Classification.y == 2) / sum(matches_pts$Classification.x == 2)
 @
 
-With the classification of ground points, (given $Classification = 2$), a full DTM may be produced through spatial interpolation of the classified points. This process is called normalisation, and ensures that when extracting height information, any observed values are due to objects on the surface of the terrain, and not due to the lie of the terrain itself. Interpolation uses the inverse distance weighting and $k$ nearest neighbours algorithms to produce the DTM. Nearest neighbours were selected as $k = 10$, with $q = 2$ for the inverse weighting, and used to produce a DTM with a resolution of 1m. This particular technique was selected over more comprehensive methods such as kriging as the number of points is very high, and the small benefit of kriging was considered minimal compared with the increase in computational load. The $z$ values from the DTM were then subtracted from the LiDAR point cloud, leaving a normalised point cloud. Reclassification resulted in an increase in the number of classified ground points by around \Sexpr{round((cchange - 1) * 100, 2)}\%. Reflecting primarily the removal of preexisting classification of other ground objects such as vegetation.
+With the classification of ground points, (given $Classification = 2$), a full DTM may be produced through spatial interpolation of the classified points. This process is called normalisation, and ensures that when extracting height information, any observed values are due to objects on the surface of the terrain, and not due to the lie of the terrain itself. Interpolation uses the inverse distance weighting and $k$ nearest neighbours algorithms to produce the DTM. Nearest neighbours were selected as $k = 10$, with $q = 2$ for the inverse weighting, and used to produce a DTM with a resolution of 1m. This particular technique was selected over more comprehensive methods such as kriging as the number of points is very high, and the small benefit of kriging was considered minimal compared with the increase in computational load. The $z$ values from the DTM were then subtracted from the LiDAR point cloud, leaving a normalised point cloud. 
 
 \subsection{Points Extent}
 
-With the normalised last pulse point cloud, the point cloud was clipped to within a 30m extent of each known road location, using the OS road shapefiles. Selecting a 30m extent ensured that even with slight inaccuracy in road location, the road LiDAR points would likely not be excluded. A large number of unimportant points were therefore removed, saving on computational resources. Additionally this extent ensured that both road and non road points were included, but reduced the chance of false positives from occurring as fewer non road points were now included in the analysis.
-
+With the normalised last pulse point cloud, the point cloud was clipped to within a 30m extent of each known road location, using the OS road shapefiles;
+\[
+\begin{aligned}
+   \textbf{p}_i \in A(r_i) \times 30
+\end{aligned}
+\]
 \begin{flushright}
     \footnotesize{\ref{code:extract_buff}}
 \end{flushright}
+
+\noindent where $A(r_i)$ are the geometric areas of each road in the study area. Selecting a 30m extent ensured that even with slight inaccuracy in road location, the road LiDAR points would likely not be excluded. A large number of unimportant points were therefore removed, saving on computational resources. Additionally this extent ensured that both road and non road points were included, but reduced the chance of false positives from occurring as fewer non road points were now included in the analysis.
 
 
 \subsection{Noise Filtering}\label{subsec:noise}
@@ -111,8 +116,8 @@ Intensity noise was filtered through area based outlier detection, measuring the
 
 \[
     \begin{aligned}
-\mathbf{c}_{i} = \Big(\mathbf{p}_i \in \Big[\frac{95}{100} \times \mathbf{p}_{i_{lpi}}\Big]\Big) \\
-A\left(\mathbf{c}_{\mathbf{i}}\right)=10 m^{2}
+\mathbf{c}_{k} = \Big(\mathbf{p}_i \in \Big[\frac{95}{100} \times \mathbf{p}_{i_{lpi}}\Big]\Big) \\
+A\left(\mathbf{c}_{\mathbf{k}}\right)=10 m^{2}
 \end{aligned}
 \]
 \begin{flushright}
@@ -120,7 +125,7 @@ A\left(\mathbf{c}_{\mathbf{i}}\right)=10 m^{2}
 \end{flushright}
 
 \noindent
-where $\mathbf{c_i}$ represents a 10m$^2$ selection of LiDAR points, where each point $(\mathbf{p_i})$ has an intensity value within the 95\% percentile intensity for all points $(\mathbf{p}_{i_{lpi}})$ within $\mathbf{c_i}$.
+where $\mathbf{c_k}$ represents a 10m$^2$ selection of LiDAR points, where each point $(\mathbf{p_i})$ has an intensity value within the 95\% percentile intensity for all points $(\mathbf{p}_{i_{lpi}})$ within $\mathbf{c_i}$.
 
 \subsection{LiDAR Catalog}
 
@@ -150,15 +155,7 @@ And each 500$m^2$ area collectively represents the overall processed point cloud
 \section{Road Analysis}
 \label{sec:road-extraction}
 
-The next step is to combine the preprocessed LiDAR data with OS road shapefiles, preprocessed LiDAR data, and aerial imagery to obtain a set of criteria to assess the chosen road network. A summary of the information provided alongside OS road shapefiles is given on Table \ref{tab:roadstab}. While both \texttt{roadNumberTOID} and \texttt{roadNameTOID} do provide true road identification for many roads, this was not true for each road in the area chosen. Due to this, it was impossible to identify what could be considered an individual road, meaning a "road" will now be defined as indicated on \ref{fig:area_map}, selected based on the shapefile geometry provided. Criteria to be assessed for each road are;
-
-
-\begin{itemize}
-    \item Road Width
-    \item Bend Sharpness
-    \item Road Steepness
-    \item Surface Quality
-\end{itemize}
+Next, the preprocessed LiDAR data was combined with the OS road shapefiles and aerial imagery to obtain a set of criteria to assess the chosen road network. A summary of the information provided alongside OS road shapefiles is given on Table \ref{tab:roadstab}. While both \texttt{roadNumberTOID} and \texttt{roadNameTOID} do provide true road identification for many roads, this was not true for each road in the area chosen. Due to this, it was impossible to identify what could be considered an individual road, meaning a "road" will now be defined as indicated on Figure \ref{fig:area_map}, selected based on the shapefile geometry provided.
 
 <<>>=
 roads_info <- fread("/home/cjber/drive/uni/envs492/main/data/osroads/roads_info.csv") %>% 
@@ -186,11 +183,11 @@ cat(paste("\\item", funcs), sep = "\n")
 @
 \end{itemize}
 
-\noindent with B roads considered classified roads, and other functions considered unclassified. All roads are single carriageway, and so for the purpose of this analysis it is assumed they likely have the default national speed limit of 60mph. All private roads were removed, as were roads with a length of less than 50m, often those clipped by the extent of the LiDAR data.
+B roads are considered to be classified roads, and other functions are considered to be unclassified. All roads are single carriageway, and so for the purpose of this analysis it is assumed they likely have the default national speed limit of 60mph. All private roads were removed, as were roads with a length of less than 50m, often those clipped by the extent of the LiDAR data.
 
 \subsection{Road Sampling}
 
-The LiDAR point cloud data was sampled at regular 10 meter intervals for each road, perpendicular to the road direction, ensuring that when road direction changed, the sampling locations remained perpendicular. Each road was first split into nodes at which road direction changed, with a single road consisting of multiple nodes with coordinates $xy$, indicating a point along a road where the road direction changed. From this, points with $xy$ coordinates were created at 10 meter intervals beginning at the start of a road, (considered Node 1; $\mathbf{N}_1$), until the next node along the road ($\mathbf{N}_2$). To calculate these points along each line between two nodes ($\mathbf{N}_{i} = (x_i, y_i)$ and $\mathbf{N}_{i+1} = (x_{i+1},y_{i+1})$), first the individual change in $x$ and $y$ values was calculated, expressed as;
+The LiDAR point cloud data was sampled at regular 10 meter intervals for each road, perpendicular to the road direction, ensuring that when road direction changed, the sampling locations remained perpendicular. To achieve this, each road was first split into nodes at which road direction changed, with a single road consisting of multiple nodes with coordinates $xy$, indicating a point along a road where the road direction changed. From this, points with $xy$ coordinates were created at 10 meter intervals beginning at the start of a road, (considered Node 1; $\mathbf{N}_1$), until the next node along the road ($\mathbf{N}_2$). To calculate these points along each line between two nodes ($\mathbf{N}_{i} = (x_i, y_i)$ and $\mathbf{N}_{i+1} = (x_{i+1},y_{i+1})$), first the individual change in $x$ and $y$ values was calculated, expressed as;
 
 \[
 \begin{aligned}
@@ -213,7 +210,7 @@ The LiDAR point cloud data was sampled at regular 10 meter intervals for each ro
     \footnotesize{\ref{code:euc}}
 \end{flushright}
 
-Then, to find a point ($p_i$) along these two nodes, at an interval distance $I_k$, with $I_1 = 10$ increasing incrementally by 10m, was achieved through this equation;
+To find a point ($p_i$) along these two nodes, at an interval distance $I_k$, with $I_1 = 10$, was achieved through these equations;
 
 \[
 \begin{aligned}
@@ -225,7 +222,7 @@ Then, to find a point ($p_i$) along these two nodes, at an interval distance $I_
     \footnotesize{\ref{code:compute_samples}}
 \end{flushright}
 
-\noindent giving a point $p_k = (px,py)$ at a distance $I_k$ from $N_i$ in the direction of $N_{i+1}$. Where $I_k$ is the increment, which increases by 10m given $I_{1} = 10, I_{2} = 20, \dots, I_{k}>0$ and $k \geq 2$. To create a perpendicular sample from a point $p_k$ at position $I_k$ between two nodes $N_i$ and $N_{i+1}$, first two points at a perpendicular distance $\delta$ from the bearing angle of the two nodes, at a point $p_k$ were created, with $\delta$ selected as 30m. First the euclidean distance from $N_{i+1}$ to the point $p_i$ was calculated;
+\noindent giving a point $p_k = (px,py)$ at a distance $I_k$ from $N_i$ in the direction of $N_{i+1}$. Where $I_k$ is the increment, which increases by 10m until the length of the node is covered, given $I_{1} = 10, I_{2} = 20, \dots, I_{k}<d(\mathbf{N}_{i},\mathbf{N}_{i+1})$ and $k \geq 2$. To create a perpendicular sample from a point $p_k$ at position $I_k$ between two nodes $N_i$ and $N_{i+1}$, first two points at a perpendicular distance $\delta$ from the bearing angle between the two nodes, at a point $p_k$ were created, with $\delta$ selected as 30m. First the euclidean distance from $N_{i+1}$ to the point $p_i$ was calculated;
 
 \[
 \begin{aligned}
@@ -248,7 +245,7 @@ Then, to find a point ($p_i$) along these two nodes, at an interval distance $I_
     \footnotesize{\ref{code:compute_samples}}
 \end{flushright}
 
-then to create perpendicular points at length $\delta$ from the point $p_i$ between the nodes the value $\delta_y$ was added to the $x$ value of the point $p_i$, while the value $\delta_y$ was subtracted from the $y$ value of the point $p_i$. This was then inverted to produce a second point. This may be expressed as;
+\noindent then to create perpendicular points at length $\delta$ from the point $p_i$, the value $\delta_y$ was added to the $x$ value of the point $p_i$, while the value $\delta_y$ was subtracted from the $y$ value of the point $p_i$. This was then inverted to produce a second point. This may be expressed as;
 
 \[
 \begin{aligned}
@@ -262,7 +259,7 @@ then to create perpendicular points at length $\delta$ from the point $p_i$ betw
     \footnotesize{\ref{code:perp}}
 \end{flushright}
 
-Where $P_{perp}$ is a collection of two points at distance $\delta$ from the point $p_i$. From these two points, a linestring was created between them, which was then buffered to 2m. This gave sample lines, with an area of 2m by 60m, at 10m intervals along each road. The total point cloud was then clipped to only include points with fell inside these sample lines:
+\noindent where $P_{perp}$ is a collection of two points at distance $\delta$ from the point $p_i$. From these two points, a linestring was created between them, which was then buffered to 2m. This gave sample lines, with an area of 2m by 60m, at 10m intervals along each road. The total point cloud was then clipped to only include points with fell inside these sample lines:
 
 \[
 \begin{aligned}
