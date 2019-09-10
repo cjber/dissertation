@@ -113,7 +113,7 @@ With the normalised last pulse point cloud, the point cloud was clipped to withi
 
 \subsection{Noise Filtering}\label{subsec:noise}
 
-Intensity noise was filtered through area based outlier detection, measuring the 95th percentile values within a 10m by 10m area, removing all points above the 95\% percentile. This can be expressed as;
+Intensity noise was filtered through area based outlier detection, measuring the 95th percentile values within a 10m$^2$ area, removing all points above the 95\% percentile. This can be expressed as;
 
 \[
     \begin{aligned}
@@ -126,27 +126,27 @@ A\left(\mathbf{c}_{\mathbf{k}}\right)=10 m^{2}
 \end{flushright}
 
 \noindent
-where $\mathbf{c_k}$ represents a 10m$^2$ selection of LiDAR points, where each point $(\mathbf{p_i})$ has an intensity value within the 95\% percentile intensity for all points $(\mathbf{p}_{i_{lpi}})$ within $\mathbf{c_i}$.
+where $\mathbf{c}_k$ represents a 10m$^2$ selection of LiDAR points, where each point $(\mathbf{p_i})$ has an intensity value within the 95\% percentile intensity for all points $(\mathbf{p}_{i_{lpi}})$ within $\mathbf{c}_k$.
 
 \subsection{LiDAR Catalog}
 
-As mentioned above, objects of class LiDAR catalog enabled more efficient processing through allowing the LiDAR point cloud to be processed in predefined batch sizes. Considering a collection of processed LiDAR points, with last pulse, normalised, clipped to 30m road extents, and intensity noise filtered, points were grouped into 500m$^2$ areas;
+As mentioned in Section \ref{sec:data}, objects of class LiDAR catalog enabled more efficient processing through allowing the LiDAR point cloud to be processed in predefined batch sizes. Considering a collection of processed LiDAR points, with last pulse, normalised, clipped to 30m road extents, and intensity noise filtered, points were grouped into 500m$^2$ areas;
 
 \[
 \begin{aligned}
-\mathbf{C}_{i}=\left\{\mathbf{c}_{1}, \mathbf{c}_{2}, \ldots, \mathbf{c}_{N}\right\} \\
-A\left(\mathbf{C}_{\mathbf{i}}\right)=500 m^{2} \\
+\mathbf{C}_{N}=\left\{\mathbf{c}_{1}, \mathbf{c}_{2}, \ldots, \mathbf{c}_{k}\right\} \\
+A\left(\mathbf{C}_{N}\right)=500 m^{2}, \\
 \end{aligned}
 \]
 \begin{flushright}
     \footnotesize{\ref{code:las_filter_noise}}
 \end{flushright}
 
-And each 500$m^2$ area collectively represents the overall processed point cloud;
+\noindent and each 500$m^2$ area collectively represents the overall processed point cloud;
 
 \[
 \begin{aligned}
-\mathbf{S}=\left\{\mathbf{C}_{1}, \mathbf{C}_{2} \ldots, \mathbf{C}_{N}\right\}
+\mathbf{S}=\left\{\mathbf{C}_{1}, \mathbf{C}_{2} \ldots, \mathbf{C}_{N}\right\}.
 \end{aligned}
 \]
 \begin{flushright}
@@ -184,11 +184,122 @@ cat(paste("\\item", funcs), sep = "\n")
 @
 \end{itemize}
 
-B roads are considered to be classified roads, and other functions are considered to be unclassified. All roads are single carriageway, and so for the purpose of this analysis it is assumed they likely have the default national speed limit of 60mph. All private roads were removed, as were roads with a length of less than 50m, often those clipped by the extent of the LiDAR data.
+B roads are classified roads, while other functions are unclassified. All roads are single carriageway, and so for the purpose of this analysis it is assumed they likely have the default national speed limit of 60mph. All private roads were removed, as were roads with a length of less than 50m, often those clipped by the extent of the LiDAR data.
+
+\section{Road Angles}\label{sec:angles}
+
+The angle of bends in roads were identified through the nodes produced in the creation of the road shapefiles. First the road linestrings were split into points, with coordinates representing each node within a road, a point at which the orientation of the linestring is altered.
+
+The bend in a road was considered to be the \textit{bearing angle} $\theta$, from a node $\mathbf{N}_i = \left(x_{i}, y_{i}\right)$ to a node $\mathbf{N}_{i+1} = \left(x_{i+1}, y_{i+1}\right)$, with the angle measured in a clockwise direction from north. This is represented on Figure \ref{fig:bearingang1}.
+
+    \begin{figure}[htbp]
+        \centering
+\begin{tikzpicture}[scale=7]
+    \filldraw (.2,.4) circle[radius=.3pt] node [below left] {$\mathbf{N}_{i}$};
+
+\draw[-] (0.1,.4) -- (0.3, .4);
+\draw[-] (0.2,.3) -- (0.2, .5) node[above] {$N$};
+
+\filldraw (.8,.7) circle[radius=.3pt] node [above right] {$\mathbf{N}_{i+1}$};
+
+\draw[-] (0.2,.4) -- (0.8, .7);
+
+    \draw[<-] (0.28,.44) arc (45:90:.111);
+    \node[] at (.25,.5)  {$\theta$};
+\end{tikzpicture}
+\caption{Bearing Angle Between Road Nodes}\label{fig:bearingang1}
+\end{figure}
+
+To find the angle $\theta$, the node $N_{i+1}$ can be represented into relation to point $N_{i}$ as;
+
+$$
+\left(i+1_{x}, i+1_{y}\right)=\left(i_{x}+r \sin \theta, i_{y}+r \cos \theta\right)
+$$
+
+\noindent where $r$ is the length of the line segment $N_{i}N_{i+1}$. Rearranging the equation for $\theta$ gives;
+
+$$
+    \tan \theta=\frac{b_{x}-a_{x}}{b_{y}-a_{y}}
+$$
+
+\noindent this equation can be rewritten to calculate the value of $\theta$ using the $\mathit{atan2}$ function;
+
+$$
+\hat{\theta}=\mathrm{atan} 2\left(b_{1}-a_{1}, b_{2}-a_{2}\right) \in[-\pi, \pi]
+$$
+
+
+\noindent finally the bearing angle $\theta \in[0,2 \pi]$ is given as;
+
+\[
+    \begin{aligned}
+\theta=\left\{\begin{array}{ll}{\hat{\theta},} & {\hat{\theta} \geq 0} \\
+{2 \pi+\hat{\theta},} & {\hat{\theta}<0}\end{array}\right.
+\end{aligned}
+\]
+\begin{flushright}
+    \footnotesize{\ref{code:road_angles}}
+\end{flushright}
+
+\noindent with the bearing angle of the first line segment ($\hat \theta_{AB}$) for a particular road, the change in orientation of the second road segment $BC$ may be given as $\theta_{BC} = \theta_{BC} - \theta_{AB}$, with additional nodes following the pattern $\theta_{n+1} = \theta_{n+1} - \theta_{n}$.
+
+    \begin{figure}[htbp]
+        \centering
+\begin{tikzpicture}[scale=7]
+
+\filldraw (.2,.4) circle[radius=.3pt] node [below left] {$A$};
+
+\draw[-] (0.1,.4) -- (0.3, .4);
+\draw[-] (0.2,.3) -- (0.2, .5) node[above] {$N$};
+
+\filldraw (.8,.7) circle[radius=.3pt] node [above left] {$B$};
+\filldraw (.9,1) circle[radius=.3pt] node [above right] {$C$};
+
+\draw[-] (0.2,.4) -- (0.8, .7);
+\draw[-] (0.8,.7) -- (.9, 1);
+
+    \draw[<-] (0.28,.44) arc (45:90:.111);
+    \node[] at (.25,.5)  {$\theta_{1}$};
+
+\draw[dotted] (0.8,.7) -- (1, .8);
+
+    \draw[<-] (0.9,.75) arc (45:90:.1);
+    \node[] at (.88,.8)  {$\theta_{2}$};
+\end{tikzpicture}
+\caption{Bearing Angle Between two Road Segments}
+\label{fig:bearingang2}
+\end{figure}
+
+For each road the maximum bearing angle between two nodes was selected, as well as the average bearing angle between two nodes. Given the bearing angle between the first two nodes gives only the initial direction of the road, this was set to zero; $\hat \theta_{AB} = 0$.
+
+\section{Road Node Elevation Change}\label{sec:elev}
+
+The elevation change between two road node points was calculated by first selecting non-normalised LiDAR points at a geometric node within a 1m$^2$ area. LiDAR points were then filtered by those only classified as ground, and with only a single return, to reduce the likelihood of inaccurate $z$ values from canopy or other vegetation and vehicles. The mean $z$ value of points were found for each node, and elevation change between each node was calculated. For each road, the total elevation change per kilometer was calculated.
+
+
+/// add an equation + explanation here.
+
+\[
+\begin{aligned}
+    \mathbf{W}_{n} = \frac{\mathbf{W}}{W_{e} \times 100}
+\end{aligned}
+\]
+
+\section{Surface Quality}\label{sec:qual}
+
+Surface quality was assessed roughly through the range in intensity values found in each known road point, and the average number of returns for a road for sample lines not obstructed by canopy. To ensure there was no inaccuracy in intensity values caused by later returns passing through a canopy, only points that had a single return pulse were used in this analysis.
+
+/// add an equation + explanation here.
+
+\[
+\begin{aligned}
+    \mathbf{W}_{n} = \frac{\mathbf{W}}{W_{e} \times 100}
+\end{aligned}
+\]
 
 \subsection{Road Sampling}
 
-The LiDAR point cloud data was sampled at regular 10 meter intervals for each road, perpendicular to the road direction, ensuring that when road direction changed, the sampling locations remained perpendicular. To achieve this, each road was first split into nodes at which road direction changed, with a single road consisting of multiple nodes with coordinates $xy$, indicating a point along a road where the road direction changed. From this, points with $xy$ coordinates were created at 10 meter intervals beginning at the start of a road, (considered Node 1; $\mathbf{N}_1$), until the next node along the road ($\mathbf{N}_2$). To calculate these points along each line between two nodes ($\mathbf{N}_{i} = (x_i, y_i)$ and $\mathbf{N}_{i+1} = (x_{i+1},y_{i+1})$), first the individual change in $x$ and $y$ values was calculated, expressed as;
+The LiDAR point cloud data was sampled at regular 10 meter intervals for each road, perpendicular to the road direction, ensuring that when road direction changed, the sampling locations remained perpendicular. To achieve this, each road was first split into nodes at which road direction changed, with a single road consisting of multiple nodes with $xy$ coordinates, indicating a point along a road where the road direction changed. From this, points with $xy$ coordinates were created at 10 meter intervals beginning at the start of a road, (considered Node 1; $\mathbf{N}_1$), until the next node along the road ($\mathbf{N}_2$). To calculate these points along each line between two nodes ($\mathbf{N}_{i} = (x_i, y_i)$ and $\mathbf{N}_{i+1} = (x_{i+1},y_{i+1})$), first the individual change in $x$ and $y$ values was calculated, expressed as;
 
 \[
 \begin{aligned}
@@ -211,7 +322,7 @@ The LiDAR point cloud data was sampled at regular 10 meter intervals for each ro
     \footnotesize{\ref{code:euc}}
 \end{flushright}
 
-To find a point ($p_i$) along these two nodes, at an interval distance $I_k$, with $I_1 = 10$, was achieved through these equations;
+A point ($p_i$) along these two nodes, at an interval distance $I_k$, was achieved through these equations;
 
 \[
 \begin{aligned}
@@ -354,6 +465,7 @@ $\mathbf{S}$ now gave of a collection of predicted road points for each sample l
 \begin{tikzpicture}[scale=2]
 
 \draw[-, very thick, color = gray] (0,0.5) -- (0,4);
+\draw[dashed, very thick, color = gray] (0,0.48) -- (0,42);
 
 \filldraw (-1,1) circle[radius=1pt] node [below left] {$\mathbf{A}_1$};
 \draw[-] (-1,1) -- node[fill=white,inner ysep=3pt, inner xsep = 3pt]{$h_\mathbf{A}$} (1,2);
@@ -430,122 +542,7 @@ $$
     \footnotesize{\ref{code:lm_beta}}
 \end{flushright}
 
-
-
-
-
-\section{Road Angles}\label{sec:angles}
-
-The angle of bends in roads were identified through the nodes produced in the creation of the road shapefiles. First the road linestrings were split into points, with coordinates representing each node within a road, a point at which the orientation of the linestring is altered.
-
-The bend in a road was considered to be the \textit{bearing angle} $\theta$, from a point $A\left(a_{x}, a_{y}\right)$ to a point $B\left(b_{x}, b_{y}\right)$, with the angle measured in a clockwise direction from north. This is represented on Figure \ref{fig:bearingang1}.
-
-    \begin{figure}[htbp]
-        \centering
-\begin{tikzpicture}[scale=7]
-\filldraw (.2,.4) circle[radius=.3pt] node [below left] {$A$};
-
-\draw[-] (0.1,.4) -- (0.3, .4);
-\draw[-] (0.2,.3) -- (0.2, .5) node[above] {$N$};
-
-\filldraw (.8,.7) circle[radius=.3pt] node [above right] {$B$};
-
-\draw[-] (0.2,.4) -- (0.8, .7);
-
-    \draw[<-] (0.28,.44) arc (45:90:.111);
-    \node[] at (.25,.5)  {$\theta$};
-\end{tikzpicture}
-\caption{Bearing Angle Between Road Segments}\label{fig:bearingang1}
-\end{figure}
-
-To find the angle $\theta$, the point $B$ can be represented into relation to point $A$ as;
-
-$$
-\left(b_{x}, b_{y}\right)=\left(a_{x}+r \sin \theta, a_{y}+r \cos \theta\right)
-$$
-
-\noindent where $r$ is the length of the line segment $AB$. Rearranging the equation for $\theta$ gives;
-
-$$
-    \tan \theta=\frac{b_{x}-a_{x}}{b_{y}-a_{y}}
-$$
-
-\noindent this equation can be rewritten to calculate the value of $\theta$ using the $\mathit{atan2}$ function;
-
-$$
-\hat{\theta}=\mathrm{atan} 2\left(b_{1}-a_{1}, b_{2}-a_{2}\right) \in[-\pi, \pi]
-$$
-
-
-\noindent finally the bearing angle $\theta \in[0,2 \pi]$ is given as;
-
-\[
-    \begin{aligned}
-\theta=\left\{\begin{array}{ll}{\hat{\theta},} & {\hat{\theta} \geq 0} \\
-{2 \pi+\hat{\theta},} & {\hat{\theta}<0}\end{array}\right.
-\end{aligned}
-\]
-\begin{flushright}
-    \footnotesize{\ref{code:road_angles}}
-\end{flushright}
-
-\noindent with the bearing angle of the first line segment ($\hat \theta_{AB}$) for a particular road, the change in orientation of the second road segment $BC$ may be given as $\theta_{BC} = \theta_{BC} - \theta_{AB}$, with additional nodes following the pattern $\theta_{n+1} = \theta_{n+1} - \theta_{n}$.
-
-    \begin{figure}[htbp]
-        \centering
-\begin{tikzpicture}[scale=7]
-
-\filldraw (.2,.4) circle[radius=.3pt] node [below left] {$A$};
-
-\draw[-] (0.1,.4) -- (0.3, .4);
-\draw[-] (0.2,.3) -- (0.2, .5) node[above] {$N$};
-
-\filldraw (.8,.7) circle[radius=.3pt] node [above left] {$B$};
-\filldraw (.9,1) circle[radius=.3pt] node [above right] {$C$};
-
-\draw[-] (0.2,.4) -- (0.8, .7);
-\draw[-] (0.8,.7) -- (.9, 1);
-
-    \draw[<-] (0.28,.44) arc (45:90:.111);
-    \node[] at (.25,.5)  {$\theta_{1}$};
-
-\draw[dotted] (0.8,.7) -- (1, .8);
-
-    \draw[<-] (0.9,.75) arc (45:90:.1);
-    \node[] at (.88,.8)  {$\theta_{2}$};
-\end{tikzpicture}
-\caption{Bearing Angle Between two Road Segments}
-\label{fig:bearingang2}
-\end{figure}
-
-For each road the maximum bearing angle between two nodes was selected, as well as the average bearing angle between two nodes. Given the bearing angle between the first two nodes gives only the initial direction of the road, this was set to zero; $\hat \theta_{AB} = 0$.
-
-\section{Road Node Elevation Change}\label{sec:elev}
-
-The elevation change between two road node points was calculated by first selecting non-normalised LiDAR points at a geometric node within a 1m$^2$ area. LiDAR points were then filtered by those only classified as ground, and with only a single return, to reduce the likelihood of inaccurate $z$ values from canopy or other vegetation and vehicles. The mean $z$ value of points were found for each node, and elevation change between each node was calculated. For each road, the total elevation change per kilometer was calculated.
-
-
-/// add an equation + explanation here.
-
-\[
-\begin{aligned}
-    \mathbf{W}_{n} = \frac{\mathbf{W}}{W_{e} \times 100}
-\end{aligned}
-\]
-
-\section{Surface Quality}\label{sec:qual}
-
-Surface quality was assessed roughly through the range in intensity values found in each known road point, and the average number of returns for a road for sample lines not obstructed by canopy. To ensure there was no inaccuracy in intensity values caused by later returns passing through a canopy, only points that had a single return pulse were used in this analysis.
-
-/// add an equation + explanation here.
-
-\[
-\begin{aligned}
-    \mathbf{W}_{n} = \frac{\mathbf{W}}{W_{e} \times 100}
-\end{aligned}
-\]
-
-\section{Estimate of True Widths}
+\subsection{Estimate of True Widths}
 
 QGIS \citep{QGIS} was used to measure the width at various points along each road using 25cm resolution aerial imagery, avoiding stretches of road with canopy cover that obscured the true road width. With the widths, the results of each model was compared to assess model accuracy. Each width was normalised to allow comparison between each road, and to give a final average accuracy value. Normalisation was achieved through finding the relative difference in width as a percentage;
 
@@ -564,6 +561,7 @@ QGIS \citep{QGIS} was used to measure the width at various points along each roa
 \]
 
 \noindent given $\mathbf{W}_{n} > 100$. 
+
 
 \section{Road Quality Assessment}
 

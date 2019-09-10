@@ -10,31 +10,30 @@
 \BOOKMARK [1][-]{section.3.1}{Data}{chapter.3}% 10
 \BOOKMARK [1][-]{section.3.2}{LiDAR Preprocessing}{chapter.3}% 11
 \BOOKMARK [1][-]{section.3.3}{Road Analysis}{chapter.3}% 12
-\BOOKMARK [1][-]{section.3.4}{Linear Probability Models and Road Width}{chapter.3}% 13
-\BOOKMARK [1][-]{section.3.5}{Road Angles}{chapter.3}% 14
-\BOOKMARK [1][-]{section.3.6}{Road Node Elevation Change}{chapter.3}% 15
-\BOOKMARK [1][-]{section.3.7}{Surface Quality}{chapter.3}% 16
-\BOOKMARK [1][-]{section.3.8}{Estimate of True Widths}{chapter.3}% 17
-\BOOKMARK [1][-]{section.3.9}{Road Quality Assessment}{chapter.3}% 18
-\BOOKMARK [0][-]{chapter.4}{Results}{}% 19
-\BOOKMARK [1][-]{section.4.1}{Data Preprocessing}{chapter.4}% 20
-\BOOKMARK [1][-]{section.4.2}{Perpendicular Sampling}{chapter.4}% 21
-\BOOKMARK [1][-]{section.4.3}{Linear Probability Model Sensitivity Analysis}{chapter.4}% 22
-\BOOKMARK [1][-]{section.4.4}{Corrected Centreline Extraction}{chapter.4}% 23
-\BOOKMARK [1][-]{section.4.5}{Final Model Analysis}{chapter.4}% 24
-\BOOKMARK [1][-]{section.4.6}{Road Assessment}{chapter.4}% 25
-\BOOKMARK [0][-]{chapter.5}{Discussion}{}% 26
-\BOOKMARK [1][-]{section.5.1}{Effectiveness of the Method}{chapter.5}% 27
-\BOOKMARK [1][-]{section.5.2}{Applications of this Methodology}{chapter.5}% 28
-\BOOKMARK [1][-]{section.5.3}{Current Limitations of this Method}{chapter.5}% 29
-\BOOKMARK [0][-]{chapter.6}{Conclusion}{}% 30
-\BOOKMARK [0][-]{appendix.A}{Environment and Functions}{}% 31
-\BOOKMARK [1][-]{section.A.1}{Session Information}{appendix.A}% 32
-\BOOKMARK [1][-]{section.A.2}{Functions}{appendix.A}% 33
-\BOOKMARK [0][-]{appendix.B}{Additional Tables and Figures}{}% 34
-\BOOKMARK [0][-]{appendix.C}{Scripts}{}% 35
-\BOOKMARK [1][-]{section.C.1}{Clean Data}{appendix.C}% 36
-\BOOKMARK [1][-]{section.C.2}{Create Sample lines}{appendix.C}% 37
-\BOOKMARK [1][-]{section.C.3}{Linear Models and Improve Centrelines}{appendix.C}% 38
-\BOOKMARK [1][-]{section.C.4}{Road Widths}{appendix.C}% 39
-\BOOKMARK [1][-]{section.C.5}{Improved Centreline Models}{appendix.C}% 40
+\BOOKMARK [1][-]{section.3.4}{Road Angles}{chapter.3}% 13
+\BOOKMARK [1][-]{section.3.5}{Road Node Elevation Change}{chapter.3}% 14
+\BOOKMARK [1][-]{section.3.6}{Surface Quality}{chapter.3}% 15
+\BOOKMARK [1][-]{section.3.7}{Linear Probability Models and Road Width}{chapter.3}% 16
+\BOOKMARK [1][-]{section.3.8}{Road Quality Assessment}{chapter.3}% 17
+\BOOKMARK [0][-]{chapter.4}{Results}{}% 18
+\BOOKMARK [1][-]{section.4.1}{Data Preprocessing}{chapter.4}% 19
+\BOOKMARK [1][-]{section.4.2}{Perpendicular Sampling}{chapter.4}% 20
+\BOOKMARK [1][-]{section.4.3}{Linear Probability Model Sensitivity Analysis}{chapter.4}% 21
+\BOOKMARK [1][-]{section.4.4}{Corrected Centreline Extraction}{chapter.4}% 22
+\BOOKMARK [1][-]{section.4.5}{Final Model Analysis}{chapter.4}% 23
+\BOOKMARK [1][-]{section.4.6}{Road Assessment}{chapter.4}% 24
+\BOOKMARK [0][-]{chapter.5}{Discussion}{}% 25
+\BOOKMARK [1][-]{section.5.1}{Effectiveness of the Method}{chapter.5}% 26
+\BOOKMARK [1][-]{section.5.2}{Applications of this Methodology}{chapter.5}% 27
+\BOOKMARK [1][-]{section.5.3}{Current Limitations of this Method}{chapter.5}% 28
+\BOOKMARK [0][-]{chapter.6}{Conclusion}{}% 29
+\BOOKMARK [0][-]{appendix.A}{Environment and Functions}{}% 30
+\BOOKMARK [1][-]{section.A.1}{Session Information}{appendix.A}% 31
+\BOOKMARK [1][-]{section.A.2}{Functions}{appendix.A}% 32
+\BOOKMARK [0][-]{appendix.B}{Additional Tables and Figures}{}% 33
+\BOOKMARK [0][-]{appendix.C}{Scripts}{}% 34
+\BOOKMARK [1][-]{section.C.1}{Clean Data}{appendix.C}% 35
+\BOOKMARK [1][-]{section.C.2}{Create Sample lines}{appendix.C}% 36
+\BOOKMARK [1][-]{section.C.3}{Linear Models and Improve Centrelines}{appendix.C}% 37
+\BOOKMARK [1][-]{section.C.4}{Road Widths}{appendix.C}% 38
+\BOOKMARK [1][-]{section.C.5}{Improved Centreline Models}{appendix.C}% 39

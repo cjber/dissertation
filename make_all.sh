@@ -6,5 +6,5 @@ cd ..
 rm -r ./data/cache/
 rm -r ./figure/
 
-Rscript "knitr::knit2pdf('main.rnw')"
+Rscript -e "knitr::knit2pdf('main.rnw')"
 zathura main.pdf
