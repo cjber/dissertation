@@ -1,7 +1,0 @@
-setwd("./scripts/")
-source("./run_all.r")
-setwd("..")
-unlink("./data/cache/")
-unlink("./figure/")
-knitr::knit2pdf("main.rnw")
-browseURL("main.pdf")
