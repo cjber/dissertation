@@ -380,7 +380,7 @@ $\mathbf{S}$ now gave of a collection of predicted road points for each sample l
 \caption{Road LiDAR points at maximum distance apart for each sample location. Showing two example sample locations ($\mathbf{A}$ and $\mathbf{B}$), road centreline represented by the thick grey line. True road width is indicated by the dashed lines $b_\mathbf{A}$ and $b_\mathbf{B}$, considered to be the adjacent side of a triangle in relation to be bearing angles between the first and second point of each sample, $\theta_\mathbf{A}$ and $\theta_\mathbf{B}$. The distance between the two points per sample are considered to give the hypotenuse length of a triangle ($h_\mathbf{A}$ and $h_\mathbf{B}$).}\label{fig:sample_points}
 \end{figure}
 
-To determine the width of the road, given the two selected points at every node with a maximum distance between them, trigonometry could be used to find the adjacent line length ($b_\mathbf{K}$; where $\mathbf{K}$ is a single sample location), perpendicular to the road segment, considering the distance between the two points to be the hypotenuse ($|\mathbf{K}_1\mathbf{K}_2|,h_\mathbf{K}$) of a right angled triangle (Figure \ref{fig:sample_points}). The average width for each road identifier was then found, for a sample location $\mathbf{K}$, this may be expressed using trigonometry as;
+Given the two selected points at every sample with a maximum distance between them, trigonometry could be used to determine the width of the road at that particular location. Road width is considered to be the adjacent line length ($b_\mathbf{K}$; where $\mathbf{K}$ is a single sample location), perpendicular to the road segment, considering the distance between the two points to be the hypotenuse ($|\mathbf{K}_1\mathbf{K}_2| \equiv h_\mathbf{K}$) of a right angled triangle (Figure \ref{fig:sample_points}). The average width for each road identifier was then found, for a sample location $\mathbf{K}$, this may be expressed using trigonometry as;
 
 \[
 \begin{aligned}
@@ -393,7 +393,7 @@ To determine the width of the road, given the two selected points at every node 
 
 \noindent where $b_\mathbf{K}$ gives the true predicted of a road for the sample $\mathbf{K}$. With a complete set of calculated road widths for each sample, any width above 8m was removed, in addition to any width below 2m, under the assumption that a width calculated outside these limits would be caused due to noise or inaccuracy.
 
-There is the possibility that the maximum distance between two points does not provide the maximum perpendicular distance across a road section. Such a situation would arise given a triangle formed that is has an opposite length ($a_\mathbf{K}$) above the adjacent length ($b_\mathbf{K}$). However, given the maximum opposite line length between two points in a sample line is 2m, (each sample is 2m by 60m), for any line where the opposite length is greater than the adjacent length, the adjacent length must therefore be below 2m and thus, the road width calculated from this sample is removed during the filtering process. Such a situation would require a larger opposite length than adjacent length to produce a hypotenuse length in excess of an alternative hypotenuse between two points, given it would have to be taller than it is wide.
+There is the possibility that the maximum distance between two points does not provide the maximum perpendicular distance across a road section. Such a situation would arise given a triangle formed that is has an opposite length ($a_\mathbf{K}$) above the adjacent length ($b_\mathbf{K}$), giving a hypotenuse ($h_\textbf{K}) with a longer vertical length. However, given the maximum opposite line length between two points in a sample line is 2m, (each sample is 2m by 60m), for any line where the opposite length is greater than the adjacent length, the adjacent length must therefore be below 2m and thus, the road width calculated from this sample is removed during the filtering process.
 
 \subsection{Improved Road Centrelines}
 
@@ -464,20 +464,20 @@ $$
 \left(b_{x}, b_{y}\right)=\left(a_{x}+r \sin \theta, a_{y}+r \cos \theta\right)
 $$
 
-Where $r$ is the length of the line segment $AB$. Rearranging the equation for $\theta$ gives;
+\noindent where $r$ is the length of the line segment $AB$. Rearranging the equation for $\theta$ gives;
 
 $$
     \tan \theta=\frac{b_{x}-a_{x}}{b_{y}-a_{y}}
 $$
 
-This equation can be rewritten to calculate the value of $\theta$ using the $\mathit{atan2}$ function;
+\noindent this equation can be rewritten to calculate the value of $\theta$ using the $\mathit{atan2}$ function;
 
 $$
 \hat{\theta}=\mathrm{atan} 2\left(b_{1}-a_{1}, b_{2}-a_{2}\right) \in[-\pi, \pi]
 $$
 
 
-Finally the bearing angle $\theta \in[0,2 \pi]$ is given as;
+\noindent finally the bearing angle $\theta \in[0,2 \pi]$ is given as;
 
 \[
     \begin{aligned}
@@ -489,7 +489,7 @@ Finally the bearing angle $\theta \in[0,2 \pi]$ is given as;
     \footnotesize{\ref{code:road_angles}}
 \end{flushright}
 
-With the bearing angle of the first line segment $AB$ for a particular road, the change in orientation of the second road segment $BC$ may be given as $\theta_{2} = \theta_{1} - \theta_{0}$, with additional nodes following the pattern $\theta_{k} = \theta_{N(N+1)} - \theta_{(N-1)N}$.
+\noindent with the bearing angle of the first line segment ($\hat \theta_{AB}$) for a particular road, the change in orientation of the second road segment $BC$ may be given as $\theta_{BC} = \theta_{BC} - \theta_{AB}$, with additional nodes following the pattern $\theta_{n+1} = \theta_{n+1} - \theta_{n}$.
 
     \begin{figure}[htbp]
         \centering
@@ -518,11 +518,14 @@ With the bearing angle of the first line segment $AB$ for a particular road, the
 \label{fig:bearingang2}
 \end{figure}
 
-For each road the maximum bearing angle between two nodes was selected, as well as the average bearing angle between two nodes.
+For each road the maximum bearing angle between two nodes was selected, as well as the average bearing angle between two nodes. Given the bearing angle between the first two nodes gives only the initial direction of the road, this was set to zero; $\hat \theta_{AB} = 0$.
 
 \section{Road Node Elevation Change}\label{sec:elev}
 
 The elevation change between two road node points was calculated by first selecting non-normalised LiDAR points at a geometric node within a 1m$^2$ area. LiDAR points were then filtered by those only classified as ground, and with only a single return, to reduce the likelihood of inaccurate $z$ values from canopy or other vegetation and vehicles. The mean $z$ value of points were found for each node, and elevation change between each node was calculated. For each road, the total elevation change per kilometer was calculated.
+
+
+/// add an equation + explanation here.
 
 \[
 \begin{aligned}
@@ -533,6 +536,8 @@ The elevation change between two road node points was calculated by first select
 \section{Surface Quality}\label{sec:qual}
 
 Surface quality was assessed roughly through the range in intensity values found in each known road point, and the average number of returns for a road for sample lines not obstructed by canopy. To ensure there was no inaccuracy in intensity values caused by later returns passing through a canopy, only points that had a single return pulse were used in this analysis.
+
+/// add an equation + explanation here.
 
 \[
 \begin{aligned}
@@ -546,19 +551,19 @@ QGIS \citep{QGIS} was used to measure the width at various points along each roa
 
 \[
 \begin{aligned}
-    \mathbf{W}_{n} = \frac{\mathbf{W}}{W_{e} \times 100}
+    \mathbf{W}_{n} = \frac{\mathbf{W}}{\mathbf{W}_{e} \times 100},
 \end{aligned}
 \]
 
-where $\mathbf{W}_{n}$ is the normalised width, $\mathbf{W}$ is the average width per road derived from the linear model, and $\mathbf{W_{e}}$ is the qualitatively estimated width. Given some widths occasionally were overestimated, to ensure the outcome of this calculation gave a relative value, any normalised width given a value above 100 was reassigned;
+\noindent where $\mathbf{W}_{n}$ is the normalised width, $\mathbf{W}$ is the average width per road derived from the linear model, and $\mathbf{W}_{e}$ is the qualitatively estimated width. Given some widths occasionally were overestimated, to ensure the outcome of this calculation gave a relative value, any normalised width given a value above 100 was reassigned;
 
 \[
 \begin{aligned}
-    \mathbf{W}_{n} = 100 - \mathbf{W}_{n}
+    \mathbf{W}_{n} = 100 - \mathbf{W}_{n},
 \end{aligned}
 \]
 
-given $\mathbf{W}_{n} > 100$. 
+\noindent given $\mathbf{W}_{n} > 100$. 
 
 \section{Road Quality Assessment}
 
@@ -568,11 +573,11 @@ Normalisation of each road feature was achieved through a simple range normalisa
 
 \[
 \begin{aligned}
-m \mapsto \frac{m-r_{\min }}{r_{\max }-r_{\min }}
+m \mapsto \frac{m-r_{\min }}{r_{\max }-r_{\min }},
 \end{aligned}
 \]
 
-Where $r_{\text {min }}$ denotes the minimum of the range of a variable,  $r_{\text {max }}$ denotes the maximum of the range of a variable, and $m \in\left[r_{\text {min }}, r_{\text {max }}\right]$ denotes the variable to be scaled. As an increase in road width is associated with a higher quality road, as opposed to larger values of each other variable indicating a poorer quality road, the width values were first inversed before normalisation. An additional variable, relitability was presented in addition to the RQI, which gives a value for the number of points per road length, ($P_n/L$), allowing for some information regarding the density of sample points to be considered in analysis.
+\noindent where $r_{\text {min }}$ denotes the minimum of the range of a variable,  $r_{\text {max }}$ denotes the maximum of the range of a variable, and $m \in\left[r_{\text {min }}, r_{\text {max }}\right]$ denotes the variable to be scaled. As an increase in road width is associated with a higher quality road, as opposed to larger values of each other variable indicating a poorer quality road, the width values were first inversed before normalisation. An additional variable, relitability was presented in addition to the RQI, which gives a value for the number of points per road length, ($P_n/L$), allowing for some information regarding the density of sample points to be considered in analysis.
 
 Following normalisation, the sum of all normalised variables for a particular road were taken, and subtracted from 1 to give positive values indicating better quality roads, and lower values indicating lower quality roads. These variables involved in the creation of this index are;
 
