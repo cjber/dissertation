@@ -59,7 +59,7 @@ make_table(tmp, cap = "LiDAR Point Cloud Summary Data")
 
 \subsection{Last Pulse}
 
-The LiDAR point cloud data used in this paper gives the values for 5 pulse returns. The canopy above roads may be excluded through ignoring early pulses (higher Z values), therefore only the last pulse values for any point are selected, taking only points where \textbf{ReturnNumber} equals the \textbf{NumberOfReturns};
+The LiDAR point cloud data used in this paper gives the values for 5 pulse returns. The canopy above roads may be excluded through ignoring early pulses (higher Z values), therefore only the last pulse values for any point are selected, taking only points where the \textbf{ReturnNumber} equals the \textbf{NumberOfReturns}. Last pulse points may be expressed as;
 
 $$
 \mathbf{p}_{i}=(l p x, l p y, l p z, l p i),
@@ -91,17 +91,17 @@ matches_pts <- merge(pts, pts_clean, by = c("X", "Y")) %>%
 cchange <- sum(matches_pts$Classification.y == 2) / sum(matches_pts$Classification.x == 2)
 @
 
-\noindent where $m$  is the mass of a single LiDAR point (set to 1), $\Delta t$ is the time step between points and $G$ represents the gravity constant. The implementation of this algorithm was given as part of the \texttt{lidR} package. Reclassification resulted in an increase in the number of classified ground points by \Sexpr{round((cchange - 1) * 100, 2)}\%. Reflecting primarily the simplification of classifications into ground and non-ground.
+\noindent where $m$  is the mass of a single LiDAR point (set to 1), $\Delta t$ is the time step between points and $G$ represents the gravity constant. The implementation of this algorithm was given as part of the \texttt{lidR} package. Reclassification resulted in an increase in the number of classified ground points by \Sexpr{round((cchange - 1) * 100, 2)}\%. Reflecting primarily the simplification of existing classifications into ground and non-ground.
 
 
-With the classification of ground points, (given $Classification = 2$), a full DTM may be produced through spatial interpolation of the classified points.  Interpolation uses the inverse distance weighting and $k$ nearest neighbours algorithms to produce the DTM. Nearest neighbours were selected as $k = 10$, with $q = 2$ for the inverse weighting, and used to produce a DTM with a resolution of 1m. This particular technique was selected over more comprehensive methods such as kriging as the number of points is very high, and the small benefit of kriging was considered minimal compared with the increase in computational load. The $z$ values from the DTM were then subtracted from the LiDAR point cloud, leaving a normalised point cloud. This ensures that when extracting height information, any observed values are due to objects on the surface of the terrain, and not due to the lie of the terrain itself.
+With the classification of ground points, (given $Classification = 2$), a full DTM may be produced through spatial interpolation of the classified points.  Interpolation uses the inverse distance weighting and $k$ nearest neighbours algorithms to produce the DTM. Nearest neighbours were selected as $k = 10$, with $q = 2$ for the inverse weighting, and used to produce a DTM with a resolution of 1m$^2$. This particular technique was selected over more comprehensive methods such as kriging as the number of points is very high, and the small benefit of kriging was considered minimal compared with the increase in computational load. The $z$ values from the DTM were then subtracted from the LiDAR point cloud, leaving a normalised point cloud. This ensures that when extracting height information, any observed values are due to objects on the surface of the terrain, and not due to the lie of the terrain itself.
 
 \subsection{Points Extent}
 
 With the normalised last pulse point cloud, the point cloud was clipped to within a 30m extent of each known road location, using the OS road shapefiles;
 \[
 \begin{aligned}
-   \textbf{p}_i \in A(r_i) \times 30,
+   \textbf{p}_i \in \left[A(r_i) \times 30\right],
 \end{aligned}
 \]
 \begin{flushright}
@@ -113,7 +113,7 @@ With the normalised last pulse point cloud, the point cloud was clipped to withi
 
 \subsection{Noise Filtering}\label{subsec:noise}
 
-Intensity noise was filtered through area based outlier detection, measuring the 95th percentile values within a 10m$^2$ area, removing all points above the 95\% percentile. This can be expressed as;
+Intensity noise was filtered through area based outlier detection, measuring the 95th percentile values within a 10m$^2$ area, and removing all points above the 95\% percentile. This can be expressed as;
 
 \[
     \begin{aligned}
@@ -126,11 +126,11 @@ A\left(\mathbf{c}_{\mathbf{k}}\right)=10 m^{2}
 \end{flushright}
 
 \noindent
-where $\mathbf{c}_k$ represents a 10m$^2$ selection of LiDAR points, where each point $(\mathbf{p_i})$ has an intensity value within the 95\% percentile intensity for all points within $\mathbf{c}_k$.
+where $\mathbf{c}_k$ represents a 10m$^2$ selection of LiDAR points, where each point $(\mathbf{p}_i)$ has an intensity value within the 95\% percentile intensity for all original points in $\mathbf{c}_k$.
 
 \subsection{LiDAR Catalog}
 
-As mentioned in Section \ref{sec:data}, objects of class LiDAR catalog enabled more efficient processing through allowing the LiDAR point cloud to be processed in predefined batch sizes. Considering a collection of processed LiDAR points, with last pulse, normalised, clipped to 30m road extents, and intensity noise filtered, points were grouped into 500m$^2$ areas;
+As mentioned in Section \ref{sec:data}, objects of class \texttt{LASCatalog} enabled more efficient processing by allowing the LiDAR point cloud to be processed in predefined batch sizes. Considering a collection of processed LiDAR points; last pulse, normalised, clipped to 30m road extents, and intensity noise filtered. Points were then grouped into 500m$^2$ areas;
 
 \[
 \begin{aligned}
@@ -156,7 +156,7 @@ A\left(\mathbf{C}_{N}\right)=500 m^{2}, \\
 \section{Road Analysis}
 \label{sec:road-extraction}
 
-Next, the preprocessed LiDAR data was combined with the OS road shapefiles and aerial imagery to obtain a set of criteria to assess the chosen road network. A summary of the information provided alongside OS road shapefiles is given on Table \ref{tab:roadstab}. While both \texttt{roadNumberTOID} and \texttt{roadNameTOID} do provide true road identification for many roads, this was not true for each road in the area chosen. Due to this, it was impossible to identify what could be considered an individual road, meaning a "road" will now be defined as indicated on Figure \ref{fig:area_map}, selected based on the shapefile geometry provided.
+The preprocessed LiDAR data was combined with the OS road shapefiles and aerial imagery to obtain a set of criteria to assess the chosen road network. A summary of the information provided alongside OS road shapefiles is given on Table \ref{tab:roadstab}. While both \texttt{roadNumberTOID} and \texttt{roadNameTOID} do provide true road identification for many roads, this was not true for each road in the area chosen. Due to this, it was impossible to identify what could be considered an individual road, meaning a "road" will now be defined as indicated on Figure \ref{fig:area_map}, selected based on the shapefile geometry provided.
 
 <<>>=
 roads_info <- fread("/home/cjber/drive/uni/envs492/main/data/osroads/roads_info.csv") %>% 
@@ -184,11 +184,11 @@ cat(paste("\\item", funcs), sep = "\n")
 @
 \end{itemize}
 
-B roads are classified roads, while other functions are unclassified. All roads are single carriageway, and so for the purpose of this analysis it is assumed they likely have the default national speed limit of 60mph. All private roads were removed, as were roads with a length of less than 50m, often those clipped by the extent of the LiDAR data.
+B roads are classified roads, while other functions are unclassified. All roads are single carriageway, and so for the purpose of this analysis it is assumed they likely have the default national speed limit of 60mph. All \textit{Restricted Local Access Roads} were removed, as were roads with a length of less than 50m, often those clipped by the extent of the LiDAR data.
 
 \section{Road Angles}\label{sec:angles}
 
-The angle of bends in roads were identified through the nodes produced in the creation of the road shapefiles. First the road linestrings were split into points, with coordinates representing each node within a road, a point at which the orientation of the linestring is altered.
+The angle of each bend in a road were identified through the nodes produced in the creation of the road shapefiles. First the road linestrings were split into points, with coordinates representing each node within a road, a point at which the orientation of the linestring is altered, (See Figure \ref{fig:bearingang1} \ref{fig:bearingang2} for illustrations of road nodes).
 
 The bend in a road was considered to be the \textit{bearing angle} $\hat \theta$, from a node $\mathbf{N}_i = \left(x_{i}, y_{i}\right)$ to a node $\mathbf{N}_{i+1} = \left(x_{i+1}, y_{i+1}\right)$, with the angle measured in a clockwise direction from north. This is represented on Figure \ref{fig:bearingang1}.
 
@@ -210,7 +210,7 @@ The bend in a road was considered to be the \textit{bearing angle} $\hat \theta$
 \caption{Bearing Angle ($\theta$) between two sequential road Nodes, $\mathbf{N}_{i}$ and $\mathbf{N}_{i+1}$, North is given by $N$}\label{fig:bearingang1}
 \end{figure}
 
-To find the angle $\theta$, the node $\mathbf{N}_{i+1}$ can be represented into relation to node $\mathbf{N}_{i}$ as;
+To find the angle $\hat \theta$, the node $\mathbf{N}_{i+1}$ can be represented into relation to node $\mathbf{N}_{i}$ as;
 
 $$
 \left(x_{i+1}, y_{i+1}\right)=\left(x_{i}+r \sin \theta, y_{i}+r \cos \theta\right)
@@ -233,7 +233,7 @@ $$
 
 \[
     \begin{aligned}
-\theta=\left\{\begin{array}{ll}{\hat{\theta},} & {\hat{\theta} \geq 0} \\
+\hat \theta=\left\{\begin{array}{ll}{\hat{\theta},} & {\hat{\theta} \geq 0} \\
 {2 \pi+\hat{\theta},} & {\hat{\theta}<0}\end{array}\right.
 \end{aligned}
 \]
@@ -241,7 +241,19 @@ $$
     \footnotesize{\ref{code:road_angles}}
 \end{flushright}
 
-With the bearing angle of the first line segment ($\hat \theta_{_1}$) for a particular road, the change in orientation of the second  line segments between nodes $\mathbf{N}_2$ and $\mathbf{N}_3$ may be given as $\theta_{2} = \theta_{2} - \theta_{1}$, with additional nodes following the pattern $\theta_{i} = \theta_{i} - \theta_{i-1}$.
+With the bearing angle of the first line segment ($\hat \theta_{1}$) for a particular road, the change in orientation of the second  line segments between nodes $\mathbf{N}_2$ and $\mathbf{N}_3$ may be given;
+
+\[
+    \begin{aligned}
+\hat{\theta}_2=& \mathrm{atan} 2\left(x_{2}-x_{1}, y_{2}-y_{1}\right) - 
+& \mathrm{atan} 2\left(x_{3}-x_{2}, y_{2}-y_{2}\right) 
+\end{aligned}
+\]
+\begin{flushright}
+    \footnotesize{\ref{code:road_angles}}
+\end{flushright}
+
+as $\theta_{2} = \theta_{2} - \theta_{1}$, with additional nodes following the pattern $\theta_{i} = \theta_{i} - \theta_{i-1}$. Illustrated on Figure \ref{fig:bearingang2}.
 
     \begin{figure}[htbp]
         \centering
@@ -266,7 +278,7 @@ With the bearing angle of the first line segment ($\hat \theta_{_1}$) for a part
     \draw[<-] (0.9,.75) arc (45:90:.1);
     \node[] at (.88,.8)  {$\hat \theta_{2}$};
 \end{tikzpicture}
-\caption{Bearing Angle Between two Road Segments}
+\caption{Bearing Angle between the first ($\mathbf{N}_1$) and second node ($\mathbf{N}_2$) giving $\hat \theta_1$, the second and third node ($\mathbf{N}_3$) giving $\hat \theta_2$ for a single road)}
 \label{fig:bearingang2}
 \end{figure}
 
