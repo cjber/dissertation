@@ -16,7 +16,7 @@ opts_knit$set(self.contained = TRUE)
 # Defaults
 opts_chunk$set(
   fig.align = "center", fig.pos = "tb",
-  cache = TRUE, autodep = TRUE, echo = FALSE,
+  cache = FALSE, autodep = FALSE, echo = FALSE,
   cache.path = "data/cache/",
   message = FALSE, size = "footnotesize",
   background = rgb(0.97, 0.97, 0.97),
@@ -140,7 +140,7 @@ An automated method for the identification of rural road geometric features is p
 
 \chapter{Introduction}
 \label{ch:introduction}
-<<introduction, child = "01_introduction/introduction.rnw">>=
+<<introduction, child = "01_introduction/introduction.rnw", cache = T, autodep = T>>=
 @
 
 \chapter{Literature Review}
@@ -155,7 +155,7 @@ An automated method for the identification of rural road geometric features is p
 
 \chapter{Results}
 \label{ch:results}
-<<results, child = "04_results/results.rnw">>=
+<<results, child = "04_results/results.rnw", cache = T, autodep = T>>=
 @
 
 \chapter{Discussion}

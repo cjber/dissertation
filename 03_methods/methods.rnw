@@ -317,7 +317,7 @@ Surface quality was assessed roughly through the range in intensity values found
 
 \noindent where $spi$ represents LiDAR point intensities with a single pulse return and ground classified, and $\Delta q(\mathbf{N}_1, \mathbf{N}_2, \dots, \mathbf{N}_i)$ represents the total change in road surface quality per road, measured by the range of intensity values.
 
-\section{Road Width}
+\section{Road Width}\label{sec:road_width}
 
 \subsection{Road Sampling}
 
@@ -514,7 +514,7 @@ The full point cloud $\mathbf{S}$ now gave of a collection of predicted road poi
 \caption{Road LiDAR points at maximum distance apart for each sample location. Showing two example sample locations ($\mathbf{A}$ and $\mathbf{B}$), road centreline represented by the thick grey line. True road width is indicated by the dashed lines $b_\mathbf{A}$ and $b_\mathbf{B}$, considered to be the adjacent side of a triangle in relation to be bearing angles between the first and second point of each sample, $\theta_\mathbf{A}$ and $\theta_\mathbf{B}$. The distance between the two points per sample are considered to give the hypotenuse length of a triangle ($h_\mathbf{A}$ and $h_\mathbf{B}$).}\label{fig:sample_points}
 \end{figure}
 
-Given the two selected points at every sample with a maximum distance between them, trigonometry could be used to determine the width of the road at that particular location. Road width is considered to be the adjacent line length ($b_\mathbf{K}$; where $\mathbf{K}$ is a single sample location), perpendicular to the road segment, considering the distance between the two points to be the hypotenuse  of a right angled triangle (Figure \ref{fig:sample_points}; $|\mathbf{K}_1\mathbf{K}_2| \equiv h_\mathbf{K}$). The average width for each road identifier was then found, for a sample location $\mathbf{K}$, this may be expressed using trigonometry as;
+Given the two selected points at every sample with a maximum distance between them, trigonometry could be used to determine the width of the road at that particular location. Road width is considered to be the adjacent line length ($b_\mathbf{K}$; where $\mathbf{K}$ is a single sample location), perpendicular to the road segment, considering the distance between the two points to be the hypotenuse  of a right angled triangle (Figure \ref{fig:sample_points}; $|\mathbf{K}_1\mathbf{K}_2| \equiv h_\mathbf{K}$). The width $b_\mathbf{K}$ for each sample location was found, this may be expressed using trigonometry as;
 
 \[
 \begin{aligned}
@@ -525,7 +525,7 @@ Given the two selected points at every sample with a maximum distance between th
     \footnotesize{\ref{code:opposite_length}}
 \end{flushright}
 
-\noindent where $b_\mathbf{K}$ gives the true predicted of a road for the sample $\mathbf{K}$. With a complete set of calculated road widths for each sample, any width above 8m was removed, in addition to any width below 2m, under the assumption that a width calculated outside these limits would be caused due to noise or inaccuracy.
+\noindent where $b_\mathbf{K}$ gives predicted of a road at a sample $\mathbf{K}$. With a complete set of calculated road widths for each sample, any width above 8m was removed, in addition to any width below 2m, under the assumption that a width calculated outside these limits would be caused due to noise or inaccuracy.
 
 There is the possibility that the maximum distance between two points does not provide the maximum perpendicular distance across a road section. Such a situation would arise given a triangle formed that is has an opposite length ($a_\mathbf{K}$) above the adjacent length ($b_\mathbf{K}$), giving a hypotenuse ($h_\textbf{K}$) with a longer vertical length. However, given the maximum opposite line length between two points in a sample line is 2m, (each sample is 2m by 60m), for any line where the opposite length is greater than the adjacent length, the adjacent length must therefore be below 2m and thus, the road width calculated from this sample is removed during the filtering process.
 
@@ -543,7 +543,7 @@ $$
 
 With the mid point of each classified road sample, these were than joined for form new centrelines, and a further linear probability model was ran and compared.
 
-Given the improvement in road centreline locations, it was considered feasible to construct linear probability models individually for each sample location on each road. This technique would allow for per road variation in material type or quality, and potentially reduce the amount of noise brought in from inaccurate centrelines. Preliminary testing of this method revealed that it was essential to remove any sample containing tree canopy, as given the small number of points, the predictions were based off points that misrepresented true road points. While points are generally able to penetrate the canopy, the intensity values produces by these points was reduced, and removed the distinction between road intensity values, and vegetation. This analysis of the LiDAR data is described in more detail in chapter \ref{ch:results}. Additionally, due to the reduced number of points, it was considered feasible to filter out points that gave model $p$ values below 0.05. For each individual model, if the $p$ value of any predictor or the outcome variable road was above 0.05, the sample location it was associated with was removed. This may be expressed as;
+Given the improvement in road centreline locations, it was considered feasible to construct linear probability models individually for each sample location on each road. This technique would allow for per road variation in material type or quality, and potentially reduce the amount of noise brought in from inaccurate centrelines. Preliminary testing of this method revealed that it was essential to remove any sample containing tree canopy, as the predictions were based off points that misrepresented true road points. While points are generally able to penetrate the canopy, the intensity values produces by these points was reduced, and removed the distinction between road intensity values, and vegetation. This analysis of the LiDAR data is described in more detail in Chapter \ref{ch:results}. Additionally, due to the reduced number of points, it was considered feasible to filter out points that gave model $p$ values below 0.05. For each individual model, if the $p$ value of any predictor or the outcome variable road was above 0.05, the sample location it was associated with was removed in an attempt to improve the reliability of results. This may be expressed as;
 
 $$
 \mathbf{S} = \Big(s_i \in \Big[p_s < 0.05 \Big]\Big).
@@ -555,7 +555,7 @@ $$
 
 \subsection{Final Model Analysis}
 
-To aid with model interpretability, the direct comparison between each variable in the analysis was enabled through centering and scaling through the use of beta coefficients \citep{peterson2005};
+To aid with model interpretability, the direct comparison between each variable in the analysis was enabled through centering and scaling with the use of beta coefficients \citep{peterson2005};
 
 $$
 \beta_{p}=\frac{\operatorname{Cov}\left(r_{p}, r_{b}\right)}{\operatorname{Var}\left(r_{b}\right)}
@@ -566,7 +566,7 @@ $$
 
 \subsection{Estimate of True Widths}
 
-QGIS \citep{QGIS} was used to measure the width at various points along each road using 25cm resolution aerial imagery, avoiding stretches of road with canopy cover that obscured the true road width. With the widths, the results of each model was compared to assess model accuracy. Each width was normalised to allow comparison between each road, and to give a final average accuracy value. Normalisation was achieved through finding the relative difference in width as a percentage;
+QGIS \citep{QGIS} was used to manually measure the width at various points along each road using 25cm resolution aerial imagery, avoiding stretches of road with canopy cover that obscured the true road width. With the widths, the results of each model was compared to assess model accuracy. Each width was normalised to allow comparison between each road, and to give a final average accuracy value. Normalisation was achieved through finding the relative difference in width as a percentage;
 
 \[
 \begin{aligned}
@@ -597,15 +597,15 @@ m \mapsto \frac{m-r_{\min }}{r_{\max }-r_{\min }},
 \end{aligned}
 \]
 
-\noindent where $r_{\text {min }}$ denotes the minimum of the range of a variable,  $r_{\text {max }}$ denotes the maximum of the range of a variable, and $m \in\left[r_{\text {min }}, r_{\text {max }}\right]$ denotes the variable to be scaled. As an increase in road width is associated with a higher quality road, as opposed to larger values of each other variable indicating a poorer quality road, the width values were first inversed before normalisation. An additional variable, relitability was presented in addition to the RQI, which gives a value for the number of points per road length, ($P_n/L$), allowing for some information regarding the density of sample points to be considered in analysis.
+\noindent where $r_{\text {min }}$ denotes the minimum of the range of a variable,  $r_{\text {max }}$ denotes the maximum of the range of a variable, and $m \in\left[r_{\text {min }}, r_{\text {max }}\right]$ denotes the variable to be scaled. As an increase in road width is associated with a higher quality road, as opposed to larger values of each other variable indicating a poorer quality road, the width values were first inversed before normalisation. An additional variable, reliability was presented in addition to the RQI, which gives a value for the number of points per road length, ($P_n/L$), allowing for some information regarding the density of sample points to be considered in analysis.
 
 Following normalisation, the sum of all normalised variables for a particular road were taken, and subtracted from 1 to give positive values indicating better quality roads, and lower values indicating lower quality roads. These variables involved in the creation of this index are;
 
 \begin{itemize}
-    \item \textbf{Road Width:} Extracted through linear probability classification of the road surface using LiDAR data (Section \ref{sec:lpm})
     \item \textbf{Road Angles:} The bearing angle change in road direction, considering the initial road direction as a bearing angle of 0$^{\circ}$ (Section \ref{sec:angles})
     \item \textbf{Road Elevation Change:} The change in elevation for each node in a road, extracted from LiDAR data, giving a total elevation change for a full road (Section \ref{sec:elev})
     \item \textbf{Road Surface Quality:} The total range of intensity values for each node in a road, extracted from the LiDAR point cloud for points that did not return more than a single pulse (Section \ref{sec:qual})
+    \item \textbf{Road Width:} Extracted through linear probability classification of the road surface using LiDAR data (Section \ref{sec:road_width})
 \end{itemize}
 
 The value obtained from this is referred to as the Road Quality Index, presented in full on Table \ref{tab:rqi}.

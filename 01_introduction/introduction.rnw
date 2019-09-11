@@ -67,7 +67,7 @@ Often road classification methodologies use LiDAR height data to identify kerbs 
 
 LiDAR data often requires a large amount of processing due to the irregular distribution of points, presence of noise and the number of variables that have to be considered, \cite{yadav2018} note that often papers do not include information regarding the computational time for processing this data which may cause practical limitations at larger scales.
 
-<<area_map, fig.cap="Study area highlighting road centrelines, each colour represents a seperate 'road' as defined by the OS Data provided. Thicker roads are B roads, while thinner are Unclassified. The inset map gives shows an example road, with features typical of roads within this study area.", fig.pos = "t", cache = T, autodep = T>>=
+<<area_map, fig.cap="Study area highlighting road centrelines, each colour represents a seperate 'road' as defined by the OS Data provided. Thicker roads are B roads, while thinner are Unclassified. The inset map gives shows an example road, with features typical of roads within this study area.", fig.pos = "t" >>=
 source("../scripts/functions.r")
 rd_l <- st_read("../data/derived/roads/roads.gpkg", quiet = T) %>%
   st_set_crs(27700)

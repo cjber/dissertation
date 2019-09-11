@@ -94,7 +94,6 @@ While it may appear that many of these issues are inherent to rural areas, and u
 
 Supply chains rely on a well maintained road infrastructure, and as such, many rural areas are considered to be (economically) "Lagging Rural Regions", due to their geographical remoteness, poor infrastructures, low population density and limited employment opportunities, often supported economically by an agricultural backbone \citep{ilbery2004}. Improving the economy of such areas therefore relies primarily on the effectiveness of the supply chains, often limited due to the poor infrastructures \citep{marsden2002}, and recent demand for large scale supply chains is limited in these areas due to the overall quality of the road network. To further understand the limitations of rural supply chains inherently relies on a full understanding of the road network, whether to acknowledge where limitations exist, or to develop opportunities for optimisation of the supply chains. Similarly, \cite{bosona2011} call for location analysis of supply chains through quantifiable data, to better optimise supply routes.
 
-
 \section{Current Limitations of this Method}
 
 
