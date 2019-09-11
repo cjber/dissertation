@@ -104,7 +104,7 @@ At present the removal of noise at the final stage of the road classification co
 
 Alternatives to Linear Probability models do exist when considering binary outcome variables, one being probabilistic regression, which takes the cumulative standard normal distribution function ($\Phi$) to model the regression. Interpretability of results may be aided through this method as it includes consideration of the quantiles associated with a unit change in outcome variables. Additionally logistic (and probabilistic) regression, unlike simple linear regression do not take the assumption that there is a linear distribution in the outcome, weighting values more towards 1 or 0, conforming more with the distribution of a binary outcome variable \citep[See Figure \ref{fig:csnd};][]{hanck2019}. However, preliminary analysis of the methodology performed in this study did consider a logistic regression, but found that interpretability of the quantiles and results was difficult, and qualitative observation of the results did not appear to provide much benefit over linear regression.
 
-\begin{figure}[b]
+\begin{figure}[t]
     \centering
 \begin{tikzpicture}[scale=1]
 \tikzset{

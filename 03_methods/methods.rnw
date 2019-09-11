@@ -241,19 +241,19 @@ $$
     \footnotesize{\ref{code:road_angles}}
 \end{flushright}
 
-With the bearing angle of the first line segment ($\hat \theta_{1}$) for a particular road, the change in orientation of the second  line segments between nodes $\mathbf{N}_2$ and $\mathbf{N}_3$ may be given;
+With the bearing angle of the first line segment ($\hat \theta_{1}$) for a particular road, the change in orientation of the second  line segment between nodes $\mathbf{N}_2$ and $\mathbf{N}_3$ may be given;
 
 \[
-    \begin{aligned}
-\hat{\theta}_2=& \mathrm{atan} 2\left(x_{2}-x_{1}, y_{2}-y_{1}\right) - 
-& \mathrm{atan} 2\left(x_{3}-x_{2}, y_{2}-y_{2}\right) 
+\begin{aligned}
+\hat{\theta}_2= &\mathrm{atan} 2\left(x_{3}-x_{2}, y_{3}-y_{2}\right) - \\
+&\mathrm{atan} 2\left(x_{2}-x_{1}, y_{2}-y_{1}\right),
 \end{aligned}
 \]
 \begin{flushright}
     \footnotesize{\ref{code:road_angles}}
 \end{flushright}
 
-as $\theta_{2} = \theta_{2} - \theta_{1}$, with additional nodes following the pattern $\theta_{i} = \theta_{i} - \theta_{i-1}$. Illustrated on Figure \ref{fig:bearingang2}.
+\noindent or simply written as $\hat \theta_{2} = \hat \theta_{2} - \hat \theta_{1}$, with additional nodes following the pattern $\hat \theta_{i} = \hat \theta_{i} - \hat \theta_{i-1}$. Figure \ref{fig:bearingang2} illustrates this for nodes 1 to 3, indicating the bearing angle $\hat \theta_2$ in relation to the bearing angle $\hat \theta_1$, rather than in relation to the north ($N$).
 
     \begin{figure}[htbp]
         \centering
@@ -278,7 +278,7 @@ as $\theta_{2} = \theta_{2} - \theta_{1}$, with additional nodes following the p
     \draw[<-] (0.9,.75) arc (45:90:.1);
     \node[] at (.88,.8)  {$\hat \theta_{2}$};
 \end{tikzpicture}
-\caption{Bearing Angle between the first ($\mathbf{N}_1$) and second node ($\mathbf{N}_2$) giving $\hat \theta_1$, the second and third node ($\mathbf{N}_3$) giving $\hat \theta_2$ for a single road)}
+\caption{Bearing Angle between the first ($\mathbf{N}_1$) and second node ($\mathbf{N}_2$) giving $\hat \theta_1$ in relation to the north ($N$). Bearing angle for and third node ($\mathbf{N}_3$) giving $\hat \theta_2$ in relation to the bearing angle $\hat \theta_1$}
 \label{fig:bearingang2}
 \end{figure}
 
@@ -290,18 +290,21 @@ The elevation change between two road node points was calculated by first select
 
 \[
 \begin{aligned}
-    \Delta e(\mathbf{N}_i, \mathbf{N}_{i+1}) = \Delta \left(\overline{lpz} \in  A(\mathbf{N}_i)\times 1, \overline{lpz} \in  A(\mathbf{N}_{i+1})\times 1\right),
+    \Delta e(\mathbf{N}_i, \mathbf{N}_{i+1}) = \Delta \left\{\begin{array}{ll}
+    \overline{spz} \in  \left[A(\mathbf{N}_i)\times 1\right], \\
+    \overline{spz} \in  \left[A(\mathbf{N}_{i+1})\times 1\right]
+\end{array}\right.,
 \end{aligned}
 \]
 \begin{flushright}
     \footnotesize{\ref{code:height_change}}
 \end{flushright}
 
-\noindent where $\Delta e(\mathbf{N}_i, \mathbf{N}_{i+1})$ is the change in elevation between sequential nodes $\mathbf{N}_i$ and $\mathbf{N}_{i+1}$, taking the change in mean last pulse values ($\overline{lpz}$) within a 1m$^2$ buffer of each node.
+\noindent where $spz$ are the $z$ values for ground classified points with a single return, and $\Delta e(\mathbf{N}_i, \mathbf{N}_{i+1})$ is the change in elevation between sequential nodes $\mathbf{N}_i$ and $\mathbf{N}_{i+1}$, taking the change in mean single return pulse point $z$ values ($\overline{spz}$) within a 1m$^2$ buffer of each node.
 
 \section{Surface Quality}\label{sec:qual}
 
-Surface quality was assessed roughly through the range in intensity values found at a 1m$^2$ area around each road node. To ensure there was no inaccuracy in intensity values caused by later returns passing through a canopy, only points that had a single return pulse were used in this analysis;
+Surface quality was assessed roughly through the range in intensity values found at a 1m$^2$ area around each road node. Again, to ensure there was no inaccuracy in intensity values caused by later returns passing through a canopy, only points that had a single return pulse and classified as ground were used in this analysis;
 
 \[
 \begin{aligned}
@@ -312,7 +315,9 @@ Surface quality was assessed roughly through the range in intensity values found
     \footnotesize{\ref{code:surface_qual}}
 \end{flushright}
 
-\noindent where $spi$ represents LiDAR point intensities with a single pulse return, and $\Delta q(\mathbf{N}_1, \mathbf{N}_2, \dots, \mathbf{N}_i)$ represents the total change in road surface quality per road, measured by the range of intensity values.
+\noindent where $spi$ represents LiDAR point intensities with a single pulse return and ground classified, and $\Delta q(\mathbf{N}_1, \mathbf{N}_2, \dots, \mathbf{N}_i)$ represents the total change in road surface quality per road, measured by the range of intensity values.
+
+\section{Road Width}
 
 \subsection{Road Sampling}
 
@@ -411,9 +416,9 @@ $$
     \footnotesize{\ref{code:lm_compute}}
 \end{flushright}
 
-\section{Linear Probability Models and Road Width}\label{sec:lpm}
+\subsection{Linear Probability Models and Road Width}\label{sec:lpm}
 
-For a supervised classification of roads, first the outcome variable "road" was estimated by classifying all points within a 2m buffer of the known road centrelines as road, and all points outside this as non-road. To classify road and non-road, linear models were constructed in relation to this outcome variable, and compared to assess effectiveness. A maximal approach was chosen, selecting all appropriate predictor variables, iterating through models by removing variables that did not significantly influence the model outcome, or created noise.
+For a supervised classification of roads, first the outcome variable \textit{road} was estimated by classifying all points within a 2m buffer of the known road centrelines as road, and all points outside this as non-road. To further classify road and non-road, linear models were constructed in relation to this outcome variable, and compared to assess effectiveness. A maximal approach was chosen, selecting all appropriate predictor variables, iterating through models by removing variables that did not significantly influence the model outcome, or created noise.
 
 In addition to the variables provided by the LiDAR and aerial data, the variable $Dist$ was created and included, representing the shortest distance from a point to the centreline of the road it is associated with, considering that road points should be weighted more towards points that are closer to the centre-point of the road.
 
@@ -447,14 +452,14 @@ Likelihood values from the predictions gave a range of numerical values. Points 
 
 \[
 \begin{aligned}
-\mathbf{S} &= \Big(\mathbf{p}_i \in \Big[\frac{x}{100} \times \mathbf{p}_{i_{lm}}\Big]\Big), \\
+\mathbf{S} &= \Big(\mathbf{p}_i \in \Big[\frac{x}{100} \times lm\Big]\Big), \\
 \end{aligned}
 \]
 \begin{flushright}
     \footnotesize{\ref{code:lm_compute}}
 \end{flushright}
 
-\noindent where $\mathbf{S}$ is the total point cloud.
+\noindent where $\mathbf{S}$ is the total point cloud and $lm$ is the value assigned to a point $\mathbf{p}_i$ indicating the likelihood that the point is part of the road surface.
 
 Further qualitative assessment of the results revealed that some points considered to be noise were still present, but often isolated. To ensure no isolated points were present, the minimum distance between each point, and the nearest neighbouring point was checked, if a single point was considered isolated, with over 1m between it and any other point, it was removed. This may be expressed as;
 
@@ -470,7 +475,7 @@ Further qualitative assessment of the results revealed that some points consider
 
 \noindent given $\mathit{D}$ is the minimum distance between a point and any other point.
 
-$\mathbf{S}$ now gave of a collection of predicted road points for each sample line along a road segment, with noise removed.  To obtain road widths from these points, the maximum distance between two points in a particular sample was determined, these points were kept and all others removed. A linear section of road with two samples resembles Figure \ref{fig:sample_points}.
+The full point cloud $\mathbf{S}$ now gave of a collection of predicted road points for each sample line along a road segment, with noise removed.  To obtain road widths from these points, the maximum distance between two points in a particular sample was determined, these points were kept and all others removed. A linear section of road with two samples resembles Figure \ref{fig:sample_points}.
 
 \begin{flushright}
     \footnotesize{\ref{code:max_dist}}
@@ -509,7 +514,7 @@ $\mathbf{S}$ now gave of a collection of predicted road points for each sample l
 \caption{Road LiDAR points at maximum distance apart for each sample location. Showing two example sample locations ($\mathbf{A}$ and $\mathbf{B}$), road centreline represented by the thick grey line. True road width is indicated by the dashed lines $b_\mathbf{A}$ and $b_\mathbf{B}$, considered to be the adjacent side of a triangle in relation to be bearing angles between the first and second point of each sample, $\theta_\mathbf{A}$ and $\theta_\mathbf{B}$. The distance between the two points per sample are considered to give the hypotenuse length of a triangle ($h_\mathbf{A}$ and $h_\mathbf{B}$).}\label{fig:sample_points}
 \end{figure}
 
-Given the two selected points at every sample with a maximum distance between them, trigonometry could be used to determine the width of the road at that particular location. Road width is considered to be the adjacent line length ($b_\mathbf{K}$; where $\mathbf{K}$ is a single sample location), perpendicular to the road segment, considering the distance between the two points to be the hypotenuse ($|\mathbf{K}_1\mathbf{K}_2| \equiv h_\mathbf{K}$) of a right angled triangle (Figure \ref{fig:sample_points}). The average width for each road identifier was then found, for a sample location $\mathbf{K}$, this may be expressed using trigonometry as;
+Given the two selected points at every sample with a maximum distance between them, trigonometry could be used to determine the width of the road at that particular location. Road width is considered to be the adjacent line length ($b_\mathbf{K}$; where $\mathbf{K}$ is a single sample location), perpendicular to the road segment, considering the distance between the two points to be the hypotenuse  of a right angled triangle (Figure \ref{fig:sample_points}; $|\mathbf{K}_1\mathbf{K}_2| \equiv h_\mathbf{K}$). The average width for each road identifier was then found, for a sample location $\mathbf{K}$, this may be expressed using trigonometry as;
 
 \[
 \begin{aligned}
