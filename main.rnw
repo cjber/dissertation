@@ -3,6 +3,7 @@
 % DO NOT EDIT THE TEX FILE DIRECTLY
 % ===========================================================================================================
 
+
 \documentclass[a4paper, notitlepage]{extreport}
 
 \input{template/preamble}
@@ -172,7 +173,7 @@ An automated method for the identification of rural road geometric features is p
 % Bibliography
 % ===========================================================================================================
 
-\bibliographystyle{agsm}
+\bibliographystyle{jss}
 \linespread{1}
 \bibliography{kbib, rbib}
 

@@ -734,7 +734,7 @@ gg_ba <- ggRGB(ba) +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0))
 @
-<<rqi_compare, fig.cap = "Visual comparison between road with the highest RQI \\textbf{(A)}, and lowest RQI \\textbf{(B)}, original centrelines are given in red, with derived centrelines given in green", fig.showtext=TRUE>>=
+<<rqi_compare, fig.cap = "Visual comparison between road with the \\textbf{(A)} highest RQI , \\textbf{(B)} and lowest RQI , original centrelines are given in red, with derived centrelines given in green.", fig.showtext=TRUE>>=
 plot_grid(
           gg_ta,
           gg_ba,
