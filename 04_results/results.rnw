@@ -5,13 +5,13 @@ time_taken <- read.csv("../scripts/time_taken.csv")
 time_taken <- time_taken$x
 @
 
-\lettrine{R}{esults} for the overall methodology are given in this chapter, covering the initial preprocessing of LiDAR and other data, and following onto the width extraction of roads, in addition to other geometric features. The primary goal is to critique the effectiveness of the proposed methodology, and provide a baseline for future improvements particularly in road classification and width extraction, while presenting the quantifiable results in a way that relates to the overall quality of each road. Outlined in detail therefore is sensitivity analysis of the road classification models, presenting both qualitative and quantitative assessments of accuracy. Assessment of the improvement to road centreline locations is also covered, before a detailed look at the final results of the analysis, demonstrating how road feature extraction may inform the overall quality of a road, comparing the extracted data to aerial imagery for a visual assessment of the results.
+\lettrine{R}{esults} for the overall methodology are presented in this chapter, covering the initial preprocessing of LiDAR and other data, and following onto the width extraction of roads, in addition to other geometric features. The primary goal is to critique the effectiveness of the proposed methodology, and provide a baseline for future improvements particularly in road classification and width extraction, while presenting the quantifiable results in a way that relates to the overall quality of each road. Outlined in detail therefore is sensitivity analysis of the road classification models, presenting both qualitative and quantitative assessments of accuracy. Assessment of improvements made to road centreline locations is also covered, before a detailed look at the final results of the analysis, demonstrating how road feature extraction may inform the overall quality of a road, comparing the extracted data to aerial imagery for a visual assessment of the results.
 
 As noted in Section \ref{sec:overview}, computation time is considered an important aspect of this analysis. The total time taken, including all data preprocessing, perpendicular sample line extraction, LiDAR sample extraction, construction of linear models, reprocessing of road centrelines, road feature extraction, and further analysis is $\Sexpr{round(time_taken, 2)}$ minutes.
 
 \section{Data Preprocessing}
 
-Table \ref{tab:lidartab} indicates that there are likely some points with noise, particularly reflected by the highest intensity value ($\Sexpr{max(lidar_tab$Intensity)}$) relative to its standard deviation ($\Sexpr{round(sd(lidar_tab$Intensity),0)}$), with 99\% of observations within the range of 0 to \Sexpr{quantile(lidar_tab$Intensity, .99)}. As noted in previous LiDAR classification methods, intensity is often subject to noise, therefore a simplistic noise exclusion technique \citep{lidR} was considered, as described in Section \ref{subsec:noise}.
+Table \ref{tab:lidartab} indicates that there are likely some points with noise, particularly reflected by the highest intensity value ($\Sexpr{max(lidar_tab$Intensity)}$) relative to the standard deviation ($\Sexpr{round(sd(lidar_tab$Intensity),0)}$), with 99\% of observations within the range of \Sexpr{round(min(lidar_tab$Intensity), 0)} to \Sexpr{quantile(lidar_tab$Intensity, .99)}. As noted in previous LiDAR classification methods, intensity is often subject to noise, therefore a simplistic noise exclusion technique \citep{lidR} was considered, as described in Section \ref{subsec:noise}.
 
 <<hist_lidar, fig.cap="Post noise filtering LiDAR point cloud distribution of; \\textbf{(A)} Intensity, and \\textbf{(B)} Luminescence", fig.showtext=TRUE, fig.height = 3>>=
 showtext_auto()
@@ -196,7 +196,7 @@ mult_return <- clean_las %>%
   mean()
 @
 
-<<fig_lp, fig.cap = "LiDAR point clouds for one selected road section aggregated into 2m$^2$ grids, \\textbf{(A)} Base point cloud $z$ values, road location indicated with a 30m buffer \\textbf{(B)} Normalised Point cloud $z$ values for only last returns ($lpz$) \\textbf{(C)} Normalised Point cloud $Intensity$ values for last returns, \\textbf{(D)} Aerial Data combined to 1 band", fig.showtext=TRUE>>=
+<<fig_lp, fig.cap = "LiDAR point clouds for one selected road aggregated into 2m$^2$ grids, \\textbf{(A)} Base point cloud $z$ values, road location indicated with a 30m buffer \\textbf{(B)} Normalised Point cloud $z$ values for only last returns ($lpz$) \\textbf{(C)} Normalised Point cloud $Intensity$ values for last returns, \\textbf{(D)} Aerial Data combined to 1 band", fig.showtext=TRUE, fig.pos = "b">>=
 plot_grid(
   chm_gg,
   dsm_lp_gg,
@@ -209,9 +209,9 @@ plot_grid(
 )
 @
 
-Following intensity noise filtering, the highest intensity value was now $\Sexpr{max(clean_las$Intensity)}$, with a mean of $\Sexpr{round(mean(clean_las$Intensity), 0)}$. Figure \ref{fig:hist_lidar} \textbf{(A)} gives the distribution of Intensity values for all points within the study area, showing two clear spikes in intensity, at at value of around 50, with another around 350. This is reflected similarity in the Luminescence values, with two peaks at around 50 and 120 (Figure \ref{fig:hist_lidar} \textbf{(B)}).
+Following intensity noise filtering, the highest intensity value was now $\Sexpr{max(clean_las$Intensity)}$, with a standard deviation of $\Sexpr{round(sd(clean_las$Intensity), 0)}$. Figure \ref{fig:hist_lidar} \textbf{(A)} gives the distribution of Intensity values for all points within the study area, showing two clear spikes in intensity, at at value of around 50, with another around 350. This is reflected similarity in the Luminescence values, with two peaks at around 50 and 120 (Figure \ref{fig:hist_lidar} \textbf{(B)}).
 
-Figure \ref{fig:fig_lp} gives the results of further LiDAR preprocessing, comparing Figure \ref{fig:fig_lp} \textbf{(A)} and Figure \ref{fig:fig_lp} \textbf{(B)}, shows how last pulse LiDAR filtering allows for the removal of the majority of tree canopies, leaving only ground points that are considered hard surfaces, and as such are the lowest point the laser pulse has penetrated. Additionally, Figure \ref{fig:fig_lp} \textbf{(B)} shows how a digital terrain model, created through interpolation techniques, using only the base point cloud may be used to normalise the points, giving a digital surface model which only shows the true height of surface objects, without having to consider the variation in lie of the land. However, Figure \ref{fig:fig_lp} \textbf{(C)} indicates that while filtering for last pulse returns may appear to remove much of the canopy, reflected in the $z$ values, the intensity values for points that have penetrated the canopy are lower than those that did not (See the tree just below the centre of the road section). This particularly creates issues in the distinction between road and non road in neighbouring areas where the intensity "shadow" created removes the distinct difference in intensity. This suggests that for ground points with multiple returns, the intensity values are likely far less reliable for road classification. Quantitative analysis of this limitation reveals that for ground classified points with a single return the average intensity value is $\Sexpr{round(one_return,2)}$, while for ground classified points with multiple returns, the average intensity value is $\Sexpr{round(mult_return,2)}$.
+Figure \ref{fig:fig_lp} gives the results of further LiDAR preprocessing, comparing Figure \ref{fig:fig_lp} \textbf{(A)} and Figure \ref{fig:fig_lp} \textbf{(B)}, shows how last pulse LiDAR filtering allows for the removal of the majority of tree canopies, leaving only ground points that are considered hard surfaces, and as such are the lowest point the laser pulse has penetrated. Additionally, Figure \ref{fig:fig_lp} \textbf{(B)} shows how a digital terrain model, created through interpolation techniques, using only the base point cloud may be used to normalise the points, giving a digital surface model which only shows the true height of surface objects, without having to consider the variation in lie of the land. However, Figure \ref{fig:fig_lp} \textbf{(C)} indicates that while filtering for last pulse returns may appear to remove much of the canopy, reflected in the $z$ values, the intensity values for points that have penetrated the canopy are lower than those that did not (See the tree just below the centre of the road). This particularly creates issues in the distinction between road and non road in neighbouring areas where the intensity "shadow" created removes the distinct difference in intensity. This suggests that for ground points with multiple returns, the intensity values are likely far less reliable for road classification. Quantitative analysis of this limitation reveals that for ground classified points with a single return the average intensity value is $\Sexpr{round(one_return,2)}$, while for ground classified points with multiple returns, the average intensity value is $\Sexpr{round(mult_return,2)}$.
 
 \section{Perpendicular Sampling}
 
@@ -231,7 +231,7 @@ Using the 30m buffer from known road locations, and sample line extraction, the 
 
 \section{Linear Probability Model Sensitivity Analysis}
 
-Selected based on literature, and correlation analysis of the variables (Table \ref{tab:corr}), the first model was constructed to include all variables of importance from the LiDAR point cloud, $z$, Intensity, and Number of Returns. Additionally, luminescence from aerial imagery was included, and the minimum distance of a point from the known road centreline location.
+Selected based on literature, and correlation analysis of the variables (See \textbf{Appendix B}, Table \ref{tab:corr}), the first model was constructed to include all variables of importance from the LiDAR point cloud, $z$, Intensity, and Number of Returns. Additionally, luminescence from aerial imagery was included, and the minimum distance of a point from the known road centreline location.
 
 
 <<lmdistributions, fig.cap = "Linear Model Probability Distributions for the Maximal Model, showing vertical lines at the 95th, 90th, and 80th quantile of the distribution", fig.height = 5>>=
@@ -359,7 +359,7 @@ q80 <- ggRGB(aerial) +
   scale_y_continuous(expand = c(0, 0))
 @
 
-<<quant_fig, fig.cap = "Comparison between Linear Prediction Quantiles; \\textbf{(A)} 95th Quantile, \\textbf{(B)} 90th Quantile, \\textbf{(C)} 80th Qunatile", fig.showtext=TRUE>>=
+<<quant_fig, fig.cap = "Comparison between Linear Prediction Quantiles; \\textbf{(A)} 95th Quantile, \\textbf{(B)} 90th Quantile, \\textbf{(C)} 80th Quantile", fig.showtext=TRUE, fig.pos = "b">>=
 plot_grid(
   q95,
   q90,
@@ -372,7 +372,7 @@ plot_grid(
 )
 @
 
-Figure \ref{fig:quant_fig} reveals that qualitatively, the optimal choice for a quantile filtering of the linear probability distribution is likely the 95th quantile (Figure \ref{fig:quant_fig} \textbf{(A)}). However, observation of the southern section of Figure \ref{fig:quant_fig} \textbf{(A)} reveals that inaccurate centreline locations have led to an incomplete linear model analysis. To compensate for this, a further method proposed aims to improve the accuracy of the given road centreline locations. Additionally, Figure \ref{fig:lmdistributions} reveals that for the 95th quantile probability values, shadow from road hedgerows appears to reduce the model accuracy, as noticeable towards the top end of the road. For this reason, a second model was constructed for later comparison, which removes the $luminescence$ information provided by the aerial imagery.
+Figure \ref{fig:quant_fig} reveals that qualitatively, the optimal choice for a quantile filtering of the linear probability distribution is likely the 95th quantile (Figure \ref{fig:quant_fig} \textbf{(A)}). However, observation of the southern section of Figure \ref{fig:quant_fig} \textbf{(A)} reveals that inaccurate centreline locations have led to an incomplete linear model analysis. To compensate for this, a further method proposed aims to improve the accuracy of the given road centreline locations. Additionally, Figure \ref{fig:lmdistributions} reveals that for the 95th quantile probability values, shadow from road hedgerows appears to reduce the model accuracy, as noticeable towards the centre of the road. For this reason, a second model was constructed for later comparison, which removes the $luminescence$ information provided by the aerial imagery;
 
 \begin{equation}
 \begin{aligned}
@@ -481,7 +481,7 @@ gg_centi <- ggRGB(aerial) +
   scale_y_continuous(expand = c(0, 0))
 @
 
-<<fig_noisecent, fig.cap = "Comparison between Linear Probability models applied to; (A) OS Road Centrelines, and (B) Derived Centrelines. Green points give classified road locations, red show classified road locations removed through isolation based filtering", fig.showtext=TRUE, fig.pos = "b">>=
+<<fig_noisecent, fig.cap = "\\textbf{(A)} Comparison between original (red) and derived road centrelines (green). \\textbf{(B)} Second Linear Model (LM 2) applied to original centrelines. \\textbf{(C)} Second Linear Model (LM 2) applied to derived centrelines. \\textbf{(D)} Individual Linear Model (LM i) applied to derived centrelines. Each Linear Model probability quantile is selected as 95\\%, green points indicate road classified points, red indicate road classified points, removed through noise isolation filtering.", fig.showtext=TRUE, fig.pos = "b">>=
 plot_grid(
   ggcent,
   gg_cent0,
@@ -498,9 +498,9 @@ Qualitative comparison between the Linear Probability Model based off the origin
 
 \section{Final Model Analysis}
 
-For direct comparison between the two selected global linear probability models, centering and scaling of the predictor variables allowed for an easier interpretation of results, without affecting any statistical inferences. This was considered necessary as both P values and standard errors produced by global models offered little in terms of interpretability due to the very large number of points involved in this study. Centering and scaling was obtained through the production of beta coefficients with results given on Table \ref{tab:coeftest}. While the removal of $luminescence$ has had little effect on the other predictor coefficients, due to the very small influence of this coefficient, reflected by the normalised value (0.01), and the qualitative analysis of the issues due to shadows, is was considered an unnecessary addition. The other coefficients all give insight into their influence of the road outcome, for example for every 1 increase in the standard deviation in $dist$, the likelihood a point is to be a road point decreases by a standard deviation of 0.33. This therefore suggests that the inclusion of the $dist$ coefficient is important, despite not considered in other supervised road detection techniques.
+For direct comparison between the two selected global linear probability models, centering and scaling of the predictor variables allowed for an easier interpretation of results, without affecting any statistical inferences. This was considered necessary as both P values and standard errors produced by global models offered little in terms of interpretability due to the very large number of points involved in this study. Centering and scaling was obtained through the production of beta coefficients with results given on Table \ref{tab:coeftest}. While the removal of $luminescence$ had little effect on the other predictor coefficients, due to the very small influence of this coefficient, reflected by the normalised value (0.01), and the qualitative analysis of the issues due to shadows, is was considered an unnecessary addition. The other coefficients all give insight into their influence of the road outcome, for example for every 1 increase in the standard deviation in $dist$, the likelihood a point is to be a road point decreases by a standard deviation of 0.33. This therefore suggests that the inclusion of the $dist$ coefficient is important, despite not being considered in other supervised road detection techniques.
 
-Table \ref{tab:estwidths} gives a normalised comparison between each linear model, and its associated estimated road width. This gives insight into the effectiveness of various linear probability models for each road, and road type. While average values all give relative accuracy in the region of 70\%, it appears likely that without adjusting the road centrelines, model probabilities are reduced given \textbf{LM 0} gives the lowest average accuracy in relation to the other three models using improved centrelines for outcome variable creation. Unexpectedly, the roads with the highest accuracy are Local and Minor Roads, rather than B roads. For certain roads, the accuracy of the derived centrelines appear to vastly reduce model accuracy, (For example Road 14; Table \ref{tab:estwidths} and Figure \ref{fig:rqi_compare}).
+Table \ref{tab:estwidths} gives a normalised comparison between each linear model, and its associated estimated road width. This gives insight into the effectiveness of various linear probability models for each road, and road type. While average values all give relative accuracy in the region of 70\%, it appears likely that without adjusting the road centrelines, model probabilities are reduced, as \textbf{LM 0} gave the lowest average accuracy in relation to the other three models using improved centrelines for outcome variable creation. For certain roads, the accuracy of the derived centrelines appear to vastly reduce model accuracy, (For example Road 14; Table \ref{tab:estwidths} and Figure \ref{fig:rqi_compare}).
 
 <<coeftest, results = 'asis'>>=
 
@@ -598,13 +598,13 @@ t2 <- kable(norm_widths, format = "latex", booktabs = TRUE, digits = 2, col.name
 
 cat(c("\\begin{table}[!b]
     \\begin{minipage}{.45\\linewidth}
-    \\caption{Model Coefficients, Comparison between Linear Probability Model 1 and 2}\\label{tab:coeftest}
+    \\caption{Model Coefficients, Comparison between Linear Probability Models 1 and 2}\\label{tab:coeftest}
       \\centering",
         t1,
     "\\end{minipage}%
     \\begin{minipage}{.5\\linewidth}
       \\centering
-    \\caption{Comparison between different linear probability models for each individual road, in relation to estimated true road width}\\label{tab:estwidths}",
+    \\caption{Comparison between each linear probability model for every road, values given as a percentage in relation to estimated true road width.}\\label{tab:estwidths}",
         t2,
     "\\end{minipage} 
 \\end{table}"
@@ -613,10 +613,7 @@ cat(c("\\begin{table}[!b]
 
 \section{Road Assessment}
 
-Given Linear Model 2 with corrected road centrelines appears to produce the most accurate estimates for road widths, this was used in the final road assessment. Table \ref{tab:rqi} gives the full results of the road geometric extraction, along with an estimate of overall road quality given by the Road Quality Index (RQI). Qualitative assessment of the RQI may be achieved through observation of the highest and lowest values (Figure \ref{fig:rqi_compare}). It appears to produce reliable results, as the road with the highest RQI is straight, wider than the road with the lowest RQI, and is likely flat given it is neighboured by two agricultural fields. Additionally, this figure gives both the original, and derived centrelines for both roads. Notably the reduction in accuracy in the centreline for road 14 has greatly reduced the accuracy of the road width estimate (Table \ref{tab:estwidths})
-
-
-
+Given Linear Model 2 with corrected road centrelines appears to produce the most accurate estimates for road widths, (Mean accuracy of 73.33\%; Table \ref{tab:estwidths}) this was used in the final road assessment. Table \ref{tab:rqi} gives the full results of the road geometric extraction, along with an estimate of overall road quality given by the Road Quality Index (RQI). Qualitative assessment of the RQI may be achieved through observation of the highest and lowest values (Figure \ref{fig:rqi_compare}). It appears to produce reliable results, as the road with the highest RQI is straight, wider than the road with the lowest RQI, and is likely flat given it is neighboured by two agricultural fields. Additionally, this figure gives both the original, and derived centrelines for both roads. Notably the reduction in accuracy in the centreline for road 14 has greatly reduced the accuracy of the road width estimate (Table \ref{tab:estwidths})
 
 <<final_data, results = 'asis'>>=
 road <- st_read("../data/derived/roads/roads_line.gpkg", quiet = TRUE)
