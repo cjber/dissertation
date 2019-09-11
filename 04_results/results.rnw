@@ -1,7 +1,6 @@
 <<>>=
 source("../scripts/functions.r")
 lidar_tab <- fread("../data/point/points.csv")
-knitr::opts_chunk$set(cache = FALSE, autodep = FALSE)
 time_taken <- read.csv("../scripts/time_taken.csv")
 time_taken <- time_taken$x
 @

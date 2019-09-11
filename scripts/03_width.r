@@ -149,4 +149,5 @@ las_qual <- las_rds %>%
 roads <- merge(roads, las_qual, by = "road_id") %>%
     st_drop_geometry()
 
+## ---- asdf
 write.csv(roads, "../data/final_data/final.csv")

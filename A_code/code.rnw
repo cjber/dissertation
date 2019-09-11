@@ -106,6 +106,10 @@ print(x, locale = F)
 \subsection{Height Change}\label{code:height_change}
 <<height_change, eval = FALSE, echo = TRUE>>=
 @
+
+\subsection{Surface Quality} \label{code:surface_qual}
+<<surface_qual, echo = TRUE, eval = FALSE>>=
+@
 \subsection{Formatting} \label{code:make_table}
 <<make_table, echo = TRUE, eval = FALSE>>=
 @
@@ -113,4 +117,3 @@ print(x, locale = F)
 \subsection{Beta Coefficients} \label{code:lm_beta}
 <<lm_beta, echo = TRUE, eval = FALSE>>=
 @
-

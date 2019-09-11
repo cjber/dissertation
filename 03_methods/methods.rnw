@@ -29,7 +29,7 @@ Road centreline geometries were accessed through the \href{https://www.ordnances
 
 \section{LiDAR Preprocessing}
 
-The total number of LiDAR points used in this study is \Sexpr{number_points}. All LIDAR data has a vertical accuracy of +/-15cm Root mean square error (RMSE). An overview of the LiDAR data selected for this study is given on Table \ref{tab:lidartab}. The variables of primary interest are:
+The total number of LiDAR points used in this study is \Sexpr{number_points}. All LiDAR data has a vertical accuracy of +/-15cm Root mean square error (RMSE). An overview of the LiDAR data selected for this study is given on Table \ref{tab:lidartab}. The variables of primary interest are:
 
 \begin{itemize}
     \item \textbf{z:} The distance a laser pulse is reflected back to to scanner, calculated by the time taken for a return pulse to be detected.
@@ -59,7 +59,7 @@ make_table(tmp, cap = "LiDAR Point Cloud Summary Data")
 
 \subsection{Last Pulse}
 
-The LiDAR point cloud data used in this paper gives the values for 5 pulse returns. The canopy above roads may be excluded through ignoring early pulses (higher Z values), therefore only the last pulse values for any point are selected, this can be expressed as;
+The LiDAR point cloud data used in this paper gives the values for 5 pulse returns. The canopy above roads may be excluded through ignoring early pulses (higher Z values), therefore only the last pulse values for any point are selected, taking only points where \textbf{ReturnNumber} equals the \textbf{NumberOfReturns};
 
 $$
 \mathbf{p}_{i}=(l p x, l p y, l p z, l p i),
@@ -293,9 +293,12 @@ Surface quality was assessed roughly through the range in intensity values found
 
 \[
 \begin{aligned}
-    \Delta q(\mathbf{N}_1,\mathbf{N}_2,\dots, \mathbf{N}_{i}) = \Delta \left(\overline{spi}\right) \in  A(\mathbf{N}_i)\times 1,
+    \Delta q(\mathbf{N}_1,\mathbf{N}_2,\dots, \mathbf{N}_{i}) = \Delta (\overline{spi}) \in  A(\mathbf{N}_i)\times 1,
 \end{aligned}
 \]
+\begin{flushright}
+    \footnotesize{\ref{code:surface_qual}}
+\end{flushright}
 
 \noindent where $spi$ represents LiDAR point intensities with a single pulse return, and $\Delta q(\mathbf{N}_1, \mathbf{N}_2, \dots, \mathbf{N}_i)$ represents the total change in road surface quality per road, measured by the range of intensity values.
 
@@ -324,7 +327,7 @@ The LiDAR point cloud data was sampled at regular 10 meter intervals for each ro
     \footnotesize{\ref{code:euc}}
 \end{flushright}
 
-A point ($p_i$) along these two nodes, at an interval distance $I_k$, was achieved through these equations;
+A point ($p_k$) along these two nodes, at an interval distance $I_k$, was determined through these equations;
 
 \[
 \begin{aligned}
@@ -373,11 +376,11 @@ A point ($p_i$) along these two nodes, at an interval distance $I_k$, was achiev
     \footnotesize{\ref{code:perp}}
 \end{flushright}
 
-\noindent where $P_{perp}$ is a collection of two points at distance $\delta$ from the point $p_i$. From these two points, a linestring was created between them, which was then buffered to 2m. This gave sample lines, with an area of 2m by 60m, at 10m intervals along each road. The total point cloud was then clipped to only include points with fell inside these sample lines:
+\noindent where $P_{perp}$ is a collection of two points at distance $\delta$ from the point $p_i$. From these two points, a linestring was created between them, which was then buffered to 2m. This gave sample lines, with an area of 2m by 60m, at 10m intervals along each road. The total point cloud was then clipped to only include points with fell inside these sample lines;
 
 \[
 \begin{aligned}
-    \textbf{S} = \textbf{p}_i \in A(s_i)
+    \textbf{S} = \textbf{p}_i \in A(s_i).
 \end{aligned}
 \]
 \begin{flushright}
@@ -467,7 +470,7 @@ $\mathbf{S}$ now gave of a collection of predicted road points for each sample l
 \begin{tikzpicture}[scale=2]
 
 \draw[-, very thick, color = gray] (0,0.5) -- (0,4);
-\draw[dashed, very thick, color = gray] (0,0.48) -- (0,42);
+\draw[dashed, very thick, color = gray] (0,0.3) -- (0,4.2);
 
 \filldraw (-1,1) circle[radius=1pt] node [below left] {$\mathbf{A}_1$};
 \draw[-] (-1,1) -- node[fill=white,inner ysep=3pt, inner xsep = 3pt]{$h_\mathbf{A}$} (1,2);
