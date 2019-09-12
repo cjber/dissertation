@@ -111,13 +111,13 @@ main <- ggRGB(aerial) +
 @
 
 \section{Objective of this Dissertation}
-<<area_map, fig.cap="Study area highlighting road centrelines; each colour represents a seperate 'road' as defined by the OS Data provided. Thicker roads are B roads, while thinner are Unclassified. The inset map gives shows an example road, with features typical of roads within this study area.", fig.pos = "b" >>=
+<<area_map, fig.cap="Study area highlighting road centrelines; each colour represents a separate 'road' as defined by the OS Data provided. Thicker roads are B roads, while thinner are Unclassified. The inset map shows an example road, with features typical of roads within this study area.", fig.pos = "b" >>=
 ggdraw() +
   draw_plot(main) +
   draw_plot(inset, x = -.1, y = .35, width = .6, height = .6)
 @
 
-This dissertation will present a method for rural road classification and width extraction for a 1km$^2$ region in the North West of England (Figure \ref{fig:area_map}). The methodology is produced in order to ensure scalability and automation, allowing for replication for any area where data is available. Data used will include road centreline geometries, LiDAR point cloud, and aerial imagery to extract road widths through linear probability models. Additionally, this dissertation aims to extract other features of roads such as elevation changes, surface quality, and the sharpness of bends. The extraction of such features aim to build upon past road classification studies, combined with a more refined methodology that aims to ensure a higher accuracy for rural British roads.
+This dissertation will present a method for rural road classification and width extraction for a 1km$^2$ region in the North West of England (Figure \ref{fig:area_map}). The methodology is produced in order to ensure scalability and automation, allowing for replication for any area where data is available. Data used will include road centreline geometries, LiDAR point cloud, and aerial imagery to extract road widths through linear probability models. Additionally, this dissertation aims to extract other features of roads such as elevation changes, surface quality, and the sharpness of bends. The extraction of such features aims to build upon past road classification studies, combined with a more refined methodology that aims to ensure a higher accuracy for rural British roads.
 
 \textbf{\textit{Key Aims:}}
 
