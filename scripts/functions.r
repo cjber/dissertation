@@ -479,7 +479,7 @@ adjacent_length <- function(samp, cent) {
         n2 <- st_coordinates(n)[2, ]
         x <- n1[1] - n2[1]
         y <- n1[2] - n2[2]
-        ang_rad <- atan2(x, y)
+        ang_rad <- atan2(y, x)
         ang_deg <- ang_rad * 180 / pi
         #if (ang_rad < 0) {
         #  ang_deg <- ang_deg + 180
@@ -490,7 +490,7 @@ adjacent_length <- function(samp, cent) {
         x <- n1[1] - n2[1]
         y <- n1[2] - n2[2]
 
-        ang_rad <- atan2(x, y)
+        ang_rad <- atan2(y, x)
         ang_deg_c <- ang_rad * 180 / pi
         #if (ang_rad < 0) {
         #  ang_deg_c <- ang_deg + 180
@@ -561,6 +561,7 @@ road_angles <- function(rd) {
 
       angle <- append(angle, ang_deg)
       # left of N same as right of N
+      # same as + 2pi
       angle <- abs(angle)
     }
   }

@@ -545,9 +545,11 @@ To find the angle $\theta_\mathbf{K}$, the difference in $x$ and $y$ coordinates
 
 \[
 \begin{aligned}
-    b_\mathbf{K} =& |\mathbf{K}_1\mathbf{K}_2| \times cos(\theta_\mathbf{K})
+\theta=\mathrm{atan} 2\left(|x|_l,|y|_l\right) - \mathrm{atan} 2\left(|x|_l,|y|_l\right) - 45
 \end{aligned}
 \]
+
+\noindent where the difference in linestring coordinates gives $L = (|x|_l,|y|)$, and the difference in sample line coordinates gives $s = (|x|_s,|y|_s)$. Subtracting 45$^\circ$ gives the position relative to the perpendicular line ($B_\mathbf{K}$; Figure \ref{fig:sample_points}) rather than in the diretion of the road centreline ($a_\mathbf{K}$).
 \begin{flushright}
     \footnotesize{\ref{code:opposite_length}}
 \end{flushright}
