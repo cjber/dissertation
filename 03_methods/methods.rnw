@@ -527,7 +527,7 @@ The full point cloud $\mathbf{S}$ now gave of a collection of predicted road poi
 \caption[Road LiDAR points at maximum distance apart, showing two example sample locations ($\mathbf{A}$ and $\mathbf{B}$).]{Road LiDAR points at maximum distance apart, showing two example sample locations ($\mathbf{A}$ and $\mathbf{B}$). Road centreline represented by the thick grey line, as a line joining between two nodes. True road width is indicated by the dashed lines $b_\mathbf{A}$ and $b_\mathbf{B}$, considered to be the adjacent side of a triangle in relation to be bearing angles between the first and second point of each sample, $\theta_\mathbf{A}$ and $\theta_\mathbf{B}$. The distance between the two points per sample are considered to give the hypotenuse length of a triangle ($h_\mathbf{A}$ and $h_\mathbf{B}$).}\label{fig:sample_points}
 \end{figure}
 
-To find the angle $\theta_\mathbf{K}$, the difference in $x$ and $y$ coordinates between two nodes $\mathbf{N}_i$ and $\mathbf{N}_{i+1}$ was calculated as in Equation \ref{eq:xydiff} to obtain the bearing angle between these nodes, represented by the grey line on Figure \ref{fig:sample_points}. Similarly, the difference in $x$ and $y$ coordinates was found for the perpendicular points associated with the sample. With this, $\theta_k$ was found by;
+To find the angle $\theta_\mathbf{K}$, the difference in $x$ and $y$ coordinates between two nodes $\mathbf{N}_i$ and $\mathbf{N}_{i+1}$ was calculated as in Equation \ref{eq:xydiff} to obtain the bearing angle between these nodes, represented by the grey line on Figure \ref{fig:sample_points}. Similarly, the difference in $x$ and $y$ coordinates was found for the perpendicular points associated with the sample. With this, $\theta_\mathbf{K}$ given;
 
 \[
 \begin{aligned}
@@ -561,10 +561,10 @@ There is the possibility that the maximum distance between two points does not p
 
 \subsection{Improved Road Centrelines}
 
-During the analysis of the linear models, it was noted that road centrelines were often inaccurate, giving road outcome values that were not representative of the road surface. In an attempt to adjust for this, road centrelines were adjusted based on the centre location of road points in each sample, classified through an initial linear probability model. The mid point between two points $\left(x_{1}, y_{1}\right)$ and $\left(x_{2}, y_{2}\right)$ can be expressed as;
+During the analysis of the linear models, it was noted that road centrelines were often inaccurate, giving road outcome values that were not representative of the road surface. In an attempt to adjust for this, new road centrelines were derived based on the centre location of road points in each sample, classified through an initial linear probability model. The mid point between two points $\left(x_{1}, y_{1}\right)$ and $\left(x_{2}, y_{2}\right)$ can be expressed as;
 
 $$
-\left(\frac{x_{1}+x_{2}}{2}, \frac{y_{1}+y_{2}}{2}\right)
+\left(\frac{x_{1}+x_{2}}{2}, \frac{y_{1}+y_{2}}{2}\right).
 $$
 \begin{flushright}
     \footnotesize{\ref{code:mid_pts}}
@@ -588,7 +588,7 @@ $$
 To aid with model interpretability, the direct comparison between each variable in the analysis was enabled through centering and scaling with the use of beta coefficients \citep{peterson2005};
 
 $$
-\beta_{p}=\frac{\operatorname{Cov}\left(r_{p}, r_{b}\right)}{\operatorname{Var}\left(r_{b}\right)}
+\beta_{p}=\frac{\operatorname{Cov}\left(r_{p}, r_{b}\right)}{\operatorname{Var}\left(r_{b}\right)}.
 $$
 \begin{flushright}
     \footnotesize{\ref{code:lm_beta}}
@@ -632,10 +632,10 @@ m \mapsto \frac{m-r_{\min }}{r_{\max }-r_{\min }},
 Following normalisation, the sum of all normalised variables for a particular road were taken, and subtracted from 1 to give positive values indicating better quality roads, and lower values indicating lower quality roads. These variables involved in the creation of this index are;
 
 \begin{itemize}
-    \item \textbf{Road Angles:} The bearing angle change in road direction, considering the initial road direction as a bearing angle of 0$^{\circ}$ (Section \ref{sec:angles})
-    \item \textbf{Road Elevation Change:} The change in elevation for each node in a road, extracted from LiDAR data, giving a total elevation change for a full road (Section \ref{sec:elev})
-    \item \textbf{Road Surface Quality:} The total range of intensity values for each node in a road, extracted from the LiDAR point cloud for points that did not return more than a single pulse (Section \ref{sec:qual})
-    \item \textbf{Road Width:} Extracted through linear probability classification of the road surface using LiDAR data (Section \ref{sec:road_width})
+    \item \textbf{Road Angles:} The bearing angle change in road direction, considering the initial road direction as a bearing angle of 0$^{\circ}$ (Section \ref{sec:angles}).
+    \item \textbf{Road Elevation Change:} The change in elevation for each node in a road, extracted from LiDAR data, giving a total elevation change for a full road (Section \ref{sec:elev}).
+    \item \textbf{Road Surface Quality:} The total range of intensity values for each node in a road, extracted from the LiDAR point cloud for points that did not return more than a single pulse (Section \ref{sec:qual}).
+    \item \textbf{Road Width:} Extracted through linear probability classification of the road surface using LiDAR data (Section \ref{sec:road_width}).
 \end{itemize}
 
 The value obtained from this is referred to as the Road Quality Index, presented in full on Table \ref{tab:rqi}.
