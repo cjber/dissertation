@@ -126,7 +126,7 @@ These supervised techniques give insight into the feasibility for rural road ext
 
 Many recent road extraction techniques have relied on kerb extraction or the detection of buildings, features uncommon to rural roads in the UK, where non road surfaces often include managed grass verges, with little height difference in comparison to roads \citep{kumar2013}. Rural classification therefore must rely on alternative features of roads, notably the differences in intensity produced by vegetation, explored in various studies \cite[e.g. ][]{vosselman2000}. Additionally, overhanging tree canopies are uncommon features of roads that have been previously classified, and as such, a methodology for classifying rural British roads must take this limitation into  into particular consideration.
 
-\section{Overview of this Paper}\label{sec:overview}
+\section{Overview of this Dissertation}\label{sec:overview}
 
 This dissertation aims to extract key features of a selection of rural roads in England through a combination of LiDAR point clouds, OS open road geometries, and aerial imagery, selecting road features considered to be important in past literature and government reviews. The key features considered when determining road quality are;
 

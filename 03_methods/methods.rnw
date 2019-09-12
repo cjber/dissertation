@@ -207,7 +207,7 @@ The bend in a road was considered to be the \textit{bearing angle} $\hat \theta$
     \draw[<-] (0.28,.44) arc (45:90:.111);
     \node[] at (.25,.5)  {$\hat \theta$};
 \end{tikzpicture}
-\caption{Bearing Angle ($\theta$) between two sequential road Nodes, $\mathbf{N}_{i}$ and $\mathbf{N}_{i+1}$, North is given by $N$}\label{fig:bearingang1}
+\caption{Bearing Angle ($\theta$) between two sequential road Nodes; $\mathbf{N}_{i}$ and $\mathbf{N}_{i+1}$. North is given by $N$.}\label{fig:bearingang1}
 \end{figure}
 
 To find the angle $\hat \theta$, the node $\mathbf{N}_{i+1}$ can be represented into relation to node $\mathbf{N}_{i}$ as;
@@ -278,7 +278,7 @@ With the bearing angle of the first line segment ($\hat \theta_{1}$) for a parti
     \draw[<-] (0.9,.75) arc (45:90:.1);
     \node[] at (.88,.8)  {$\hat \theta_{2}$};
 \end{tikzpicture}
-\caption{Bearing Angle between the first ($\mathbf{N}_1$) and second node ($\mathbf{N}_2$) giving $\hat \theta_1$ in relation to the north ($N$). Bearing angle for and third node ($\mathbf{N}_3$) giving $\hat \theta_2$ in relation to the bearing angle $\hat \theta_1$}
+\caption{Bearing Angle between the first ($\mathbf{N}_1$), second ($\mathbf{N}_2$) and third node ($\mathbf{N}_3$) of a road; giving $\hat \theta_1$ in relation to the north ($N$), and $\hat \theta_2$ in relation to the bearing angle $\hat \theta_1$}
 \label{fig:bearingang2}
 \end{figure}
 

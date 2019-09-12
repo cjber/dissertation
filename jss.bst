@@ -407,12 +407,12 @@ FUNCTION {format.eprint}
     }
   if$
 }
+
 FUNCTION {format.url}
 {
-  url
-  duplicate$ empty$
-    { pop$ "" }
-    { "\urlprefix\url{" swap$ * "}" * }
+ url empty$
+    { "" }
+    { "" }
   if$
 }
 
@@ -571,18 +571,7 @@ FUNCTION {format.note}
 {
  note empty$
     { "" }
-    { note #1 #1 substring$
-      duplicate$ "{" =
-        'skip$
-        { output.state mid.sentence =
-          { "l" }
-          { "u" }
-        if$
-        change.case$
-        }
-      if$
-      note #2 global.max$ substring$ * "note" bibinfo.check
-    }
+    { "" }
   if$
 }
 

@@ -2,8 +2,6 @@
 %
 % DO NOT EDIT THE TEX FILE DIRECTLY
 % ===========================================================================================================
-
-
 \documentclass[a4paper, notitlepage]{extreport}
 
 \input{template/preamble}
@@ -53,8 +51,6 @@ write(qgis, "rbib.bib", append = TRUE)
 cat(paste0("\\nocite{", paste0(pkgs, collapse = ',', sep = ''),"}"))
 @
 
-
-
 % ===========================================================================================================
 % Cover
 % ===========================================================================================================
@@ -69,7 +65,7 @@ cat(paste0("\\nocite{", paste0(pkgs, collapse = ',', sep = ''),"}"))
 \centering\begin{minipage}{\dimexpr\paperwidth-10cm}
     \hrule
     \vskip 5pt
-An automated method for the identification of rural road geometric features is presented for use in a national rural road assessment in England. This method includes the use of LiDAR for height and road surface intensity information, as well as aerial imagery, and road centrelines enabling automated classification of road surfaces prior to road width extraction. The method presented ensures scalability, allowing for an extension beyond the 1km$^2$ area proposed, given existing data and suitable computational power. A unique classification method is proposed, utilising a linear probability model given points determined to be road surface, derived from the road centreline information, while implementing a sampling methodology which primarily reduces the computational overhead. Results were broadly assessed qualitatively and quantitatively giving around a 70\% accuracy in road width measurements. Additional geometric features extracted from roads include the change in road elevation and road surface quality, derived through LiDAR data, and road bend sharpness, derived through the OS Road Centrelines data.
+An automated method for the identification of rural road geometric features is presented for use in a national rural road assessment in England. This method uses Government produced LiDAR point cloud data to obtain road surface height, and intensity information. Road centrelines provided by Ordnance Survey are used to enable an automated classification of road surfaces, allowing for road width extraction. Aerial imagery is additionally used to provide luminescence information to aid with road classification. Additional geometric features extracted from the chosen rural roads include the change in road elevation and road surface quality, derived through LiDAR data, and road bend sharpness, derived through the OS Road Centrelines data. The method presented ensures scalability, allowing for an extension beyond the 1km$^2$ area proposed, given access to the appropriate data and suitable computational power. For road classification to be used in width extraction, a unique classification method is proposed, utilising a linear probability model, given points determined to be road surface, derived from the road centreline information. A sampling methodology is implemented, which primarily reduces the computational overhead through a reduction in LiDAR points required for classification. Results were broadly assessed qualitatively and quantitatively giving around a 70\% accuracy in road width measurements. Finally, a direct comparison between road quality was presented as the Road Quality Index (RQI), which combines the extracted geometric features of roads.
     \vskip 5pt
     \hrule
     \vskip 10pt
@@ -96,7 +92,7 @@ An automated method for the identification of rural road geometric features is p
 \centering\begin{minipage}{\dimexpr\paperwidth-10cm}
     \hrule
     \vskip 5pt
-    I would like to thank my supervisor Paul Williamson for his continued support through the writing of this dissertation. Thank you to John Murray for his help with the various mathematical problems and solutions presented through the methodology, particularly for providing some of the core functions essential for the road width and angle extraction. I would also like to thank Jean Romain (and package contributors) for his excellent work producing the lidR R package, without which the manipulation of LiDAR data in this paper would have been far more limited. Finally, thank you to Jenny Gibson, who always provides love and support throughout my studies.
+    I would like to thank my supervisor Paul Williamson for his continued support throughout the writing of this dissertation. Thank you to John Murray for his help with the various mathematical problems and solutions presented through the methodology, particularly for providing some of the core functions and insights that were essential for this dissertation. I would also like to thank Jean Romain (and package contributors) for his excellent work producing the lidR R package, without which the manipulation of LiDAR data in this paper would have been far more limited. Finally, thank you to Jenny Gibson, who always provides love and support throughout my studies.
     \vskip 5pt
     \hrule
     \vskip 10pt
@@ -161,7 +157,7 @@ An automated method for the identification of rural road geometric features is p
 
 \chapter{Discussion}
 \label{ch:discussion}
-<<results, child = "05_discussion/discussion.rnw">>=
+<<discussion, child = "05_discussion/discussion.rnw">>=
 @
 
 \chapter{Conclusion}

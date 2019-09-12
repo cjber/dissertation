@@ -28,7 +28,7 @@ nonwords = re.compile(r"\s\W+\s")
 c = open(sys.argv[1]).read()
 bstring = r"\chapter{Introduction}"
 b = c.find(bstring)
-e = c.find(r"\bibliographystyle{agsm}")
+e = c.find(r"\bibliographystyle{")
 
 if (b == -1) or (e == -1):
   print("Not a valid LaTeX file")

@@ -67,7 +67,7 @@ Often road classification methodologies use LiDAR height data to identify kerbs 
 
 LiDAR data often requires a large amount of processing due to the irregular distribution of points, presence of noise and the number of variables that have to be considered, \cite{yadav2018} note that often papers do not include information regarding the computational time for processing this data which may cause practical limitations at larger scales.
 
-<<area_map, fig.cap="Study area highlighting road centrelines, each colour represents a seperate 'road' as defined by the OS Data provided. Thicker roads are B roads, while thinner are Unclassified. The inset map gives shows an example road, with features typical of roads within this study area.", fig.pos = "t" >>=
+<<area_map, fig.cap="Study area highlighting road centrelines; each colour represents a seperate 'road' as defined by the OS Data provided. Thicker roads are B roads, while thinner are Unclassified. The inset map gives shows an example road, with features typical of roads within this study area.", fig.pos = "t" >>=
 source("../scripts/functions.r")
 rd_l <- st_read("../data/derived/roads/roads.gpkg", quiet = T) %>%
   st_set_crs(27700)
@@ -114,7 +114,7 @@ ggdraw() +
   draw_plot(inset, x = -.1, y = .35, width = .6, height = .6)
 @
 
-\section{Objective of this paper}
+\section{Objective of this Dissertation}
 
 This dissertation will present a method for rural road classification and width extraction for a 1km$^2$ region in the North West of England. The methodology is produced in order to ensure scalability and automation, allowing for replication for any area where data is available. Data used will include road centreline geometries, LiDAR point cloud, and aerial imagery to extract road widths through linear probability models. Additionally, this dissertation aims to extract other features of roads such as elevation changes, surface quality, and the sharpness of bends. The extraction of such features aim to build upon past road classification studies, combined with a more refined methodology that aims to ensure a higher accuracy for rural British roads.
 
@@ -132,4 +132,4 @@ This dissertation will present a method for rural road classification and width 
 \end{itemize}
 
 
-Unlike previous road classification methodologies, this paper aims to focus primarily on road feature extraction, and not the accurate extraction of road locations, as road centerline locations provided by Ordnance Survey already exists. This paper is organised into chapters, first a literature review, outlining the broad implications of speed limits, rural road networks, and object extraction particularly in relation to LiDAR aerial point clouds. Second, a detailed description of the methodology involved in this paper will outline the techniques used to classify road widths, in addition to the other road geometric information. A results section will primarily assess the method for road extraction, through sensitivity analysis and some qualitative observations, a section will then explore the findings. Finally a discussion will detail the implications of the findings, and suggest areas for methodological improvement. 
+Unlike previous road classification methodologies, this dissertation aims to focus primarily on road feature extraction, and not the accurate extraction of road locations, as road centerline locations provided by Ordnance Survey already exists. This dissertation is organised into chapters, first a literature review, outlining the broad implications of speed limits, rural road networks, and object extraction particularly in relation to LiDAR aerial point clouds. Second, a detailed description of the methodology involved in this dissertation will outline the techniques used to classify road widths, in addition to the other road geometric information. A results section will primarily assess the method for road extraction, through sensitivity analysis and some qualitative observations, a section will then explore the findings. Finally a discussion will detail the implications of the findings, and suggest areas for methodological improvement. 
