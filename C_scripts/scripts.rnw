@@ -7,7 +7,7 @@
 <<01_samples, eval = F, echo = T, code = readLines("./scripts/01_samples.r")>>=
 @
 
-\section{Linear Models and Improve Centrelines}
+\section{Linear Models and Improved Centrelines}
 <<02_lm, eval = F, echo = T, code = readLines("./scripts/02_lm.r")>>=
 @
 

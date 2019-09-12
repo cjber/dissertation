@@ -13,7 +13,7 @@ As noted in Section \ref{sec:overview}, computation time is considered an import
 
 Table \ref{tab:lidartab} indicates that there are likely some points with noise, particularly reflected by the highest intensity value ($\Sexpr{max(lidar_tab$Intensity)}$) relative to the standard deviation ($\Sexpr{round(sd(lidar_tab$Intensity),0)}$), with 99\% of observations within the range of \Sexpr{round(min(lidar_tab$Intensity), 0)} to \Sexpr{quantile(lidar_tab$Intensity, .99)}. As noted in previous LiDAR classification methods, intensity is often subject to noise, therefore a simplistic noise exclusion technique \citep{lidR} was considered, as described in Section \ref{subsec:noise}.
 
-<<hist_lidar, fig.cap="Post noise filtering LiDAR point cloud distribution of; \\textbf{(A)} Intensity, and \\textbf{(B)} Luminescence", fig.showtext=TRUE, fig.height = 3>>=
+<<hist_lidar, fig.cap="Post noise filtering LiDAR point cloud distribution; of \\textbf{(A)} Intensity, and \\textbf{(B)} Luminescence", fig.showtext=TRUE, fig.height = 3>>=
 showtext_auto()
 font_add_google("Roboto", "Roboto")
 font_add_google("Roboto Slab", "Roboto Slab")
@@ -196,7 +196,7 @@ mult_return <- clean_las %>%
   mean()
 @
 
-<<fig_lp, fig.cap = "LiDAR point clouds for one selected road aggregated into 2m$^2$ grids, \\textbf{(A)} Base point cloud $z$ values, road location indicated with a 30m buffer \\textbf{(B)} Normalised Point cloud $z$ values for only last returns ($lpz$) \\textbf{(C)} Normalised Point cloud $Intensity$ values for last returns, \\textbf{(D)} Aerial Data combined to 1 band", fig.showtext=TRUE, fig.pos = "b">>=
+<<fig_lp, fig.cap = "LiDAR point clouds for one selected road aggregated into 2m$^2$ grids; \\textbf{(A)} Base point cloud $z$ values, road location indicated with a 30m buffer \\textbf{(B)} Normalised point cloud $z$ values for only last returns ($lpz$) \\textbf{(C)} Normalised point cloud $Intensity$ values for last returns, \\textbf{(D)} Aerial data combined to 1 band", fig.showtext=TRUE, fig.pos = "b">>=
 plot_grid(
   chm_gg,
   dsm_lp_gg,
@@ -234,7 +234,7 @@ Using the 30m buffer from known road locations, and sample line extraction, the 
 Selected based on literature, and correlation analysis of the variables (See \textbf{Appendix B}, Table \ref{tab:corr}), the first model was constructed to include all variables of importance from the LiDAR point cloud, $z$, Intensity, and Number of Returns. Additionally, luminescence from aerial imagery was included, and the minimum distance of a point from the known road centreline location.
 
 
-<<lmdistributions, fig.cap = "Linear Model Probability Distributions for the Maximal Model, showing vertical lines at the 95th, 90th, and 80th quantile of the distribution", fig.height = 5>>=
+<<lmdistributions, fig.cap = "Linear model probability distributions for the maximal model (LM 1); showing vertical lines at the 95th, 90th, and 80th quantile of the distribution", fig.height = 5>>=
 lm_preds <- fread("../data/derived/model_data/linearmodels.csv") %>%
   select(c(lm1_pred)) %>%
   melt() # longtable
@@ -359,7 +359,7 @@ q80 <- ggRGB(aerial) +
   scale_y_continuous(expand = c(0, 0))
 @
 
-<<quant_fig, fig.cap = "Comparison between Linear Prediction Quantiles; \\textbf{(A)} 95th Quantile, \\textbf{(B)} 90th Quantile, \\textbf{(C)} 80th Quantile", fig.showtext=TRUE, fig.pos = "b">>=
+<<quant_fig, fig.cap = "Comparison between linear prediction quantiles; \\textbf{(A)} 95th quantile, \\textbf{(B)} 90th quantile, \\textbf{(C)} 80th quantile.", fig.showtext=TRUE, fig.pos = "b">>=
 plot_grid(
   q95,
   q90,
@@ -481,7 +481,7 @@ gg_centi <- ggRGB(aerial) +
   scale_y_continuous(expand = c(0, 0))
 @
 
-<<fig_noisecent, fig.cap = "\\textbf{(A)} Comparison between original (red) and derived road centrelines (green). \\textbf{(B)} Second Linear Model (LM 2) applied to original centrelines. \\textbf{(C)} Second Linear Model (LM 2) applied to derived centrelines. \\textbf{(D)} Individual Linear Model (LM i) applied to derived centrelines. Each Linear Model probability quantile is selected as 95\\%, green points indicate road classified points, red indicate road classified points, removed through noise isolation filtering.", fig.showtext=TRUE, fig.pos = "b">>=
+<<fig_noisecent, fig.cap = "Comparison between original and derived centrelines showing differences in linear models; showing \\textbf{(A)} Comparison between original (red) and derived road centrelines (green). \\textbf{(B)} Second linear model (LM 2) applied to original centrelines. \\textbf{(C)} Second linear model (LM 2) applied to derived centrelines. \\textbf{(D)} Individual linear model (LM i) applied to derived centrelines. Each linear model probability quantile is selected as 95\\%, green points indicate road classified points, red indicate road classified points, removed through noise isolation filtering.", fig.showtext=TRUE, fig.pos = "b">>=
 plot_grid(
   ggcent,
   gg_cent0,
@@ -734,7 +734,7 @@ gg_ba <- ggRGB(ba) +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0))
 @
-<<rqi_compare, fig.cap = "Visual comparison between road with the \\textbf{(A)} highest RQI , \\textbf{(B)} and lowest RQI , original centrelines are given in red, with derived centrelines given in green.", fig.showtext=TRUE>>=
+<<rqi_compare, fig.cap = "Visual comparison between road with the \\textbf{(A)} highest RQI , \\textbf{(B)} and lowest RQI; original centrelines are given in red, with derived centrelines given in green.", fig.showtext=TRUE>>=
 plot_grid(
           gg_ta,
           gg_ba,

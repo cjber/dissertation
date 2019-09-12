@@ -9,7 +9,7 @@ Notably, the features unique to rural roads were observed to be the land use eit
 \begin{table}[htbp]
     \centering
 \fontsize{9}{10}\selectfont
-\caption{Features Identified as Important to Rural Road Analysis \citep{taylor2002}}
+\caption{Features identified as important to British rural road analysis.}
 \label{tab:roadfeatures}
 \begin{tabular}{ll}
 \toprule
@@ -18,6 +18,7 @@ Notably, the features unique to rural roads were observed to be the land use eit
 Discrete data & \begin{tabular}[c]{@{}l@{}}Type of junction \\ Minor junctions \\ Accesses \\ Number of bends, classified into:\\ \quad Sharp (warning signposts) \\ \quad Medium \\ \quad Slight\end{tabular} \\ \\
 Semi-continuous data & \begin{tabular}[c]{@{}l@{}}Lighting \\ Reflecting road studs \\ Kerbs \\ Number of lanes \\ Road markings \\ Land use\end{tabular} \\ \\
 Continuous data & \begin{tabular}[c]{@{}l@{}}Visibility \\ Verge width and type \\ Roadside type \end{tabular}                                                                                                                              \\ \bottomrule
+    \footnotesize{\citep{taylor2002}}
 \end{tabular}
 \end{table}
 

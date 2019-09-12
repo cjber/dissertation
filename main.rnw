@@ -116,10 +116,10 @@ An automated method for the identification of rural road geometric features is p
 
 \section*{Broad Definitions}
     \item \textbf{Light Detection and Ranging (LiDAR):} similar to radar, a laser pulse is sent out of a transmitter on an aircraft or ground vehicle and the light is reflected back to a receiver.
-    \item \textbf{Billion Vehicle Miles (BVM):} the total number of miles travelled by all vehicles divided by 1 billion. Typically all traffic is measured in vehicles miles.
+    \item \textbf{Billion Vehicle Miles (BVM):} the total number of miles travelled by all vehicles divided by 1 billion. Typically all traffic is measured in vehicle miles.
     \item \textbf{Digital Terrain Model (DTM):} digital representation of the land surface topography without surface objects.
     \item \textbf{Digital Surface Model (DSM):} digital representation of the land surface capturing all natural and built features.
-    \item \textbf{Transport Accessibility:} blah...
+    \item \textbf{Transport Accessibility:} a measure of the ease of reaching (and interacting with) destinations or activities distributed in space.
     \item \textbf{Social Exclusion:} exclusion from the prevailing social system and its rights and privileges, typically as a result of poverty or the fact of belonging to a minority social group.
     \item \textbf{Read-eval-print loop (REPL):} a simple interactive computer programming environment that takes single user inputs, evaluates them, and returns the results to the user.
     \item \textbf{Root Mean Square Error (RMSE):} the square root of the second sample moment of the differences between predicted values and observed values. Commonly used to measure the difference between sample or population values.
@@ -137,7 +137,7 @@ An automated method for the identification of rural road geometric features is p
 
 \chapter{Introduction}
 \label{ch:introduction}
-<<introduction, child = "01_introduction/introduction.rnw", cache = T, autodep = T>>=
+<<introduction, child = "01_introduction/introduction.rnw">>=
 @
 
 \chapter{Literature Review}
@@ -152,7 +152,7 @@ An automated method for the identification of rural road geometric features is p
 
 \chapter{Results}
 \label{ch:results}
-<<results, child = "04_results/results.rnw", cache = T, autodep = T>>=
+<<results, child = "04_results/results.rnw">>=
 @
 
 \chapter{Discussion}

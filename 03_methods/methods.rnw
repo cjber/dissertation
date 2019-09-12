@@ -207,7 +207,7 @@ The bend in a road was considered to be the \textit{bearing angle} $\hat \theta$
     \draw[<-] (0.28,.44) arc (45:90:.111);
     \node[] at (.25,.5)  {$\hat \theta$};
 \end{tikzpicture}
-\caption{Bearing Angle ($\theta$) between two sequential road Nodes; $\mathbf{N}_{i}$ and $\mathbf{N}_{i+1}$. North is given by $N$.}\label{fig:bearingang1}
+\caption[Bearing Angle ($\theta$) between two sequential road nodes.]{Bearing Angle ($\theta$) between two sequential road Nodes; $\mathbf{N}_{i}$ and $\mathbf{N}_{i+1}$. North is given by $N$.}\label{fig:bearingang1}
 \end{figure}
 
 To find the angle $\hat \theta$, the node $\mathbf{N}_{i+1}$ can be represented into relation to node $\mathbf{N}_{i}$ as;
@@ -278,7 +278,7 @@ With the bearing angle of the first line segment ($\hat \theta_{1}$) for a parti
     \draw[<-] (0.9,.75) arc (45:90:.1);
     \node[] at (.88,.8)  {$\hat \theta_{2}$};
 \end{tikzpicture}
-\caption{Bearing Angle between the first ($\mathbf{N}_1$), second ($\mathbf{N}_2$) and third node ($\mathbf{N}_3$) of a road; giving $\hat \theta_1$ in relation to the north ($N$), and $\hat \theta_2$ in relation to the bearing angle $\hat \theta_1$}
+\caption[Bearing Angle between the first ($\mathbf{N}_1$), second ($\mathbf{N}_2$) and third node ($\mathbf{N}_3$) of a road.]{Bearing Angle between the first ($\mathbf{N}_1$), second ($\mathbf{N}_2$) and third node ($\mathbf{N}_3$) of a road; giving $\hat \theta_1$ in relation to the north ($N$), and $\hat \theta_2$ in relation to the bearing angle $\hat \theta_1$.}
 \label{fig:bearingang2}
 \end{figure}
 
@@ -511,7 +511,7 @@ The full point cloud $\mathbf{S}$ now gave of a collection of predicted road poi
 \draw[-] (.6,3.2) arc (135:200:.2);
 \node[] at (.4,3.12)  {$\theta_\mathbf{B}$};
 \end{tikzpicture}
-\caption{Road LiDAR points at maximum distance apart for each sample location. Showing two example sample locations ($\mathbf{A}$ and $\mathbf{B}$), road centreline represented by the thick grey line. True road width is indicated by the dashed lines $b_\mathbf{A}$ and $b_\mathbf{B}$, considered to be the adjacent side of a triangle in relation to be bearing angles between the first and second point of each sample, $\theta_\mathbf{A}$ and $\theta_\mathbf{B}$. The distance between the two points per sample are considered to give the hypotenuse length of a triangle ($h_\mathbf{A}$ and $h_\mathbf{B}$).}\label{fig:sample_points}
+\caption[Road LiDAR points at maximum distance apart, showing two example sample locations ($\mathbf{A}$ and $\mathbf{B}$).]{Road LiDAR points at maximum distance apart, showing two example sample locations ($\mathbf{A}$ and $\mathbf{B}$). Road centreline represented by the thick grey line. True road width is indicated by the dashed lines $b_\mathbf{A}$ and $b_\mathbf{B}$, considered to be the adjacent side of a triangle in relation to be bearing angles between the first and second point of each sample, $\theta_\mathbf{A}$ and $\theta_\mathbf{B}$. The distance between the two points per sample are considered to give the hypotenuse length of a triangle ($h_\mathbf{A}$ and $h_\mathbf{B}$).}\label{fig:sample_points}
 \end{figure}
 
 Given the two selected points at every sample with a maximum distance between them, trigonometry could be used to determine the width of the road at that particular location. Road width is considered to be the adjacent line length ($b_\mathbf{K}$; where $\mathbf{K}$ is a single sample location), perpendicular to the road segment, considering the distance between the two points to be the hypotenuse  of a right angled triangle (Figure \ref{fig:sample_points}; $|\mathbf{K}_1\mathbf{K}_2| \equiv h_\mathbf{K}$). The width $b_\mathbf{K}$ for each sample location was found, this may be expressed using trigonometry as;
