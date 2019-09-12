@@ -481,22 +481,22 @@ adjacent_length <- function(samp, cent) {
         y <- n1[2] - n2[2]
         ang_rad <- atan2(x, y)
         ang_deg <- ang_rad * 180 / pi
-        if (ang_rad < 0) {
-          ang_deg <- ang_deg + 180
-        }
+        #if (ang_rad < 0) {
+        #  ang_deg <- ang_deg + 180
+        #}
 
         n1 <- st_coordinates(s)[1, ]
         n2 <- st_coordinates(s)[2, ]
-        x <- n1[1] - n2[2]
+        x <- n1[1] - n2[1]
         y <- n1[2] - n2[2]
 
         ang_rad <- atan2(x, y)
         ang_deg_c <- ang_rad * 180 / pi
-        if (ang_rad < 0) {
-          ang_deg_c <- ang_deg + 180
-        }
+        #if (ang_rad < 0) {
+        #  ang_deg_c <- ang_deg + 180
+        #}
 
-        theta <- ang_deg - ang_deg_c
+        theta <- abs(ang_deg) - abs(ang_deg_c)
         theta <- theta - 45 # position relative to perp line
 
         c1_len <- st_length(s)

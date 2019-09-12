@@ -101,7 +101,7 @@ With the classification of ground points, (given $Classification = 2$), a full D
 With the normalised last pulse point cloud, the point cloud was clipped to within a 30m extent of each known road location, using the OS road shapefiles;
 \[
 \begin{aligned}
-   \textbf{p}_i \in \left[A(r_i) \times 30\right],
+   \textbf{p}_i \in \left[A(r_i) \times 30m^2\right],
 \end{aligned}
 \]
 \begin{flushright}
@@ -156,7 +156,7 @@ A\left(\mathbf{C}_{N}\right)=500 m^{2}, \\
 \section{Road Analysis}
 \label{sec:road-extraction}
 
-The preprocessed LiDAR data was combined with the OS road shapefiles and aerial imagery to obtain a set of criteria to assess the chosen road network. A summary of the information provided alongside OS road shapefiles is given on Table \ref{tab:roadstab}. While both \texttt{roadNumberTOID} and \texttt{roadNameTOID} do provide true road identification for many roads, this was not true for each road in the area chosen. Due to this, it was impossible to identify what could be considered an individual road, meaning a "road" will now be defined as indicated on Figure \ref{fig:area_map}, selected based on the shapefile geometry provided.
+The preprocessed LiDAR data was combined with the OS road shapefiles and aerial imagery to obtain a set of criteria to assess the chosen road network. A summary of the information provided alongside OS road shapefiles is given on Table \ref{tab:roadstab}. While both \texttt{roadNumberTOID} and \texttt{roadNameTOID} do provide true road identification for many roads, this was not true for each road in the area chosen. Due to this, it was impossible to identify what could be considered an individual road, meaning \textit{road} will now be defined as indicated on Figure \ref{fig:area_map}, selected based on the shapefile geometry provided.
 
 <<>>=
 roads_info <- fread("/home/cjber/drive/uni/envs492/main/data/osroads/roads_info.csv") %>% 
@@ -188,7 +188,7 @@ B roads are classified roads, while other functions are unclassified. All roads 
 
 \section{Road Angles}\label{sec:angles}
 
-The angle of each bend in a road were identified through the nodes produced in the creation of the road shapefiles. First the road linestrings were split into points, with coordinates representing each node within a road, a point at which the orientation of the linestring is altered, (See Figure \ref{fig:bearingang1} \ref{fig:bearingang2} for illustrations of road nodes).
+The angle of each bend in a road was identified through the nodes produced in the creation of the road shapefiles. First the road linestrings were split into points, with coordinates representing each node within a road, a point at which the orientation of the linestring is altered, (See Figure \ref{fig:bearingang1} and \ref{fig:bearingang2} for illustrations of road nodes).
 
 The bend in a road was considered to be the \textit{bearing angle} $\hat \theta$, from a node $\mathbf{N}_i = \left(x_{i}, y_{i}\right)$ to a node $\mathbf{N}_{i+1} = \left(x_{i+1}, y_{i+1}\right)$, with the angle measured in a clockwise direction from north. This is represented on Figure \ref{fig:bearingang1}.
 
@@ -225,7 +225,7 @@ $$
 \noindent this equation can be rewritten to calculate the value of $\theta$ using the $\mathit{atan2}$ function;
 
 $$
-\hat{\theta}=\mathrm{atan} 2\left(x_{i+1}-x_{i}, y_{i+1}-y_{i}\right) \in[-\pi, \pi]
+\theta=\mathrm{atan} 2\left(x_{i+1}-x_{i}, y_{i+1}-y_{i}\right) \in[-\pi, \pi]
 $$
 
 
@@ -282,17 +282,16 @@ With the bearing angle of the first line segment ($\hat \theta_{1}$) for a parti
 \label{fig:bearingang2}
 \end{figure}
 
- Given the bearing angle between the first two nodes gives only the initial direction of the road, this was set to zero; $\hat \theta_{1} = 0$. In the final analysis, for each road the maximum bearing angle between any two nodes was selected, as well as the average bearing angle between all nodes.
+ As the bearing angle between the first two nodes gives only the initial direction of the road, this was set to zero; $\hat \theta_{1} = 0$. In the final analysis, for each road the maximum bearing angle between any two nodes was selected, as well as the average bearing angle between all nodes.
 
 \section{Road Node Elevation Change}\label{sec:elev}
 
-The elevation change between two road node points was calculated by first selecting non-normalised LiDAR points at a geometric node within a 1m$^2$ area. LiDAR points were then filtered by those only classified as ground, and with only a single return, to reduce the likelihood of inaccurate $z$ values from canopy or other vegetation and vehicles. The mean $z$ value of points were found for each node, and elevation change between each node was calculated. For each road, the total elevation change per kilometer was calculated;
-
+The elevation change between two road node points was calculated by first selecting non-normalised LiDAR points at a geometric node within a 1m$^2$ area. LiDAR points were then filtered by those only classified as ground, and with only a single return, to reduce the likelihood of inaccurate $z$ values from canopy or other vegetation and vehicles. The mean $z$ value of points were found for each node, and elevation change between each node was calculated;
 \[
 \begin{aligned}
     \Delta e(\mathbf{N}_i, \mathbf{N}_{i+1}) = \Delta \left\{\begin{array}{ll}
-    \overline{spz} \in  \left[A(\mathbf{N}_i)\times 1\right], \\
-    \overline{spz} \in  \left[A(\mathbf{N}_{i+1})\times 1\right]
+    \overline{spz} \in  \left[A(\mathbf{N}_i)\times 1m^2\right], \\
+    \overline{spz} \in  \left[A(\mathbf{N}_{i+1})\times 1m^2\right]
 \end{array}\right.,
 \end{aligned}
 \]
@@ -300,35 +299,48 @@ The elevation change between two road node points was calculated by first select
     \footnotesize{\ref{code:height_change}}
 \end{flushright}
 
-\noindent where $spz$ are the $z$ values for ground classified points with a single return, and $\Delta e(\mathbf{N}_i, \mathbf{N}_{i+1})$ is the change in elevation between sequential nodes $\mathbf{N}_i$ and $\mathbf{N}_{i+1}$, taking the change in mean single return pulse point $z$ values ($\overline{spz}$) within a 1m$^2$ buffer of each node.
-
-\section{Surface Quality}\label{sec:qual}
-
-Surface quality was assessed roughly through the range in intensity values found at a 1m$^2$ area around each road node. Again, to ensure there was no inaccuracy in intensity values caused by later returns passing through a canopy, only points that had a single return pulse and classified as ground were used in this analysis;
+\noindent where $spz$ are the $z$ values for ground classified points with a single return, and $\Delta e(\mathbf{N}_i, \mathbf{N}_{i+1})$ is the change in elevation between sequential nodes $\mathbf{N}_i$ and $\mathbf{N}_{i+1}$, taking the change in mean single return pulse point $z$ values ($\overline{spz}$) within a 1m$^2$ buffer of each node. For each road, the total elevation change per kilometer was calculated by dividing the sum of all elevation changes between two neighbouring road nodes by the length of a road in kilometers;
 
 \[
 \begin{aligned}
-    \Delta q(\mathbf{N}_1,\mathbf{N}_2,\dots, \mathbf{N}_{i}) = \Delta (\overline{spi}) \in  A(\mathbf{N}_i)\times 1,
+   \Delta e = \sum \frac{\Delta e(\mathbf{N}_i, \mathbf{N}_{i+1})}{L_i \times 1000},
+   \end{aligned}
+\]
+\begin{flushright}
+    \footnotesize{\ref{code:height_change}}
+\end{flushright}
+
+\noindent where $L_i$ is the length of a road $i$ in meters.
+
+\section{Surface Quality}\label{sec:qual}
+
+Surface quality was assessed through the range in intensity values found at a 1m$^2$ area around each road node. Again, to ensure there was no inaccuracy in intensity values caused by later returns passing through a canopy, only points that had a single return pulse and classified as ground were used in this analysis;
+
+\[
+\begin{aligned}
+    \Delta q(\mathbf{N}_1,\mathbf{N}_2,\dots, \mathbf{N}_{i}) = & \Delta (\overline{spi}) \in  A(\mathbf{N}_i)\times 1m^2 \\
+    q_r = & \Delta q(\mathbf{N}_1,\mathbf{N}_2,\dots, \mathbf{N}_{i})_{max} - \\
+    & \Delta q(\mathbf{N}_1,\mathbf{N}_2,\dots, \mathbf{N}_{i})_{min},
 \end{aligned}
 \]
 \begin{flushright}
     \footnotesize{\ref{code:surface_qual}}
 \end{flushright}
 
-\noindent where $spi$ represents LiDAR point intensities with a single pulse return and ground classified, and $\Delta q(\mathbf{N}_1, \mathbf{N}_2, \dots, \mathbf{N}_i)$ represents the total change in road surface quality per road, measured by the range of intensity values.
+\noindent where $spi$ represents LiDAR point intensities with a single pulse return and ground classified, and $\Delta q(\mathbf{N}_1, \mathbf{N}_2, \dots, \mathbf{N}_i)$ represents each individual intensity value for each node in a road, giving the range $q_r$.
 
 \section{Road Width}\label{sec:road_width}
 
 \subsection{Road Sampling}
 
-The LiDAR point cloud data was sampled at regular 10 meter intervals for each road, perpendicular to the road direction, ensuring that when road direction changed, the sampling locations remained perpendicular. To achieve this, each road was first split into nodes at which road direction changed, with a single road consisting of multiple nodes with $xy$ coordinates, indicating a point along a road where the road direction changed. From this, points with $xy$ coordinates were created at 10 meter intervals beginning at the start of a road, (considered Node 1; $\mathbf{N}_1$), until the next node along the road ($\mathbf{N}_2$). To calculate these points along each line between two nodes ($\mathbf{N}_{i} = (x_i, y_i)$ and $\mathbf{N}_{i+1} = (x_{i+1},y_{i+1})$), first the individual change in $x$ and $y$ values was calculated, expressed as;
+The LiDAR point cloud data was sampled at regular 10 meter intervals for each road, perpendicular to the road direction, ensuring that when road direction changed, the sampling locations remained perpendicular. To achieve this, each road was first split into nodes at which road direction changed, with a single road consisting of multiple nodes with $xy$ coordinates, indicating a point along a road where the road direction changed. From this, points with $xy$ coordinates were created at 10 meter intervals beginning at the start of a road, (considered Node 1; $\mathbf{N}_1$), until the next node along the road ($\mathbf{N}_2$). To calculate these points along each line between two neighbouring nodes ($\mathbf{N}_{i} = (x_i, y_i)$ and $\mathbf{N}_{i+1} = (x_{i+1},y_{i+1})$), first the individual change in $x$ and $y$ values was calculated, expressed as;
 
-\[
+\begin{equation}\label{eq:xydiff}
 \begin{aligned}
     |x| =& x_{i+1} - x_i \\
     |y| =& y_{i+1} - y_i,
 \end{aligned}
-\]
+\end{equation}
 \begin{flushright}
     \footnotesize{\ref{code:compute_samples}}
 \end{flushright}
@@ -356,36 +368,36 @@ A point ($p_k$) along these two nodes, at an interval distance $I_k$, was determ
     \footnotesize{\ref{code:compute_samples}}
 \end{flushright}
 
-\noindent giving a point $p_k = (px,py)$ at a distance $I_k$ from $N_i$ in the direction of $N_{i+1}$. Where $I_k$ is the increment, which increases by 10m until the length of the node is covered, given $I_{1} = 10, I_{2} = 20, \dots, I_{k}<d(\mathbf{N}_{i},\mathbf{N}_{i+1})$ and $k \geq 2$. To create a perpendicular sample from a point $p_k$ at position $I_k$ between two nodes $N_i$ and $N_{i+1}$, first two points at a perpendicular distance $\delta$ from the bearing angle between the two nodes, at a point $p_k$ were created, with $\delta$ selected as 30m. First the euclidean distance from $N_{i+1}$ to the point $p_i$ was calculated;
+\noindent giving a point $p_k = (px,py)$ at a distance $I_k$ from $N_i$ in the direction of $N_{i+1}$. Where $I_k$ is the increment, which increases by 10m until the length of the node is covered, given $I_{1} = 10, I_{2} = 20, \dots, I_{k}<d(\mathbf{N}_{i},\mathbf{N}_{i+1})$ and $k \geq 2$. To create a perpendicular sample from a point $p_k$ at position $I_k$ between two nodes $N_i$ and $N_{i+1}$, first two points at a perpendicular distance $\delta$ from the bearing angle between the two nodes, at a point $p_k$ were created, with $\delta$ selected as 30m. First the euclidean distance from $\mathbf{N}_{i+1}$ to the point $p_k$ was calculated;
 
 \[
 \begin{aligned}
-    d(N_{i+1},p_i) = \sqrt{(x_{i+1} - px)^2 + (y_{i+1} - py)^2},
+    d(N_{i+1},p_k) = \sqrt{(x_{i+1} - px)^2 + (y_{i+1} - py)^2},
 \end{aligned}
 \]
 \begin{flushright}
     \footnotesize{\ref{code:euc}}
 \end{flushright}
 
-\noindent with this perpendicular distance, the value required for each $xy$ coordinate to achieve a distance of $\delta$ from a point $p_i$ may be calculated by;
+\noindent with this distance, the value required for each $xy$ coordinate to achieve a distance of $\delta$ from a point $p_k$ may be calculated by;
 
 \[
 \begin{aligned}
-    \delta_x = \frac{\delta}{d(N_{i+1},p_i)} \times (x_{i+1} - px_i) \\
-    \delta_y = \frac{\delta}{d(N_{i+1},p_i)} \times (y_{i+1} - py_i),
+    \delta_x = \frac{\delta}{d(N_{i+1},p_k)} \times (x_{i+1} - px_k) \\
+    \delta_y = \frac{\delta}{d(N_{i+1},p_k)} \times (y_{i+1} - py_k),
 \end{aligned}
 \]
 \begin{flushright}
     \footnotesize{\ref{code:compute_samples}}
 \end{flushright}
 
-\noindent then to create perpendicular points at length $\delta$ from the point $p_i$, the value $\delta_y$ was added to the $x$ value of the point $p_i$, while the value $\delta_y$ was subtracted from the $y$ value of the point $p_i$. This was then inverted to produce a second point. This may be expressed as;
+\noindent then to create perpendicular points at length $\delta$ from the point $p_k$, the value $\delta_y$ was added to the $x$ value of the point $p_k$, while the value $\delta_y$ was subtracted from the $y$ value of the point $p_k$. This was then inverted to produce a second point. This may be expressed as;
 
 \[
 \begin{aligned}
     P_{perp}=\left\{\begin{array}{ll}
-            px_i + \delta_y, & py_i - \delta_x \\
-        px_i - \delta_y, & py_i + \delta_x
+            px_k + \delta_y, & py_k - \delta_x \\
+        px_k - \delta_y, & py_k + \delta_x
 \end{array}\right.,
 \end{aligned}
 \]
@@ -393,11 +405,11 @@ A point ($p_k$) along these two nodes, at an interval distance $I_k$, was determ
     \footnotesize{\ref{code:perp}}
 \end{flushright}
 
-\noindent where $P_{perp}$ is a collection of two points at distance $\delta$ from the point $p_i$. From these two points, a linestring was created between them, which was then buffered to 2m. This gave sample lines, with an area of 2m by 60m, at 10m intervals along each road. The total point cloud was then clipped to only include points with fell inside these sample lines;
+\noindent where $P_{perp}$ is a collection of two points at distance $\delta$ from the point $p_k$. From these two points, a linestring was created between them, which was then buffered to 2m. This gave sample lines, with an area of 2m by 60m, at 10m intervals along each road. The total point cloud was then clipped to only include points with fell inside these sample lines ($s_i$);
 
 \[
 \begin{aligned}
-    \textbf{S} = \textbf{p}_i \in A(s_i).
+    \textbf{S} = \textbf{p}_i \in \left[A(s_i) \times 2m^2 \right].
 \end{aligned}
 \]
 \begin{flushright}
@@ -426,7 +438,7 @@ Linear probability models essentially follow the same formula as a linear regres
 
 \[
 \begin{aligned}
-Y_{i}=\beta_{0}+\beta_{1}+X_{1 i}+\beta_{2} X_{2 i}+\cdots+\beta_{k} X_{k i}+u_{i}
+Y_{i}=\beta_{0}+\beta_{1}+X_{1 i}+\beta_{2} X_{2 i}+\cdots+\beta_{k} X_{k i}+u_{i},
 \end{aligned}
 \]
 
@@ -434,7 +446,7 @@ Y_{i}=\beta_{0}+\beta_{1}+X_{1 i}+\beta_{2} X_{2 i}+\cdots+\beta_{k} X_{k i}+u_{
 
 \[
 \begin{aligned}
-E\left(Y | X_{1}, X_{2}, \ldots, X_{k}\right)=P\left(Y=1 | X_{1}, X_{2}, \ldots, X_{3}\right)
+E\left(Y | X_{1}, X_{2}, \ldots, X_{k}\right)=P\left(Y=1 | X_{1}, X_{2}, \ldots, X_{3}\right),
 \end{aligned}
 \]
 
@@ -442,7 +454,7 @@ E\left(Y | X_{1}, X_{2}, \ldots, X_{k}\right)=P\left(Y=1 | X_{1}, X_{2}, \ldots,
 
 \[
 \begin{aligned}
-P\left(Y=1 | X_{1}, X_{2}, \ldots, X_{k}\right)=\beta_{0}+\beta_{1}+X_{1 i}+\beta_{2} X_{2 i}+\cdots+\beta_{k} X_{k i}
+P\left(Y=1 | X_{1}, X_{2}, \ldots, X_{k}\right)=\beta_{0}+\beta_{1}+X_{1 i}+\beta_{2} X_{2 i}+\cdots+\beta_{k} X_{k i}.
 \end{aligned}
 \]
 
@@ -466,7 +478,7 @@ Further qualitative assessment of the results revealed that some points consider
 \[
 \begin{aligned}
     \mathit{D} &= \sqrt{\delta xi^{2} + \delta y^{2}} \\
-    \mathbf{S} &= (\mathbf{p}_{i}\in [\mathit{D} \leq 1]),
+    \mathbf{S} &= (\mathbf{p}_{i}\in [\mathit{D} \leq 1m]),
 \end{aligned}
 \]
 \begin{flushright}
@@ -528,6 +540,20 @@ Given the two selected points at every sample with a maximum distance between th
 \noindent where $b_\mathbf{K}$ gives predicted of a road at a sample $\mathbf{K}$. With a complete set of calculated road widths for each sample, any width above 8m was removed, in addition to any width below 2m, under the assumption that a width calculated outside these limits would be caused due to noise or inaccuracy.
 
 There is the possibility that the maximum distance between two points does not provide the maximum perpendicular distance across a road section. Such a situation would arise given a triangle formed that is has an opposite length ($a_\mathbf{K}$) above the adjacent length ($b_\mathbf{K}$), giving a hypotenuse ($h_\textbf{K}$) with a longer vertical length. However, given the maximum opposite line length between two points in a sample line is 2m, (each sample is 2m by 60m), for any line where the opposite length is greater than the adjacent length, the adjacent length must therefore be below 2m and thus, the road width calculated from this sample is removed during the filtering process.
+
+To find the angle $\theta_\mathbf{K}$, the difference in $x$ and $y$ coordinates between two nodes $\mathbf{N}_i$ and $\mathbf{N}_{i+1}$ was calculated as in Equation \ref{eq:xydiff} to obtain the bearing angle of the linestring associated with the sample. Similarly, the difference in $x$ and $y$ coordinates was found for the sample line. With this, $\theta_k$ was found by;
+
+\[
+\begin{aligned}
+    b_\mathbf{K} =& |\mathbf{K}_1\mathbf{K}_2| \times cos(\theta_\mathbf{K})
+\end{aligned}
+\]
+\begin{flushright}
+    \footnotesize{\ref{code:opposite_length}}
+\end{flushright}
+
+
+
 
 \subsection{Improved Road Centrelines}
 
