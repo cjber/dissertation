@@ -210,6 +210,7 @@ The bend in a road was considered to be the \textit{bearing angle} $\hat \theta$
 \caption[Bearing Angle ($\theta$) between two sequential road nodes.]{Bearing Angle ($\theta$) between two sequential road Nodes; $\mathbf{N}_{i}$ and $\mathbf{N}_{i+1}$. North is given by $N$.}\label{fig:bearingang1}
 \end{figure}
 
+
 To find the angle $\hat \theta$, the node $\mathbf{N}_{i+1}$ can be represented into relation to node $\mathbf{N}_{i}$ as;
 
 $$
@@ -498,8 +499,8 @@ The full point cloud $\mathbf{S}$ now gave of a collection of predicted road poi
     \centering
 \begin{tikzpicture}[scale=2]
 
-\draw[-, very thick, color = gray] (0,0.5) -- (0,4);
-\draw[dashed, very thick, color = gray] (0,0.3) -- (0,4.2);
+\draw[<->, very thick, color = gray] (0,0.5) -- (0,4);
+\draw[dashed, very thick, color = gray] node[above, color = black]{$\mathbf{N}_{i}$} (0,0.3) -- (0,4.2) node[above, color = black]{$\mathbf{N}_{i+1}$};
 
 \filldraw (-1,1) circle[radius=1pt] node [below left] {$\mathbf{A}_1$};
 \draw[-] (-1,1) -- node[fill=white,inner ysep=3pt, inner xsep = 3pt]{$h_\mathbf{A}$} (1,2);
@@ -523,8 +524,21 @@ The full point cloud $\mathbf{S}$ now gave of a collection of predicted road poi
 \draw[-] (.6,3.2) arc (135:200:.2);
 \node[] at (.4,3.12)  {$\theta_\mathbf{B}$};
 \end{tikzpicture}
-\caption[Road LiDAR points at maximum distance apart, showing two example sample locations ($\mathbf{A}$ and $\mathbf{B}$).]{Road LiDAR points at maximum distance apart, showing two example sample locations ($\mathbf{A}$ and $\mathbf{B}$). Road centreline represented by the thick grey line. True road width is indicated by the dashed lines $b_\mathbf{A}$ and $b_\mathbf{B}$, considered to be the adjacent side of a triangle in relation to be bearing angles between the first and second point of each sample, $\theta_\mathbf{A}$ and $\theta_\mathbf{B}$. The distance between the two points per sample are considered to give the hypotenuse length of a triangle ($h_\mathbf{A}$ and $h_\mathbf{B}$).}\label{fig:sample_points}
+\caption[Road LiDAR points at maximum distance apart, showing two example sample locations ($\mathbf{A}$ and $\mathbf{B}$).]{Road LiDAR points at maximum distance apart, showing two example sample locations ($\mathbf{A}$ and $\mathbf{B}$). Road centreline represented by the thick grey line, as a line joining between two nodes. True road width is indicated by the dashed lines $b_\mathbf{A}$ and $b_\mathbf{B}$, considered to be the adjacent side of a triangle in relation to be bearing angles between the first and second point of each sample, $\theta_\mathbf{A}$ and $\theta_\mathbf{B}$. The distance between the two points per sample are considered to give the hypotenuse length of a triangle ($h_\mathbf{A}$ and $h_\mathbf{B}$).}\label{fig:sample_points}
 \end{figure}
+
+To find the angle $\theta_\mathbf{K}$, the difference in $x$ and $y$ coordinates between two nodes $\mathbf{N}_i$ and $\mathbf{N}_{i+1}$ was calculated as in Equation \ref{eq:xydiff} to obtain the bearing angle between these nodes, represented by the grey line on Figure \ref{fig:sample_points}. Similarly, the difference in $x$ and $y$ coordinates was found for the perpendicular points associated with the sample. With this, $\theta_k$ was found by;
+
+\[
+\begin{aligned}
+    \theta_\mathbf{K}=\mathrm{atan} 2\left(|x|_l,|y|_l\right) - \mathrm{atan} 2\left(|x|_s,|y|_s\right) - 45
+\end{aligned}
+\]
+\begin{flushright}
+    \footnotesize{\ref{code:opposite_length}}
+\end{flushright}
+
+\noindent where the difference in linestring coordinates gives $L = (|x|_l,|y|_l)$, and the difference in sample line coordinates gives $s = (|x|_s,|y|_s)$. Subtracting 45$^\circ$ gives the position relative to the perpendicular line ($B_\mathbf{K}$; Figure \ref{fig:sample_points}) rather than in the direction of the road centreline ($a_\mathbf{K}$).
 
 Given the two selected points at every sample with a maximum distance between them, trigonometry could be used to determine the width of the road at that particular location. Road width is considered to be the adjacent line length ($b_\mathbf{K}$; where $\mathbf{K}$ is a single sample location), perpendicular to the road segment, considering the distance between the two points to be the hypotenuse  of a right angled triangle (Figure \ref{fig:sample_points}; $|\mathbf{K}_1\mathbf{K}_2| \equiv h_\mathbf{K}$). The width $b_\mathbf{K}$ for each sample location was found, this may be expressed using trigonometry as;
 
@@ -541,18 +555,6 @@ Given the two selected points at every sample with a maximum distance between th
 
 There is the possibility that the maximum distance between two points does not provide the maximum perpendicular distance across a road section. Such a situation would arise given a triangle formed that is has an opposite length ($a_\mathbf{K}$) above the adjacent length ($b_\mathbf{K}$), giving a hypotenuse ($h_\textbf{K}$) with a longer vertical length. However, given the maximum opposite line length between two points in a sample line is 2m, (each sample is 2m by 60m), for any line where the opposite length is greater than the adjacent length, the adjacent length must therefore be below 2m and thus, the road width calculated from this sample is removed during the filtering process.
 
-To find the angle $\theta_\mathbf{K}$, the difference in $x$ and $y$ coordinates between two nodes $\mathbf{N}_i$ and $\mathbf{N}_{i+1}$ was calculated as in Equation \ref{eq:xydiff} to obtain the bearing angle of the linestring associated with the sample. Similarly, the difference in $x$ and $y$ coordinates was found for the sample line. With this, $\theta_k$ was found by;
-
-\[
-\begin{aligned}
-\theta=\mathrm{atan} 2\left(|x|_l,|y|_l\right) - \mathrm{atan} 2\left(|x|_l,|y|_l\right) - 45
-\end{aligned}
-\]
-
-\noindent where the difference in linestring coordinates gives $L = (|x|_l,|y|)$, and the difference in sample line coordinates gives $s = (|x|_s,|y|_s)$. Subtracting 45$^\circ$ gives the position relative to the perpendicular line ($B_\mathbf{K}$; Figure \ref{fig:sample_points}) rather than in the diretion of the road centreline ($a_\mathbf{K}$).
-\begin{flushright}
-    \footnotesize{\ref{code:opposite_length}}
-\end{flushright}
 
 
 

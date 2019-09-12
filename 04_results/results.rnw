@@ -500,7 +500,7 @@ Qualitative comparison between the Linear Probability Model based off the origin
 
 For direct comparison between the two selected global linear probability models, centering and scaling of the predictor variables allowed for an easier interpretation of results, without affecting any statistical inferences. This was considered necessary as both P values and standard errors produced by global models offered little in terms of interpretability due to the very large number of points involved in this study. Centering and scaling was obtained through the production of beta coefficients with results given on Table \ref{tab:coeftest}. While the removal of $luminescence$ had little effect on the other predictor coefficients, due to the very small influence of this coefficient, reflected by the normalised value (0.01), and the qualitative analysis of the issues due to shadows, is was considered an unnecessary addition. The other coefficients all give insight into their influence of the road outcome, for example for every 1 increase in the standard deviation in $dist$, the likelihood a point is to be a road point decreases by a standard deviation of 0.33. This therefore suggests that the inclusion of the $dist$ coefficient is important, despite not being considered in other supervised road detection techniques.
 
-Table \ref{tab:estwidths} gives a normalised comparison between each linear model, and its associated estimated road width. This gives insight into the effectiveness of various linear probability models for each road, and road type. While average values all give relative accuracy in the region of 70\%, it appears likely that without adjusting the road centrelines, model probabilities are reduced, as \textbf{LM 0} gave the lowest average accuracy in relation to the other three models using improved centrelines for outcome variable creation. For certain roads, the accuracy of the derived centrelines appear to vastly reduce model accuracy, (For example Road 14; Table \ref{tab:estwidths} and Figure \ref{fig:rqi_compare}).
+Table \ref{tab:estwidths} gives a normalised comparison between each linear model, and its associated estimated road width. This gives insight into the effectiveness of various linear probability models for each road, and road type. While average values all give relative accuracy in the region of 70\%, it appears that at present, the method for centreline improvements does not appear to assist with improving the width estimates. For certain roads, the accuracy of the derived centrelines appear to vastly reduce model accuracy, (For example Road 14; Table \ref{tab:estwidths} and Figure \ref{fig:rqi_compare}).
 
 <<coeftest, results = 'asis'>>=
 
@@ -613,7 +613,6 @@ cat(c("\\begin{table}[!b]
 
 \section{Road Assessment}
 
-Given Linear Model 2 with corrected road centrelines appears to produce the most accurate estimates for road widths, (Mean accuracy of 73.33\%; Table \ref{tab:estwidths}) this was used in the final road assessment. Table \ref{tab:rqi} gives the full results of the road geometric extraction, along with an estimate of overall road quality given by the Road Quality Index (RQI). Qualitative assessment of the RQI may be achieved through observation of the highest and lowest values (Figure \ref{fig:rqi_compare}). It appears to produce reliable results, as the road with the highest RQI is straight, wider than the road with the lowest RQI, and is likely flat given it is neighboured by two agricultural fields. Additionally, this figure gives both the original, and derived centrelines for both roads. Notably the reduction in accuracy in the centreline for road 14 has greatly reduced the accuracy of the road width estimate (Table \ref{tab:estwidths})
 
 <<final_data, results = 'asis'>>=
 road <- st_read("../data/derived/roads/roads_line.gpkg", quiet = TRUE)
@@ -634,7 +633,6 @@ final_data <- final_data %>%
   mutate(length = as.numeric(st_length(geom)))
 
 final_data$road_id <- gsub("road_", "", final_data$road_id)
-
 @
 
 <<final>>=
@@ -670,6 +668,8 @@ summary_data <- merge(summary_data, qual_index, by = "road_id") %>%
   arrange(desc(qual_index))
 @
 
+For the purpose of this assessment, the final model produced (LM 2) was used in the final road assessment, despite the slightly lower model accuracy than the original centrelines model. Table \ref{tab:rqi} gives the full results of the road geometric extraction, along with an estimate of overall road quality given by the Road Quality Index (RQI). Qualitative assessment of the RQI may be achieved through observation of the highest and lowest values (Figure \ref{fig:rqi_compare}). It appears to produce reliable results, as the road with the highest RQI is straight, wider than the road with the lowest RQI, and is likely flat given it is neighboured by two agricultural fields. Additionally, this figure gives both the original, and derived centrelines for both roads. Notably the reduction in accuracy in the centreline for road $\Sexpr{tail(summary_data$road_id, 1)}$ has greatly reduced the accuracy of the road width estimate (Table \ref{tab:estwidths}).
+
 <<rqi, results = 'asis'>>=
 make_table(summary_data,
   cap = "Overall Features Extracted from Roads in the Study Area, in descending order by RQI value",
@@ -692,30 +692,38 @@ jpgs <- Sys.glob("../data/aerial/*.jpg")
 jpgs <- lapply(jpgs, brick)
 roads <- st_read("../data/derived/roads/roads_line.gpkg", quiet = TRUE)
 cents <- st_read("../data/derived/roads/cent_iteration1.gpkg", quiet = TRUE)
+bbox <- st_read("../data/derived/roads/sample_lines.gpkg", quiet = TRUE)
 
-rd_t <- roads[roads$road_id == "road_34", ]
-rd_tc <- cents[cents$road_id == "road_34", ] %>% 
-    st_crop(rd_t)
-rd_b <- roads[roads$road_id == "road_14", ]
-rd_bc <- cents[cents$road_id == "road_14", ] %>% 
-    st_crop(rd_b)
+bbox_t <- bbox[bbox$road_id == paste0("road_", head(summary_data$road_id, 1)), ]
+bbox_b <- bbox[bbox$road_id == paste0("road_", tail(summary_data$road_id, 1)), ]
+bbox_e <- bbox[bbox$road_id == "road_14", ]
 
 ta <- lapply(jpgs, function(x) {
-  return(tryCatch(crop(x, rd_t), error = function(e) NULL))
+  return(tryCatch(crop(x, bbox_t), error = function(e) NULL))
 })
 ta <- ta %>%
   compact() %>%
   brick()
 ba <- lapply(jpgs, function(x) {
-  return(tryCatch(crop(x, rd_b), error = function(e) NULL))
+  return(tryCatch(crop(x, bbox_b), error = function(e) NULL))
 })
 ba <- ba %>%
   compact() %>%
   brick()
 
+ea <- lapply(jpgs, function(x) {
+  return(tryCatch(crop(x, bbox_e), error = function(e) NULL))
+})
+ea <- ea %>%
+  compact() %>%
+  brick()
+
+rd_e <- roads[roads$road_id == "road_14", ] %>% 
+    st_crop(ea)
+rd_ec <- cents[cents$road_id == "road_14", ] %>% 
+    st_crop(ea)
+
 gg_ta <- ggRGB(ta) +
-    geom_sf(data = rd_t, colour = "red") +
-    geom_sf(data = rd_tc, colour = "green") +
   theme_map() +
   theme(panel.border = element_rect(
     colour = "black",
@@ -724,8 +732,17 @@ gg_ta <- ggRGB(ta) +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0))
 gg_ba <- ggRGB(ba) +
-    geom_sf(data = rd_b, colour = "red") +
-    geom_sf(data = rd_bc, colour = "green") +
+  theme_map() +
+  theme(panel.border = element_rect(
+    colour = "black",
+    fill = NA, size = 1
+  )) +
+  scale_x_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0))
+
+gg_ea <- ggRGB(ea) +
+    geom_sf(data = rd_e, colour = "red") +
+    geom_sf(data = rd_ec, colour = "green") +
   theme_map() +
   theme(panel.border = element_rect(
     colour = "black",
@@ -734,13 +751,14 @@ gg_ba <- ggRGB(ba) +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0))
 @
-<<rqi_compare, fig.cap = "Visual comparison between road with the \\textbf{(A)} highest RQI , \\textbf{(B)} and lowest RQI; original centrelines are given in red, with derived centrelines given in green.", fig.showtext=TRUE>>=
+<<rqi_compare, fig.cap = "Visual comparison between road with the \\textbf{(A)} highest RQI , \\textbf{(B)} lowest RQI \\textbf{(C)} and Road 14, showing inaccuracy in derived centrelines, with original centrelines are given in red, with derived centrelines given in green.", fig.showtext=TRUE>>=
 plot_grid(
           gg_ta,
           gg_ba,
+          gg_ea,
   labels = "AUTO",
   label_size = 20,
-  ncol = 2,
+  ncol = 3,
   label_fontfamily = "Roboto Slab"
 )
 @
