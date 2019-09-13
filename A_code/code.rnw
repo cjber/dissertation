@@ -25,84 +25,19 @@ print(x, locale = F)
 @
 \newpage
 
-\section{Functions}
-
+\section{Referenced Functions}
 \subsection{LiDAR Clean} \label{code:lidr_clean}
 <<lidr_clean, echo = TRUE, eval = FALSE>>=
 @
-\subsection{Catalog to Dataframe} \label{code:ctg_to_df}
-<<ctg_to_df, echo = TRUE, eval = FALSE>>=
-@
-
-\subsection{Clip Samples} \label{code:clip_samples}
-<<clip_samples, echo = TRUE, eval = FALSE>>=
+\subsection{Extract Buffer} \label{code:extract_buff}
+<<extract_buff, echo = TRUE, eval = FALSE>>=
 @
 \subsection{Filter LAS Noise} \label{code:las_filter_noise}
 <<las_filter_noise, echo = TRUE, eval = FALSE>>=
 @
 
-\subsection{Extract Buffer} \label{code:extract_buff}
-<<extract_buff, echo = TRUE, eval = FALSE>>=
-@
-
-\subsection{Find Distances} \label{code:find_dists}
-<<find_dists, echo = TRUE, eval = FALSE>>=
-@
-
-\subsection{Euclidean Distance} \label{code:euc}
-<<euc, eval = FALSE, echo = TRUE>>=
-@
-
-\subsection{Perpendicular Sampling} \label{code:perp}
-<<perp, eval = FALSE, echo = TRUE>>=
-@
-
 \subsection{Combine Catalog} \label{code:comb_ctg}
 <<comb_ctg, eval = FALSE, echo = TRUE>>=
-@
-
-\subsection{Compute Samples} \label{code:compute_samples}
-<<compute_samples, eval = FALSE, echo = TRUE>>=
-@
-
-\subsection{Greyscale} \label{code:greyscale}
-<<greyscale, eval = FALSE, echo = TRUE>>=
-@
-
-\subsection{Compute Individual Linear Model} \label{code:lm_compute}
-<<lm_compute, eval = FALSE, echo = TRUE>>=
-@
-
-\subsection{Filter Returns}\label{code:filter_returns}
-<<filter_returns, eval = FALSE, echo = TRUE>>=
-@
-
-\subsection{Filter Samples}\label{code:filter_samples}
-<<filter_samples, eval = FALSE, echo = TRUE>>=
-@
-
-\subsection{Max Dist}\label{code:max_dist}
-<<max_dist, eval = FALSE, echo = TRUE>>=
-@
-
-\subsection{Max Lines}\label{code:max_lines}
-<<max_lines, eval = FALSE, echo = TRUE>>=
-@
-
-\subsection{Mid Points}\label{code:mid_pts}
-<<mid_pts, eval = FALSE, echo = TRUE>>=
-@
-
-\subsection{True Centrelines}\label{code:true_cents}
-<<true_cents, eval = FALSE, echo = TRUE>>=
-@
-
-\subsection{Opposite Length}\label{code:opposite_length}
-<<opposite_length, eval = FALSE, echo = TRUE>>=
-@
-
-\subsection{Model Comparison}\label{code:model_comparison}
-<<model_comparison, eval= FALSE, echo = TRUE>>=
 @
 
 \subsection{Road Angles}\label{code:road_angles}
@@ -112,14 +47,78 @@ print(x, locale = F)
 \subsection{Height Change}\label{code:height_change}
 <<height_change, eval = FALSE, echo = TRUE>>=
 @
-
 \subsection{Surface Quality} \label{code:surface_qual}
 <<surface_qual, echo = TRUE, eval = FALSE>>=
 @
+
+
+\subsection{Compute Samples} \label{code:compute_samples}
+<<compute_samples, eval = FALSE, echo = TRUE>>=
+@
+\subsection{Euclidean Distance} \label{code:euc}
+<<euc, eval = FALSE, echo = TRUE>>=
+@
+\subsection{Perpendicular Sampling} \label{code:perp}
+<<perp, eval = FALSE, echo = TRUE>>=
+@
+\subsection{Clip Samples} \label{code:clip_samples}
+<<clip_samples, echo = TRUE, eval = FALSE>>=
+@
+\subsection{Greyscale} \label{code:greyscale}
+<<greyscale, eval = FALSE, echo = TRUE>>=
+@
+\subsection{Compute Individual Linear Model} \label{code:lm_compute}
+<<lm_compute, eval = FALSE, echo = TRUE>>=
+@
+\subsection{Filter Samples}\label{code:filter_samples}
+<<filter_samples, eval = FALSE, echo = TRUE>>=
+@
+\subsection{Max Dist}\label{code:max_dist}
+<<max_dist, eval = FALSE, echo = TRUE>>=
+@
+
+\subsection{Opposite Length}\label{code:opposite_length}
+<<opposite_length, eval = FALSE, echo = TRUE>>=
+@
+\subsection{Find Distances} \label{code:find_dists}
+<<find_dists, echo = TRUE, eval = FALSE>>=
+@
+\subsection{Mid Points}\label{code:mid_pts}
+<<mid_pts, eval = FALSE, echo = TRUE>>=
+@
+\subsection{Beta Coefficients} \label{code:lm_beta}
+<<lm_beta, echo = TRUE, eval = FALSE>>=
+@
+
+\section{Additional Functions}
+
+\subsection{Catalog to Dataframe} \label{code:ctg_to_df}
+<<ctg_to_df, echo = TRUE, eval = FALSE>>=
+@
+
+
+
+
+
+\subsection{Filter Returns}\label{code:filter_returns}
+<<filter_returns, eval = FALSE, echo = TRUE>>=
+@
+
+\subsection{True Centrelines}\label{code:true_cents}
+<<true_cents, eval = FALSE, echo = TRUE>>=
+@
+\subsection{Max Lines}\label{code:max_lines}
+<<max_lines, eval = FALSE, echo = TRUE>>=
+@
+\subsection{Model Comparison}\label{code:model_comparison}
+<<model_comparison, eval= FALSE, echo = TRUE>>=
+@
+
+
+
+
+
 \subsection{Formatting} \label{code:make_table}
 <<make_table, echo = TRUE, eval = FALSE>>=
 @
 
-\subsection{Beta Coefficients} \label{code:lm_beta}
-<<lm_beta, echo = TRUE, eval = FALSE>>=
-@

@@ -204,9 +204,9 @@ The direction of a road was considered to be the \textit{bearing angle} $\hat \t
 \draw[-] (0.2,.4) -- (0.8, .7);
 
     \draw[<-] (0.28,.44) arc (45:90:.111);
-    \node[] at (.25,.5)  {$\hat \theta$};
+    \node[] at (.25,.5)  {$\hat \theta_i$};
 \end{tikzpicture}
-\caption[Bearing Angle ($\theta$) between two sequential road nodes.]{Bearing Angle ($\theta$) between two sequential road Nodes; $\mathbf{N}_{i}$ and $\mathbf{N}_{i+1}$. North is given by $N$.}\label{fig:bearingang1}
+\caption[Bearing Angle ($\hat \theta_i$) between two sequential road nodes.]{Bearing Angle ($\theta$) between two sequential road Nodes; $\mathbf{N}_{i}$ and $\mathbf{N}_{i+1}$. North is given by $N$.}\label{fig:bearingang1}
 \end{figure}
 
 
@@ -233,8 +233,8 @@ $$
 
 \[
     \begin{aligned}
-\hat \theta=\left\{\begin{array}{ll}{\hat{\theta},} & {\hat{\theta} \geq 0} \\
-{2 \pi+\hat{\theta},} & {\hat{\theta}<0}\end{array}\right.
+\hat \theta=\left\{\begin{array}{ll}{\theta,} & {\theta \geq 0} \\
+{2 \pi+\theta,} & {\theta<0}\end{array}\right.
 \end{aligned}
 \]
 \begin{flushright}
@@ -303,14 +303,14 @@ The elevation change between two road node points was calculated by first select
 
 \[
 \begin{aligned}
-   \Delta e = \sum \frac{\Delta e(\mathbf{N}_i, \mathbf{N}_{i+1})}{L_i \times 1000},
+   \Delta e = \sum \frac{\Delta e(\mathbf{N}_i, \mathbf{N}_{i+1})}{L_k \times 1000},
    \end{aligned}
 \]
 \begin{flushright}
     \footnotesize{\ref{code:height_change}}
 \end{flushright}
 
-\noindent where $L_i$ is the length of a road $i$ in meters.
+\noindent where $L_k$ is the length of a road $k$ in meters.
 
 \section{Surface Quality}\label{sec:qual}
 
@@ -333,7 +333,7 @@ Surface quality was assessed through the range in intensity values found at a 1m
 
 \subsection{Road Sampling}
 
-The LiDAR point cloud data was sampled at regular 10 meter intervals for each road, perpendicular to the road direction, ensuring that when road direction changed, the sampling locations remained perpendicular. To achieve this, each road was first split into nodes at which road direction changed, with a single road consisting of multiple nodes with $xy$ coordinates, indicating a point along a road where the road direction changed. From this, points with $xy$ coordinates were created at 10 meter intervals beginning at the start of a road, (considered Node 1; $\mathbf{N}_1$), until the next node along the road ($\mathbf{N}_2$). To calculate these points along each line between two neighbouring nodes ($\mathbf{N}_{i} = (x_i, y_i)$ and $\mathbf{N}_{i+1} = (x_{i+1},y_{i+1})$), first the individual change in $x$ and $y$ values was calculated, expressed as;
+The LiDAR point cloud was sampled at 60m by 2m bounding regions, at regular 10 meter intervals for each road, perpendicular to the road direction, ensuring that when road direction changed, the sampling locations remained perpendicular. To achieve this, each road was first split into nodes at which road direction changed, with a single road consisting of multiple nodes with $xy$ coordinates, indicating a point along a road where the road direction changed. From this, points with $xy$ coordinates were created at 10 meter intervals beginning at the start of a road, (considered Node 1; $\mathbf{N}_1$), until the next node along the road ($\mathbf{N}_2$). To calculate these points along each line between two neighbouring nodes ($\mathbf{N}_{i} = (x_i, y_i)$ and $\mathbf{N}_{i+1} = (x_{i+1},y_{i+1})$), first the individual change in $x$ and $y$ values was calculated, expressed as;
 
 \begin{equation}\label{eq:xydiff}
 \begin{aligned}
@@ -425,7 +425,7 @@ $$
 lum = \frac{Band_1 + Band_2 + Band_3}{3}
 $$
 \begin{flushright}
-    \footnotesize{\ref{code:lm_compute}}
+    \footnotesize{\ref{code:greyscale}}
 \end{flushright}
 
 \subsection{Linear Probability Models and Road Width}\label{sec:lpm}
@@ -460,7 +460,14 @@ P\left(Y=1 | X_{1}, X_{2}, \ldots, X_{k}\right)=\beta_{0}+\beta_{1}+X_{1 i}+\bet
 
 \noindent $\beta_j$ therefore may be interpreted as the change in the probability that $Y_i = 1$, with all other predictor variable constant. $\beta_j$ may be estimated using Ordinary Least Squares regression \citep{hanck2019}. 
 
-Likelihood values from the predictions gave a range of numerical values. Points that fell below a certain threshold were removed, leaving only points that were most likely correctly identified as road points. This threshold was assessed qualitatively through both observation of the distribution of probability ranges for each model, and results gained through different thresholds. Considering a threshold $x$, this may be expressed as;
+<<range_vals>>=
+range_val <- fread("../data/derived/model_data/linearmodels.csv")
+min_range <- min(range_val$lm1_pred)
+max_range <- max(range_val$lm1_pred)
+@
+
+
+Likelihood values from the predictions gave a range of numerical values (\Sexpr{round(min_range,2)} to \Sexpr{round(max_range, 2)}). Points that fell below a certain threshold were removed, leaving only points that were most likely correctly identified as road points. This threshold was assessed qualitatively through both observation of the distribution of probability ranges for each model, and results gained through different thresholds. Considering a threshold $x$, this may be expressed as;
 
 \[
 \begin{aligned}
@@ -489,9 +496,6 @@ Further qualitative assessment of the results revealed that some points consider
 
 The full point cloud $\mathbf{S}$ now gave of a collection of predicted road points for each sample line along a road segment, with noise removed.  To obtain road widths from these points, the maximum distance between two points in a particular sample was determined, these points were kept and all others removed. A linear section of road with two samples resembles Figure \ref{fig:sample_points}.
 
-\begin{flushright}
-    \footnotesize{\ref{code:max_dist}}
-\end{flushright}
 
 
 \begin{figure}[htbp]
@@ -524,6 +528,9 @@ The full point cloud $\mathbf{S}$ now gave of a collection of predicted road poi
 \node[] at (.4,3.12)  {$\theta_\mathbf{B}$};
 \end{tikzpicture}
 \caption[Road LiDAR points at maximum distance apart, showing two example sample locations ($\mathbf{A}$ and $\mathbf{B}$).]{Road LiDAR points at maximum distance apart, showing two example sample locations ($\mathbf{A}$ and $\mathbf{B}$). Road centreline represented by the thick grey line, as a line joining between two nodes. True road width is indicated by the dashed lines $b_\mathbf{A}$ and $b_\mathbf{B}$, considered to be the adjacent side of a triangle in relation to be bearing angles between the first and second point of each sample, $\theta_\mathbf{A}$ and $\theta_\mathbf{B}$. The distance between the two points per sample are considered to give the hypotenuse length of a triangle ($h_\mathbf{A}$ and $h_\mathbf{B}$).}\label{fig:sample_points}
+\begin{flushright}
+    \footnotesize{\ref{code:max_dist}}
+\end{flushright}
 \end{figure}
 
 To find the angle $\theta_\mathbf{K}$, the difference in $x$ and $y$ coordinates between two nodes $\mathbf{N}_i$ and $\mathbf{N}_{i+1}$ was calculated as in Equation \ref{eq:xydiff} to obtain the bearing angle between these nodes, represented by the grey line on Figure \ref{fig:sample_points}. Similarly, the difference in $x$ and $y$ coordinates was found for the perpendicular points associated with the sample. With this, $\theta_\mathbf{K}$ given;
@@ -547,7 +554,7 @@ Given the two selected points at every sample with a maximum distance between th
 \end{aligned}
 \]
 \begin{flushright}
-    \footnotesize{\ref{code:opposite_length}}
+    \footnotesize{\ref{code:find_dists}}
 \end{flushright}
 
 \noindent where $b_\mathbf{K}$ gives predicted of a road at a sample $\mathbf{K}$. With a complete set of calculated road widths for each sample, any width above 8m was removed, in addition to any width below 2m, under the assumption that a width calculated outside these limits would be caused due to noise or inaccuracy.
