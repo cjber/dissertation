@@ -595,6 +595,26 @@ height_change <- function(x) {
   return(elev)
 }
 
+## ---- surface_qual
+# find difference in average height between two samples
+surface_qual <- function(x) {
+  elev <- c()
+  samples <- split(x, x$sample_id)
+  if (length(samples) > 2) {
+    for (s in 2:length(samples) - 1) {
+      pair <- samples[c(s, s + 1)]
+      n1 <- mean(pair[[1]]$Z)
+      n2 <- mean(pair[[2]]$Z)
+      e <- abs(n1 - n2)
+      e <- cbind(
+        as.character(unique(samples[[s]]$road_id)), e
+      )
+      elev <- rbind(elev, e)
+    }
+  }
+  return(elev)
+}
+
 ## ---- printList
 printList <- function(x, out.format = knitr::opts_knit$get("out.format"),
                       environment = "itemize",

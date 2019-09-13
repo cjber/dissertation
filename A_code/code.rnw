@@ -1,4 +1,3 @@
-
     All code is hosted on my personal \href{https://github.com/cjber/}{GitHub account}, along with my complete dotfiles, used in conjunction with the Linux distribution Manjaro, and the i3 window manager. All writing and code was produced using \href{https://neovim.io}{Neovim} with my personal configuration to implement integrated development environment (IDE) style features for writing R code, while also providing essential features for writing in \LaTeX{}. Neovim has the benefit of being both highly customisable, and lightweight, which allows for much lower system utilisation compared with R Studio when working with large datasets. One essential Vim plugin to mention is \href{https://github.com/jalvesaq/Nvim-R}{Nvim-R}, providing an \R{} REPL connection to vim, and other useful functions. 
 
 This dissertation was written using \LaTeX{} combined with the \texttt{rnoweb} file type \citep{ihaka2011}, for \textit{Literate Programming}\footnote{See \cite{knuth1984}; \textit{“Let us change our traditional attitude to the construction of programs: Instead of imagining that our main task is to instruct a computer what to do, let us concentrate rather on explaining to human beings what we want a computer to do.”}}. The template is built from scratch but takes much inspiration (and code) from the \href{https://github.com/asardaes/R-LaTeX-Template}{R-LaTeX-Template}.
@@ -47,11 +46,6 @@ print(x, locale = F)
 \subsection{Height Change}\label{code:height_change}
 <<height_change, eval = FALSE, echo = TRUE>>=
 @
-\subsection{Surface Quality} \label{code:surface_qual}
-<<surface_qual, echo = TRUE, eval = FALSE>>=
-@
-
-
 \subsection{Compute Samples} \label{code:compute_samples}
 <<compute_samples, eval = FALSE, echo = TRUE>>=
 @
@@ -77,8 +71,8 @@ print(x, locale = F)
 <<max_dist, eval = FALSE, echo = TRUE>>=
 @
 
-\subsection{Opposite Length}\label{code:opposite_length}
-<<opposite_length, eval = FALSE, echo = TRUE>>=
+\subsection{Adjacent Length}\label{code:adjacent_length}
+<<adjacent_length, eval = FALSE, echo = TRUE>>=
 @
 \subsection{Find Distances} \label{code:find_dists}
 <<find_dists, echo = TRUE, eval = FALSE>>=
@@ -95,15 +89,9 @@ print(x, locale = F)
 \subsection{Catalog to Dataframe} \label{code:ctg_to_df}
 <<ctg_to_df, echo = TRUE, eval = FALSE>>=
 @
-
-
-
-
-
 \subsection{Filter Returns}\label{code:filter_returns}
 <<filter_returns, eval = FALSE, echo = TRUE>>=
 @
-
 \subsection{True Centrelines}\label{code:true_cents}
 <<true_cents, eval = FALSE, echo = TRUE>>=
 @
@@ -113,11 +101,6 @@ print(x, locale = F)
 \subsection{Model Comparison}\label{code:model_comparison}
 <<model_comparison, eval= FALSE, echo = TRUE>>=
 @
-
-
-
-
-
 \subsection{Formatting} \label{code:make_table}
 <<make_table, echo = TRUE, eval = FALSE>>=
 @

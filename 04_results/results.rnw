@@ -678,7 +678,7 @@ make_table(summary_data,
     "Max Angle",
     "Total $Z$",
     "Intensity",
-    "Width \\textbf{(LM 2)}",
+    "Width \\textbf{(LM $i$)}",
     "Reliability $(\\mathbf{P}_{n} / \\mathbf{L}$)",
     "RQI"
   )
@@ -727,7 +727,7 @@ gg_ba <- ggRGB(ba) +
   scale_y_continuous(expand = c(0, 0))
 
 @
-<<rqi_compare, fig.cap = "Visual comparison between the RQI of roads. \\textbf{(A)} highest RQI , \\textbf{(B)} lowest RQI \\textbf{(C)} and Road 14, showing inaccuracy in derived centrelines, with original centrelines are given in red, with derived centrelines given in green.", fig.scap = "Visual comparison between the RQI of roads.", fig.showtext=TRUE>>=
+<<rqi_compare, fig.cap = "Visual comparison between the RQI of roads. \\textbf{(A)} highest RQI \\textbf{(B)} lowest RQI", fig.scap = "Visual comparison between the RQI of roads.", fig.showtext=TRUE>>=
 plot_grid(
           gg_ta,
           gg_ba,
