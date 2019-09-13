@@ -481,9 +481,6 @@ adjacent_length <- function(samp, cent) {
         y <- n1[2] - n2[2]
         ang_rad <- atan2(y, x)
         ang_deg <- ang_rad * 180 / pi
-        #if (ang_rad < 0) {
-        #  ang_deg <- ang_deg + 180
-        #}
 
         n1 <- st_coordinates(s)[1, ]
         n2 <- st_coordinates(s)[2, ]
@@ -492,15 +489,14 @@ adjacent_length <- function(samp, cent) {
 
         ang_rad <- atan2(y, x)
         ang_deg_c <- ang_rad * 180 / pi
-        #if (ang_rad < 0) {
-        #  ang_deg_c <- ang_deg + 180
-        #}
 
         theta <- abs(ang_deg) - abs(ang_deg_c)
         theta <- theta - 45 # position relative to perp line
 
         c1_len <- st_length(s)
         # pythagoras to find adjacent line length
+      # left of N same as right of N
+      # same as + 2pi
         adjacent <- abs(as.numeric(c1_len) * cos(as.numeric(theta)))
         adjacent <- cbind(
           adjacent, as.character(unique(cent$road_id)),

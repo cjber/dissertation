@@ -481,7 +481,7 @@ gg_centi <- ggRGB(aerial) +
   scale_y_continuous(expand = c(0, 0))
 @
 
-<<fig_noisecent, fig.cap = "Comparison between original and derived centrelines showing differences in linear models; showing \\textbf{(A)} Comparison between original (red) and derived road centrelines (green). \\textbf{(B)} Second linear model (LM 2) applied to original centrelines. \\textbf{(C)} Second linear model (LM 2) applied to derived centrelines. \\textbf{(D)} Individual linear model (LM i) applied to derived centrelines. Each linear model probability quantile is selected as 95\\%, green points indicate road classified points, red indicate road classified points, removed through noise isolation filtering.", fig.showtext=TRUE, fig.pos = "b">>=
+<<fig_noisecent, fig.showtext=TRUE, fig.pos = "b", results = 'asis'>>=
 plot_grid(
   ggcent,
   gg_cent0,
@@ -492,6 +492,7 @@ plot_grid(
   ncol = 4,
   label_fontfamily = "Roboto Slab"
 )
+cat("\caption[Comparison between original and derived centrelines showing differences in linear models]{Comparison between original and derived centrelines showing differences in linear models; showing \\textbf{(A)} Comparison between original (red) and derived road centrelines (green). \\textbf{(B)} Second linear model (LM 2) applied to original centrelines. \\textbf{(C)} Second linear model (LM 2) applied to derived centrelines. \\textbf{(D)} Individual linear model (LM i) applied to derived centrelines. Each linear model probability quantile is selected as 95\\%, green points indicate road classified points, red indicate road classified points, removed through noise isolation filtering.}")
 @
 
 Qualitative comparison between the Linear Probability Model based off the original centreline locations reveals an improvement in overall road detection, particularly towards the edge of roads, while additional samples are achieved in areas which previously had no coverage due to the incorrect centreline placement (Figure \ref{fig:fig_noisecent} \textbf{(A)}). However, it appears that in areas where there are higher levels of linear predictive inaccuracy, the new centrelines are less accurate. Thankfully, noise exclusion techniques employed have removed samples that fall within these areas, particularly noticeable at the northern end of Figure \ref{fig:fig_noisecent} \textbf{(C)}. Figure \ref{fig:fig_noisecent} also gives information regarding the distance based noise exclusion technique, which has allowed for the exclusion of isolated points accurately on Figure \ref{fig:fig_noisecent} \textbf{(B)}. Improved centreline locations allowed for individual linear models (Figure \ref{fig:fig_noisecent} \textbf{(D)}). While it was assumed that individual linear models would potentially produce more accurate width estimations, it is hard to differentiate between the global and individual linear models (Figure \ref{fig:fig_noisecent} \textbf{(C)} and \textbf{(D)}).

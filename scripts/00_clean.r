@@ -26,19 +26,19 @@ fwrite(las, "../data/point/points.csv")
 
 # filter using sql expressions why not
 # very very slow to read in full gpkg, don't run unless new data added
-#roads <- st_read("../data/osroads/oproad_gpkg_gb/data/oproad_gb.gpkg",
+# roads <- st_read("../data/osroads/oproad_gpkg_gb/data/oproad_gb.gpkg",
 #    layer = "RoadLink", query =
 #        "SELECT * FROM RoadLink WHERE
 #         formOfWay = \"Single Carriageway\" AND
 #         roadFunction <> \"Restricted Local Access Road\" "
-#) %>%
+# ) %>%
 #    st_zm() # remove z axis
 #
-#roads <- as_Spatial(roads)
-#roads <- raster::crop(roads, as.matrix(extent(ctg))) %>%
+# roads <- as_Spatial(roads)
+# roads <- raster::crop(roads, as.matrix(extent(ctg))) %>%
 #    st_as_sf()
 
-#st_write(roads, "../data/osroads/oproad_crop.gpkg")
+# st_write(roads, "../data/osroads/oproad_crop.gpkg")
 
 roads <- st_read("../data/osroads/oproad_crop.gpkg") %>%
     mutate(
