@@ -160,7 +160,6 @@ An automated method for the identification of rural road geometric features is p
 <<discussion, child = "05_discussion/discussion.rnw">>=
 @
 
-
 % ===========================================================================================================
 % Bibliography
 % ===========================================================================================================

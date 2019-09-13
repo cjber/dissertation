@@ -491,7 +491,6 @@ adjacent_length <- function(samp, cent) {
         ang_deg_c <- ang_rad * 180 / pi
 
         theta <- abs(ang_deg) - abs(ang_deg_c)
-        theta <- theta - 45 # position relative to perp line
 
         c1_len <- st_length(s)
         # pythagoras to find adjacent line length

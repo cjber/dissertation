@@ -504,7 +504,6 @@ For direct comparison between the two selected global linear probability models,
 Table \ref{tab:estwidths} gives a normalised comparison between each linear model, and its associated estimated road width. This gives insight into the effectiveness of various linear probability models for each road, and road type. While average values all give relative accuracy in the region of 70\%, it appears that at present, the method for centreline improvements does not appear to assist with improving the width estimates. For certain roads, the accuracy of the derived centrelines appear to vastly reduce model accuracy, (For example Road 14; Table \ref{tab:estwidths} and Figure \ref{fig:rqi_compare}).
 
 <<coeftest, results = 'asis'>>=
-
 cent1_lm <- fread("../data/derived/model_data/cent1_lm.csv") %>%
   select(c(road_id, Intensity, lum, dists, Z, NumberOfReturns, road))
 
@@ -622,7 +621,7 @@ final_data <- fread("../data/final_data/final.csv") %>%
     V1,
     mean_angle,
     mean_int,
-    lmi_mean,
+    lm2_mean,
     lm0_mean,
     lm1_mean
   ))
@@ -649,12 +648,12 @@ range_norm <- function(x) {
 # normalised comparison relative to known
 final_norm[, 3:6] <- final_norm[, 3:6] %>%
   mutate_if(is.character, as.numeric) %>%
-  mutate(lm2_mean = 1 / lm2_mean) %>%
+  mutate(lmi_mean = 1 / lmi_mean) %>%
   lapply(range_norm) %>%
   as.data.frame()
 
 final_norm <- final_norm %>%
-  mutate(qual_index = select(., max_angle:lm2_mean) %>% rowSums()) %>%
+  mutate(qual_index = select(., max_angle:lmi_mean) %>% rowSums()) %>%
   mutate(qual_index = 1 - qual_index) %>%
   arrange(desc(qual_index)) %>%
   select(-c(length, tot_pts))
@@ -669,7 +668,7 @@ summary_data <- merge(summary_data, qual_index, by = "road_id") %>%
   arrange(desc(qual_index))
 @
 
-For the purpose of this assessment, the final model produced (LM 2) was used in the final road assessment, despite the slightly lower model accuracy than the original centrelines model. Table \ref{tab:rqi} gives the full results of the road geometric extraction, along with an estimate of overall road quality given by the Road Quality Index (RQI). Qualitative assessment of the RQI may be achieved through observation of the highest and lowest values (Figure \ref{fig:rqi_compare}). It appears to produce reliable results, as the road with the highest RQI is straight, wider than the road with the lowest RQI, and is likely flat given it is neighboured by two agricultural fields. Additionally, this figure gives both the original, and derived centrelines for both roads. Notably the reduction in accuracy in the centreline for road 14 has greatly reduced the accuracy of the road width estimate (Table \ref{tab:estwidths}).
+As LM $i$ gave the highest mean accuracy for roads (Table \ref{tab:final_data}), is was selected for the final road width predictions. From this, Table \ref{tab:rqi} gives the full results of the road geometric extraction, along with an estimate of overall road quality given by the Road Quality Index (RQI). Qualitative assessment of the RQI may be achieved through observation of the highest and lowest values (Figure \ref{fig:rqi_compare}). It appears to produce reliable results, as the road with the highest RQI is straighter and wider than the road with the lowest RQI, and is likely flat given it is neighboured by houses and an agricultural field.
 
 <<rqi, results = 'asis'>>=
 make_table(summary_data,
@@ -697,7 +696,6 @@ bbox <- st_read("../data/derived/roads/sample_lines.gpkg", quiet = TRUE)
 
 bbox_t <- bbox[bbox$road_id == paste0("road_", head(summary_data$road_id, 1)), ]
 bbox_b <- bbox[bbox$road_id == paste0("road_", tail(summary_data$road_id, 1)), ]
-bbox_e <- bbox[bbox$road_id == "road_14", ]
 
 ta <- lapply(jpgs, function(x) {
   return(tryCatch(crop(x, bbox_t), error = function(e) NULL))
@@ -712,12 +710,6 @@ ba <- ba %>%
   compact() %>%
   brick()
 
-ea <- lapply(jpgs, function(x) {
-  return(tryCatch(crop(x, bbox_e), error = function(e) NULL))
-})
-ea <- ea %>%
-  compact() %>%
-  brick()
 
 rd_e <- roads[roads$road_id == "road_14", ] %>% 
     st_crop(ea)
@@ -741,25 +733,16 @@ gg_ba <- ggRGB(ba) +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0))
 
-gg_ea <- ggRGB(ea) +
-    geom_sf(data = rd_e, colour = "red") +
-    geom_sf(data = rd_ec, colour = "green") +
-  theme_map() +
-  theme(panel.border = element_rect(
-    colour = "black",
-    fill = NA, size = 1
-  )) +
-  scale_x_continuous(expand = c(0, 0)) +
-  scale_y_continuous(expand = c(0, 0))
 @
 <<rqi_compare, fig.cap = "Visual comparison between the RQI of roads. \\textbf{(A)} highest RQI , \\textbf{(B)} lowest RQI \\textbf{(C)} and Road 14, showing inaccuracy in derived centrelines, with original centrelines are given in red, with derived centrelines given in green.", fig.scap = "Visual comparison between the RQI of roads.", fig.showtext=TRUE>>=
 plot_grid(
           gg_ta,
           gg_ba,
-          gg_ea,
   labels = "AUTO",
   label_size = 20,
-  ncol = 3,
-  label_fontfamily = "Roboto Slab"
+  ncol = 2,
+  label_fontfamily = "Roboto Slab",
+    hjust = 0,
+  axis = "l"
 )
 @

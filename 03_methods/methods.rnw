@@ -478,7 +478,7 @@ Likelihood values from the predictions gave a range of numerical values (\Sexpr{
     \footnotesize{\ref{code:lm_compute}}
 \end{flushright}
 
-\noindent where $\mathbf{S}$ is the total point cloud and $lm$ is the value assigned to a point $\mathbf{p}_i$ indicating the likelihood that the point is part of the road surface.
+\noindent where $\mathbf{S}$ is the total point cloud and $lm$ is the value assigned to a point $\mathbf{p}_i$, indicating the likelihood that the point is part of the road surface.
 
 Further qualitative assessment of the results revealed that some points considered to be noise were still present, but often isolated. To ensure no isolated points were present, the minimum distance between each point, and the nearest neighbouring point was checked, if a single point was considered isolated, with over 1m between it and any other point, it was removed. This may be expressed as;
 
@@ -533,18 +533,18 @@ The full point cloud $\mathbf{S}$ now gave of a collection of predicted road poi
 \end{flushright}
 \end{figure}
 
-To find the angle $\theta_\mathbf{K}$, the difference in $x$ and $y$ coordinates between two nodes $\mathbf{N}_i$ and $\mathbf{N}_{i+1}$ was calculated as in Equation \ref{eq:xydiff} to obtain the bearing angle between these nodes, represented by the grey line on Figure \ref{fig:sample_points}. Similarly, the difference in $x$ and $y$ coordinates was found for the perpendicular points associated with the sample. With this, $\theta_\mathbf{K}$ given;
+To find the angle $\theta_\mathbf{K}$, the difference in $x$ and $y$ coordinates between two nodes $\mathbf{N}_i$ and $\mathbf{N}_{i+1}$ was calculated as in Equation \ref{eq:xydiff} to obtain the bearing angle between these nodes, represented by the grey line on Figure \ref{fig:sample_points}. Similarly, the difference in $x$ and $y$ coordinates was found for the perpendicular points associated with the sample. With this, $\theta_\mathbf{K}$ is given;
 
 \[
 \begin{aligned}
-    \theta_\mathbf{K}=\mathrm{atan} 2\left(|x|_l,|y|_l\right) - \mathrm{atan} 2\left(|x|_s,|y|_s\right) - 45
+    \theta_\mathbf{K}=\mathrm{atan} 2\left(|x|_l,|y|_l\right) - \mathrm{atan} 2\left(|x|_s,|y|_s\right)
 \end{aligned}
 \]
 \begin{flushright}
     \footnotesize{\ref{code:opposite_length}}
 \end{flushright}
 
-\noindent where the difference in linestring coordinates gives $L = (|x|_l,|y|_l)$, and the difference in sample line coordinates gives $s = (|x|_s,|y|_s)$. Subtracting 45$^\circ$ gives the position relative to the perpendicular line ($B_\mathbf{K}$; Figure \ref{fig:sample_points}) rather than in the direction of the road centreline ($a_\mathbf{K}$).
+\noindent where the difference in linestring coordinates gives $L = (|x|_l,|y|_l)$, and the difference in sample line coordinates gives $s = (|x|_s,|y|_s)$.
 
 Given the two selected points at every sample with a maximum distance between them, trigonometry could be used to determine the width of the road at that particular location. Road width is considered to be the adjacent line length ($b_\mathbf{K}$; where $\mathbf{K}$ is a single sample location), perpendicular to the road segment, considering the distance between the two points to be the hypotenuse  of a right angled triangle (Figure \ref{fig:sample_points}; $|\mathbf{K}_1\mathbf{K}_2| \equiv h_\mathbf{K}$). The width $b_\mathbf{K}$ for each sample location was found, this may be expressed using trigonometry as;
 
