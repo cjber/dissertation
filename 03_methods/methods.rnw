@@ -1,4 +1,4 @@
-    \lettrine{T}{his} dissertation primarily makes use of the free open source statistical language \R{} \citep{parallel}. Managing the large LiDAR datasets from my personal computer was made possible through the \texttt{lidR} \R{} package \citep{lidR}. Further details regarding the \R{} environment and computer setup used for this dissertation are given in \textbf{Appendix \ref{a:code}}. Also given in \textbf{Appendix \ref{a:code}} are the code snippets utilised in this methodology, for many equations, the relevant code is given as a reference to the appendix location, in the form \textbf{A.x.x}. Due to the nature of the functions used in this analysis, a single function often contains multiple equations, and so a reference to a particular appendix number may be repeated. Additionally, not all functions are referenced in text, so there are gaps in references to functions, and they do not necessarily appear sequentially.
+    \lettrine{T}{his} dissertation primarily makes use of the free open source statistical language \R{} \citep{parallel}. Managing the large LiDAR datasets from my personal computer was made possible through the \texttt{lidR} \R{} package \citep{lidR}. Further details regarding the \R{} environment and computer setup used for this dissertation are given in \textbf{Appendix \ref{a:code}}. Also given in \textbf{Appendix \ref{a:code}} are the code snippets utilised in this methodology, for many equations, the relevant code is given as a reference to the appendix location, in the form \textbf{A.x.x}. Due to the nature of the functions used in this analysis, a single function often contains multiple equations, and so a reference to a particular appendix number may be repeated.
 
 \section{Data}
 \label{sec:data}
@@ -30,7 +30,7 @@ The total number of LiDAR points used in this study is \Sexpr{number_points}. Al
 \begin{itemize}
     \item \textbf{z:} The distance a laser pulse is reflected back to to scanner, calculated by the time taken for a return pulse to be detected.
     \item \textbf{Intensity:} The amplitude of the return pulse, reflected back by the surface terrain or objects.
-	\item \textbf{ReturnNumber:} A number of range 1-5, indicating for a point, the corresponding order of a reflected laser pulse. A ReturnNumber of 1 indicates the first return for a pulse (and highest $z$ value), a return number of 5 indicates the last return (and lowest $z$ value).
+	\item \textbf{ReturnNumber:} A number of range 1-5, indicating for a point, the corresponding order of a reflected laser pulse. A return number of 1 indicates the first return for a pulse (and highest $z$ value), a return number of 5 indicates the last return (and lowest $z$ value).
 	\item \textbf{NumberOfReturns:} The number of return pulses for a single laser pulse (maximum of 5).
     \item \textbf{Classification:} A number given to a point indicating a specific numeric classification. Of interest in this study is a classification of 2, indicating a ground point. More information is given by \href{http://desktop.arcgis.com/en/arcmap/10.3/manage-data/las-dataset/lidar-point-classification.htm}{\cite{esri2019}}, which outlines numerical classifications for various vegetation types and man made structures.
 \end{itemize}
@@ -91,7 +91,7 @@ cchange <- sum(matches_pts$Classification.y == 2) / sum(matches_pts$Classificati
 \noindent where $m$  is the mass of a single LiDAR point (set to 1), $\Delta t$ is the time step between points and $G$ represents the gravity constant. The implementation of this algorithm was given as part of the \texttt{lidR} package. Reclassification resulted in an increase in the number of classified ground points by \Sexpr{round((cchange - 1) * 100, 2)}\%. Reflecting primarily the simplification of existing classifications into ground and non-ground.
 
 
-With the classification of ground points, (given $Classification = 2$), a full DTM may be produced through spatial interpolation of the classified points.  Interpolation uses the inverse distance weighting and $k$ nearest neighbours algorithms to produce the DTM. Nearest neighbours were selected as $k = 10$, with $q = 2$ for the inverse weighting, and used to produce a DTM with a resolution of 1m$^2$. This particular technique was selected over more comprehensive methods such as kriging as the number of points is very high, and the small benefit of kriging was considered minimal compared with the increase in computational load. The $z$ values from the DTM were then subtracted from the LiDAR point cloud, leaving a normalised point cloud. This ensures that when extracting height information, any observed values are due to objects on the surface of the terrain, and not due to the lie of the terrain itself.
+With the classification of ground points, (given $\mathbf{Classification} = 2$), a full DTM may be produced through spatial interpolation of the classified points.  Interpolation uses the inverse distance weighting and $k$ nearest neighbours algorithms to produce the DTM. Nearest neighbours were selected as $k = 10$, with $q = 2$ for the inverse weighting, and used to produce a DTM with a resolution of 1m$^2$. This particular technique was selected over more comprehensive methods such as kriging as the number of points is very high, and the small benefit of kriging was considered minimal compared with the increase in computational load. The $z$ values from the DTM were then subtracted from the LiDAR point cloud, leaving a normalised point cloud. This ensures that when extracting height information, any observed values are due to objects on the surface of the terrain, and not due to the lie of the terrain itself.
 
 \subsection{Points Extent}
 
@@ -153,7 +153,7 @@ A\left(\mathbf{C}_{N}\right)=500 m^{2}, \\
 \section{Road Analysis}
 \label{sec:road-extraction}
 
-The preprocessed LiDAR data was combined with the OS road shapefiles and aerial imagery to obtain a set of criteria to assess the chosen road network. A summary of the information provided alongside OS road shapefiles is given on Table \ref{tab:roadstab}. While both \texttt{roadNumberTOID} and \texttt{roadNameTOID} do provide true road identification for many roads, this was not true for each road in the area chosen. Due to this, it was impossible to identify what could be considered an individual road, meaning \textit{road} will now be defined as indicated on Figure \ref{fig:area_map}, selected based on the shapefile geometry provided.
+The preprocessed LiDAR data was combined with the OS road shapefiles and aerial imagery to obtain a set of criteria to assess the chosen road network. A summary of the information provided alongside OS road shapefiles is given on Table \ref{tab:roadstab}. While both \texttt{roadNumberTOID} and \texttt{roadNameTOID} do provide true road identification for many roads, this was not true for each road in the area chosen. Due to this, it was impossible to identify what could be considered an individual road, meaning a \textit{road} will now be defined as indicated on Figure \ref{fig:area_map}, selected based on the shapefile geometry provided.
 
 <<>>=
 roads_info <- fread("/home/cjber/drive/uni/envs492/main/data/osroads/roads_info.csv") %>% 
@@ -533,7 +533,7 @@ The full point cloud $\mathbf{S}$ now gave of a collection of predicted road poi
 \end{flushright}
 \end{figure}
 
-To find the angle $\theta_\mathbf{K}$, the difference in $x$ and $y$ coordinates between two nodes $\mathbf{N}_i$ and $\mathbf{N}_{i+1}$ was calculated as in Equation \ref{eq:xydiff} to obtain the bearing angle between these nodes, represented by the grey line on Figure \ref{fig:sample_points}. Similarly, the difference in $x$ and $y$ coordinates was found for the perpendicular points associated with the sample. With this, $\theta_\mathbf{K}$ is given;
+To find the angle $\theta_\mathbf{K}$, the difference in $x$ and $y$ coordinates between two nodes $\mathbf{N}_i$ and $\mathbf{N}_{i+1}$ was calculated as in Equation \ref{eq:xydiff} to obtain the bearing angle between these nodes, represented by the grey line on Figure \ref{fig:sample_points}. Similarly, the difference in $x$ and $y$ coordinates were found for the perpendicular points associated with the sample. With this, $\theta_\mathbf{K}$ is given;
 
 \[
 \begin{aligned}
@@ -544,7 +544,7 @@ To find the angle $\theta_\mathbf{K}$, the difference in $x$ and $y$ coordinates
     \footnotesize{\ref{code:opposite_length}}
 \end{flushright}
 
-\noindent where the difference in linestring coordinates gives $L = (|x|_l,|y|_l)$, and the difference in sample line coordinates gives $s = (|x|_s,|y|_s)$.
+\noindent where the difference in node coordinates gives $L = (|x|_l,|y|_l)$, and the difference in sample line coordinates gives $s = (|x|_s,|y|_s)$.
 
 Given the two selected points at every sample with a maximum distance between them, trigonometry could be used to determine the width of the road at that particular location. Road width is considered to be the adjacent line length ($b_\mathbf{K}$; where $\mathbf{K}$ is a single sample location), perpendicular to the road segment, considering the distance between the two points to be the hypotenuse  of a right angled triangle (Figure \ref{fig:sample_points}; $|\mathbf{K}_1\mathbf{K}_2| \equiv h_\mathbf{K}$). The width $b_\mathbf{K}$ for each sample location was found, this may be expressed using trigonometry as;
 
@@ -557,7 +557,7 @@ Given the two selected points at every sample with a maximum distance between th
     \footnotesize{\ref{code:find_dists}}
 \end{flushright}
 
-\noindent where $b_\mathbf{K}$ gives predicted of a road at a sample $\mathbf{K}$. With a complete set of calculated road widths for each sample, any width above 8m was removed, in addition to any width below 2m, under the assumption that a width calculated outside these limits would be caused due to noise or inaccuracy.
+\noindent where $b_\mathbf{K}$ gives the predicted width of a road at a sample $\mathbf{K}$. With a complete set of calculated road widths for each sample, any width above 8m was removed, in addition to any width below 2m, under the assumption that a width calculated outside these limits would be caused due to noise or inaccuracy.
 
 There is the possibility that the maximum distance between two points does not provide the maximum perpendicular distance across a road section. Such a situation would arise given a triangle formed that is has an opposite length ($a_\mathbf{K}$) above the adjacent length ($b_\mathbf{K}$), giving a hypotenuse ($h_\textbf{K}$) with a longer vertical length. However, given the maximum opposite line length between two points in a sample line is 2m, (each sample is 2m by 60m), for any line where the opposite length is greater than the adjacent length, the adjacent length must therefore be below 2m and thus, the road width calculated from this sample is removed during the filtering process.
 

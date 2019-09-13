@@ -122,15 +122,14 @@ This dissertation will present a method for rural road classification and width 
 \textbf{\textit{Key Aims:}}
 
 \begin{itemize}
-    \item Produce and assess an automated method using LiDAR, aerial imagery and OS road geometry to determine the true width of roads within the chosen study area, outlining the particular limitations and solutions when considering the rural British road network.
-
     \item Using OS Road and LiDAR Data produce an automated method for determining the characteristics of rural roads that relate to overall road quality. These are;
         \subitem Bend sharpness
         \subitem Road steepness
         \subitem Surface quality
-
+        \subitem Road width
+    \item Produce and assess an automated method using LiDAR, aerial imagery and OS road geometry to determine the true width of roads within the chosen study area, outlining the particular limitations and solutions when considering the rural British road network.
     \item Using extracted road features, outline the overall quality of the road network, and allow for direct comparison between each road.
 \end{itemize}
 
 
-This dissertation is organised into chapters, first a literature review, outlining the broad implications of speed limits, rural road networks, and object extraction particularly in relation to LiDAR aerial point clouds. Second, a detailed description of the methodology involved in this dissertation will outline the techniques used to classify road widths, in addition to the other road geometric information. A results section will primarily assess the method for road extraction, through sensitivity analysis and some qualitative observations, a section will then explore the findings. Finally a discussion will detail the implications of the findings, and suggest areas for methodological improvement.
+This dissertation is organised into chapters, first a literature review, outlining the broad implications of speed limits, rural road networks, and object extraction particularly in relation to LiDAR aerial point clouds. Second, a detailed description of the methodology involved in this dissertation will outline the techniques used to classify road widths, in addition to the other road geometric information. A results section will primarily assess the method for road classification, through sensitivity analysis and some qualitative observations, a section will then explore the findings. Finally a discussion will detail the implications of the findings, and suggest areas for methodological improvement.

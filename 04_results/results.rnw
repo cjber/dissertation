@@ -372,7 +372,7 @@ plot_grid(
 )
 @
 
-Figure \ref{fig:quant_fig} reveals that qualitatively, the optimal choice for a quantile filtering of the linear probability distribution is likely the 95th quantile (Figure \ref{fig:quant_fig} \textbf{(A)}). However, observation of the southern section of Figure \ref{fig:quant_fig} \textbf{(A)} reveals that inaccurate centreline locations have led to an incomplete linear model analysis. To compensate for this, a further method proposed aims to improve the accuracy of the given road centreline locations. Additionally, Figure \ref{fig:quant_fig} \textbf{(B)} reveals that for the 95th quantile probability values, shadow from road hedgerows appears to reduce the model accuracy, as noticeable towards the centre of the road. For this reason, a second model was constructed for later comparison, which removes the $luminescence$ information provided by the aerial imagery;
+Figure \ref{fig:quant_fig} reveals that qualitatively, the optimal choice for a quantile filtering of the linear probability distribution is likely the 95th quantile (Figure \ref{fig:quant_fig} \textbf{(A)}). However, observation of the southern section of Figure \ref{fig:quant_fig} \textbf{(A)} reveals that inaccurate centreline locations have led to an incomplete linear model analysis. To compensate for this, a further method proposed aims to improve the accuracy of the given road centreline locations. Additionally, Figure \ref{fig:quant_fig} \textbf{(A)} reveals that for the 95th quantile probability values, shadow from road hedgerows appears to reduce the model accuracy, as noticeable towards the centre of the road. For this reason, a second model was constructed for later comparison, which removes the $luminescence$ information provided by the aerial imagery;
 
 \begin{equation}
 \begin{aligned}
@@ -492,16 +492,15 @@ plot_grid(
   ncol = 4,
   label_fontfamily = "Roboto Slab"
 )
-cat("k")
 @
 
 Qualitative comparison between the Linear Probability Model based off the original centreline locations reveals an improvement in overall road detection, particularly towards the edge of roads, while additional samples are achieved in areas which previously had no coverage due to the incorrect centreline placement (Figure \ref{fig:fig_noisecent} \textbf{(A)}). However, it appears that in areas where there are higher levels of linear predictive inaccuracy, the new centrelines are less accurate. Thankfully, noise exclusion techniques employed have removed samples that fall within these areas, particularly noticeable at the northern end of Figure \ref{fig:fig_noisecent} \textbf{(C)}. Figure \ref{fig:fig_noisecent} also gives information regarding the distance based noise exclusion technique, which has allowed for the exclusion of isolated points accurately on Figure \ref{fig:fig_noisecent} \textbf{(B)}. Improved centreline locations allowed for individual linear models (Figure \ref{fig:fig_noisecent} \textbf{(D)}). While it was assumed that individual linear models would potentially produce more accurate width estimations, it is hard to differentiate between the global and individual linear models (Figure \ref{fig:fig_noisecent} \textbf{(C)} and \textbf{(D)}).
 
 \section{Final Model Analysis}
 
-For direct comparison between the two selected global linear probability models, centering and scaling of the predictor variables allowed for an easier interpretation of results, without affecting any statistical inferences. This was considered necessary as both $p$ values and standard errors produced by global models offered little in terms of interpretability due to the very large number of points involved in this study. Centering and scaling was obtained through the production of beta coefficients with results given on Table \ref{tab:coeftest}. While the removal of $luminescence$ had little effect on the other predictor coefficients, due to the very small influence of this coefficient, reflected by the normalised value (0.01), and the qualitative analysis of the issues due to shadows, is was considered an unnecessary addition. The other coefficients all give insight into their influence of the road outcome, for example for every 1 increase in the standard deviation in $dist$, the likelihood a point is to be a road point decreases by a standard deviation of 0.33. This therefore suggests that the inclusion of the $dist$ coefficient is important, despite not being considered in other supervised road detection techniques.
+For direct comparison between the two selected global linear probability models, centering and scaling of the predictor variables allowed for an easier interpretation of results, without affecting any statistical inferences. This was considered necessary as both $p$ values and standard errors produced by global models offered little in terms of interpretability due to the very large number of points involved in this study. Centering and scaling was obtained through the production of beta coefficients with results given on Table \ref{tab:coeftest}. The removal of luminescence had little effect on the other predictor coefficients, due to the very small influence of this coefficient, reflected by the normalised value (0.01), and the qualitative analysis of the issues due to shadows, as such, it was considered an unnecessary addition. The other coefficients all give insight into their influence of the road outcome, for example for every 1 increase in the standard deviation in $dist$, the likelihood a point is to be a road point decreases by a standard deviation of 0.33. This therefore suggests that the inclusion of the $dist$ coefficient is important, despite not being considered in other supervised road detection techniques.
 
-Table \ref{tab:estwidths} gives a normalised comparison between each linear model, and its associated estimated road width. This gives insight into the effectiveness of various linear probability models for each road, and road type. While average values all give relative accuracy in the region of 70\%, it appears that at present, the method for centreline improvements does not appear to assist with improving the width estimates. For certain roads, the accuracy of the derived centrelines appear to vastly reduce model accuracy, (For example Road 14; Table \ref{tab:estwidths} and Figure \ref{fig:rqi_compare}).
+Table \ref{tab:estwidths} gives a normalised comparison between each linear model, and its associated estimated road width. This gives insight into the effectiveness of various linear probability models for each road, and road type. While average values all give relative accuracy in the region of 70\%, it appears that at present, the method for centreline improvements does not appear to improve road width estimates by much.
 
 <<coeftest, results = 'asis'>>=
 cent1_lm <- fread("../data/derived/model_data/cent1_lm.csv") %>%
@@ -668,7 +667,7 @@ summary_data <- merge(summary_data, qual_index, by = "road_id") %>%
   arrange(desc(qual_index))
 @
 
-As LM $i$ gave the highest mean accuracy for roads (Table \ref{tab:final_data}), is was selected for the final road width predictions. From this, Table \ref{tab:rqi} gives the full results of the road geometric extraction, along with an estimate of overall road quality given by the Road Quality Index (RQI). Qualitative assessment of the RQI may be achieved through observation of the highest and lowest values (Figure \ref{fig:rqi_compare}). It appears to produce reliable results, as the road with the highest RQI is straighter and wider than the road with the lowest RQI, and is likely flat given it is neighboured by houses and an agricultural field.
+As LM $i$ gave the highest mean accuracy for roads (Table \ref{tab:estwidths}), it was selected for the final road width predictions. From this, Table \ref{tab:rqi} gives the full results of the road geometric extraction, along with an estimate of overall road quality given by the Road Quality Index (RQI). Qualitative assessment of the RQI may be achieved through observation of the highest and lowest values (Figure \ref{fig:rqi_compare}). It appears to produce reliable results, as the road with the highest RQI is straighter and wider than the road with the lowest RQI, and is likely flat given it is neighboured by houses.
 
 <<rqi, results = 'asis'>>=
 make_table(summary_data,
@@ -709,12 +708,6 @@ ba <- lapply(jpgs, function(x) {
 ba <- ba %>%
   compact() %>%
   brick()
-
-
-rd_e <- roads[roads$road_id == "road_14", ] %>% 
-    st_crop(ea)
-rd_ec <- cents[cents$road_id == "road_14", ] %>% 
-    st_crop(ea)
 
 gg_ta <- ggRGB(ta) +
   theme_map() +
