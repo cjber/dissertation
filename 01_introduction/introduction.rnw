@@ -50,7 +50,7 @@ The main features unique to LiDAR, unlike similar aerial data collection techniq
 
     \item \textbf{Intensity}: LiDAR systems also give intensity values for return pulses, which gives information regarding the reflectance of the surface of objects that are hit by the laser pulses. If intensity is given $I$ then reflectance $R$ may be represented as $R = \frac{I}{E_{T}}$ where $E_T$ refers to the first pulse signal intensity \citep{charaniya2004}.
 
-    \item \textbf{Elevation:} In addition to $x$ and $y$ coordinates, the distance between the plane and the reflected ground or object is recorded and assigned a $z$ value.
+    \item \textbf{Elevation:} In addition to $x$ and $y$ coordinates, the distance between the aircraft and the reflected ground or object is recorded and assigned a $z$ value.
 \end{itemize}
 
 \subsection{Benefits over Aerial Imagery}
@@ -65,7 +65,7 @@ LiDAR lacks any texture or spectral information, and often studies in road class
 
 Often road classification methodologies use LiDAR height data to identify kerbs to separate streets from pavement \citep{kumar2013,vosselman2009a}, however rural roads often have no kerb, and are often at the same level as the surrounding vegetation \citep{yadav2018}.
 
-LiDAR data often requires a large amount of processing due to the irregular distribution of points, presence of noise and the number of variables that have to be considered, \cite{yadav2018} note that often papers do not include information regarding the computational time for processing this data which may cause practical limitations at larger scales.
+LiDAR data often requires a large amount of processing due to the irregular distribution of points, presence of noise and the number of variables that have to be considered. \cite{yadav2018} note that often papers do not include information regarding the computational time for processing this data which may cause practical limitations at larger scales.
 
 <<>>=
 source("../scripts/functions.r")
