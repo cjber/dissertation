@@ -122,8 +122,7 @@ Alternatives to Linear Probability models do exist when considering binary outco
 
 Alternative methods to reduce the noise produced in road classification may include the identifications of straight line road edges, a distinguishing feature of man made structures \cite{guan2013}. This could enable point exclusion if outside of a particular threshold in relation to other points. LiDAR classification techniques often make use of segmentation algorithms to identify objects from geometric features such as planes, and straight edges \citep{wang2009}. These include Hough transforms \citep{vosselman2004,clode2004}, RANSAC \citep{smadja2010,sampath2008}, and least square fitting \citep{matkan2014}.
 
-// \citep{elberink2000}: smooth surfaces.
-
+Additionally, unsupervised road extraction techniques have considered the texture of road and non-road, where man made structures often have smooth, regular height textures, and small height variations, while trees and other vegetation give an irregular height pattern,  using this to separate man made structures, such as roads, from vegetation \citep{vosselman2004,darmawati2008}.
 
 Driving behaviour is affected by particular features that are not covered in this methodology, namely the delineation of road centrelines and edges \citep{steyvers2000,charlton2018}. The detection of these features is influenced  by either if a road edge is easily detectable, or if a road has painted markings to indicate a centreline, both of which are not observable through this methodology, and would likely rely on mobile LiDAR data collection.
 

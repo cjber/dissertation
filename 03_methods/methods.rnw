@@ -1,4 +1,4 @@
-    \lettrine{T}{his} dissertation primarily makes use of the free open source statistical language \R{} \citep{parallel}. Managing the large LiDAR datasets from my personal computer was made possible through the \texttt{lidR} \R{} package \citep{lidR}. Further details regarding the \R{} environment and computer setup used for this dissertation is given in \textbf{Appendix \ref{a:code}}. Also given in \textbf{Appendix \ref{a:code}} are the code snippets utilised in this methodology, for many equations, the relevant code is given as a reference to the appendix location, in the form \textbf{A.x.x}. Due to the nature of the functions used in this analysis, a single function often contains multiple equations, and so a reference to a particular appendix number may be repeated. Additionally, not all functions are referenced in text, so there are gaps in references to functions, and they do not necessarily appear sequentially.
+    \lettrine{T}{his} dissertation primarily makes use of the free open source statistical language \R{} \citep{parallel}. Managing the large LiDAR datasets from my personal computer was made possible through the \texttt{lidR} \R{} package \citep{lidR}. Further details regarding the \R{} environment and computer setup used for this dissertation are given in \textbf{Appendix \ref{a:code}}. Also given in \textbf{Appendix \ref{a:code}} are the code snippets utilised in this methodology, for many equations, the relevant code is given as a reference to the appendix location, in the form \textbf{A.x.x}. Due to the nature of the functions used in this analysis, a single function often contains multiple equations, and so a reference to a particular appendix number may be repeated. Additionally, not all functions are referenced in text, so there are gaps in references to functions, and they do not necessarily appear sequentially.
 
 \section{Data}
 \label{sec:data}
@@ -50,7 +50,8 @@ tmp <- do.call(
 @
 
 <<lidartab, results='asis'>>=
-make_table(tmp, cap = "LiDAR Point Cloud Summary Data")
+make_table(tmp, cap = "LiDAR Point Cloud Summary Data") %>% 
+kable_styling(latex_options = "hold_position")
 @
 
 \subsection{Last Pulse}
@@ -165,11 +166,13 @@ tmp <- do.call(
   list(
     Example = apply(roads_info, 2, head, 1)
   )
-)
+) %>% 
+rownames_to_column("Variable")
 @
 
 <<roadstab, results='asis'>>=
-make_table(tmp, cap = "OS Roads Data Summary")
+make_table(tmp, cap = "OS Roads Data Summary") %>% 
+kable_styling(latex_options = "hold_position")
 @
 
 The roads in this paper consist of these functions; 
@@ -186,7 +189,7 @@ B roads are classified roads, while other functions are unclassified. All roads 
 
 The angle of each bend in a road was identified through the nodes produced in the creation of the road shapefiles. First the road linestrings were split into points, with coordinates representing each node within a road, a point at which the orientation of the linestring is altered, (See Figure \ref{fig:bearingang1} and \ref{fig:bearingang2} for illustrations of road nodes).
 
-The bend in a road was considered to be the \textit{bearing angle} $\hat \theta$, from a node $\mathbf{N}_i = \left(x_{i}, y_{i}\right)$ to a node $\mathbf{N}_{i+1} = \left(x_{i+1}, y_{i+1}\right)$, with the angle measured in a clockwise direction from north. This is represented on Figure \ref{fig:bearingang1}.
+The direction of a road was considered to be the \textit{bearing angle} $\hat \theta$, from a node $\mathbf{N}_i = \left(x_{i}, y_{i}\right)$ to a node $\mathbf{N}_{i+1} = \left(x_{i+1}, y_{i+1}\right)$, with the angle measured in a clockwise direction from north. This is represented on Figure \ref{fig:bearingang1}.
 
     \begin{figure}[htbp]
         \centering
